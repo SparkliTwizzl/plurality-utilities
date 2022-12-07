@@ -40,6 +40,18 @@ for /f "tokens=*" %%x in (%inputFile%) do (
     set /a inputDataLineCount+=1
 )
 
+set i=0
+:parseInputData
+
+echo %i%
+if not !inputData[%i%]!=={ (
+if not !inputData[%i%]!==} (
+    echo !inputData[%i%]!
+))
+
+set /a i+=1
+if %i% lss %inputDataLineCount% goto parseInputData
+
 
 
 pause
