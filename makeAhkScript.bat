@@ -1,5 +1,6 @@
-SET inputPath="./testInput.akf"
-SET outputPath="./testOutput.ahk"
+cd %localhost%
+SET inputPath="testInput.akf"
+SET outputPath="testOutput.ahk"
 
 @echo test>%outputPath%
 
