@@ -1,1 +1,10 @@
-testing
+{
+#Name1 @n1
+#Nickname1 @k1
+$pronouns/1
+}
+{
+#Name2 @n2
+#Nickname2 @k2
+$pronouns/2
+}
