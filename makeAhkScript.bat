@@ -1,8 +1,9 @@
+rem newline hack to allow single-echo line breaks
+rem note: must be used as !nl!, not %nl%
 setlocal EnableDelayedExpansion
 (set nl=^
 %=intentionallyEmpty=%
 )
-REM note: must be used as !nl!, not %nl%
 
 cd %localhost%
 @echo off
