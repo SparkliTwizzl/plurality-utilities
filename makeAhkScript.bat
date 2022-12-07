@@ -1,8 +1,12 @@
 cd %localhost%
-SET inputPath="testInput.akf"
-SET outputPath="testOutput.ahk"
+@echo off
 
-@echo test>%outputPath%
+set version=0.1
 
-SET readMember=true
+set inputPath="testInput.akf"
+set outputPath="testOutput.ahk"
+
+echo ;automatically generated using %~n0 v%version%>%outputPath%
+
+set readMember=true
 :ReadMembers
