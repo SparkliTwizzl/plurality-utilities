@@ -36,27 +36,33 @@ for /f "tokens=*" %%x in (%inputFile%) do (
     set /a inputDataLineCount+=1
 )
 
-set /a endAt=%inputDataLineCount%-1
-:parseInputData
+call :parseInputData %inputDataLineCount%-1
+
+:parseInputData <endAt>
+set /a endAt=%1%
 echo parseInputData ; inputDataLineCount=%inputDataLineCount% ; endAt=%endAt%
 for /l %%i in (0 1 %endAt%) do (
     if !inputData[%%i]!=={ (
         echo parseInputData ; i=%%i ; token=!inputData[%%i]!
         pause
-        call :parseEntry %%i+1 %%i
+        call :parseEntry %%i+1 & set /a %%i=!errorlevel!
+        echo parseEntry return value=%%i
     )
 )
+exit /b
 
-:parseEntry <startIndex> <returnIndex>
-echo parseEntry ; startIndex=%startIndex% ; returnIndex=%returnIndex%
-for /l %%i in (%startIndex% 1 %endAt%) do (
-    echo parseEntry ; i=%%i ; token=!inputData[%%i]!
+:parseEntry <startIndex>
+set /a startIndex=%1%
+
+echo parseEntry ; startIndex=%startIndex%
+for /l %%j in (%startIndex% 1 %endAt%) do (
+    echo parseEntry ; j=%%j ; token=!inputData[%%j]!
     pause
-    if !inputData[%%i]!==} (
-        set /a returnIndex=%%i
-        echo parseEntry ; exit ; returnIndex=%returnIndex%
+    if !inputData[%%j]!==} (
+        echo parseEntry ; j=%%j
+        echo parseEntry ; exit ; returnIndex=%%j!nl!!nl!
         pause
-        exit /b
+        exit /b %%j
     )
 )
 
