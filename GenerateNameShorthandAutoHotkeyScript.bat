@@ -19,6 +19,7 @@ CALL :Init
 CALL :ReadInputData
 CALL :ParseInputData 0
 CALL :WriteOutput
+PAUSE
 EXIT
 
 
@@ -58,7 +59,12 @@ IF %lineIndex%==%inputDataLineCount% (
 
 IF !inputData[%lineIndex%]]!=={ (
     CALL :ParseEntry %lineIndex%+1 & SET /a %lineIndex%=!errorlevel!
+) ELSE (
+    ECHO data parse error
+    EXIT /b
 )
+CALL :ParseInputData %lineIndex%+1
+
 EXIT /b
 
 
