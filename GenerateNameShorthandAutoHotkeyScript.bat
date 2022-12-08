@@ -36,15 +36,29 @@ for /f "tokens=*" %%x in (%inputFile%) do (
     set /a inputDataLineCount+=1
 )
 
+set /a endAt=%inputDataLineCount%-1
 :parseInputData
-set /a q=%inputDataLineCount%-1
-for /l %%i in (0 1 %q%) do (
-    if not !inputData[%%i]!=={ (
-    if not !inputData[%%i]!==} (
-        echo !inputData[%%i]!
-    ))
+echo parseInputData ; inputDataLineCount=%inputDataLineCount% ; endAt=%endAt%
+for /l %%i in (0 1 %endAt%) do (
+    if !inputData[%%i]!=={ (
+        echo parseInputData ; i=%%i ; token=!inputData[%%i]!
+        pause
+        call :parseEntry %%i+1 %%i
+    )
 )
 
+:parseEntry <startIndex> <returnIndex>
+echo parseEntry ; startIndex=%startIndex% ; returnIndex=%returnIndex%
+for /l %%i in (%startIndex% 1 %endAt%) do (
+    echo parseEntry ; i=%%i ; token=!inputData[%%i]!
+    pause
+    if !inputData[%%i]!==} (
+        set /a returnIndex=%%i
+        echo parseEntry ; exit ; returnIndex=%returnIndex%
+        pause
+        exit /b
+    )
+)
 
 
 pause
