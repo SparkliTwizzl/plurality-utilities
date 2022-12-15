@@ -1,2 +1,7 @@
-testOutput.ahk
+bin/
+obj/
+.vs/
+
 *.log
+
+testOutput.ahk
