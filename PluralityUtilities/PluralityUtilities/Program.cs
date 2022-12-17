@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PluralityUtilities.Logging;
+
 
 namespace PluralityUtilities
 {
@@ -6,6 +7,7 @@ namespace PluralityUtilities
 	{
 		static void Main(string[] args)
 		{
+			Logger.LogLine("test");
 		}
 	}
 }
