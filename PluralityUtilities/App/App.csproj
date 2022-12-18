@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Logging\Logging.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="@echo public static class SolutionFolders { public const string SolutionDir = @&quot;$(SolutionDir)&quot;; }&gt; &quot;$(ProjectDir)SolutionFolders.cs&quot;" />
+  </Target>
+
 </Project>

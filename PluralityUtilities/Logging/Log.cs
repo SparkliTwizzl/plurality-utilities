@@ -1,13 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
 
 
 namespace PluralityUtilities.Logging
 {
 	public static class Log
 	{
-		private static string _logFileFolder;
-		private static string _logFileName;
-		private static string _logFilePath;
+		private static readonly string _defaultLogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log/";
+		private static readonly string _defaultLogFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
+		private static string _logFolder = "";
+		private static string _logFileName = "";
+		private static string _logFilePath = "";
 
 
 		static Log()
@@ -23,30 +27,41 @@ namespace PluralityUtilities.Logging
 
 		public static void SetLogFolder(string folder)
 		{
-			_logFileFolder = folder;
+			_logFolder = folder;
+			var lastChar = folder[folder.Length - 1];
+			if (lastChar != '\\' && lastChar != '/')
+			{
+				_logFolder += '/';
+			}
+			Directory.CreateDirectory(_logFolder);
 			SetLogFilePath();
 		}
 
 		public static void Write(string message = "")
 		{
+			if (_logFolder == "")
+			{
+				SetLogFolder(_defaultLogFolder);
+			}
+			if (_logFileName == "")
+			{
+				SetLogFileName(_defaultLogFileName);
+			}
 			using (StreamWriter logFile = new StreamWriter(_logFilePath))
 			{
-				logFile.Write(message);
+				logFile.Write(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss - ") + message);
 			}
 		}
 
 		public static void WriteLine(string message = "")
 		{
-			using (StreamWriter logFile = new StreamWriter(_logFilePath))
-			{
-				logFile.WriteLine(message);
-			}
+			Write(message + '\n');
 		}
 
 
 		private static void SetLogFilePath()
 		{
-			_logFilePath = _logFileFolder + _logFileName;
+			_logFilePath = _logFolder + _logFileName;
 		}
 	}
 }
