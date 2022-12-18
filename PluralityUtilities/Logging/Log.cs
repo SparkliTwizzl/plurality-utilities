@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -7,24 +8,29 @@ namespace PluralityUtilities.Logging
 {
 	public static class Log
 	{
-		private static StreamWriter _logFile;
+		private static readonly string _logFileFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + Process.GetCurrentProcess().ProcessName + "_logs/";
 		private static readonly string _logFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
+		private static readonly string _logFilePath = _logFileFolder + _logFileName;
 
 
 		static Log()
 		{
-			var logFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log/";
-			_logFile = new StreamWriter(logFilePath + _logFileName);
 		}
 
-		public static void Write(string message)
+		public static void Write(string message = "")
 		{
-			_logFile.Write(message);
+			using (StreamWriter logFile = new StreamWriter(_logFilePath))
+			{
+				logFile.Write(message);
+			}
 		}
 
-		public static void WriteLine(string message)
+		public static void WriteLine(string message = "")
 		{
-			_logFile.WriteLine();
+			using (StreamWriter logFile = new StreamWriter(_logFilePath))
+			{
+				logFile.WriteLine(message);
+			}
 		}
 	}
 }
