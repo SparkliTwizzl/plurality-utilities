@@ -1,13 +1,17 @@
 ﻿using PluralityUtilities.Logging;
 
 
-namespace PluralityUtilities
+namespace PluralityUtilities.App
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
-			Logger.LogLine("test");
 		}
+
+		//static void Main(string[] args)
+		//{
+		//	Log.WriteLine("test");
+		//}
 	}
 }
