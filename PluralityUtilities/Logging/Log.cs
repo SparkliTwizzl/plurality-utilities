@@ -1,20 +1,30 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 
 
 namespace PluralityUtilities.Logging
 {
 	public static class Log
 	{
-		private static readonly string _logFileFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + Process.GetCurrentProcess().ProcessName + "_logs/";
-		private static readonly string _logFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
-		private static readonly string _logFilePath = _logFileFolder + _logFileName;
+		private static string _logFileFolder;
+		private static string _logFileName;
+		private static string _logFilePath;
 
 
 		static Log()
 		{
+		}
+
+
+		public static void SetLogFileName(string filename)
+		{
+			_logFileName = filename;
+			SetLogFilePath();
+		}
+
+		public static void SetLogFolder(string folder)
+		{
+			_logFileFolder = folder;
+			SetLogFilePath();
 		}
 
 		public static void Write(string message = "")
@@ -31,6 +41,12 @@ namespace PluralityUtilities.Logging
 			{
 				logFile.WriteLine(message);
 			}
+		}
+
+
+		private static void SetLogFilePath()
+		{
+			_logFilePath = _logFileFolder + _logFileName;
 		}
 	}
 }
