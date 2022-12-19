@@ -1,10 +1,10 @@
 .vs/
-build/
-run/
 bin/
 obj/
+build/
+run/
+PreBuildOutput/
 
 *.log
 
-SolutionFolders.cs
 testOutput.ahk
