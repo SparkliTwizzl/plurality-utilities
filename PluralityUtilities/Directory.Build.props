@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <BaseIntermediateOutputPath>$(SolutionDir)build\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(SolutionDir)build\bin\$(MSBuildProjectName)</BaseOutputPath>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rd &quot;$(ProjectDir)obj&quot; /s /q" />
+  </Target>
+</Project>
