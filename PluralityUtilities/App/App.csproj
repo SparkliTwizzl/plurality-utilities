@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>$(SolutionName).$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
+    <RootNamespace>$(SolutionName).$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
