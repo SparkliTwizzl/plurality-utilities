@@ -1,6 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <BaseIntermediateOutputPath>$(SolutionDir)\build\$(Configuration)\obj\</BaseIntermediateOutputPath>
-    <OutputPath>$(SolutionDir)\build\$(Configuration)\bin</OutputPath>
-  </PropertyGroup>
-</Project>
