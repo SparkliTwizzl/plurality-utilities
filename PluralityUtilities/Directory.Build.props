@@ -15,7 +15,7 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <BaseIntermediateOutputPath>$(BuildDir)$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
-    <BaseOutputPath>$(SolutionDir)build\$(MSBuildProjectName)\bin\</BaseOutputPath>
+    <BaseOutputPath>$(BuildDir)$(MSBuildProjectName)\bin\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
   </PropertyGroup>
 
