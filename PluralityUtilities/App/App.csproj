@@ -9,6 +9,10 @@
     <RootNamespace>$(SolutionName).$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
   </PropertyGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="@echo public static class SolutionFolders { public const string SolutionDir = @&quot;$(SolutionDir)&quot;; }&gt; &quot;$(ProjectDir)SolutionFolders.cs&quot;" />
+  </Target>
+
   <ItemGroup>
     <ProjectReference Include="..\Logging\Logging.csproj" />
   </ItemGroup>
