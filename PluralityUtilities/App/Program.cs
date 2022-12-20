@@ -20,7 +20,7 @@ Log.WriteLine("execution finished");
 static void Init()
 {
 #if DEBUG
-Log.SetLogFolder(ProjectDirectories.LogDir);
+Log.SetLogFolder(ProjectDirectories.DebugLogDir);
 #elif RELEASE
 Log.SetLogFolder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + Process.GetCurrentProcess().ProcessName + "_log/");
 #endif
