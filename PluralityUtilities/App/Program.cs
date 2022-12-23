@@ -2,27 +2,58 @@
 using PluralityUtilities.Logging;
 
 
-
-Init();
-Log.WriteLine("execution started");
-ParseInputAndGenerateAutoHotkeyScript(args[0]);
-Log.WriteLine("execution finished");
-
-
-
-static void Init()
+namespace PluralityUtilities.App
 {
-	Log.SetLogFolder(ProjectDirectories.LogDir);
-}
+	static class Program
+	{
+		private static string _inputFilePath = "";
+		private static bool _isLoggingEnabled = false;
+		private static string _outputFilePath = "";
+		private static DateTime _startTime;
 
-#if DEBUG
-static void ParseInputAndGenerateAutoHotkeyScript(string input)
-{
-	throw new NotImplementedException();
+
+		static void Main(string[] args)
+		{
+			_startTime = DateTime.Now;
+			ParseArgs(args);
+			InitLogging();
+			Log.WriteLine("execution started at " + _startTime);
+			ParseInputAndGenerateAutoHotkeyScript();
+			Log.WriteLine("execution completed in " + (DateTime.Now - _startTime).TotalSeconds + " seconds");
+		}
+
+
+		private static void InitLogging()
+		{
+			if (_isLoggingEnabled)
+			{
+				Console.WriteLine("logging is enabled");
+				Log.Enable();
+				Log.SetLogFolder(ProjectDirectories.LogDir);
+			}
+			else
+			{
+				Console.WriteLine("logging is disabled");
+			}
+		}
+
+		private static void ParseArgs(string[] args)
+		{
+			if (args.Length < 1)
+			{
+				Console.WriteLine("pass path to input file as arg0; pass path to output file as arg1; pass \"-l\" as arg2 to enable logging");
+				return;
+			}
+			_inputFilePath = args[0];
+			_outputFilePath = args[1];
+			if (args.Length > 2)
+			{
+				_isLoggingEnabled = args[2] == "-l";
+			}
+		}
+
+		private static void ParseInputAndGenerateAutoHotkeyScript()
+		{
+		}
+	}
 }
-#elif RELEASE
-static void ParseInputAndGenerateAutoHotkeyScript(string input)
-{
-	throw new NotImplementedException();
-}
-#endif

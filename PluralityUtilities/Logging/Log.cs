@@ -9,6 +9,7 @@ namespace PluralityUtilities.Logging
 	{
 		private static readonly string _defaultLogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log/";
 		private static readonly string _defaultLogFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
+		private static bool _isEnabled = false;
 		private static string _logFolder = "";
 		private static string _logFileName = "";
 		private static string _logFilePath = "";
@@ -16,6 +17,16 @@ namespace PluralityUtilities.Logging
 
 		static Log() { }
 
+
+		public static void Disable()
+		{
+			_isEnabled = false;
+		}
+
+		public static void Enable()
+		{
+			_isEnabled = true;
+		}
 
 		public static void SetLogFileName(string filename)
 		{
@@ -37,17 +48,20 @@ namespace PluralityUtilities.Logging
 
 		public static void Write(string message = "")
 		{
-			if (_logFolder == "")
+			if (_isEnabled)
 			{
-				SetLogFolder(_defaultLogFolder);
-			}
-			if (_logFileName == "")
-			{
-				SetLogFileName(_defaultLogFileName);
-			}
-			using (StreamWriter logFile = new StreamWriter(_logFilePath))
-			{
-				logFile.Write(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss - ") + message);
+				if (_logFolder == "")
+				{
+					SetLogFolder(_defaultLogFolder);
+				}
+				if (_logFileName == "")
+				{
+					SetLogFileName(_defaultLogFileName);
+				}
+				using (StreamWriter logFile = File.AppendText(_logFilePath))
+				{
+					logFile.Write(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss - ") + message);
+				}
 			}
 		}
 
