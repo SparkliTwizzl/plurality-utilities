@@ -18,9 +18,11 @@ namespace PluralityUtilities.App
 			_startTime = DateTime.Now;
 			ParseArgs(args);
 			InitLogging();
-			Log.WriteLine("execution started at " + _startTime);
+			Log.WriteLine($"execution started at {_startTime}");
 			ParseInputAndGenerateAutoHotkeyScript();
-			Log.WriteLine("execution completed in " + (DateTime.Now - _startTime).TotalSeconds + " seconds");
+			var executionFinished = $"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds";
+			Console.WriteLine(executionFinished);
+			Log.WriteLine(executionFinished);
 		}
 
 
@@ -61,6 +63,9 @@ namespace PluralityUtilities.App
 				parser.ParseFile(_inputFilePath);
 				ScriptGenerator scriptGenerator = new ScriptGenerator();
 				scriptGenerator.Generate(parser.People, _outputFilePath);
+				var successMessage = "generating script succeeded";
+				Console.WriteLine(successMessage);
+				Log.WriteLine(successMessage);
 			}
 			catch (Exception ex)
 			{
