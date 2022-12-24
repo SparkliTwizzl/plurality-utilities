@@ -11,14 +11,16 @@ namespace PluralityUtilities.App
 		private static bool _isLoggingEnabled = false;
 		private static string _outputFilePath = "";
 		private static DateTime _startTime;
+		private const string _version = "1.0";
 
 
 		static void Main(string[] args)
 		{
 			_startTime = DateTime.Now;
+			Console.WriteLine($"PluralityUtilities v{_version}");
 			ParseArgs(args);
 			InitLogging();
-			Log.WriteLineTimestamped($"execution started at {_startTime}");
+			Log.WriteLineTimestamped($"PluralityUtilities v{_version}; execution started at {_startTime}");
 			ParseInputAndGenerateAutoHotkeyScript();
 			var executionFinished = $"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds";
 			Console.WriteLine(executionFinished);
@@ -44,7 +46,7 @@ namespace PluralityUtilities.App
 		{
 			if (args.Length < 1)
 			{
-				Console.WriteLine("pass path to input file as arg0; pass path to output file as arg1; pass \"-l\" as arg2 to enable logging");
+				Console.WriteLine("pass path to input file as arg0; pass name of output file as arg1; pass \"-l\" as arg2 to enable logging");
 				return;
 			}
 			_inputFilePath = args[0];
