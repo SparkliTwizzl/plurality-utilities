@@ -1,5 +1,6 @@
-﻿namespace PluralityUtilities.App
+﻿namespace PluralityUtilities.AutoHotkeyScripts.Exceptions
 {
+	[Serializable]
 	public class InvalidArgumentException : Exception
 	{
 		public InvalidArgumentException() : base() { }

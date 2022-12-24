@@ -1,10 +1,11 @@
 {
-#Name1 @n1
-#Nickname1 @k1
-$pronouns/1
+    #Name1# @n1
+    #Nickname1# @k1
+    $pronouns/1
 }
 {
-#Name2 @n2
-#Nickname2 @k2
-$pronouns/2
+    #Name2# @nm2
+    #Nickname2# @kn2
+    #Nickname2a# @k2a
+    $pronouns/2>more/pronouns
 }
