@@ -65,7 +65,7 @@ namespace PluralityUtilities.Logging
 
 		public static void WriteLine(string message = "")
 		{
-			Write(message + '\n');
+			Write($"{message}'\n'");
 		}
 
 

@@ -21,6 +21,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
+		private void ParseIdentity(string line, ref Person person)
+		{
+			Identity identity = new Identity();
+			ParseName(line, ref identity);
+			ParseTag(line, ref identity);
+			person.Identities.Add(identity);
+		}
+
 		private void ParseInputData(string[] data)
 		{
 			for (int i = 0; i < data.Length; ++i)
@@ -54,9 +62,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				case '}':
 					return LineTypes.EntryEnd;
-				case '#':
-					ParseName(line, ref person);
-					ParseTag(line, ref person);
+				case '%':
+					ParseIdentity(line, ref person);
 					return LineTypes.Name;
 				case '$':
 					ParsePronoun(line, ref person);
@@ -68,16 +75,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private void ParseName(string line, ref Person person)
+		private void ParseName(string line, ref Identity identity)
 		{
+			var nameStart = line.IndexOf('#') + 1;
 			var nameEnd = line.LastIndexOf('#') - 1;
-			if (nameEnd < 2)
+			if (nameEnd - nameStart < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
 				Log.WriteLine($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
-			person.Names.Add(line.Substring(1, nameEnd));
+			identity.Name = line.Substring(nameStart, nameEnd - nameStart);
 		}
 
 		private Person ParsePerson(string[] data, ref int index)
@@ -121,7 +129,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			person.Pronoun = line.Substring(1, line.Length - 1);
 		}
 
-		private void ParseTag(string line, ref Person person)
+		private void ParseTag(string line, ref Identity identity)
 		{
 			var tagStart = line.IndexOf('@');
 			if (tagStart < 0)
@@ -137,18 +145,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				Log.WriteLine($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
-			person.Tags.Add(line.Substring(tagStart, line.Length - tagStart));
-		}
-
-		private void VerifyFileExtension(string inputFilePath)
-		{
-			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
-			{
-				var errorMessage = "input file path was not a .akf file";
-				Log.WriteLine($"error: {errorMessage}");
-				throw new InvalidArgumentException(errorMessage);
-			}
-			Log.WriteLine("input file path was a .akf file");
+			identity.Tag = line.Substring(tagStart, line.Length - tagStart);
 		}
 
 		private string[] ReadDataFromFile(string inputFilePath)
@@ -165,6 +162,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				Log.WriteLine($"error: {errorMessage}");
 				throw new FileNotFoundException(errorMessage);
 			}
+		}
+
+		private void VerifyFileExtension(string inputFilePath)
+		{
+			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
+			{
+				var errorMessage = "input file path was not a .akf file";
+				Log.WriteLine($"error: {errorMessage}");
+				throw new InvalidArgumentException(errorMessage);
+			}
+			Log.WriteLine("input file path was a .akf file");
 		}
 	}
 }

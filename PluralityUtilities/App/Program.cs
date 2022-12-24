@@ -55,10 +55,19 @@ namespace PluralityUtilities.App
 
 		private static void ParseInputAndGenerateAutoHotkeyScript()
 		{
-			AkfFileParser parser = new AkfFileParser();
-			parser.ParseFile(_inputFilePath);
-			ScriptGenerator scriptGenerator = new ScriptGenerator();
-			scriptGenerator.Generate(parser.People, _outputFilePath);
+			try
+			{
+				AkfFileParser parser = new AkfFileParser();
+				parser.ParseFile(_inputFilePath);
+				ScriptGenerator scriptGenerator = new ScriptGenerator();
+				scriptGenerator.Generate(parser.People, _outputFilePath);
+			}
+			catch (Exception ex)
+			{
+				var errorMessage = $"generating script failed with error: {ex.Message}";
+				Console.WriteLine(errorMessage);
+				Log.WriteLine(errorMessage);
+			}
 		}
 	}
 }
