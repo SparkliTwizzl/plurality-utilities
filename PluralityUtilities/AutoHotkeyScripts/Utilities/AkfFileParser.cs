@@ -2,7 +2,6 @@
 using PluralityUtilities.AutoHotkeyScripts.Enums;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.Logging;
-using System;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
@@ -28,6 +27,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				if (data[i] == "{")
 				{
+					++i;
 					var person = ParsePerson(data, ref i);
 					People.Add(person);
 					Log.Write("successfully parsed entry with names/tags [");
@@ -56,6 +56,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					return LineTypes.EntryEnd;
 				case '#':
 					ParseName(line, ref person);
+					ParseTag(line, ref person);
 					return LineTypes.Name;
 				case '$':
 					ParsePronoun(line, ref person);
@@ -74,7 +75,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
 				Log.WriteLine($"error: {errorMessage}");
-				throw new BlankNameException(errorMessage);
+				throw new BlankFieldException(errorMessage);
 			}
 			person.Names.Add(line.Substring(1, nameEnd));
 		}
@@ -111,12 +112,37 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				Log.WriteLine($"error: {errorMessage}");
 				throw new TooManyPronounsException(errorMessage);
 			}
+			if (line.Length < 2)
+			{
+				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun";
+				Log.WriteLine($"error: {errorMessage}");
+				throw new BlankFieldException(errorMessage);
+			}
 			person.Pronoun = line.Substring(1, line.Length - 1);
+		}
+
+		private void ParseTag(string line, ref Person person)
+		{
+			var tagStart = line.IndexOf('@');
+			if (tagStart < 0)
+			{
+				var errorMessage = "input file contains invalid data: an entry contained a name field without a paired tag field";
+				Log.WriteLine($"error: {errorMessage}");
+				throw new BlankFieldException(errorMessage);
+			}
+			var lastSpace = line.LastIndexOf(' ');
+			if (lastSpace > tagStart)
+			{
+				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
+				Log.WriteLine($"error: {errorMessage}");
+				throw new BlankFieldException(errorMessage);
+			}
+			person.Tags.Add(line.Substring(tagStart, line.Length - tagStart));
 		}
 
 		private void VerifyFileExtension(string inputFilePath)
 		{
-			if (inputFilePath.Substring(inputFilePath.Length - 5, 4) != ".akf")
+			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
 			{
 				var errorMessage = "input file path was not a .akf file";
 				Log.WriteLine($"error: {errorMessage}");
