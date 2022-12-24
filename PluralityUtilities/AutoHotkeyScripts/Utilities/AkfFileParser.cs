@@ -13,11 +13,11 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		public void ParseFile(string inputFilePath)
 		{
-			Log.WriteLine("started parsing input file: " + inputFilePath);
+			Log.WriteLineTimestamped("started parsing input file: " + inputFilePath);
 			VerifyFileExtension(inputFilePath);
 			var inputData = ReadDataFromFile(inputFilePath);
 			ParseInputData(inputData);
-			Log.WriteLine("finished parsing input file");
+			Log.WriteLineTimestamped("finished parsing input file");
 		}
 
 
@@ -38,17 +38,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					++i;
 					var person = ParsePerson(data, ref i);
 					People.Add(person);
-					Log.Write("successfully parsed entry with names/tags [");
-					for (int n = 0; n < person.Names.Count; ++n)
+					Log.WriteTimestamped("successfully parsed entry with names/tags [");
+					foreach (Identity identity in person.Identities)
 					{
-						Log.Write($"{person.Names[n]}/{person.Tags[n]}, ");
+						Log.Write($"{identity.Name}/{identity.Tag}, ");
 					}
 					Log.WriteLine($"] and pronoun [{person.Pronoun}]");
 				}
 				else
 				{
 					var errorMessage = "input file contains invalid data: an unknown character was read when '{' was expected";
-					Log.WriteLine($"error: {errorMessage}");
+					Log.WriteLineTimestamped($"error: {errorMessage}");
 					throw new UnknownCharacterException(errorMessage);
 				}
 			}
@@ -70,7 +70,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					return LineTypes.Pronoun;
 				default:
 					var unrecognizedChar = "input file contains invalid data: an unrecognized character was read at the start of a line";
-					Log.WriteLine($"error: {unrecognizedChar}");
+					Log.WriteLineTimestamped($"error: {unrecognizedChar}");
 					throw new UnknownCharacterException(unrecognizedChar);
 			}
 		}
@@ -82,7 +82,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			if (nameEnd - nameStart < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
 			identity.Name = line.Substring(nameStart, nameEnd - nameStart);
@@ -90,7 +90,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private Person ParsePerson(string[] data, ref int index)
 		{
-			Log.WriteLine("started parsing next entry");
+			Log.WriteLineTimestamped("started parsing next entry");
 			var person = new Person();
 			for (; index < data.Length; ++index)
 			{
@@ -101,14 +101,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						return person;
 					case LineTypes.Unknown:
 						var unknownChar = "input file contains invalid data: a line started with an unknown character";
-						Log.WriteLine($"error: {unknownChar}");
+						Log.WriteLineTimestamped($"error: {unknownChar}");
 						throw new UnknownCharacterException(unknownChar);
 					default:
 						break;
 				}
 			}
 			var lastEntryNotClosed = "input file contains invalid data: last entry was not closed";
-			Log.WriteLine($"error: {lastEntryNotClosed}");
+			Log.WriteLineTimestamped($"error: {lastEntryNotClosed}");
 			throw new EntryNotClosedException(lastEntryNotClosed);
 		}
 
@@ -117,13 +117,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			if (person.Pronoun != string.Empty)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun line";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new TooManyPronounsException(errorMessage);
 			}
 			if (line.Length < 2)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
 			person.Pronoun = line.Substring(1, line.Length - 1);
@@ -135,14 +135,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			if (tagStart < 0)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a name field without a paired tag field";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
 			var lastSpace = line.LastIndexOf(' ');
 			if (lastSpace > tagStart)
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
 			identity.Tag = line.Substring(tagStart, line.Length - tagStart);
@@ -153,13 +153,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			try
 			{
 				var data = File.ReadAllLines(inputFilePath);
-				Log.WriteLine("successfully read data from input file");
+				Log.WriteLineTimestamped("successfully read data from input file");
 				return data;
 			}
 			catch
 			{
 				var errorMessage = "failed to read data from input file";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new FileNotFoundException(errorMessage);
 			}
 		}
@@ -169,10 +169,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
 			{
 				var errorMessage = "input file path was not a .akf file";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new InvalidArgumentException(errorMessage);
 			}
-			Log.WriteLine("input file path was a .akf file");
+			Log.WriteLineTimestamped("input file path was a .akf file");
 		}
 	}
 }

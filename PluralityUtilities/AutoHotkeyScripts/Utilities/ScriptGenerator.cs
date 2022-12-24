@@ -15,15 +15,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		public void Generate(List<Person> people, string outputFileName)
 		{
-			Log.WriteLine($"started generating output file: {outputFileName}");
+			Log.WriteLineTimestamped($"started generating output file: {outputFileName}");
 			_outputFilePath = ProjectDirectories.OutputDir + outputFileName;
 			Directory.CreateDirectory(ProjectDirectories.OutputDir);
 			File.Create(_outputFilePath).Close();
 			foreach (Person person in people)
 			{
+				Log.WriteLineTimestamped("started writing person to output file");
 				WritePersonToFile(person);
+				Log.WriteLineTimestamped("successfully wrote person to output file");
 			}
-			Log.WriteLine("successfully generated output file");
+			Log.WriteLineTimestamped("successfully generated output file");
 		}
 
 
@@ -57,7 +59,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var macro = CreateMacroFromTemplate(template, name, tag, pronoun);
 				WriteLineToFile(macro);
-				Log.WriteLine($"wrote macro to output file: {macro}");
+				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
 			}
 			WriteLineToFile();
 		}
@@ -66,10 +68,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			for (int i = 0; i < person.Identities.Count; ++i)
 			{
-				Log.WriteLine($"started writing person {i + 1} of {person.Identities.Count} to output file");
+				Log.WriteLineTimestamped($"started writing identity {i + 1} of {person.Identities.Count} to output file");
 				var identity = person.Identities[i];
 				WriteMacrosToFile(identity.Name, identity.Tag, person.Pronoun);
-				Log.WriteLine($"successfully wrote person {i + 1} of {person.Identities.Count} to output file");
+				Log.WriteLineTimestamped($"successfully wrote identity {i + 1} of {person.Identities.Count} to output file");
 			}
 		}
 
@@ -85,7 +87,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			catch (Exception ex)
 			{
 				var errorMessage = "failed to write to output file";
-				Log.WriteLine($"error: {errorMessage}");
+				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new FileLoadException(errorMessage, ex);
 			}
 		}

@@ -2,12 +2,12 @@
 {
 	public static class MacroTemplates
 	{
-		// @ = tag, # = name, $ = pronoun
+		// # = name, @ = tag, $ = pronoun
 		public static string[] Templates = new string[]
 		{
 			"::@;::#; ",
-			"::@-;::#$; ",
-			"::@--::#$",
+			"::@-;::# ($); ",
+			"::@--::# ($)",
 		};
 	}
 }

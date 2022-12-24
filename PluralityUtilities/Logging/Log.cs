@@ -58,7 +58,26 @@ namespace PluralityUtilities.Logging
 				}
 				using (StreamWriter logFile = File.AppendText(_logFilePath))
 				{
-					logFile.Write(DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss - ") + message);
+					logFile.Write(message);
+				}
+			}
+		}
+
+		public static void WriteTimestamped(string message = "")
+		{
+			if (_isEnabled)
+			{
+				if (_logFolder == "")
+				{
+					SetLogFolder(_defaultLogFolder);
+				}
+				if (_logFileName == "")
+				{
+					SetLogFileName(_defaultLogFileName);
+				}
+				using (StreamWriter logFile = File.AppendText(_logFilePath))
+				{
+					logFile.Write($"{DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss")} - {message}");
 				}
 			}
 		}
@@ -66,6 +85,11 @@ namespace PluralityUtilities.Logging
 		public static void WriteLine(string message = "")
 		{
 			Write($"{message}\n");
+		}
+
+		public static void WriteLineTimestamped(string message = "")
+		{
+			WriteTimestamped($"{message}\n");
 		}
 
 
