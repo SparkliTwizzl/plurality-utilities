@@ -15,9 +15,6 @@ namespace PluralityUtilities.Logging
 		private static string _logFilePath = "";
 
 
-		static Log() { }
-
-
 		public static void Disable()
 		{
 			_mode = LogMode.Disabled;
