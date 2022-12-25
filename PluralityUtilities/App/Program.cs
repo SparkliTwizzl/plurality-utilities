@@ -43,8 +43,7 @@ namespace PluralityUtilities.App
 					break;
 				case LogMode.Verbose:
 					Log.EnableVerbose();
-					//Log.SetLogFolder(ProjectDirectories.LogDir);
-					Log.SetLogFolder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + Process.GetCurrentProcess().ProcessName + "_log");
+					Log.SetLogFolder(ProjectDirectories.LogDir);
 					Console.WriteLine("verbose logging is enabled");
 					break;
 				default:
