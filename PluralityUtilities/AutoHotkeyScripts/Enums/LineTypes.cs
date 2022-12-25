@@ -2,10 +2,11 @@
 {
 	public enum LineTypes
 	{
-		Unknown = 0,
+		Unknown,
 		EntryStart,
 		EntryEnd,
 		Name,
 		Pronoun,
+		Decoration,
 	}
 }
