@@ -28,20 +28,19 @@
     <Exec Command="@echo         public const string InputDir = @&quot;$(InputDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public const string DebugLogDir = @&quot;$(DebugLogDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public const string DebugOutputDir = @&quot;$(DebugOutputDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public const string DebugRunDir = @&quot;$(DebugRunDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public static readonly string ReleaseLogDir = ReleaseRunDir + &quot;/&quot; + Process.GetCurrentProcess().ProcessName + &quot;_log&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public static readonly string ReleaseOutputDir = ReleaseRunDir;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public static readonly string ReleaseRunDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public const string SolutionDir = @&quot;$(SolutionDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string DebugRunDir = $@&quot;{ExecutingDir}$(DebugRunDir)&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string ExecutingDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string ReleaseLogDir = $@&quot;{ExecutingDir}\{Process.GetCurrentProcess().ProcessName}_log\&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string ReleaseOutputDir = ExecutingDir;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo.&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo #if DEBUG&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public static readonly string LogDir = DebugLogDir;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public static readonly string OutputDir = DebugOutputDir;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public static readonly string RunDir = DebugRunDir;&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string RunDir = $&quot;{ExecutingDir}{DebugRunDir}&quot;;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo #elif RELEASE&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public static readonly string LogDir = ReleaseLogDir;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo         public static readonly string OutputDir = ReleaseOutputDir;&gt;&gt; $(ProjectDirectoriesClass)" />
-    <Exec Command="@echo         public static readonly string RunDir = ReleaseRunDir;&gt;&gt; $(ProjectDirectoriesClass)" />
+    <Exec Command="@echo         public static readonly string RunDir = ExecutingDir;&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo #endif&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo     }&gt;&gt; $(ProjectDirectoriesClass)" />
     <Exec Command="@echo }&gt;&gt; $(ProjectDirectoriesClass)" />
