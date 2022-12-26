@@ -98,7 +98,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private void ParseName(string line, ref Identity identity)
 		{
 			var nameStart = line.IndexOf('#') + 1;
-			var nameEnd = line.LastIndexOf('#') - 1;
+			var nameEnd = line.LastIndexOf('#');
 			if (nameEnd - nameStart < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
