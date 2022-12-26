@@ -15,8 +15,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		public void Generate(List<Person> people, string outputFileName)
 		{
-			Log.WriteLineTimestamped($"started generating output file: {outputFileName}");
-			_outputFilePath = ProjectDirectories.OutputDir + outputFileName;
+			GenerateOutputFilePath(outputFileName);
+			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
 			Directory.CreateDirectory(ProjectDirectories.OutputDir);
 			File.Create(_outputFilePath).Close();
 			foreach (Person person in people)
@@ -54,6 +54,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				}
 			}
 			return macro.ToString();
+		}
+
+		private void GenerateOutputFilePath(string fileName)
+		{
+			var extensionStart = fileName.LastIndexOf('.');
+			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, fileName.Length - extensionStart);
+			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
