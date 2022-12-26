@@ -90,7 +90,10 @@ namespace PluralityUtilities.App
 			catch (Exception ex)
 			{
 				var errorMessage = $"generating script failed with error: {ex.Message}";
-				Console.WriteLine(errorMessage);
+				if (_logMode != LogMode.Verbose)
+				{
+					Console.WriteLine(errorMessage);
+				}
 				Log.WriteLineTimestamped(errorMessage);
 			}
 		}
