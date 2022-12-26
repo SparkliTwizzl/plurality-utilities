@@ -12,7 +12,7 @@ namespace PluralityUtilities.App
 		private static LogMode _logMode = LogMode.Disabled;
 		private static string _outputFilePath = string.Empty;
 		private static DateTime _startTime;
-		private const string _version = "0.2";
+		private const string _version = "0.3";
 
 
 		static void Main(string[] args)
