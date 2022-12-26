@@ -2,8 +2,7 @@
 using PluralityUtilities.AutoHotkeyScripts.Utilities;
 using PluralityUtilities.Logging;
 using PluralityUtilities.Logging.Enums;
-using System.Diagnostics;
-using System.Reflection;
+
 
 namespace PluralityUtilities.App
 {
