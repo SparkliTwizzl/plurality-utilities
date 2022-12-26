@@ -28,6 +28,8 @@ namespace PluralityUtilities.App
 			Log.WriteLineTimestamped($"PluralityUtilities v{_version}; execution started at {_startTime}");
 			ParseInputAndGenerateAutoHotkeyScript();
 			Log.WriteLineTimestamped($"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds");
+			Console.Write("press any key to exit");
+			Console.ReadKey(true);
 		}
 
 
