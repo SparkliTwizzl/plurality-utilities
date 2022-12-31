@@ -176,11 +176,11 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				Log.WriteLineTimestamped("successfully read data from input file");
 				return data;
 			}
-			catch
+			catch (Exception ex)
 			{
 				var errorMessage = "failed to read data from input file";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new FileNotFoundException(errorMessage);
+				Log.WriteLineTimestamped($"error: {errorMessage}; {ex.Message}");
+				throw new FileNotFoundException(errorMessage, ex);
 			}
 		}
 
