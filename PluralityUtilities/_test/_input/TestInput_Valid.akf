@@ -1,0 +1,11 @@
+{
+    % #Name1# @n1
+    % #Nickname1# @k1
+    $pronouns1
+    &decoration1
+}
+{
+    % #Name2# @n2
+    $pronouns2
+    &decoration2
+}
