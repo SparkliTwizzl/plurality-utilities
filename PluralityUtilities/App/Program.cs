@@ -57,7 +57,7 @@ namespace PluralityUtilities.App
 		{
 			if (args.Length < 1)
 			{
-				Console.WriteLine("pass path to input file as arg0; pass name of output file as arg1; pass \"-l\" as arg2 to enable logging; pass \"-v\" as arg2 to enable verbose logging");
+				Console.WriteLine("pass input file as arg0; pass output file as arg1; pass \"-l\" as arg2 to enable logging; pass \"-v\" as arg2 to enable verbose logging");
 				return;
 			}
 			_inputFilePath = args[0];

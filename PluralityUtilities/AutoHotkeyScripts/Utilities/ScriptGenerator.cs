@@ -13,9 +13,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private string _outputFilePath = string.Empty;
 
 
-		public void Generate(List<Person> people, string outputFileName)
+		public void Generate(List<Person> people, string outputFile)
 		{
-			GenerateOutputFilePath(outputFileName);
+			NormalizeOutputFile(outputFile);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
 			Directory.CreateDirectory(ProjectDirectories.OutputDir);
 			File.Create(_outputFilePath).Close();
@@ -56,11 +56,37 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macro.ToString();
 		}
 
-		private void GenerateOutputFilePath(string fileName)
+		private string ExtractFileNameFromPath(string filePath)
 		{
-			var extensionStart = fileName.LastIndexOf('.');
-			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, fileName.Length - extensionStart);
-			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
+			var extensionStart = filePath.LastIndexOf('.');
+			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
+			var fileName = (pathEnd < 0) ? filePath : filePath.Substring(0, filePath.Length - pathEnd);
+			if (extensionStart < 0)
+			{
+				return fileName;
+			}
+			else
+			{
+				return fileName.Substring(0, fileName.Length - extensionStart);
+			}
+		}
+
+		private string ExtractParentDirectoryFromPath(string filePath)
+		{
+			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
+			if (pathEnd < 0)
+			{
+				return ProjectDirectories.OutputDir;
+			}
+			else
+			{
+				return filePath.Substring(0, filePath.Length - pathEnd);
+			}
+		}
+
+		private void NormalizeOutputFile(string outputFile)
+		{
+			_outputFilePath = $"{ExtractParentDirectoryFromPath(outputFile)}{ExtractFileNameFromPath(outputFile)}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
