@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProjectPreBuildOutputDir>"$(SolutionDir)$(MSBuildProjectName)\$(GitIgnorePreBuildOutputDir)"</ProjectPreBuildOutputDir>
+    <TestDirectoriesClass>"$(ProjectPreBuildOutputDir)TestDirectories.cs"</TestDirectoriesClass>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if not exist $(ProjectPreBuildOutputDir) mkdir $(ProjectPreBuildOutputDir)" />
+    <Exec Command="@echo //AUTO-GENERATED FILE, DO NOT EDIT; ANY CHANGES WILL BE OVERWRITTEN DURING BUILD&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo.&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo.&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo namespace $(SolutionName).$(MSBuildProjectName)&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo {&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo     public static class TestDirectories&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo     {&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo         public const string TestDir = $@&quot;$(SolutionDir)$(TestDir)&quot;;&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo         public const string TestInputDir = $@&quot;$(SolutionDir)$(TestInputDir)&quot;;&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo         public const string TestLogDir = $@&quot;$(SolutionDir)$(TestLogDir)&quot;;&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo         public const string TestOutputDir = $@&quot;$(SolutionDir)$(TestOutputDir)&quot;;&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo     }&gt;&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo }&gt;&gt; $(TestDirectoriesClass)" />
+  </Target>
+
+</Project>
