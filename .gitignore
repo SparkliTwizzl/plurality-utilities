@@ -2,8 +2,8 @@
 bin/
 obj/
 _build/
+_log/
+_output/
 GitIgnore/
 
 *.log
-
-testOutput.ahk
