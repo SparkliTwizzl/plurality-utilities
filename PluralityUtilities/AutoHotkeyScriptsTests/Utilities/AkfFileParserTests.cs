@@ -75,7 +75,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 				},
 			};
 			var actual = parser.People.ToArray();
-			Assert.AreEqual(expected, actual);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 
