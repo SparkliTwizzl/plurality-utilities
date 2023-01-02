@@ -1,9 +1,9 @@
 {
-    % #Name1# @n1
-    % #Nickname1# @k1
+    % #Name1# @tag1
+    % #Nickname1# @tag1a
     $pronouns1
     &decoration1
 }
 {
-    % #Name2# @n2
+    % #Name2# @tag2
 }

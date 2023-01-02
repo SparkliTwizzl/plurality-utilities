@@ -21,12 +21,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 						new Identity()
 						{
 							Name = "Name1",
-							Tag = "n1",
+							Tag = "tag1",
 						},
 						new Identity()
 						{
 							Name = "Nickname1",
-							Tag = "k1",
+							Tag = "tag1a",
 						},
 					},
 					Pronoun = "pronouns1",
@@ -39,7 +39,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 						new Identity()
 						{
 							Name = "Name2",
-							Tag = "n2",
+							Tag = "tag2",
 						}
 					},
 				},
