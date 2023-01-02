@@ -136,7 +136,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
 		[TestMethod]
 		[ExpectedException(typeof(UnexpectedCharacterException))]
 		[DataRow("TestInput_UnexpectedCharacterBetweenEntries.akf")]
