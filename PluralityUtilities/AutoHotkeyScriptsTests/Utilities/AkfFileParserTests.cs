@@ -95,7 +95,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(FileNotFoundException))]
-		[DataRow("nonexistent")]
+		[DataRow("nonexistent.akf")]
 		public void ParseFileTest_ThrowsFileNotFoundException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
