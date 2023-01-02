@@ -85,12 +85,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws InputEntryNotClosedException if file contains an entry that is not closed
-		//TODO create input files
-		//TODO write data rows
 		[TestMethod]
 		[ExpectedException(typeof(InputEntryNotClosedException))]
-		[DataRow()]
+		[DataRow("TestInput_EntryNotClosed.akf")]
 		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
