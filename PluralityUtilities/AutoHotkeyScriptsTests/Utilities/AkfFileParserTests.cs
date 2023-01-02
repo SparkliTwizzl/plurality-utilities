@@ -78,8 +78,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(DuplicateInputFieldException))]
-		[DataRow("TestInput_TooManyDecorations.akf")]
-		[DataRow("TestInput_TooManyPronouns.akf")]
+		[DataRow("TestInput_TooManyDecorationFields.akf")]
+		[DataRow("TestInput_TooManyPronounFields.akf")]
 		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
