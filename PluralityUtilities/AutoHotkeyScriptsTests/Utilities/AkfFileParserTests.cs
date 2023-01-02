@@ -65,12 +65,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
-		// throws BlankInputFieldException if file contains a field with no value
-		//TODO create input files
-		//TODO write data rows
 		[TestMethod]
 		[ExpectedException(typeof(BlankInputFieldException))]
-		[DataRow()]
+		[DataRow("TestInput_BlankDecorationField.akf")]
+		[DataRow("TestInput_BlankNameField.akf")]
+		[DataRow("TestInput_BlankPronounField.akf")]
+		[DataRow("TestInput_BlankTagField.akf")]
 		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
