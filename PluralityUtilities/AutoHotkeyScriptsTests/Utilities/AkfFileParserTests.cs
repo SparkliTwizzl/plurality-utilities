@@ -5,6 +5,7 @@ using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon;
 
+
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 {
 	[TestClass]
@@ -21,20 +22,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			Log.EnableVerbose();
 		}
 
-
-		[TestMethod]
-		[ExpectedException(typeof(InvalidArgumentException))]
-		public void ParseFileTest_InvalidInputFileExtension()
-		{
-			parser.ParseFile("invalid.extension");
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(FileNotFoundException))]
-		public void ParseFileTest_FileDoesNotExist()
-		{
-			parser.ParseFile(LocateInputFile("nonexistent"));
-		}
 
 		[TestMethod]
 		public void ParseFileTest_Success()
@@ -78,10 +65,92 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
-
-		private string LocateInputFile(string inputFile)
+		// throws BlankFieldException if file contains a field with no value
+		//TODO create input files
+		//TODO write data rows
+		[TestMethod]
+		[ExpectedException(typeof(BlankFieldException))]
+		[DataRow()]
+		public void ParseFileTest_ThrowsBlankFieldException(string fileName)
 		{
-			return $"{TestDirectories.TestInputDir}{inputFile}.akf";
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(DuplicateFieldException))]
+		[DataRow("TestInput_TooManyDecorations.akf")]
+		[DataRow("TestInput_TooManyPronouns.akf")]
+		public void ParseFileTest_ThrowsDuplicatedFieldException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		// throws EntryNotClosedException if file contains an entry that is not closed
+		//TODO create input files
+		//TODO write data rows
+		[TestMethod]
+		[ExpectedException(typeof(EntryNotClosedException))]
+		[DataRow()]
+		public void ParseFileTest_ThrowsEntryNotClosedException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(FileNotFoundException))]
+		[DataRow("nonexistent")]
+		public void ParseFileTest_ThrowsFileNotFoundException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidArgumentException))]
+		[DataRow("invalid.extension")]
+		public void ParseFileTest_ThrowsInvalidArgumentExtension(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		// throws InvalidFieldException if file contains a field that could not be parsed correctly
+		//TODO create input files
+		//TODO write data rows
+		[TestMethod]
+		[ExpectedException(typeof(InvalidFieldException))]
+		[DataRow()]
+		public void ParseFileTest_ThrowsInvalidFieldException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		// throws MissingFieldException if file contains a an entry with no name fields
+		// throws MissingFieldException if file contains a name field with no paired tag field
+		// throws MissingFieldException if file contains a tag field with no paired name field
+		//TODO create input files
+		//TODO write data rows
+		[TestMethod]
+		[ExpectedException(typeof(MissingFieldException))]
+		[DataRow()]
+		public void ParseFileTest_ThrowsMissingFieldException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
+		//TODO create input files
+		//TODO write data rows
+		[TestMethod]
+		[ExpectedException(typeof(UnexpectedCharacterException))]
+		[DataRow()]
+		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+		}
+
+
+		private string LocateInputFile(string fileName)
+		{
+			return $"{TestDirectories.TestInputDir}{fileName}";
 		}
 	}
 }

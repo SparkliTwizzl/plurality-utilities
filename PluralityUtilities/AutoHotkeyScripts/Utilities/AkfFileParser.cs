@@ -11,6 +11,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		public List<Person> People { get; private set; } = new List<Person>();
 
 
+		// throws BlankFieldException if file contains a field with no value
+		// throws DuplicateFieldException if file contains an entry with more than one decoration field
+		// throws DuplicateFieldException if file contains an entry with more than one pronoun field
+		// throws EntryNotClosedException if file contains an entry that is not closed
+		// throws FileNotFoundException if file data could not be read
+		// throws InvalidArgumentException if file extension is missing or not recognized
+		// throws InvalidFieldException if file contains a field that could not be parsed correctly
+		// throws MissingFieldException if file contains a an entry with no name fields
+		// throws MissingFieldException if file contains a name field with no paired tag field
+		// throws MissingFieldException if file contains a tag field with no paired name field
+		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
 		public void ParseFile(string inputFilePath)
 		{
 			Log.WriteLineTimestamped("started parsing input file: " + inputFilePath);
@@ -66,14 +77,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				{
 					var errorMessage = "input file contains invalid data: an unknown character was read when '{' was expected";
 					Log.WriteLineTimestamped($"error: {errorMessage}");
-					throw new UnknownCharacterException(errorMessage);
+					throw new UnexpectedCharacterException(errorMessage);
 				}
 			}
 		}
 
 		private LineTypes ParseLine(string line, ref Person person)
 		{
-			line =line.TrimStart();
+			line = line.TrimStart();
 			var firstChar = line[0];
 			switch (firstChar)
 			{
@@ -91,7 +102,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				default:
 					var unrecognizedChar = "input file contains invalid data: an unrecognized character was read at the start of a line";
 					Log.WriteLineTimestamped($"error: {unrecognizedChar}");
-					throw new UnknownCharacterException(unrecognizedChar);
+					throw new UnexpectedCharacterException(unrecognizedChar);
 			}
 		}
 
@@ -119,10 +130,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				{
 					case LineTypes.EntryEnd:
 						return person;
-					case LineTypes.Unknown:
-						var unknownChar = "input file contains invalid data: a line started with an unknown character";
-						Log.WriteLineTimestamped($"error: {unknownChar}");
-						throw new UnknownCharacterException(unknownChar);
+					case LineTypes.Unexpected:
+						var unexpectedChar = "input file contains invalid data: a line started with a character that was not expected at this time";
+						Log.WriteLineTimestamped($"error: {unexpectedChar}");
+						throw new UnexpectedCharacterException(unexpectedChar);
 					default:
 						break;
 				}
