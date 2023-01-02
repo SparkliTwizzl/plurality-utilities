@@ -11,16 +11,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		public List<Person> People { get; private set; } = new List<Person>();
 
 
-		// throws BlankFieldException if file contains a field with no value
-		// throws DuplicateFieldException if file contains an entry with more than one decoration field
-		// throws DuplicateFieldException if file contains an entry with more than one pronoun field
-		// throws EntryNotClosedException if file contains an entry that is not closed
+		// throws BlankInputFieldException if file contains a field with no value
+		// throws DuplicateInputFieldException if file contains an entry with more than one decoration field
+		// throws DuplicateInputFieldException if file contains an entry with more than one pronoun field
+		// throws InputEntryNotClosedException if file contains an entry that is not closed
 		// throws FileNotFoundException if file data could not be read
 		// throws InvalidArgumentException if file extension is missing or not recognized
-		// throws InvalidFieldException if file contains a field that could not be parsed correctly
-		// throws MissingFieldException if file contains a an entry with no name fields
-		// throws MissingFieldException if file contains a name field with no paired tag field
-		// throws MissingFieldException if file contains a tag field with no paired name field
+		// throws InvalidInputFieldException if file contains a field that could not be parsed correctly
+		// throws MissingInputFieldException if file contains a an entry with no name fields
+		// throws MissingInputFieldException if file contains a name field with no paired tag field
+		// throws MissingInputFieldException if file contains a tag field with no paired name field
 		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
 		public void ParseFile(string inputFilePath)
 		{
@@ -38,13 +38,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one decoration field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new DuplicateFieldException(errorMessage);
+				throw new DuplicateInputFieldException(errorMessage);
 			}
 			if (line.Length < 2)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank decoration field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankFieldException(errorMessage);
+				throw new BlankInputFieldException(errorMessage);
 			}
 			person.Decoration = line.Substring(1, line.Length - 1);
 		}
@@ -75,7 +75,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				}
 				else
 				{
-					var errorMessage = "input file contains invalid data: an unknown character was read when '{' was expected";
+					var errorMessage = "input file contains invalid data: an unexpected character was read when '{' was expected";
 					Log.WriteLineTimestamped($"error: {errorMessage}");
 					throw new UnexpectedCharacterException(errorMessage);
 				}
@@ -100,9 +100,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					ParseDecoration(line, ref person);
 					return LineTypes.Decoration;
 				default:
-					var unrecognizedChar = "input file contains invalid data: an unrecognized character was read at the start of a line";
-					Log.WriteLineTimestamped($"error: {unrecognizedChar}");
-					throw new UnexpectedCharacterException(unrecognizedChar);
+					var unexpectedChar = "input file contains invalid data: an unexpected character was read at the start of a line";
+					Log.WriteLineTimestamped($"error: {unexpectedChar}");
+					throw new UnexpectedCharacterException(unexpectedChar);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankFieldException(errorMessage);
+				throw new BlankInputFieldException(errorMessage);
 			}
 			identity.Name = line.Substring(nameStart, nameEnd - nameStart);
 		}
@@ -140,7 +140,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 			var lastEntryNotClosed = "input file contains invalid data: last entry was not closed";
 			Log.WriteLineTimestamped($"error: {lastEntryNotClosed}");
-			throw new EntryNotClosedException(lastEntryNotClosed);
+			throw new InputEntryNotClosedException(lastEntryNotClosed);
 		}
 
 		private void ParsePronoun(string line, ref Person person)
@@ -149,13 +149,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new DuplicateFieldException(errorMessage);
+				throw new DuplicateInputFieldException(errorMessage);
 			}
 			if (line.Length < 2)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankFieldException(errorMessage);
+				throw new BlankInputFieldException(errorMessage);
 			}
 			person.Pronoun = line.Substring(1, line.Length - 1);
 		}
@@ -167,14 +167,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a name field without a paired tag field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankFieldException(errorMessage);
+				throw new BlankInputFieldException(errorMessage);
 			}
 			var lastSpace = line.LastIndexOf(' ');
 			if (lastSpace >= tagStart)
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankFieldException(errorMessage);
+				throw new BlankInputFieldException(errorMessage);
 			}
 			identity.Tag = line.Substring(tagStart, line.Length - tagStart);
 		}

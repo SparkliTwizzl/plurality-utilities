@@ -12,22 +12,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	public class AkfFileParserTests
 	{
 		public AkfFileParser parser = new AkfFileParser();
-
-
-		[TestInitialize]
-		public void Setup()
-		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
-		}
-
-
-		[TestMethod]
-		public void ParseFileTest_Success()
-		{
-			parser.ParseFile(LocateInputFile("TestInput_Valid"));
-			var expected = new Person[]
+		public static Person[] expectedValidInputData = new Person[]
 			{
 				new Person()
 				{
@@ -57,41 +42,56 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 							Tag = "n2",
 						}
 					},
-					Pronoun = "pronouns2",
-					Decoration = "decoration2",
 				},
 			};
+
+
+		[TestInitialize]
+		public void Setup()
+		{
+			Log.SetLogFolder(TestDirectories.TestLogDir);
+			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
+			Log.EnableVerbose();
+		}
+
+
+		[TestMethod]
+		[DataRow("TestInput_Valid.akf")]
+		public void ParseFileTest_Success(string fileName)
+		{
+			parser.ParseFile(LocateInputFile(fileName));
+			var expected = expectedValidInputData;
 			var actual = parser.People.ToArray();
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
-		// throws BlankFieldException if file contains a field with no value
+		// throws BlankInputFieldException if file contains a field with no value
 		//TODO create input files
 		//TODO write data rows
 		[TestMethod]
-		[ExpectedException(typeof(BlankFieldException))]
+		[ExpectedException(typeof(BlankInputFieldException))]
 		[DataRow()]
-		public void ParseFileTest_ThrowsBlankFieldException(string fileName)
+		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(DuplicateFieldException))]
+		[ExpectedException(typeof(DuplicateInputFieldException))]
 		[DataRow("TestInput_TooManyDecorations.akf")]
 		[DataRow("TestInput_TooManyPronouns.akf")]
-		public void ParseFileTest_ThrowsDuplicatedFieldException(string fileName)
+		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws EntryNotClosedException if file contains an entry that is not closed
+		// throws InputEntryNotClosedException if file contains an entry that is not closed
 		//TODO create input files
 		//TODO write data rows
 		[TestMethod]
-		[ExpectedException(typeof(EntryNotClosedException))]
+		[ExpectedException(typeof(InputEntryNotClosedException))]
 		[DataRow()]
-		public void ParseFileTest_ThrowsEntryNotClosedException(string fileName)
+		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
 		}
@@ -112,36 +112,35 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws InvalidFieldException if file contains a field that could not be parsed correctly
+		// throws InvalidInputFieldException if file contains a field that could not be parsed correctly
 		//TODO create input files
 		//TODO write data rows
 		[TestMethod]
-		[ExpectedException(typeof(InvalidFieldException))]
+		[ExpectedException(typeof(InvalidInputFieldException))]
 		[DataRow()]
-		public void ParseFileTest_ThrowsInvalidFieldException(string fileName)
+		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws MissingFieldException if file contains a an entry with no name fields
-		// throws MissingFieldException if file contains a name field with no paired tag field
-		// throws MissingFieldException if file contains a tag field with no paired name field
+		// throws MissingInputFieldException if file contains a an entry with no name fields
+		// throws MissingInputFieldException if file contains a name field with no paired tag field
+		// throws MissingInputFieldException if file contains a tag field with no paired name field
 		//TODO create input files
 		//TODO write data rows
 		[TestMethod]
-		[ExpectedException(typeof(MissingFieldException))]
+		[ExpectedException(typeof(MissingInputFieldException))]
 		[DataRow()]
-		public void ParseFileTest_ThrowsMissingFieldException(string fileName)
+		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
 		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
-		//TODO create input files
-		//TODO write data rows
 		[TestMethod]
 		[ExpectedException(typeof(UnexpectedCharacterException))]
-		[DataRow()]
+		[DataRow("TestInput_UnexpectedCharacterBetweenEntries.akf")]
+		[DataRow("TestInput_UnexpectedCharacterInsideEntry.akf")]
 		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
