@@ -17,7 +17,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		// throws InputEntryNotClosedException if file contains an entry that is not closed
 		// throws FileNotFoundException if file data could not be read
 		// throws InvalidArgumentException if file extension is missing or not recognized
-		// throws InvalidInputFieldException if file contains a field that could not be parsed correctly
+		// throws InvalidInputFieldException if file contains a tag field with spaces in it
 		// throws MissingInputFieldException if file contains a an entry with no name fields
 		// throws MissingInputFieldException if file contains a name field with no paired tag field
 		// throws MissingInputFieldException if file contains a tag field with no paired name field
@@ -174,7 +174,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				throw new InvalidInputFieldException(errorMessage);
 			}
 			identity.Tag = line.Substring(tagStart, line.Length - tagStart);
 		}

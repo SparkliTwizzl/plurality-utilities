@@ -109,12 +109,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws InvalidInputFieldException if file contains a field that could not be parsed correctly
-		//TODO create input files
-		//TODO write data rows
 		[TestMethod]
 		[ExpectedException(typeof(InvalidInputFieldException))]
-		[DataRow()]
+		[DataRow("TestInput_TagFieldContainsSpaces.akf")]
 		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
