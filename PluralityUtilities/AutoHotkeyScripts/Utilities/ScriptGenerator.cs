@@ -56,7 +56,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macro.ToString();
 		}
 
-		private string ExtractFileNameFromPath(string filePath)
+		private string GetFileNameWithoutExtension(string filePath)
 		{
 			var extensionStart = filePath.LastIndexOf('.');
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
@@ -71,22 +71,25 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private string ExtractParentDirectoryFromPath(string filePath)
+		private string GetParentDirectory(string filePath)
 		{
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
 			if (pathEnd < 0)
 			{
-				return ProjectDirectories.OutputDir;
+				return string.Empty;
 			}
-			else
-			{
-				return filePath.Substring(0, filePath.Length - pathEnd);
-			}
+			return filePath.Substring(0, filePath.Length - pathEnd);
 		}
 
 		private void NormalizeOutputFile(string outputFile)
 		{
-			_outputFilePath = $"{ExtractParentDirectoryFromPath(outputFile)}{ExtractFileNameFromPath(outputFile)}.ahk";
+			var directory = GetParentDirectory(outputFile);
+			if (directory == string.Empty)
+			{
+				directory = ProjectDirectories.OutputDir;
+			}
+			var fileName = GetFileNameWithoutExtension(outputFile);
+			_outputFilePath = $"{directory}{fileName}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
