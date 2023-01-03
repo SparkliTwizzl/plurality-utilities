@@ -56,7 +56,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow("TestInput_Valid.akf")]
+		[DataRow("AkfFileParser_Valid.akf")]
 		public void ParseFileTest_Success(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -67,10 +67,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(BlankInputFieldException))]
-		[DataRow("TestInput_BlankDecorationField.akf")]
-		[DataRow("TestInput_BlankNameField.akf")]
-		[DataRow("TestInput_BlankPronounField.akf")]
-		[DataRow("TestInput_BlankTagField.akf")]
+		[DataRow("AkfFileParser_BlankDecorationField.akf")]
+		[DataRow("AkfFileParser_BlankNameField.akf")]
+		[DataRow("AkfFileParser_BlankPronounField.akf")]
+		[DataRow("AkfFileParser_BlankTagField.akf")]
 		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -78,8 +78,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(DuplicateInputFieldException))]
-		[DataRow("TestInput_TooManyDecorationFields.akf")]
-		[DataRow("TestInput_TooManyPronounFields.akf")]
+		[DataRow("AkfFileParser_TooManyDecorationFields.akf")]
+		[DataRow("AkfFileParser_TooManyPronounFields.akf")]
 		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -87,7 +87,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InputEntryNotClosedException))]
-		[DataRow("TestInput_EntryNotClosed.akf")]
+		[DataRow("AkfFileParser_EntryNotClosed.akf")]
 		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -111,7 +111,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidInputFieldException))]
-		[DataRow("TestInput_TagFieldContainsSpaces.akf")]
+		[DataRow("AkfFileParser_TagFieldContainsSpaces.akf")]
 		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -119,9 +119,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(MissingInputFieldException))]
-		[DataRow("TestInput_MissingIdentityField.akf")]
-		[DataRow("TestInput_MissingNameField.akf")]
-		[DataRow("TestInput_MissingTagField.akf")]
+		[DataRow("AkfFileParser_MissingIdentityField.akf")]
+		[DataRow("AkfFileParser_MissingNameField.akf")]
+		[DataRow("AkfFileParser_MissingTagField.akf")]
 		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -129,8 +129,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(UnexpectedCharacterException))]
-		[DataRow("TestInput_UnexpectedCharacterBetweenEntries.akf")]
-		[DataRow("TestInput_UnexpectedCharacterInsideEntry.akf")]
+		[DataRow("AkfFileParser_UnexpectedCharacterBetweenEntries.akf")]
+		[DataRow("AkfFileParser_UnexpectedCharacterInsideEntry.akf")]
 		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
