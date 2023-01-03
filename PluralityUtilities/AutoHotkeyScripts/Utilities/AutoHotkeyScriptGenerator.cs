@@ -13,11 +13,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private string _outputFilePath = string.Empty;
 
 
-<<<<<<< HEAD:PluralityUtilities/AutoHotkeyScripts/Utilities/ScriptGenerator.cs
-		public void Generate(List<Person> people, string outputFile)
-=======
-		public void GenerateScript(List<Person> people, string outputFileName)
->>>>>>> main:PluralityUtilities/AutoHotkeyScripts/Utilities/AutoHotkeyScriptGenerator.cs
+		public void GenerateScript(List<Person> people, string outputFile)
 		{
 			NormalizeOutputFile(outputFile);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
@@ -62,7 +58,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private string GetFileNameWithoutExtension(string filePath)
 		{
-<<<<<<< HEAD:PluralityUtilities/AutoHotkeyScripts/Utilities/ScriptGenerator.cs
 			var extensionStart = filePath.LastIndexOf('.');
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
 			var fileName = (pathEnd < 0) ? filePath : filePath.Substring(0, filePath.Length - pathEnd);
@@ -95,11 +90,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 			var fileName = GetFileNameWithoutExtension(outputFile);
 			_outputFilePath = $"{directory}{fileName}.ahk";
-=======
-			var extensionStart = fileName.LastIndexOf('.');
-			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, extensionStart);
-			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
->>>>>>> main:PluralityUtilities/AutoHotkeyScripts/Utilities/AutoHotkeyScriptGenerator.cs
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
