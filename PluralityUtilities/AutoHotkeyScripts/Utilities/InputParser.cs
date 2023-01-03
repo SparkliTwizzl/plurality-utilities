@@ -6,7 +6,7 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public class AkfFileParser
+	public class InputParser
 	{
 		public List<Person> People { get; private set; } = new List<Person>();
 

@@ -9,9 +9,9 @@ using PluralityUtilities.TestCommon;
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 {
 	[TestClass]
-	public class AkfFileParserTests
+	public class InputParserTests
 	{
-		public AkfFileParser parser = new AkfFileParser();
+		public InputParser parser = new InputParser();
 		public static Person[] expectedValidInputData = new Person[]
 			{
 				new Person()

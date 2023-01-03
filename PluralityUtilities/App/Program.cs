@@ -80,7 +80,7 @@ namespace PluralityUtilities.App
 		{
 			try
 			{
-				AkfFileParser parser = new AkfFileParser();
+				InputParser parser = new InputParser();
 				parser.ParseFile(_inputFilePath);
 				ScriptGenerator scriptGenerator = new ScriptGenerator();
 				scriptGenerator.Generate(parser.People, _outputFilePath);
