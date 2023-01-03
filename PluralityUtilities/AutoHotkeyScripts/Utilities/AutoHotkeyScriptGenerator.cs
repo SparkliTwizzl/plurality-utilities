@@ -13,7 +13,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private string _outputFilePath = string.Empty;
 
 
-		public void Generate(List<Person> people, string outputFileName)
+		public void GenerateScript(List<Person> people, string outputFileName)
 		{
 			GenerateOutputFilePath(outputFileName);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
@@ -59,7 +59,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private void GenerateOutputFilePath(string fileName)
 		{
 			var extensionStart = fileName.LastIndexOf('.');
-			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, fileName.Length - extensionStart);
+			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, extensionStart);
 			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
 		}
 

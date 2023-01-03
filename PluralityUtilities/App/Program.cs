@@ -83,7 +83,7 @@ namespace PluralityUtilities.App
 				InputParser parser = new InputParser();
 				parser.ParseFile(_inputFilePath);
 				AutoHotkeyScriptGenerator scriptGenerator = new AutoHotkeyScriptGenerator();
-				scriptGenerator.Generate(parser.People, _outputFilePath);
+				scriptGenerator.GenerateScript(parser.People, _outputFilePath);
 				var successMessage = "generating script succeeded";
 				Console.WriteLine(successMessage);
 				Log.WriteLineTimestamped(successMessage);
