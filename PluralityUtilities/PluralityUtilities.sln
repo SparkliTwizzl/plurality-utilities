@@ -9,12 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33D2A88B-5941-4589-AC47-F665D813D3A0}"
 	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHotkeyScripts", "AutoHotkeyScripts\AutoHotkeyScripts.csproj", "{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHotkeyScriptsTests", "AutoHotkeyScriptsTests\AutoHotkeyScriptsTests.csproj", "{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHotkeyScriptsTests", "AutoHotkeyScriptsTests\AutoHotkeyScriptsTests.csproj", "{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCommon", "TestCommon\TestCommon.csproj", "{3C695768-4DC4-42DF-9421-8EF47C5CBA4E}"
 EndProject
