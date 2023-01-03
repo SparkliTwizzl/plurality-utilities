@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace PluralityUtilities.AutoHotkeyScripts.Containers
+﻿namespace PluralityUtilities.AutoHotkeyScripts.Containers
 {
 	public class Person
 	{
