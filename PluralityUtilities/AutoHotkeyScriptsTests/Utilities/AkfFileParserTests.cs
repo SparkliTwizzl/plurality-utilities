@@ -117,14 +117,11 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			parser.ParseFile(LocateInputFile(fileName));
 		}
 
-		// throws MissingInputFieldException if file contains a an entry with no name fields
-		// throws MissingInputFieldException if file contains a name field with no paired tag field
-		// throws MissingInputFieldException if file contains a tag field with no paired name field
-		//TODO create input files
-		//TODO write data rows
 		[TestMethod]
 		[ExpectedException(typeof(MissingInputFieldException))]
-		[DataRow()]
+		[DataRow("TestInput_MissingIdentityField.akf")]
+		[DataRow("TestInput_MissingNameField.akf")]
+		[DataRow("TestInput_MissingTagField.akf")]
 		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));

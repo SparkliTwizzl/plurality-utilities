@@ -18,9 +18,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		// throws FileNotFoundException if file data could not be read
 		// throws InvalidArgumentException if file extension is missing or not recognized
 		// throws InvalidInputFieldException if file contains a tag field with spaces in it
-		// throws MissingInputFieldException if file contains a an entry with no name fields
-		// throws MissingInputFieldException if file contains a name field with no paired tag field
-		// throws MissingInputFieldException if file contains a tag field with no paired name field
+		// throws MissingInputFieldException if file contains an entry with no identity fields
+		// throws MissingInputFieldException if file contains an identity field with no name field
+		// throws MissingInputFieldException if file contains an identity field with no tag field
 		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
 		public void ParseFile(string inputFilePath)
 		{
@@ -108,15 +108,22 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void ParseName(string line, ref Identity identity)
 		{
-			var nameStart = line.IndexOf('#') + 1;
-			var nameEnd = line.LastIndexOf('#');
-			if (nameEnd - nameStart < 1)
+			var fieldStart = line.IndexOf('#');
+			var fieldEnd = line.LastIndexOf('#');
+			if (fieldStart < 0)
+			{
+				var errorMessage = "input file contains invalid data: an entry had no name fields";
+				Log.WriteLineTimestamped($"error: {errorMessage}");
+				throw new MissingInputFieldException(errorMessage);
+			}
+			var name = line.Substring(fieldStart + 1, fieldEnd - (fieldStart + 1));
+			if (name.Length < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankInputFieldException(errorMessage);
 			}
-			identity.Name = line.Substring(nameStart, nameEnd - nameStart);
+			identity.Name = name;
 		}
 
 		private Person ParsePerson(string[] data, ref int index)
@@ -129,6 +136,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				switch (result)
 				{
 					case LineTypes.EntryEnd:
+						if (person.Identities.Count < 1)
+						{
+							var noIdentities = "input file contains invalid data: an entry did not contain any identity fields";
+							Log.WriteLineTimestamped($"error: {noIdentities}");
+							throw new MissingInputFieldException(noIdentities);
+						}
 						return person;
 					case LineTypes.Unexpected:
 						var unexpectedChar = "input file contains invalid data: a line started with a character that was not expected at this time";
@@ -162,21 +175,28 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void ParseTag(string line, ref Identity identity)
 		{
-			var tagStart = line.IndexOf('@') + 1;
-			if (tagStart < 1)
+			var fieldStart = line.IndexOf('@');
+			if (fieldStart < 0)
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a name field without a paired tag field";
+				var errorMessage = "input file contains invalid data: an entry contained an identity field without a tag field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				throw new MissingInputFieldException(errorMessage);
 			}
 			var lastSpace = line.LastIndexOf(' ');
-			if (lastSpace >= tagStart)
+			if (lastSpace >= fieldStart)
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new InvalidInputFieldException(errorMessage);
 			}
-			identity.Tag = line.Substring(tagStart, line.Length - tagStart);
+			var tag = line.Substring(fieldStart + 1, line.Length - (fieldStart + 1));
+			if (tag.Length < 1)
+			{
+				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";
+				Log.WriteLineTimestamped($"error: {errorMessage}");
+				throw new BlankInputFieldException(errorMessage);
+			}
+			identity.Tag = tag;
 		}
 
 		private string[] ReadDataFromFile(string inputFilePath)
