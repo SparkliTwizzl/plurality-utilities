@@ -100,9 +100,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					ParseDecoration(line, ref person);
 					return LineTypes.Decoration;
 				default:
-					var unexpectedChar = "input file contains invalid data: an unexpected character was read at the start of a line";
-					Log.WriteLineTimestamped($"error: {unexpectedChar}");
-					throw new UnexpectedCharacterException(unexpectedChar);
+					return LineTypes.Unexpected;
 			}
 		}
 
