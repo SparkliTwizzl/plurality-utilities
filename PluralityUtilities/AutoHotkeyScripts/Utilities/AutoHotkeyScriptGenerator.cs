@@ -8,7 +8,7 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public class ScriptGenerator
+	public class AutoHotkeyScriptGenerator
 	{
 		private string _outputFilePath = string.Empty;
 
