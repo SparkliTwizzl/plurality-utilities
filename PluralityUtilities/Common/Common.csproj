@@ -13,6 +13,10 @@
     <ProjectDirectoriesClass>"$(ProjectPreBuildOutputDir)ProjectDirectories.cs"</ProjectDirectoriesClass>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="if not exist $(ProjectPreBuildOutputDir) mkdir $(ProjectPreBuildOutputDir)" />
     <Exec Command="@echo //AUTO-GENERATED FILE, DO NOT EDIT; ANY CHANGES WILL BE OVERWRITTEN DURING BUILD&gt; $(ProjectDirectoriesClass)" />

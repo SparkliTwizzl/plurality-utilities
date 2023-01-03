@@ -56,11 +56,15 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macro.ToString();
 		}
 
-		private void GenerateOutputFilePath(string fileName)
+		private void NormalizeOutputFile(string outputFile)
 		{
-			var extensionStart = fileName.LastIndexOf('.');
-			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, extensionStart);
-			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
+			var directory = TextUtilities.GetDirectory(outputFile);
+			if (directory == string.Empty)
+			{
+				directory = ProjectDirectories.OutputDir;
+			}
+			var fileName = TextUtilities.RemoveFileExtension(TextUtilities.GetFileName(outputFile));
+			_outputFilePath = $"{directory}{fileName}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
