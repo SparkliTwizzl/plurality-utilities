@@ -2,18 +2,6 @@
 {
 	public static class StringExtensions
 	{
-		public static string GetFileNameWithoutExtension(this string filePath)
-		{
-			var extensionStart = filePath.LastIndexOf('.');
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			var fileName = (pathEnd < 0) ? filePath : filePath.Substring(0, filePath.Length - pathEnd);
-			if (extensionStart < 0)
-			{
-				return fileName;
-			}
-			return fileName.Substring(0, fileName.Length - extensionStart);
-		}
-
 		public static string GetFileName(this string filePath)
 		{
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
