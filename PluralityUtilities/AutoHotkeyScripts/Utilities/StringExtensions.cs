@@ -2,13 +2,6 @@
 {
 	public static class StringExtensions
 	{
-		public static string GetFileName(this string filePath)
-		{
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			return filePath.Substring(pathEnd + 1, filePath.Length - pathEnd);
-
-		}
-
 		public static string GetDirectory(this string filePath)
 		{
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
@@ -17,6 +10,16 @@
 				return string.Empty;
 			}
 			return filePath.Substring(0, filePath.Length - pathEnd);
+		}
+
+		public static string GetFileName(this string filePath)
+		{
+			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
+			if (pathEnd < 0)
+			{
+				return filePath;
+			}
+			return filePath.Substring(pathEnd + 1, filePath.Length - pathEnd);
 		}
 
 		public static string RemoveFileExtension(this string filePath)
