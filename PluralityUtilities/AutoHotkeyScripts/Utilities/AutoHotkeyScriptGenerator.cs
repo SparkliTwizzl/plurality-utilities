@@ -13,9 +13,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private string _outputFilePath = string.Empty;
 
 
-		public void GenerateScript(List<Person> people, string outputFileName)
+		public void GenerateScript(List<Person> people, string outputFile)
 		{
-			GenerateOutputFilePath(outputFileName);
+			NormalizeOutputFile(outputFile);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
 			Directory.CreateDirectory(ProjectDirectories.OutputDir);
 			File.Create(_outputFilePath).Close();
