@@ -1,8 +1,8 @@
 ﻿namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public class TextUtilities
+	public static class StringExtensions
 	{
-		public static string GetFileNameWithoutExtension(string filePath)
+		public static string GetFileNameWithoutExtension(this string filePath)
 		{
 			var extensionStart = filePath.LastIndexOf('.');
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
@@ -14,14 +14,14 @@
 			return fileName.Substring(0, fileName.Length - extensionStart);
 		}
 
-		public static string GetFileName(string filePath)
+		public static string GetFileName(this string filePath)
 		{
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
 			return filePath.Substring(pathEnd + 1, filePath.Length - pathEnd);
 
 		}
 
-		public static string GetDirectory(string filePath)
+		public static string GetDirectory(this string filePath)
 		{
 			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
 			if (pathEnd < 0)
@@ -31,7 +31,7 @@
 			return filePath.Substring(0, filePath.Length - pathEnd);
 		}
 
-		public static string RemoveFileExtension(string filePath)
+		public static string RemoveFileExtension(this string filePath)
 		{
 			var extensionStart = filePath.LastIndexOf('.');
 			if (extensionStart < 0)

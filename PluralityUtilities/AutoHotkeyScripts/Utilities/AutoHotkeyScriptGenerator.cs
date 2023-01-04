@@ -58,12 +58,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void NormalizeOutputFile(string outputFile)
 		{
-			var directory = TextUtilities.GetDirectory(outputFile);
+			var directory = outputFile.GetDirectory();
 			if (directory == string.Empty)
 			{
 				directory = ProjectDirectories.OutputDir;
 			}
-			var fileName = TextUtilities.RemoveFileExtension(TextUtilities.GetFileName(outputFile));
+			var fileName = outputFile.GetFileName().RemoveFileExtension();
 			_outputFilePath = $"{directory}{fileName}.ahk";
 		}
 
