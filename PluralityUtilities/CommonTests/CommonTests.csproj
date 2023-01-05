@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Logging\Logging.csproj" />
+    <ProjectReference Include="..\TestCommon\TestCommon.csproj" />
   </ItemGroup>
 
 </Project>

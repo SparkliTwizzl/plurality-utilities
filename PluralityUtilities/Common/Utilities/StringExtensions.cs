@@ -9,7 +9,8 @@
 			{
 				return string.Empty;
 			}
-			return filePath.Substring(0, filePath.Length - pathEnd);
+			var directoryLength = filePath.Length - ((filePath.Length - pathEnd) - 1);
+			return filePath.Substring(0, directoryLength);
 		}
 
 		public static string GetFileName(this string filePath)
@@ -19,7 +20,8 @@
 			{
 				return filePath;
 			}
-			return filePath.Substring(pathEnd + 1, filePath.Length - pathEnd);
+			var fileNameStart = pathEnd + 1;
+			return filePath.Substring(fileNameStart, filePath.Length - fileNameStart);
 		}
 
 		public static string RemoveFileExtension(this string filePath)
@@ -29,7 +31,8 @@
 			{
 				return filePath;
 			}
-			return filePath.Substring(0, filePath.Length - extensionStart);
+			var length = filePath.Length - (filePath.Length - extensionStart);
+			return filePath.Substring(0, length);
 		}
 	}
 }
