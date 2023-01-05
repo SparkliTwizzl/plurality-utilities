@@ -7,7 +7,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class TemplateParser
 	{
-		public static string CreateMacroFromTemplate(string template, Identity identity, string pronoun, string decoration)
+		public static string ParseMacroFromTemplate(string template, Identity identity, string pronoun, string decoration)
 		{
 			StringBuilder macro = new StringBuilder();
 			foreach (char c in template)

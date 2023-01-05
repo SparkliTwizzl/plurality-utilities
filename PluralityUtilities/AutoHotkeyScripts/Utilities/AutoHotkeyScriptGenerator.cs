@@ -43,7 +43,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			foreach (string template in MacroTemplates.Templates)
 			{
-				var macro = TemplateParser.CreateMacroFromTemplate(template, identity, pronoun, decoration);
+				var macro = TemplateParser.ParseMacroFromTemplate(template, identity, pronoun, decoration);
 				WriteLineToFile(macro);
 				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
 			}
