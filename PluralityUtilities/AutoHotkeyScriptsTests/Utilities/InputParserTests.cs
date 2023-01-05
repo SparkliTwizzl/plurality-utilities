@@ -1,9 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon;
+using PluralityUtilities.TestCommon.TestData;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -12,38 +11,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	public class InputParserTests
 	{
 		public InputParser parser = new InputParser();
-		public static Person[] expectedValidInputData = new Person[]
-			{
-				new Person()
-				{
-					Identities =
-					{
-						new Identity()
-						{
-							Name = "Name1",
-							Tag = "tag1",
-						},
-						new Identity()
-						{
-							Name = "Nickname1",
-							Tag = "tag1a",
-						},
-					},
-					Pronoun = "pronouns1",
-					Decoration = "decoration1",
-				},
-				new Person()
-				{
-					Identities =
-					{
-						new Identity()
-						{
-							Name = "Name2",
-							Tag = "tag2",
-						}
-					},
-				},
-			};
 
 
 		[TestInitialize]
@@ -60,7 +27,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseFileTest_Success(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
-			var expected = expectedValidInputData;
+			var expected = ValidData.expectedValidInputData;
 			var actual = parser.People.ToArray();
 			CollectionAssert.AreEqual(expected, actual);
 		}
