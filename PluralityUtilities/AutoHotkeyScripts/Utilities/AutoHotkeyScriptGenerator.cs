@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
+﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Templates;
 using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
@@ -30,33 +28,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private string CreateMacroFromTemplate(string template, Identity identity, string pronoun, string decoration)
-		{
-			StringBuilder macro = new StringBuilder();
-			foreach (char c in template)
-			{
-				switch (c)
-				{
-					case '#':
-						macro.Append(identity.Name);
-						break;
-					case '@':
-						macro.Append(identity.Tag);
-						break;
-					case '$':
-						macro.Append(pronoun);
-						break;
-					case '&':
-						macro.Append(decoration);
-						break;
-					default:
-						macro.Append(c);
-						break;
-				}
-			}
-			return macro.ToString();
-		}
-
 		private void NormalizeOutputFile(string outputFile)
 		{
 			var directory = outputFile.GetDirectory();
@@ -72,7 +43,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			foreach (string template in MacroTemplates.Templates)
 			{
-				var macro = CreateMacroFromTemplate(template, identity, pronoun, decoration);
+				var macro = TemplateParser.CreateMacroFromTemplate(template, identity, pronoun, decoration);
 				WriteLineToFile(macro);
 				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
 			}
