@@ -37,5 +37,24 @@ namespace PluralityUtilities.TestCommon.TestData
 				},
 			},
 		};
+
+		public static string[] expectedValidOutputData = new string[]
+		{
+			"::tag1;::Name1; ",
+			"::tag1-;::Name1 (pronouns1); ",
+			"::tag1--::Name1 (pronouns1)",
+			"::tag1-/::Name1 (pronouns1) decoration1",
+			"",
+			"::tag1a;::Nickname1; ",
+			"::tag1a-;::Nickname1 (pronouns1); ",
+			"::tag1a--::Nickname1 (pronouns1)",
+			"::tag1a-/::Nickname1 (pronouns1) decoration1",
+			"",
+			"::tag2;::Name2; ",
+			"::tag2-;::Name2 (); ",
+			"::tag2--::Name2 ()",
+			"::tag2-/::Name2 () ",
+			"",
+		};
 	}
 }

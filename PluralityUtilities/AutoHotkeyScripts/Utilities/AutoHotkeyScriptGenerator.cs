@@ -9,6 +9,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public class AutoHotkeyScriptGenerator
 	{
+		private string _outputFolder = string.Empty;
+		private string _outputFileName = string.Empty;
 		private string _outputFilePath = string.Empty;
 
 
@@ -16,7 +18,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			NormalizeOutputFile(outputFile);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
-			Directory.CreateDirectory(ProjectDirectories.OutputDir);
+			Directory.CreateDirectory(_outputFolder);
 			File.Create(_outputFilePath).Close();
 			foreach (Person person in people)
 			{
@@ -30,13 +32,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void NormalizeOutputFile(string outputFile)
 		{
-			var directory = outputFile.GetDirectory();
-			if (directory == string.Empty)
+			_outputFolder = outputFile.GetDirectory();
+			if (_outputFolder == string.Empty)
 			{
-				directory = ProjectDirectories.OutputDir;
+				_outputFolder = ProjectDirectories.OutputDir;
 			}
-			var fileName = outputFile.GetFileName().RemoveFileExtension();
-			_outputFilePath = $"{directory}{fileName}.ahk";
+			_outputFileName = outputFile.GetFileName().RemoveFileExtension();
+			_outputFilePath = $"{_outputFolder}{_outputFileName}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)

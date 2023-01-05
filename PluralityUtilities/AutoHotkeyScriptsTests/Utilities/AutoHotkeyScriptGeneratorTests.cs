@@ -2,6 +2,7 @@
 
 using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon;
+using PluralityUtilities.TestCommon.TestData;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -9,6 +10,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[TestClass]
 	public class AutoHotkeyScriptGeneratorTests
 	{
+		public AutoHotkeyScriptGenerator generator = new AutoHotkeyScriptGenerator();
+
+
 		[TestInitialize]
 		public void Setup()
 		{
@@ -21,7 +25,11 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[TestMethod]
 		public void GenerateScriptTest_Success()
 		{
-			Assert.Fail();
+			var outputFile = $"{TestDirectories.TestOutputDir}{nameof(AutoHotkeyScriptGenerator)}_{nameof(GenerateScriptTest_Success)}.ahk";
+			generator.GenerateScript(ValidData.expectedValidInputData.ToList(), outputFile);
+			var expected = ValidData.expectedValidOutputData;
+			var actual = File.ReadAllLines(outputFile);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 	}
 }
