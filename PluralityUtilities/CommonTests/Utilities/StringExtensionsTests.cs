@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
+namespace PluralityUtilities.Common.Utilities.Tests
 {
 	[TestClass]
 	public class StringExtensionsTests
