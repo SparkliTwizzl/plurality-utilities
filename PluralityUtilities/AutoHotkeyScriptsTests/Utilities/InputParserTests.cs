@@ -1,9 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon;
+using PluralityUtilities.TestCommon.TestData;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -12,38 +11,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	public class InputParserTests
 	{
 		public InputParser parser = new InputParser();
-		public static Person[] expectedValidInputData = new Person[]
-			{
-				new Person()
-				{
-					Identities =
-					{
-						new Identity()
-						{
-							Name = "Name1",
-							Tag = "tag1",
-						},
-						new Identity()
-						{
-							Name = "Nickname1",
-							Tag = "tag1a",
-						},
-					},
-					Pronoun = "pronouns1",
-					Decoration = "decoration1",
-				},
-				new Person()
-				{
-					Identities =
-					{
-						new Identity()
-						{
-							Name = "Name2",
-							Tag = "tag2",
-						}
-					},
-				},
-			};
 
 
 		[TestInitialize]
@@ -56,21 +23,21 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow("AkfFileParser_Valid.akf")]
+		[DataRow("InputParser_Valid.akf")]
 		public void ParseFileTest_Success(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
-			var expected = expectedValidInputData;
+			var expected = ValidData.expectedValidInputData;
 			var actual = parser.People.ToArray();
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(BlankInputFieldException))]
-		[DataRow("AkfFileParser_BlankDecorationField.akf")]
-		[DataRow("AkfFileParser_BlankNameField.akf")]
-		[DataRow("AkfFileParser_BlankPronounField.akf")]
-		[DataRow("AkfFileParser_BlankTagField.akf")]
+		[DataRow("InputParser_BlankDecorationField.akf")]
+		[DataRow("InputParser_BlankNameField.akf")]
+		[DataRow("InputParser_BlankPronounField.akf")]
+		[DataRow("InputParser_BlankTagField.akf")]
 		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -78,8 +45,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(DuplicateInputFieldException))]
-		[DataRow("AkfFileParser_TooManyDecorationFields.akf")]
-		[DataRow("AkfFileParser_TooManyPronounFields.akf")]
+		[DataRow("InputParser_TooManyDecorationFields.akf")]
+		[DataRow("InputParser_TooManyPronounFields.akf")]
 		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -87,7 +54,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InputEntryNotClosedException))]
-		[DataRow("AkfFileParser_EntryNotClosed.akf")]
+		[DataRow("InputParser_EntryNotClosed.akf")]
 		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -111,7 +78,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidInputFieldException))]
-		[DataRow("AkfFileParser_TagFieldContainsSpaces.akf")]
+		[DataRow("InputParser_TagFieldContainsSpaces.akf")]
 		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -119,9 +86,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(MissingInputFieldException))]
-		[DataRow("AkfFileParser_MissingIdentityField.akf")]
-		[DataRow("AkfFileParser_MissingNameField.akf")]
-		[DataRow("AkfFileParser_MissingTagField.akf")]
+		[DataRow("InputParser_MissingIdentityField.akf")]
+		[DataRow("InputParser_MissingNameField.akf")]
+		[DataRow("InputParser_MissingTagField.akf")]
 		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));
@@ -129,8 +96,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(UnexpectedCharacterException))]
-		[DataRow("AkfFileParser_UnexpectedCharacterBetweenEntries.akf")]
-		[DataRow("AkfFileParser_UnexpectedCharacterInsideEntry.akf")]
+		[DataRow("InputParser_UnexpectedCharacterBetweenEntries.akf")]
+		[DataRow("InputParser_UnexpectedCharacterInsideEntry.akf")]
 		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
 		{
 			parser.ParseFile(LocateInputFile(fileName));

@@ -1,8 +1,7 @@
-﻿using System.Text;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
+﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Templates;
 using PluralityUtilities.Common;
+using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
 
 
@@ -10,6 +9,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public class AutoHotkeyScriptGenerator
 	{
+		private string _outputFolder = string.Empty;
+		private string _outputFileName = string.Empty;
 		private string _outputFilePath = string.Empty;
 
 
@@ -17,7 +18,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			NormalizeOutputFile(outputFile);
 			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
-			Directory.CreateDirectory(ProjectDirectories.OutputDir);
+			Directory.CreateDirectory(_outputFolder);
 			File.Create(_outputFilePath).Close();
 			foreach (Person person in people)
 			{
@@ -29,74 +30,22 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private string CreateMacroFromTemplate(string template, Identity identity, string pronoun, string decoration)
-		{
-			StringBuilder macro = new StringBuilder();
-			foreach (char c in template)
-			{
-				switch (c)
-				{
-					case '#':
-						macro.Append(identity.Name);
-						break;
-					case '@':
-						macro.Append(identity.Tag);
-						break;
-					case '$':
-						macro.Append(pronoun);
-						break;
-					case '&':
-						macro.Append(decoration);
-						break;
-					default:
-						macro.Append(c);
-						break;
-				}
-			}
-			return macro.ToString();
-		}
-
-		private string GetFileNameWithoutExtension(string filePath)
-		{
-			var extensionStart = filePath.LastIndexOf('.');
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			var fileName = (pathEnd < 0) ? filePath : filePath.Substring(0, filePath.Length - pathEnd);
-			if (extensionStart < 0)
-			{
-				return fileName;
-			}
-			else
-			{
-				return fileName.Substring(0, fileName.Length - extensionStart);
-			}
-		}
-
-		private string GetParentDirectory(string filePath)
-		{
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			if (pathEnd < 0)
-			{
-				return string.Empty;
-			}
-			return filePath.Substring(0, filePath.Length - pathEnd);
-		}
-
 		private void NormalizeOutputFile(string outputFile)
 		{
-			var directory = GetParentDirectory(outputFile);
-			if (directory == string.Empty)
+			_outputFolder = outputFile.GetDirectory();
+			if (_outputFolder == string.Empty)
 			{
-				directory = ProjectDirectories.OutputDir;
+				_outputFolder = ProjectDirectories.OutputDir;
 			}
-			var fileName = GetFileNameWithoutExtension(outputFile);
-			_outputFilePath = $"{directory}{fileName}.ahk";
+			_outputFileName = outputFile.GetFileName().RemoveFileExtension();
+			_outputFilePath = $"{_outputFolder}{_outputFileName}.ahk";
 		}
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
 		{
 			foreach (string template in MacroTemplates.Templates)
 			{
-				var macro = CreateMacroFromTemplate(template, identity, pronoun, decoration);
+				var macro = TemplateParser.ParseMacroFromTemplate(template, identity, pronoun, decoration);
 				WriteLineToFile(macro);
 				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
 			}
