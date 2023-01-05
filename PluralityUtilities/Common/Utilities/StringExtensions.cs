@@ -1,4 +1,4 @@
-﻿namespace PluralityUtilities.AutoHotkeyScripts.Utilities
+﻿namespace PluralityUtilities.Common.Utilities
 {
 	public static class StringExtensions
 	{
