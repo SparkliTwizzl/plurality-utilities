@@ -6,36 +6,36 @@ namespace PluralityUtilities.TestCommon.TestData
 	public static class ValidData
 	{
 		public static Person[] expectedValidInputData = new Person[]
+		{
+			new Person()
 			{
-				new Person()
+				Identities =
 				{
-					Identities =
+					new Identity()
 					{
-						new Identity()
-						{
-							Name = "Name1",
-							Tag = "tag1",
-						},
-						new Identity()
-						{
-							Name = "Nickname1",
-							Tag = "tag1a",
-						},
+						Name = "Name1",
+						Tag = "tag1",
 					},
-					Pronoun = "pronouns1",
-					Decoration = "decoration1",
-				},
-				new Person()
-				{
-					Identities =
+					new Identity()
 					{
-						new Identity()
-						{
-							Name = "Name2",
-							Tag = "tag2",
-						}
+						Name = "Nickname1",
+						Tag = "tag1a",
 					},
 				},
-			};
+				Pronoun = "pronouns1",
+				Decoration = "decoration1",
+			},
+			new Person()
+			{
+				Identities =
+				{
+					new Identity()
+					{
+						Name = "Name2",
+						Tag = "tag2",
+					}
+				},
+			},
+		};
 	}
 }
