@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -16,6 +16,7 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="if not exist $(ProjectPreBuildOutputDir) mkdir $(ProjectPreBuildOutputDir)" />
     <Exec Command="@echo //AUTO-GENERATED FILE, DO NOT EDIT; ANY CHANGES WILL BE OVERWRITTEN DURING BUILD&gt; $(TestDirectoriesClass)" />
+    <Exec Command="@echo //DO NOT COMMIT THIS FILE, IT CONTAINS POTENTIALLY IDENTIFYING INFORMATION&gt;&gt; $(TestDirectoriesClass)" />
     <Exec Command="@echo.&gt;&gt; $(TestDirectoriesClass)" />
     <Exec Command="@echo.&gt;&gt; $(TestDirectoriesClass)" />
     <Exec Command="@echo namespace $(SolutionName).$(MSBuildProjectName)&gt;&gt; $(TestDirectoriesClass)" />
