@@ -1,4 +1,4 @@
-﻿namespace PluralityUtilities.AutoHotkeyScripts.Dictionaries
+﻿namespace PluralityUtilities.AutoHotkeyScripts.LookUpTables
 {
 	public static class TemplateMarkers
 	{
