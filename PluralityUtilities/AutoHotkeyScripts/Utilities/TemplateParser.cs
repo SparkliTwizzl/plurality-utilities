@@ -73,8 +73,15 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private static string ParseTemplateFromInputLine(string input)
 		{
 			StringBuilder template = new StringBuilder();
-			foreach (var c in input)
+			for (int i = 0; i < input.Length; ++i)
 			{
+				var c = input[i];
+				if (c == '\\')
+				{
+					template.Append(input[i + 1]);
+					++i;
+					continue;
+				}
 				if (TemplateMarkers.LookUpTable.TryGetValue(c, out var value))
 				{
 					template.Append($"`{value}`");
