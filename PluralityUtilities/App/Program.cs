@@ -12,25 +12,56 @@ namespace PluralityUtilities.App
 		private static LogMode _logMode = LogMode.Disabled;
 		private static string _outputFilePath = string.Empty;
 		private static DateTime _startTime;
+		private static string _templatesFilePath = string.Empty;
 
 
 		static void Main(string[] args)
 		{
 			_startTime = DateTime.Now;
 			Console.WriteLine($"PluralityUtilities v{AppVersion.CurrentVersion}");
-			ParseArgs(args);
-			InitLogging();
-			if (_inputFilePath == string.Empty)
+			if (args.Length < 1)
 			{
+				Console.WriteLine("usage:");
+				Console.WriteLine("pass input file as arg0");
+				Console.WriteLine("pass templates file as arg1");
+				Console.WriteLine("pass output file as arg2");
+				Console.WriteLine("pass \"-l\" as arg3 to enable basic logging (log file output only)");
+				Console.WriteLine("pass \"-v\" as arg3 to enable verbose logging (console and log file output)");
+				WaitForUserToExit();
 				return;
 			}
+			ParseArgs(args);
+			InitLogging();
 			Log.WriteLineTimestamped($"PluralityUtilities v{AppVersion.CurrentVersion}; execution started at {_startTime}");
-			ParseInputAndGenerateAutoHotkeyScript();
+			CreateAutoHotkeyScript();
 			Log.WriteLineTimestamped($"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds");
-			Console.Write("press any key to exit");
-			Console.ReadKey(true);
+			WaitForUserToExit();
 		}
 
+
+		private static void CreateAutoHotkeyScript()
+		{
+			try
+			{
+				InputParser parser = new InputParser();
+				parser.ParseFile(_inputFilePath);
+				AutoHotkeyScriptGenerator scriptGenerator = new AutoHotkeyScriptGenerator();
+				var templates = TemplateParser.ParseTemplatesFromFile(_templatesFilePath);
+				scriptGenerator.GenerateScript(parser.People, templates, _outputFilePath);
+				var successMessage = "generating script succeeded";
+				Console.WriteLine(successMessage);
+				Log.WriteLineTimestamped(successMessage);
+			}
+			catch (Exception ex)
+			{
+				var errorMessage = $"generating script failed with error: {ex.Message}";
+				if (_logMode != LogMode.Verbose)
+				{
+					Console.WriteLine(errorMessage);
+				}
+				Log.WriteLineTimestamped(errorMessage);
+			}
+		}
 
 		private static void InitLogging()
 		{
@@ -54,16 +85,12 @@ namespace PluralityUtilities.App
 
 		private static void ParseArgs(string[] args)
 		{
-			if (args.Length < 1)
-			{
-				Console.WriteLine("pass input file as arg0; pass output file as arg1; pass \"-l\" as arg2 to enable logging; pass \"-v\" as arg2 to enable verbose logging");
-				return;
-			}
 			_inputFilePath = args[0];
-			_outputFilePath = args[1];
-			if (args.Length > 2)
+			_templatesFilePath = args[1];
+			_outputFilePath = args[2];
+			if (args.Length > 3)
 			{
-				var arg = args[2];
+				var arg = args[3];
 				if (arg == "-l")
 				{
 					_logMode = LogMode.Basic;
@@ -75,27 +102,10 @@ namespace PluralityUtilities.App
 			}
 		}
 
-		private static void ParseInputAndGenerateAutoHotkeyScript()
+		private static void WaitForUserToExit()
 		{
-			try
-			{
-				InputParser parser = new InputParser();
-				parser.ParseFile(_inputFilePath);
-				AutoHotkeyScriptGenerator scriptGenerator = new AutoHotkeyScriptGenerator();
-				scriptGenerator.GenerateScript(parser.People, _outputFilePath);
-				var successMessage = "generating script succeeded";
-				Console.WriteLine(successMessage);
-				Log.WriteLineTimestamped(successMessage);
-			}
-			catch (Exception ex)
-			{
-				var errorMessage = $"generating script failed with error: {ex.Message}";
-				if (_logMode != LogMode.Verbose)
-				{
-					Console.WriteLine(errorMessage);
-				}
-				Log.WriteLineTimestamped(errorMessage);
-			}
+			Console.Write("press any key to exit");
+			Console.ReadKey(true);
 		}
 	}
 }
