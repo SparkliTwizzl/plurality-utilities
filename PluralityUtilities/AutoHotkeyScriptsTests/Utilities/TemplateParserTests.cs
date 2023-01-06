@@ -45,8 +45,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseTemplatesFromFileTest_Success(string inputFile)
 		{
 			var filePath = TestUtilities.LocateInputFile(inputFile);
-
-			Assert.Fail();
+			var expected = ExpectedOutputData.ParsedTemplateData;
+			var actual = TemplateParser.ParseTemplatesFromFile(filePath);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 	}
 }
