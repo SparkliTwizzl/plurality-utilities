@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
+using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
+using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.TestCommon.Utilities;
 
 
@@ -9,9 +9,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[TestClass]
 	public class TemplateParserTests
 	{
-
-
-
 		[TestInitialize]
 		public void Setup()
 		{
@@ -20,25 +17,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow("<@> #", "<ax> Alex")]
-		[DataRow("<@/> # ($) &", "<ax/> Alex (they/them) -> a person")]
-		public void CreateMacroFromTemplateTest_Success(string template, string expected)
+		public void CreateAllMacrosFromTemplatesTest_Success()
 		{
-			var person = new Person()
-			{
-				Identities = new List<Identity>()
-				{
-					new Identity()
-					{
-						Name = "Alex",
-						Tag = "ax",
-					},
-				},
-				Pronoun = "they/them",
-				Decoration = "// a person",
-			};
-			var actual = TemplateParser.CreateMacroFromTemplate(template, person.Identities[0], person.Pronoun, person.Decoration);
-			Assert.AreEqual(expected, actual);
+			var people = InputData.TemplateParserData.ValidPeople;
+			var templates = InputData.TemplateParserData.ValidTemplates;
+			var results = TemplateParser.CreateAllMacrosFromTemplates(people, templates);
+			var expected = ExpectedOutputData.CreatedMacroData;
+			var actual = results.ToArray();
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]

@@ -6,11 +6,8 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public class InputParser
+	public static class InputParser
 	{
-		public List<Person> People { get; private set; } = new List<Person>();
-
-
 		// throws BlankInputFieldException if file contains a field with no value
 		// throws DuplicateInputFieldException if file contains an entry with more than one decoration field
 		// throws DuplicateInputFieldException if file contains an entry with more than one pronoun field
@@ -22,17 +19,18 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		// throws MissingInputFieldException if file contains an identity field with no name field
 		// throws MissingInputFieldException if file contains an identity field with no tag field
 		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
-		public void ParseFile(string inputFilePath)
+		public static Person[] ParsePeopleFromFile(string inputFilePath)
 		{
 			Log.WriteLineTimestamped("started parsing input file: " + inputFilePath);
 			VerifyFileExtension(inputFilePath);
 			var inputData = ReadDataFromFile(inputFilePath);
-			ParseInputData(inputData);
+			var results = ParseInputData(inputData);
 			Log.WriteLineTimestamped("finished parsing input file");
+			return results.ToArray();
 		}
 
 
-		private void ParseDecoration(string line, ref Person person)
+		private static void ParseDecoration(string line, ref Person person)
 		{
 			if (person.Decoration != string.Empty)
 			{
@@ -49,7 +47,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			person.Decoration = line.Substring(1, line.Length - 1);
 		}
 
-		private void ParseIdentity(string line, ref Person person)
+		private static void ParseIdentity(string line, ref Person person)
 		{
 			Identity identity = new Identity();
 			ParseName(line, ref identity);
@@ -57,15 +55,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			person.Identities.Add(identity);
 		}
 
-		private void ParseInputData(string[] data)
+		private static Person[] ParseInputData(string[] data)
 		{
+			var people = new List<Person>();
 			for (int i = 0; i < data.Length; ++i)
 			{
 				if (data[i] == "{")
 				{
 					++i;
 					var person = ParsePerson(data, ref i);
-					People.Add(person);
+					people.Add(person);
 					Log.WriteTimestamped("successfully parsed entry: names/tags [");
 					foreach (Identity identity in person.Identities)
 					{
@@ -80,9 +79,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					throw new UnexpectedCharacterException(errorMessage);
 				}
 			}
+			return people.ToArray();
 		}
 
-		private LineTypes ParseLine(string line, ref Person person)
+		private static LineTypes ParseLine(string line, ref Person person)
 		{
 			line = line.TrimStart();
 			var firstChar = line[0];
@@ -104,7 +104,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private void ParseName(string line, ref Identity identity)
+		private static void ParseName(string line, ref Identity identity)
 		{
 			var fieldStart = line.IndexOf('#');
 			var fieldEnd = line.LastIndexOf('#');
@@ -124,7 +124,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			identity.Name = name;
 		}
 
-		private Person ParsePerson(string[] data, ref int index)
+		private static Person ParsePerson(string[] data, ref int index)
 		{
 			Log.WriteLineTimestamped("started parsing next entry");
 			var person = new Person();
@@ -154,7 +154,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			throw new InputEntryNotClosedException(lastEntryNotClosed);
 		}
 
-		private void ParsePronoun(string line, ref Person person)
+		private static void ParsePronoun(string line, ref Person person)
 		{
 			if (person.Pronoun != string.Empty)
 			{
@@ -171,7 +171,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			person.Pronoun = line.Substring(1, line.Length - 1);
 		}
 
-		private void ParseTag(string line, ref Identity identity)
+		private static void ParseTag(string line, ref Identity identity)
 		{
 			var fieldStart = line.IndexOf('@');
 			if (fieldStart < 0)
@@ -197,7 +197,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			identity.Tag = tag;
 		}
 
-		private string[] ReadDataFromFile(string inputFilePath)
+		private static string[] ReadDataFromFile(string inputFilePath)
 		{
 			try
 			{
@@ -213,7 +213,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private void VerifyFileExtension(string inputFilePath)
+		private static void VerifyFileExtension(string inputFilePath)
 		{
 			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
 			{

@@ -11,9 +11,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[TestClass]
 	public class AutoHotkeyScriptGeneratorTests
 	{
-		public AutoHotkeyScriptGenerator generator = new AutoHotkeyScriptGenerator();
-
-
 		[TestInitialize]
 		public void Setup()
 		{
@@ -25,7 +22,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $"{TestDirectories.TestOutputDir}{nameof(AutoHotkeyScriptGenerator)}_{nameof(GenerateScriptTest_Success)}.ahk";
-			generator.GenerateScript(InputData.AutoHotkeyScriptGenerator_Valid.ToList(), outputFile);
+			AutoHotkeyScriptGenerator.GenerateScript(InputData.AutoHotkeyScriptGeneratorData.ValidMacroTemplates, outputFile);
 			var expected = ExpectedOutputData.GeneratedOutputData;
 			var actual = File.ReadAllLines(outputFile);
 			CollectionAssert.AreEqual(expected, actual);
