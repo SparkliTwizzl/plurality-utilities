@@ -12,20 +12,19 @@ namespace PluralityUtilities.App
 		private static LogMode _logMode = LogMode.Disabled;
 		private static string _outputFilePath = string.Empty;
 		private static DateTime _startTime;
-		private const string _version = "0.4";
 
 
 		static void Main(string[] args)
 		{
 			_startTime = DateTime.Now;
-			Console.WriteLine($"PluralityUtilities v{_version}");
+			Console.WriteLine($"PluralityUtilities v{AppVersion.CurrentVersion}");
 			ParseArgs(args);
 			InitLogging();
 			if (_inputFilePath == string.Empty)
 			{
 				return;
 			}
-			Log.WriteLineTimestamped($"PluralityUtilities v{_version}; execution started at {_startTime}");
+			Log.WriteLineTimestamped($"PluralityUtilities v{AppVersion.CurrentVersion}; execution started at {_startTime}");
 			ParseInputAndGenerateAutoHotkeyScript();
 			Log.WriteLineTimestamped($"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds");
 			Console.Write("press any key to exit");
