@@ -12,7 +12,7 @@ namespace PluralityUtilities.App
 		private static LogMode _logMode = LogMode.Disabled;
 		private static string _outputFilePath = string.Empty;
 		private static DateTime _startTime;
-		private const string _version = "0.3";
+		private const string _version = "0.4";
 
 
 		static void Main(string[] args)
@@ -28,6 +28,8 @@ namespace PluralityUtilities.App
 			Log.WriteLineTimestamped($"PluralityUtilities v{_version}; execution started at {_startTime}");
 			ParseInputAndGenerateAutoHotkeyScript();
 			Log.WriteLineTimestamped($"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds");
+			Console.Write("press any key to exit");
+			Console.ReadKey(true);
 		}
 
 

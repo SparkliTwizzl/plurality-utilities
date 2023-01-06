@@ -151,15 +151,15 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void ParseTag(string line, ref Identity identity)
 		{
-			var tagStart = line.IndexOf('@');
-			if (tagStart < 0)
+			var tagStart = line.IndexOf('@') + 1;
+			if (tagStart < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a name field without a paired tag field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}
 			var lastSpace = line.LastIndexOf(' ');
-			if (lastSpace > tagStart)
+			if (lastSpace >= tagStart)
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
