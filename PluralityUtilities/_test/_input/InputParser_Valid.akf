@@ -1,9 +1,9 @@
 {
-    % #Name1# @tag1
-    % #Nickname1# @tag1a
-    $pronouns1
-    &decoration1
+    % #Sam# @sm
+    % #Sammy# @smy
+    $they/them
+    &-> a person
 }
 {
-    % #Name2# @tag2
+    % #Alex# @ax
 }

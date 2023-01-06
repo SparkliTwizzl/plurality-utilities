@@ -7,26 +7,27 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 	{
 		public static readonly string[] CreatedMacroData = new string[]
 		{
+			"<sm> Sam",
+			"<sm/> Sam (they/them) -> a person",
+			"",
+			"<smy> Sammy",
+			"<smy/> Sammy (they/them) -> a person",
+			"",
 			"<ax> Alex",
-			"<ax/> Alex (they/them) -> a person",
+			"<ax/> Alex () ",
+			"",
 		};
 
 		public static readonly string[] GeneratedOutputData = new string[]
 		{
-			"::tag1;::Name1; ",
-			"::tag1-;::Name1 (pronouns1); ",
-			"::tag1--::Name1 (pronouns1)",
-			"::tag1-/::Name1 (pronouns1) decoration1",
+			"::sm:: Sam",
+			"::sm/:: Sam (they/them) -> a person",
 			"",
-			"::tag1a;::Nickname1; ",
-			"::tag1a-;::Nickname1 (pronouns1); ",
-			"::tag1a--::Nickname1 (pronouns1)",
-			"::tag1a-/::Nickname1 (pronouns1) decoration1",
+			"::smy:: Sammy",
+			"::smy/:: Sammy (they/them) -> a person",
 			"",
-			"::tag2;::Name2; ",
-			"::tag2-;::Name2 (); ",
-			"::tag2--::Name2 ()",
-			"::tag2-/::Name2 () ",
+			"::ax:: Alex",
+			"::ax/:: Alex () ",
 			"",
 		};
 
@@ -38,17 +39,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 				{
 					new Identity()
 					{
-						Name = "Name1",
-						Tag = "tag1",
+						Name = "Sam",
+						Tag = "sm",
 					},
 					new Identity()
 					{
-						Name = "Nickname1",
-						Tag = "tag1a",
+						Name = "Sammy",
+						Tag = "smy",
 					},
 				},
-				Pronoun = "pronouns1",
-				Decoration = "decoration1",
+				Pronoun = "they/them",
+				Decoration = "-> a person",
 			},
 			new Person()
 			{
@@ -56,8 +57,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 				{
 					new Identity()
 					{
-						Name = "Name2",
-						Tag = "tag2",
+						Name = "Alex",
+						Tag = "ax",
 					}
 				},
 			},
@@ -65,8 +66,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 
 		public static readonly string[] ParsedTemplateData = new string[]
 		{
-			"<@> #",
-			"<@/> # ($) &",
+			"<`tag`> `name`",
+			"<`tag`/> `name` (`pronoun`) `decoration`",
 		};
 	}
 }
