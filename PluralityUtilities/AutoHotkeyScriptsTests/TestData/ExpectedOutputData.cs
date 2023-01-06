@@ -15,6 +15,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 			"",
 			"::ax:: Alex",
 			"::ax/:: Alex () ",
+			"",
 		};
 
 		public static readonly string[] GeneratedOutputData = new string[]
@@ -27,6 +28,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 			"",
 			"::ax:: Alex",
 			"::ax/:: Alex () ",
+			"",
 			"",
 		};
 
