@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
 using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
+using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon.Utilities;
 
 
@@ -24,6 +26,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			var results = TemplateParser.CreateAllMacrosFromTemplates(people, templates);
 			var expected = ExpectedOutputData.CreatedMacroData;
 			var actual = results.ToArray();
+			Log.WriteLine("expected:");
+			foreach (var line in expected)
+			{
+				Log.WriteLine($"[{line}]");
+			}
+			Log.WriteLine();
+			Log.WriteLine("actual:");
+			foreach (var line in actual)
+			{
+				Log.WriteLine($"[{line}]");
+			}
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
