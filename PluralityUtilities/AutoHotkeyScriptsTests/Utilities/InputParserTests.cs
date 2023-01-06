@@ -18,7 +18,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow("InputParser_Valid.akf")]
+		[DataRow("InputParser_Valid.txt")]
 		public void ParseFileTest_Success(string fileName)
 		{
 			var expected = ExpectedOutputData.ParsedInputData;
@@ -28,10 +28,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(BlankInputFieldException))]
-		[DataRow("InputParser_BlankDecorationField.akf")]
-		[DataRow("InputParser_BlankNameField.akf")]
-		[DataRow("InputParser_BlankPronounField.akf")]
-		[DataRow("InputParser_BlankTagField.akf")]
+		[DataRow("InputParser_BlankDecorationField.txt")]
+		[DataRow("InputParser_BlankNameField.txt")]
+		[DataRow("InputParser_BlankPronounField.txt")]
+		[DataRow("InputParser_BlankTagField.txt")]
 		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
@@ -39,40 +39,32 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(DuplicateInputFieldException))]
-		[DataRow("InputParser_TooManyDecorationFields.akf")]
-		[DataRow("InputParser_TooManyPronounFields.akf")]
+		[DataRow("InputParser_TooManyDecorationFields.txt")]
+		[DataRow("InputParser_TooManyPronounFields.txt")]
 		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(InputEntryNotClosedException))]
-		[DataRow("InputParser_EntryNotClosed.akf")]
-		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
-		{
-			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
-		}
-
-		[TestMethod]
 		[ExpectedException(typeof(FileNotFoundException))]
-		[DataRow("nonexistent.akf")]
+		[DataRow("nonexistent.txt")]
 		public void ParseFileTest_ThrowsFileNotFoundException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(InvalidArgumentException))]
-		[DataRow("invalid.extension")]
-		public void ParseFileTest_ThrowsInvalidArgumentExtension(string fileName)
+		[ExpectedException(typeof(InputEntryNotClosedException))]
+		[DataRow("InputParser_EntryNotClosed.txt")]
+		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidInputFieldException))]
-		[DataRow("InputParser_TagFieldContainsSpaces.akf")]
+		[DataRow("InputParser_TagFieldContainsSpaces.txt")]
 		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
@@ -80,9 +72,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(MissingInputFieldException))]
-		[DataRow("InputParser_MissingIdentityField.akf")]
-		[DataRow("InputParser_MissingNameField.akf")]
-		[DataRow("InputParser_MissingTagField.akf")]
+		[DataRow("InputParser_MissingIdentityField.txt")]
+		[DataRow("InputParser_MissingNameField.txt")]
+		[DataRow("InputParser_MissingTagField.txt")]
 		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
@@ -90,8 +82,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(UnexpectedCharacterException))]
-		[DataRow("InputParser_UnexpectedCharacterBetweenEntries.akf")]
-		[DataRow("InputParser_UnexpectedCharacterInsideEntry.akf")]
+		[DataRow("InputParser_UnexpectedCharacterBetweenEntries.txt")]
+		[DataRow("InputParser_UnexpectedCharacterInsideEntry.txt")]
 		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
 		{
 			InputParser.ParsePeopleFromFile(TestUtilities.LocateInputFile(fileName));
