@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
+using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.Utilities;
 
@@ -24,8 +25,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $"{TestDirectories.TestOutputDir}{nameof(AutoHotkeyScriptGenerator)}_{nameof(GenerateScriptTest_Success)}.ahk";
-			generator.GenerateScript(ValidData.expectedValidInputData.ToList(), outputFile);
-			var expected = ValidData.expectedValidOutputData;
+			generator.GenerateScript(InputData.AutoHotkeyScriptGenerator_Valid.ToList(), outputFile);
+			var expected = ValidData.ExpectedGeneratedOutputData;
 			var actual = File.ReadAllLines(outputFile);
 			CollectionAssert.AreEqual(expected, actual);
 		}

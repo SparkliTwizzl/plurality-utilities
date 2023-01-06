@@ -1,5 +1,4 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
-using PluralityUtilities.AutoHotkeyScripts.Templates;
 using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
@@ -43,13 +42,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
 		{
-			foreach (string template in MacroTemplates.Templates)
-			{
-				var macro = TemplateParser.ParseMacroFromTemplate(template, identity, pronoun, decoration);
-				WriteLineToFile(macro);
-				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
-			}
-			WriteLineToFile();
+			//foreach (string template in MacroTemplates.Templates)
+			//{
+			//	var macro = TemplateParser.CreateMacroFromTemplate(template, identity, pronoun, decoration);
+			//	WriteLineToFile(macro);
+			//	Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
+			//}
+			//WriteLineToFile();
 		}
 
 		private void WritePersonToFile(Person person)

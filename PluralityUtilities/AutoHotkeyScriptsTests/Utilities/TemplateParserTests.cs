@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PluralityUtilities.AutoHotkeyScripts.Containers;
-using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
+using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -10,18 +9,20 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[TestClass]
 	public class TemplateParserTests
 	{
+
+
+
 		[TestInitialize]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 
 		[TestMethod]
-		[DataRow("#-@-$-&", "Alex-ax-they/them-a person")]
-		public void ParseMacroFromTemplateTest_Success(string template, string expected)
+		[DataRow("<@> #", "<ax> Alex")]
+		[DataRow("<@/> # ($) &", "<ax/> Alex (they/them) -> a person")]
+		public void CreateMacroFromTemplateTest_Success(string template, string expected)
 		{
 			var person = new Person()
 			{
@@ -34,10 +35,19 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 					},
 				},
 				Pronoun = "they/them",
-				Decoration = "a person",
+				Decoration = "// a person",
 			};
 			var actual = TemplateParser.CreateMacroFromTemplate(template, person.Identities[0], person.Pronoun, person.Decoration);
 			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		[DataRow("TemplateParser_ValidTemplates.txt")]
+		public void ParseTemplatesFromFileTest_Success(string inputFile)
+		{
+			var filePath = TestUtilities.LocateInputFile(inputFile);
+
+			Assert.Fail();
 		}
 	}
 }
