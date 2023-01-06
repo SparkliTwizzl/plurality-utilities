@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PluralityUtilities.AutoHotkeyScripts.Containers;
+using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
+using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
+using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -13,31 +14,40 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[TestInitialize]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 
 		[TestMethod]
-		[DataRow("#-@-$-&", "Name-tag-pronoun-decoration")]
-		public void ParseMacroFromTemplateTest_Success(string template, string expected)
+		public void CreateAllMacrosFromTemplatesTest_Success()
 		{
-			var person = new Person()
+			var people = InputData.TemplateParserData.ValidPeople;
+			var templates = InputData.TemplateParserData.ValidTemplates;
+			var results = TemplateParser.CreateAllMacrosFromTemplates(people, templates);
+			var expected = ExpectedOutputData.CreatedMacroData;
+			var actual = results.ToArray();
+			Log.WriteLine("expected:");
+			foreach (var line in expected)
 			{
-				Identities = new List<Identity>()
-				{
-					new Identity()
-					{
-						Name = "Name",
-						Tag = "tag",
-					},
-				},
-				Pronoun = "pronoun",
-				Decoration = "decoration",
-			};
-			var actual = TemplateParser.ParseMacroFromTemplate(template, person.Identities[0], person.Pronoun, person.Decoration);
-			Assert.AreEqual(expected, actual);
+				Log.WriteLine($"[{line}]");
+			}
+			Log.WriteLine();
+			Log.WriteLine("actual:");
+			foreach (var line in actual)
+			{
+				Log.WriteLine($"[{line}]");
+			}
+			CollectionAssert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		[DataRow("TemplateParser_ValidTemplates.txt")]
+		public void ParseTemplatesFromFileTest_Success(string inputFile)
+		{
+			var filePath = TestUtilities.LocateInputFile(inputFile);
+			var expected = ExpectedOutputData.ParsedTemplateData;
+			var actual = TemplateParser.ParseTemplatesFromFile(filePath);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 	}
 }

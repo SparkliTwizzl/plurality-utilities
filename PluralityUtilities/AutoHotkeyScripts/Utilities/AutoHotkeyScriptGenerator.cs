@@ -1,73 +1,55 @@
-﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
-using PluralityUtilities.AutoHotkeyScripts.Templates;
-using PluralityUtilities.Common;
+﻿using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public class AutoHotkeyScriptGenerator
+	public static class AutoHotkeyScriptGenerator
 	{
-		private string _outputFolder = string.Empty;
-		private string _outputFileName = string.Empty;
-		private string _outputFilePath = string.Empty;
-
-
-		public void GenerateScript(List<Person> people, string outputFile)
+		public static void GenerateScript(string[] macros, string outputFile)
 		{
-			NormalizeOutputFile(outputFile);
-			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
-			Directory.CreateDirectory(_outputFolder);
-			File.Create(_outputFilePath).Close();
-			foreach (Person person in people)
-			{
-				Log.WriteLineTimestamped("started writing person to output file");
-				WritePersonToFile(person);
-				Log.WriteLineTimestamped("successfully wrote person to output file");
-			}
+			var outputFolder = GetNormalizedOutputFolder(outputFile);
+			var outputFileName = GetNormalizedOutputFileName(outputFile);
+			var outputFilePath = $"{outputFolder}{outputFileName}";
+			Log.WriteLineTimestamped($"generating output file ({outputFilePath})...");
+			Directory.CreateDirectory(outputFolder);
+			File.Create(outputFilePath).Close();
+			WriteMacrosToFile(outputFilePath, macros);
 			Log.WriteLineTimestamped("successfully generated output file");
 		}
 
 
-		private void NormalizeOutputFile(string outputFile)
+		private static string GetNormalizedOutputFolder(string outputFile)
 		{
-			_outputFolder = outputFile.GetDirectory();
-			if (_outputFolder == string.Empty)
+			var outputFolder = outputFile.GetDirectory();
+			if (outputFolder == string.Empty)
 			{
-				_outputFolder = ProjectDirectories.OutputDir;
+				return ProjectDirectories.OutputDir;
 			}
-			_outputFileName = outputFile.GetFileName().RemoveFileExtension();
-			_outputFilePath = $"{_outputFolder}{_outputFileName}.ahk";
+			return outputFolder;
 		}
 
-		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
+		private static string GetNormalizedOutputFileName(string outputFile)
 		{
-			foreach (string template in MacroTemplates.Templates)
-			{
-				var macro = TemplateParser.ParseMacroFromTemplate(template, identity, pronoun, decoration);
-				WriteLineToFile(macro);
-				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
-			}
-			WriteLineToFile();
+			return $"{outputFile.GetFileName().RemoveFileExtension()}.ahk";
 		}
 
-		private void WritePersonToFile(Person person)
+		private static void WriteMacrosToFile(string outputFilePath, string[] data)
 		{
-			for (int i = 0; i < person.Identities.Count; ++i)
+			foreach (string line in data)
 			{
-				Log.WriteLineTimestamped($"started writing identity {i + 1} of {person.Identities.Count} to output file");
-				var identity = person.Identities[i];
-				WriteMacrosToFile(identity, person.Pronoun, person.Decoration);
-				Log.WriteLineTimestamped($"successfully wrote identity to output file");
+				WriteLineToFile(outputFilePath, line);
+				Log.WriteLineTimestamped($"wrote line to output file: {line}");
 			}
+			WriteLineToFile(outputFilePath);
 		}
 
-		private void WriteLineToFile(string line = "")
+		private static void WriteLineToFile(string outputFilePath, string line = "")
 		{
 			try
 			{
-				using (StreamWriter writer = File.AppendText(_outputFilePath))
+				using (StreamWriter writer = File.AppendText(outputFilePath))
 				{
 					writer.WriteLine(line);
 				}

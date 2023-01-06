@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PluralityUtilities.Logging;
+using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
+using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.TestCommon;
-using PluralityUtilities.TestCommon.TestData;
+using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -10,15 +11,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[TestClass]
 	public class AutoHotkeyScriptGeneratorTests
 	{
-		public AutoHotkeyScriptGenerator generator = new AutoHotkeyScriptGenerator();
-
-
 		[TestInitialize]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 
@@ -26,8 +22,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $"{TestDirectories.TestOutputDir}{nameof(AutoHotkeyScriptGenerator)}_{nameof(GenerateScriptTest_Success)}.ahk";
-			generator.GenerateScript(ValidData.expectedValidInputData.ToList(), outputFile);
-			var expected = ValidData.expectedValidOutputData;
+			AutoHotkeyScriptGenerator.GenerateScript(InputData.AutoHotkeyScriptGeneratorData.ValidMacroTemplates, outputFile);
+			var expected = ExpectedOutputData.GeneratedOutputData;
 			var actual = File.ReadAllLines(outputFile);
 			CollectionAssert.AreEqual(expected, actual);
 		}
