@@ -25,7 +25,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseFileTest_Success(string fileName)
 		{
 			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
-			var expected = ValidData.ExpectedParsedInputData;
+			var expected = ExpectedOutputData.ParsedInputData;
 			var actual = parser.People.ToArray();
 			CollectionAssert.AreEqual(expected, actual);
 		}

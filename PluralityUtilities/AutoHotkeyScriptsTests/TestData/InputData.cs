@@ -6,7 +6,7 @@ namespace PluralityUtilities.AutoHotkeyScriptsTests.TestData
 {
 	public static class InputData
 	{
-		public static readonly Person[] AutoHotkeyScriptGenerator_Valid = ValidData.ExpectedParsedInputData;
-		public static readonly string[] TemplateParser_Valid = ValidData.ExpectedParsedTemplateData;
+		public static readonly Person[] AutoHotkeyScriptGenerator_Valid = ExpectedOutputData.ParsedInputData;
+		public static readonly string[] TemplateParser_Valid = ExpectedOutputData.ParsedTemplateData;
 	}
 }

@@ -3,15 +3,15 @@
 
 namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 {
-	public static class ValidData
+	public static class ExpectedOutputData
 	{
-		public static readonly string[] ExpectedCreatedMacroData = new string[]
+		public static readonly string[] CreatedMacroData = new string[]
 		{
 			"<ax> Alex",
 			"<ax/> Alex (they/them) -> a person",
 		};
 
-		public static readonly string[] ExpectedGeneratedOutputData = new string[]
+		public static readonly string[] GeneratedOutputData = new string[]
 		{
 			"::tag1;::Name1; ",
 			"::tag1-;::Name1 (pronouns1); ",
@@ -30,7 +30,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 			"",
 		};
 
-		public static readonly Person[] ExpectedParsedInputData = new Person[]
+		public static readonly Person[] ParsedInputData = new Person[]
 		{
 			new Person()
 			{
@@ -63,7 +63,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 			},
 		};
 
-		public static readonly string[] ExpectedParsedTemplateData = new string[]
+		public static readonly string[] ParsedTemplateData = new string[]
 		{
 			"<@> #",
 			"<@/> # ($) &",

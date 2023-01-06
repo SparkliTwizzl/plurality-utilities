@@ -26,7 +26,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		{
 			var outputFile = $"{TestDirectories.TestOutputDir}{nameof(AutoHotkeyScriptGenerator)}_{nameof(GenerateScriptTest_Success)}.ahk";
 			generator.GenerateScript(InputData.AutoHotkeyScriptGenerator_Valid.ToList(), outputFile);
-			var expected = ValidData.ExpectedGeneratedOutputData;
+			var expected = ExpectedOutputData.GeneratedOutputData;
 			var actual = File.ReadAllLines(outputFile);
 			CollectionAssert.AreEqual(expected, actual);
 		}
