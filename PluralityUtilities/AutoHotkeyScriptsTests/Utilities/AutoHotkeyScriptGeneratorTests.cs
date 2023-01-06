@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
 using PluralityUtilities.TestCommon;
-using PluralityUtilities.TestCommon.TestData;
 using PluralityUtilities.TestCommon.Utilities;
 
 

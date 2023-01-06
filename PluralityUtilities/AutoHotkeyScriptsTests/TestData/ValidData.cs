@@ -1,7 +1,7 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 
 
-namespace PluralityUtilities.TestCommon.TestData
+namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 {
 	public static class ValidData
 	{
