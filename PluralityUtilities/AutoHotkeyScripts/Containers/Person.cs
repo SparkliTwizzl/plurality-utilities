@@ -1,0 +1,8 @@
+﻿namespace PluralityUtilities.AutoHotkeyScripts.Containers
+{
+	public class Person
+	{
+		public List<Identity> Identities { get; set; } = new List<Identity>();
+		public string Pronoun { get; set; } = string.Empty;
+	}
+}

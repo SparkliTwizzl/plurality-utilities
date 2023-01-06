@@ -1,1 +1,10 @@
-*.akfpath
+.vs/
+bin/
+obj/
+_build/
+_run/
+PreBuildOutput/
+
+*.log
+
+testOutput.ahk
