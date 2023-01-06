@@ -13,7 +13,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		// throws DuplicateInputFieldException if file contains an entry with more than one pronoun field
 		// throws InputEntryNotClosedException if file contains an entry that is not closed
 		// throws FileNotFoundException if file data could not be read
-		// throws InvalidArgumentException if file extension is missing or not recognized
 		// throws InvalidInputFieldException if file contains a tag field with spaces in it
 		// throws MissingInputFieldException if file contains an entry with no identity fields
 		// throws MissingInputFieldException if file contains an identity field with no name field
@@ -22,7 +21,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		public static Person[] ParsePeopleFromFile(string inputFilePath)
 		{
 			Log.WriteLineTimestamped("started parsing input file: " + inputFilePath);
-			VerifyFileExtension(inputFilePath);
 			var inputData = ReadDataFromFile(inputFilePath);
 			var results = ParseInputData(inputData);
 			Log.WriteLineTimestamped("finished parsing input file");
@@ -211,17 +209,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				Log.WriteLineTimestamped($"error: {errorMessage}; {ex.Message}");
 				throw new FileNotFoundException(errorMessage, ex);
 			}
-		}
-
-		private static void VerifyFileExtension(string inputFilePath)
-		{
-			if (inputFilePath.Substring(inputFilePath.Length - 4, 4) != ".akf")
-			{
-				var errorMessage = "input file path was not a .akf file";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new InvalidArgumentException(errorMessage);
-			}
-			Log.WriteLineTimestamped("input file path was a .akf file");
 		}
 	}
 }
