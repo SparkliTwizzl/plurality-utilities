@@ -1,8 +1,7 @@
 {
   "profiles": {
     "App": {
-      "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(InputDir)TestInput.akf\r\nTestOutput\r\n-v"
+      "commandName": "Project"
     }
   }
 }
