@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
 using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.Logging;
@@ -48,6 +48,15 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			var expected = ExpectedOutputData.ParsedTemplateData;
 			var actual = TemplateParser.ParseTemplatesFromFile(filePath);
 			CollectionAssert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(EscapeCharacterMismatchException))]
+		[DataRow("TemplateParser_TrailingEscapeCharacter.txt")]
+		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException(string inputFile)
+		{
+			var filePath = TestUtilities.LocateInputFile(inputFile);
+			var results = TemplateParser.ParseTemplatesFromFile(filePath);
 		}
 	}
 }

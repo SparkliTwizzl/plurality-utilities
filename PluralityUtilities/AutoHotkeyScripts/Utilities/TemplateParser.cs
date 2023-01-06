@@ -1,6 +1,7 @@
 ﻿using System.Text;
 
 using PluralityUtilities.AutoHotkeyScripts.Containers;
+using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.AutoHotkeyScripts.LookUpTables;
 using PluralityUtilities.Logging;
 
@@ -78,9 +79,18 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				var c = input[i];
 				if (c == '\\')
 				{
-					template.Append(input[i + 1]);
-					++i;
-					continue;
+					try
+					{
+						template.Append(input[i + 1]);
+						++i;
+						continue;
+					}
+					catch (Exception ex)
+					{
+						var error = "a template contained a trailing escape character ('\\') with no following character to escape";
+						Log.WriteLineTimestamped($"error: {error}; {ex.Message}");
+						throw new EscapeCharacterMismatchException(error, ex);
+					}
 				}
 				if (TemplateMarkers.LookUpTable.TryGetValue(c, out var value))
 				{
