@@ -67,8 +67,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 
 		public static readonly string[] ParsedTemplateData = new string[]
 		{
-			"<`tag`> `name`",
-			"<`tag`/> `name` (`pronoun`) `decoration`",
+			"::`tag`:: `name`",
+			"::`tag`/:: `name` (`pronoun`) `decoration`",
 		};
 	}
 }

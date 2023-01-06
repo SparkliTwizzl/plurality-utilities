@@ -65,7 +65,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			};
 			foreach (var marker in TemplateMarkers.LookUpTable)
 			{
-				macro.Replace($"`{marker.Value}`", fields[marker.Value]);
+				macro = macro.Replace($"`{marker.Value}`", fields[marker.Value]);
 			}
 			return macro;
 		}
