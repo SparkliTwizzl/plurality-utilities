@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 
+using PluralityUtilities.Logging.Enums;
+
 
 namespace PluralityUtilities.Logging
 {
@@ -7,23 +9,25 @@ namespace PluralityUtilities.Logging
 	{
 		private static readonly string _defaultLogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log/";
 		private static readonly string _defaultLogFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
-		private static bool _isEnabled = false;
+		private static LogMode _mode = LogMode.Disabled;
 		private static string _logFolder = "";
 		private static string _logFileName = "";
 		private static string _logFilePath = "";
 
 
-		static Log() { }
-
-
 		public static void Disable()
 		{
-			_isEnabled = false;
+			_mode = LogMode.Disabled;
 		}
 
-		public static void Enable()
+		public static void EnableBasic()
 		{
-			_isEnabled = true;
+			_mode = LogMode.Basic;
+		}
+
+		public static void EnableVerbose()
+		{
+			_mode = LogMode.Verbose;
 		}
 
 		public static void SetLogFileName(string filename)
@@ -46,7 +50,7 @@ namespace PluralityUtilities.Logging
 
 		public static void Write(string message = "")
 		{
-			if (_isEnabled)
+			if (_mode != LogMode.Disabled)
 			{
 				if (_logFolder == "")
 				{
@@ -60,26 +64,16 @@ namespace PluralityUtilities.Logging
 				{
 					logFile.Write(message);
 				}
+				if (_mode == LogMode.Verbose)
+				{
+					Console.Write(message);
+				}
 			}
 		}
 
 		public static void WriteTimestamped(string message = "")
 		{
-			if (_isEnabled)
-			{
-				if (_logFolder == "")
-				{
-					SetLogFolder(_defaultLogFolder);
-				}
-				if (_logFileName == "")
-				{
-					SetLogFileName(_defaultLogFileName);
-				}
-				using (StreamWriter logFile = File.AppendText(_logFilePath))
-				{
-					logFile.Write($"{DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss")} - {message}");
-				}
-			}
+			Write($"{DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss")} - {message}");
 		}
 
 		public static void WriteLine(string message = "")

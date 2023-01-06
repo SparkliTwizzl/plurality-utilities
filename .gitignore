@@ -3,7 +3,6 @@ bin/
 obj/
 _build/
 _run/
-PreBuildOutput/
 
 *.log
 

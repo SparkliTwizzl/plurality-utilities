@@ -21,6 +21,23 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
+		private void ParseDecoration(string line, ref Person person)
+		{
+			if (person.Decoration != string.Empty)
+			{
+				var errorMessage = "input file contains invalid data: an entry contained more than one decoration field";
+				Log.WriteLineTimestamped($"error: {errorMessage}");
+				throw new DuplicateFieldException(errorMessage);
+			}
+			if (line.Length < 2)
+			{
+				var errorMessage = "input file contains invalid data: an entry contained a blank decoration field";
+				Log.WriteLineTimestamped($"error: {errorMessage}");
+				throw new BlankFieldException(errorMessage);
+			}
+			person.Decoration = line.Substring(1, line.Length - 1);
+		}
+
 		private void ParseIdentity(string line, ref Person person)
 		{
 			Identity identity = new Identity();
@@ -38,12 +55,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					++i;
 					var person = ParsePerson(data, ref i);
 					People.Add(person);
-					Log.WriteTimestamped("successfully parsed entry with names/tags [");
+					Log.WriteTimestamped("successfully parsed entry: names/tags [");
 					foreach (Identity identity in person.Identities)
 					{
 						Log.Write($"{identity.Name}/{identity.Tag}, ");
 					}
-					Log.WriteLine($"] and pronoun [{person.Pronoun}]");
+					Log.WriteLine($"], pronoun [{person.Pronoun}], decoration [{person.Decoration}]");
 				}
 				else
 				{
@@ -68,6 +85,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				case '$':
 					ParsePronoun(line, ref person);
 					return LineTypes.Pronoun;
+				case '&':
+					ParseDecoration(line, ref person);
+					return LineTypes.Decoration;
 				default:
 					var unrecognizedChar = "input file contains invalid data: an unrecognized character was read at the start of a line";
 					Log.WriteLineTimestamped($"error: {unrecognizedChar}");
@@ -116,13 +136,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			if (person.Pronoun != string.Empty)
 			{
-				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun line";
+				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new TooManyPronounsException(errorMessage);
+				throw new DuplicateFieldException(errorMessage);
 			}
 			if (line.Length < 2)
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun";
+				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun field";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new BlankFieldException(errorMessage);
 			}

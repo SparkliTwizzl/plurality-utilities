@@ -15,8 +15,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		public void Generate(List<Person> people, string outputFileName)
 		{
-			Log.WriteLineTimestamped($"started generating output file: {outputFileName}");
-			_outputFilePath = ProjectDirectories.OutputDir + outputFileName;
+			GenerateOutputFilePath(outputFileName);
+			Log.WriteLineTimestamped($"started generating output file: {_outputFilePath}");
 			Directory.CreateDirectory(ProjectDirectories.OutputDir);
 			File.Create(_outputFilePath).Close();
 			foreach (Person person in people)
@@ -29,7 +29,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private string CreateMacroFromTemplate(string template, string name, string tag, string pronoun)
+		private string CreateMacroFromTemplate(string template, Identity identity, string pronoun, string decoration)
 		{
 			StringBuilder macro = new StringBuilder();
 			foreach (char c in template)
@@ -37,13 +37,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				switch (c)
 				{
 					case '#':
-						macro.Append(name);
+						macro.Append(identity.Name);
 						break;
 					case '@':
-						macro.Append(tag);
+						macro.Append(identity.Tag);
 						break;
 					case '$':
 						macro.Append(pronoun);
+						break;
+					case '&':
+						macro.Append(decoration);
 						break;
 					default:
 						macro.Append(c);
@@ -53,11 +56,18 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macro.ToString();
 		}
 
-		private void WriteMacrosToFile(string name, string tag, string pronoun)
+		private void GenerateOutputFilePath(string fileName)
+		{
+			var extensionStart = fileName.LastIndexOf('.');
+			var fileNameWithoutExtension = (extensionStart < 0) ? fileName : fileName.Substring(0, fileName.Length - extensionStart);
+			_outputFilePath = $"{ProjectDirectories.OutputDir}{fileNameWithoutExtension}.ahk";
+		}
+
+		private void WriteMacrosToFile(Identity identity, string pronoun, string decoration)
 		{
 			foreach (string template in MacroTemplates.Templates)
 			{
-				var macro = CreateMacroFromTemplate(template, name, tag, pronoun);
+				var macro = CreateMacroFromTemplate(template, identity, pronoun, decoration);
 				WriteLineToFile(macro);
 				Log.WriteLineTimestamped($"wrote macro to output file: {macro}");
 			}
@@ -70,8 +80,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				Log.WriteLineTimestamped($"started writing identity {i + 1} of {person.Identities.Count} to output file");
 				var identity = person.Identities[i];
-				WriteMacrosToFile(identity.Name, identity.Tag, person.Pronoun);
-				Log.WriteLineTimestamped($"successfully wrote identity {i + 1} of {person.Identities.Count} to output file");
+				WriteMacrosToFile(identity, person.Pronoun, person.Decoration);
+				Log.WriteLineTimestamped($"successfully wrote identity to output file");
 			}
 		}
 
