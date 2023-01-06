@@ -20,7 +20,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow("#-@-$-&", "Name-tag-pronoun-decoration")]
+		[DataRow("#-@-$-&", "Alex-ax-they/them-a person")]
 		public void ParseMacroFromTemplateTest_Success(string template, string expected)
 		{
 			var person = new Person()
@@ -29,14 +29,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 				{
 					new Identity()
 					{
-						Name = "Name",
-						Tag = "tag",
+						Name = "Alex",
+						Tag = "ax",
 					},
 				},
-				Pronoun = "pronoun",
-				Decoration = "decoration",
+				Pronoun = "they/them",
+				Decoration = "a person",
 			};
-			var actual = TemplateParser.ParseMacroFromTemplate(template, person.Identities[0], person.Pronoun, person.Decoration);
+			var actual = TemplateParser.CreateMacroFromTemplate(template, person.Identities[0], person.Pronoun, person.Decoration);
 			Assert.AreEqual(expected, actual);
 		}
 	}
