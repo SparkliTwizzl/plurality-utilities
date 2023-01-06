@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.TestData;
+using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -16,9 +16,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[TestInitialize]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
-using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.TestData;
+using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -16,9 +16,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[TestInitialize]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 
@@ -26,7 +24,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_Valid.akf")]
 		public void ParseFileTest_Success(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 			var expected = ValidData.expectedValidInputData;
 			var actual = parser.People.ToArray();
 			CollectionAssert.AreEqual(expected, actual);
@@ -40,7 +38,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_BlankTagField.akf")]
 		public void ParseFileTest_ThrowsBlankInputFieldException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -49,7 +47,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_TooManyPronounFields.akf")]
 		public void ParseFileTest_ThrowsDuplicateInputFieldException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -57,7 +55,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_EntryNotClosed.akf")]
 		public void ParseFileTest_ThrowsInputEntryNotClosedException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -65,7 +63,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("nonexistent.akf")]
 		public void ParseFileTest_ThrowsFileNotFoundException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -73,7 +71,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("invalid.extension")]
 		public void ParseFileTest_ThrowsInvalidArgumentExtension(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -81,7 +79,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_TagFieldContainsSpaces.akf")]
 		public void ParseFileTest_ThrowsInvalidInputFieldException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -91,7 +89,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_MissingTagField.akf")]
 		public void ParseFileTest_ThrowsMissingInputFieldException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 
 		[TestMethod]
@@ -100,13 +98,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[DataRow("InputParser_UnexpectedCharacterInsideEntry.akf")]
 		public void ParseFileTest_ThrowsUnexpectedCharacterException(string fileName)
 		{
-			parser.ParseFile(LocateInputFile(fileName));
-		}
-
-
-		private string LocateInputFile(string fileName)
-		{
-			return $"{TestDirectories.TestInputDir}{fileName}";
+			parser.ParseFile(TestUtilities.LocateInputFile(fileName));
 		}
 	}
 }
