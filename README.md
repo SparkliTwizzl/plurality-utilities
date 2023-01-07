@@ -425,9 +425,13 @@ folder contents:
 
 in file "example batch file.bat":
 
-PluralityUtilities/PluralityUtilities.exe
+PluralityUtilities/PluralityUtilities.exe ./input.txt ./templates.txt ./output -v
 
 ```
+
+##### 4.3.7.4 - Once you've done all that, run the .bat file by double clicking it.
+
+Assuming the .bat file was made correctly, it will run PluralityUtilities with all the arguments you set.
 
 
 ---
