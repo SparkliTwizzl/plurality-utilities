@@ -1,6 +1,6 @@
 # PluralityUtilities
 
-## version x.y - yyyy-mm-dd
+## version 0.5 - 2023-01-06
 
 
 ---
