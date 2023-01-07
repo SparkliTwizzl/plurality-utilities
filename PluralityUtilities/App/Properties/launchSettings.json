@@ -2,7 +2,7 @@
   "profiles": {
     "App": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(InputDir)TestInput.akf\r\nTestOutput\r\n-v"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTestInput.txt\r\n$(SolutionDir)$(TestInputDir)IntegrationTestTemplates.txt\r\n$(SolutionDir)$(TestOutputDir)IntegrationTestOutput.ahk\r\n-v"
     }
   }
 }

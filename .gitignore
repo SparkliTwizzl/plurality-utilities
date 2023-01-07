@@ -1,9 +1,11 @@
+.cr/
 .vs/
 bin/
 obj/
 _build/
-_run/
+_log/
+_output/
+_results/
+GitIgnore/
 
 *.log
-
-testOutput.ahk
