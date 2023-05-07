@@ -40,7 +40,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				results.Add(CreateIdentityMacroFromTemplate(template, identity, pronoun, decoration));
 			}
-			results.Add("");
 			return results;
 		}
 
