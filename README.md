@@ -201,6 +201,8 @@ result:
 
 #### 4.2.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced.
 
+Note that you can apply an escape character to a backslash in order to make it print literally.
+
 example:
 ```
 input:
@@ -215,13 +217,13 @@ input:
 
 templates:
 
-::\@@::# ($) | [\#&]
+::\@@::# ($) \\ [\#&]
 
 
 result:
 
-::@sm::Sam (they/them) | [#a person]
-::@smy::Sammy (they/them) | [#a person]
+::@sm::Sam (they/them) \ [#a person]
+::@smy::Sammy (they/them) \ [#a person]
 ```
 
 
