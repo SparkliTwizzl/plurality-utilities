@@ -40,7 +40,7 @@ In order to get a useful result from the tool, there are four main steps:
 
 Each entry represents a person and must contain at least one identity (a name paired with a tag).
 
-To write an entry, start with an open curly brace `('{')` on one line and a close curly brace `('}')` on another, with nothing else on those lines.
+To write an entry, start with an open curly brace `{` on one line and a close curly brace `}` on another, with nothing else on those lines.
 
 example:
 ```
@@ -57,7 +57,7 @@ Fields are identified by marker symbols:
 
 - `#name#`
   - Name fields are a sub-field of identity fields (see below).
-  - Name fields must be surrounded on both sides by hash symbols `('#')`.
+  - Name fields must be surrounded on both sides by hash symbols `#`.
   - Note that this means that name fields cannot contain hash symbols.
 - `@tag`
   - Tag fields are a sub-field of identity fields (see below).
@@ -126,15 +126,15 @@ In order for PluralityUtilities to know what format(s) you want the macros in yo
 
 #### 4.2.1 - Templates must use the same basic structure in order for the generated script to work.
 
-All templates have to start with two colons `("::")`, a string of text including an at sign `('@')` representing the tag, then two more colons `("::")`.
+All templates have to start with two colons `::`, a string of text including an at sign `@` representing the tag, then two more colons `::`.
 
-The tag string can be anything you want, as long as it contains at least one at sign `('@')` and no spaces. Additional text is optional.
+The tag string can be anything you want, as long as it contains at least one at sign `@` and no spaces. Additional text is optional.
 
 If this is not followed, the generated script wont work, even though PluralityUtilities will run without errors.
 
 example:
 ```
-::@::← the rest of the template must come after this
+::@:: ← the rest of the template must come after this
 ```
 
 
@@ -199,7 +199,7 @@ result:
 ```
 
 
-#### 4.2.4 - You can use a backslash `('\')`, aka an "escape character", to use marker symbols without them being replaced.
+#### 4.2.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced.
 
 example:
 ```
@@ -266,20 +266,20 @@ result:
 ::@sm-::Sam (they/them)
 ::<@sm>::Sam (they/them) | [-- a person]
 
-::\@smy::Sammy
-::\@smy-::Sammy (they/them)
+::@smy::Sammy
+::@smy-::Sammy (they/them)
 ::@smy::Sammy (they/them) | [-- a person]
 
-::\@ax::Alex
-::\@ax-::Alex (it/its)
+::@ax::Alex
+::@ax-::Alex (it/its)
 ::@ax::Alex (it/its) | [[a person too]]
 
-::\@rvn::Raven
-::\@rvn-::Raven (thon/thons>they/them)
+::@rvn::Raven
+::@rvn-::Raven (thon/thons>they/them)
 ::@rvn::Raven (thon/thons>they/them) || []
 
-::\@bk::Beck
-::\@bk-::Beck ()
+::@bk::Beck
+::@bk-::Beck ()
 ::@bk::Beck () || []
 ```
 
@@ -339,7 +339,7 @@ C:\path\to\parent\PluralityUtilities\
 
 #### 4.3.4 - A note about slashes in paths:
 
-On Windows, backslashes `('\')` and forward slashes `('/')` both work the same way. Use whichever you prefer to. These are not equivalent in the input and template files, however.
+On Windows, backslashes `\` and forward slashes `/` both work the same way. Use whichever you prefer to. These are not equivalent in the input and template files, however.
 
 
 #### 4.3.5 - You can pass just a filename for the output file and it will be generated in a default location.
