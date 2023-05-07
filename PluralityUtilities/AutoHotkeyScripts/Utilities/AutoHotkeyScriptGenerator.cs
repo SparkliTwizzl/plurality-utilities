@@ -12,10 +12,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var outputFolder = GetNormalizedOutputFolder(outputFile);
 			var outputFileName = GetNormalizedOutputFileName(outputFile);
 			var outputFilePath = $"{outputFolder}{outputFileName}";
+
 			Log.WriteLineTimestamped($"generating output file ({outputFilePath})...");
+
 			Directory.CreateDirectory(outputFolder);
 			File.Create(outputFilePath).Close();
-			WriteMacrosToFile(outputFilePath, macros);
+			WriteHeaderToFile(outputFilePath);
+			WriteLinesToFile(outputFilePath, macros);
+
 			Log.WriteLineTimestamped("successfully generated output file");
 		}
 
@@ -35,14 +39,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return $"{outputFile.GetFileName().RemoveFileExtension()}.ahk";
 		}
 
-		private static void WriteMacrosToFile(string outputFilePath, string[] data)
+		private static void WriteHeaderToFile(string outputFilePath)
 		{
-			foreach (string line in data)
+			var header = new String[]
 			{
-				WriteLineToFile(outputFilePath, line);
-				Log.WriteLineTimestamped($"wrote line to output file: {line}");
-			}
-			WriteLineToFile(outputFilePath);
+				"#SingleInstance Force",
+				""
+			};
+			WriteLinesToFile(outputFilePath, header);
 		}
 
 		private static void WriteLineToFile(string outputFilePath, string line = "")
@@ -52,6 +56,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				using (StreamWriter writer = File.AppendText(outputFilePath))
 				{
 					writer.WriteLine(line);
+					Log.WriteLineTimestamped($"wrote line to output file: {line}");
 				}
 			}
 			catch (Exception ex)
@@ -59,6 +64,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				var errorMessage = "failed to write to output file";
 				Log.WriteLineTimestamped($"error: {errorMessage}");
 				throw new FileLoadException(errorMessage, ex);
+			}
+		}
+
+		private static void WriteLinesToFile(string outputFilePath, string[] data)
+		{
+			foreach (string line in data)
+			{
+				WriteLineToFile(outputFilePath, line);
 			}
 		}
 	}
