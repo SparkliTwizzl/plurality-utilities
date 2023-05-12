@@ -9,27 +9,22 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 		{
 			"::@sm:: #Sam",
 			"::@sm/:: #Sam $(they/them) &-> a person",
-			"",
 			"::@smy:: #Sammy",
 			"::@smy/:: #Sammy $(they/them) &-> a person",
-			"",
 			"::@ax:: #Alex",
 			"::@ax/:: #Alex $() &",
-			"",
 		};
 
 		public static readonly string[] GeneratedOutputData = new string[]
 		{
+			"#SingleInstance Force",
+			"",
 			"::@sm:: #Sam",
 			"::@sm/:: #Sam $(they/them) &-> a person",
-			"",
 			"::@smy:: #Sammy",
 			"::@smy/:: #Sammy $(they/them) &-> a person",
-			"",
 			"::@ax:: #Alex",
 			"::@ax/:: #Alex $() &",
-			"",
-			"",
 		};
 
 		public static readonly Person[] ParsedInputData = new Person[]

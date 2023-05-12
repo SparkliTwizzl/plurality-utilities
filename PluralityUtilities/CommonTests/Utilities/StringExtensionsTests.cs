@@ -1,12 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
-
+using PluralityUtilities.TestCommon.Utilities;
 
 namespace PluralityUtilities.Common.Utilities.Tests
 {
-	[TestClass]
+	[ TestClass ]
 	public class StringExtensionsTests
 	{
 		public static readonly string[] inputData = new string[]
@@ -28,16 +27,14 @@ namespace PluralityUtilities.Common.Utilities.Tests
 		};
 
 
-		[TestInitialize]
+		[ TestInitialize ]
 		public void Setup()
 		{
-			Log.SetLogFolder(TestDirectories.TestLogDir);
-			Log.SetLogFileName(DateTime.Now.ToString("test_yyyy-MM-dd_hh-mm-ss.log"));
-			Log.EnableVerbose();
+			TestUtilities.InitializeLoggingForTests();
 		}
 
 
-		[TestMethod]
+		[ TestMethod ]
 		public void GetDirectoryTest_AllCases()
 		{
 			var expected = new string[]
@@ -57,18 +54,18 @@ namespace PluralityUtilities.Common.Utilities.Tests
 				"",
 				string.Empty,
 			};
-			var outputData = new List<string>();
-			foreach (var input in inputData)
+			var outputData = new List< string >();
+			foreach ( var input in inputData )
 			{
 				var result = input.GetDirectory();
-				outputData.Add(result);
-				Log.WriteLine(result);
+				outputData.Add( result );
+				Log.WriteLine( result );
 			}
 			var actual = outputData.ToArray();
-			CollectionAssert.AreEqual(expected, actual);
+			CollectionAssert.AreEqual( expected, actual );
 		}
 
-		[TestMethod]
+		[ TestMethod ]
 		public void GetFileNameTest_AllCases()
 		{
 			var expected = new string[]
@@ -89,17 +86,17 @@ namespace PluralityUtilities.Common.Utilities.Tests
 				string.Empty,
 			};
 			var outputData = new List<string>();
-			foreach (var input in inputData)
+			foreach ( var input in inputData )
 			{
 				var result = input.GetFileName();
-				outputData.Add(result);
-				Log.WriteLine(result);
+				outputData.Add( result );
+				Log.WriteLine( result );
 			}
 			var actual = outputData.ToArray();
-			CollectionAssert.AreEqual(expected, actual);
+			CollectionAssert.AreEqual( expected, actual );
 		}
 
-		[TestMethod]
+		[ TestMethod ]
 		public void RemoveFileExtensionTest_AllCases()
 		{
 			var expected = new string[]
@@ -119,15 +116,15 @@ namespace PluralityUtilities.Common.Utilities.Tests
 				"",
 				string.Empty,
 			};
-			var outputData = new List<string>();
-			foreach (var input in inputData)
+			var outputData = new List< string >();
+			foreach ( var input in inputData )
 			{
 				var result = input.RemoveFileExtension();
-				outputData.Add(result);
-				Log.WriteLine(result);
+				outputData.Add( result );
+				Log.WriteLine( result );
 			}
 			var actual = outputData.ToArray();
-			CollectionAssert.AreEqual(expected, actual);
+			CollectionAssert.AreEqual( expected, actual );
 		}
 	}
 }

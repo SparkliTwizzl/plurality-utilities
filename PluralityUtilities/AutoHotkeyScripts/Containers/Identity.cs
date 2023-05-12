@@ -6,23 +6,23 @@
 		public string Tag { get; set; } = string.Empty;
 
 
-		public static bool operator ==(Identity left, Identity right)
+		public static bool operator ==( Identity left, Identity right )
 		{
-			return left.Name.Equals(right.Name) && left.Tag.Equals(right.Tag);
+			return left.Name.Equals( right.Name ) && left.Tag.Equals( right.Tag );
 		}
 
-		public static bool operator !=(Identity left, Identity right)
+		public static bool operator !=( Identity left, Identity right )
 		{
-			return !left.Name.Equals(right.Name) || !left.Tag.Equals(right.Tag);
+			return !left.Name.Equals( right.Name ) || !left.Tag.Equals( right.Tag );
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals( object obj )
 		{
-			if (obj == null || GetType() != obj.GetType())
+			if ( obj == null || GetType() != obj.GetType() )
 			{
 				return false;
 			}
-			return this == (Identity)obj;
+			return this == ( Identity )obj;
 		}
 
 		public override int GetHashCode()
