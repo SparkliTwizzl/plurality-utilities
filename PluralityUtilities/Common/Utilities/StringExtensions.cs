@@ -2,37 +2,37 @@
 {
 	public static class StringExtensions
 	{
-		public static string GetDirectory(this string filePath)
+		public static string GetDirectory( this string filePath )
 		{
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			if (pathEnd < 0)
+			var pathEnd = Math.Max( filePath.LastIndexOf( '/' ), filePath.LastIndexOf( '\\' ) );
+			if ( pathEnd < 0 )
 			{
 				return string.Empty;
 			}
-			var directoryLength = filePath.Length - ((filePath.Length - pathEnd) - 1);
-			return filePath.Substring(0, directoryLength);
+			var directoryLength = filePath.Length - ( ( filePath.Length - pathEnd ) - 1 );
+			return filePath.Substring( 0, directoryLength );
 		}
 
-		public static string GetFileName(this string filePath)
+		public static string GetFileName( this string filePath )
 		{
-			var pathEnd = Math.Max(filePath.LastIndexOf('/'), filePath.LastIndexOf('\\'));
-			if (pathEnd < 0)
+			var pathEnd = Math.Max( filePath.LastIndexOf( '/' ), filePath.LastIndexOf( '\\' ) );
+			if ( pathEnd < 0 )
 			{
 				return filePath;
 			}
 			var fileNameStart = pathEnd + 1;
-			return filePath.Substring(fileNameStart, filePath.Length - fileNameStart);
+			return filePath.Substring( fileNameStart, filePath.Length - fileNameStart );
 		}
 
-		public static string RemoveFileExtension(this string filePath)
+		public static string RemoveFileExtension( this string filePath )
 		{
-			var extensionStart = filePath.LastIndexOf('.');
-			if (extensionStart < 0)
+			var extensionStart = filePath.LastIndexOf( '.' );
+			if ( extensionStart < 0 )
 			{
 				return filePath;
 			}
-			var length = filePath.Length - (filePath.Length - extensionStart);
-			return filePath.Substring(0, length);
+			var length = filePath.Length - ( filePath.Length - extensionStart );
+			return filePath.Substring( 0, length );
 		}
 	}
 }

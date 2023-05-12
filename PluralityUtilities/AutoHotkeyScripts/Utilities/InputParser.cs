@@ -18,196 +18,196 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		// throws MissingInputFieldException if file contains an identity field with no name field
 		// throws MissingInputFieldException if file contains an identity field with no tag field
 		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
-		public static Person[] ParsePeopleFromFile(string inputFilePath)
+		public static Person[] ParsePeopleFromFile( string inputFilePath )
 		{
-			Log.WriteLineTimestamped("started parsing input file: " + inputFilePath);
-			var inputData = ReadDataFromFile(inputFilePath);
-			var results = ParseInputData(inputData);
-			Log.WriteLineTimestamped("finished parsing input file");
+			Log.WriteLineTimestamped( $"started parsing input file: { inputFilePath }");
+			var inputData = ReadDataFromFile( inputFilePath );
+			var results = ParseInputData( inputData );
+			Log.WriteLineTimestamped( "finished parsing input file" );
 			return results.ToArray();
 		}
 
 
-		private static void ParseDecoration(string line, ref Person person)
+		private static void ParseDecoration( string line, ref Person person )
 		{
-			if (person.Decoration != string.Empty)
+			if ( person.Decoration != string.Empty )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one decoration field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new DuplicateInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new DuplicateInputFieldException( errorMessage );
 			}
-			if (line.Length < 2)
+			if ( line.Length < 2 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank decoration field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new BlankInputFieldException( errorMessage );
 			}
-			person.Decoration = line.Substring(1, line.Length - 1);
+			person.Decoration = line.Substring( 1, line.Length - 1 );
 		}
 
-		private static void ParseIdentity(string line, ref Person person)
+		private static void ParseIdentity( string line, ref Person person )
 		{
 			Identity identity = new Identity();
-			ParseName(line, ref identity);
-			ParseTag(line, ref identity);
-			person.Identities.Add(identity);
+			ParseName( line, ref identity );
+			ParseTag( line, ref identity );
+			person.Identities.Add( identity );
 		}
 
-		private static Person[] ParseInputData(string[] data)
+		private static Person[] ParseInputData( string[] data )
 		{
-			var people = new List<Person>();
-			for (int i = 0; i < data.Length; ++i)
+			var people = new List< Person >();
+			for ( int i = 0; i < data.Length; ++i )
 			{
-				if (data[i] == "{")
+				if ( string.Compare( data[ i ], "{" ) == 0 )
 				{
 					++i;
-					var person = ParsePerson(data, ref i);
-					people.Add(person);
-					Log.WriteTimestamped("successfully parsed entry: names/tags [");
-					foreach (Identity identity in person.Identities)
+					var person = ParsePerson( data, ref i );
+					people.Add( person );
+					Log.WriteTimestamped( "successfully parsed entry: names/tags [" );
+					foreach ( Identity identity in person.Identities )
 					{
-						Log.Write($"{identity.Name}/{identity.Tag}, ");
+						Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
 					}
-					Log.WriteLine($"], pronoun [{person.Pronoun}], decoration [{person.Decoration}]");
+					Log.WriteLine( $"], pronoun [{ person.Pronoun }], decoration [{ person.Decoration }]" );
 				}
 				else
 				{
 					var errorMessage = "input file contains invalid data: an unexpected character was read when '{' was expected";
-					Log.WriteLineTimestamped($"error: {errorMessage}");
-					throw new UnexpectedCharacterException(errorMessage);
+					Log.WriteLineTimestamped( $"error: { errorMessage }" );
+					throw new UnexpectedCharacterException( errorMessage );
 				}
 			}
 			return people.ToArray();
 		}
 
-		private static LineTypes ParseLine(string line, ref Person person)
+		private static LineTypes ParseLine( string line, ref Person person )
 		{
 			line = line.TrimStart();
-			var firstChar = line[0];
-			switch (firstChar)
+			var firstChar = line[ 0 ];
+			switch ( firstChar )
 			{
 				case '}':
 					return LineTypes.EntryEnd;
 				case '%':
-					ParseIdentity(line, ref person);
+					ParseIdentity( line, ref person );
 					return LineTypes.Name;
 				case '$':
-					ParsePronoun(line, ref person);
+					ParsePronoun( line, ref person );
 					return LineTypes.Pronoun;
 				case '&':
-					ParseDecoration(line, ref person);
+					ParseDecoration( line, ref person );
 					return LineTypes.Decoration;
 				default:
 					return LineTypes.Unexpected;
 			}
 		}
 
-		private static void ParseName(string line, ref Identity identity)
+		private static void ParseName( string line, ref Identity identity )
 		{
-			var fieldStart = line.IndexOf('#');
-			var fieldEnd = line.LastIndexOf('#');
-			if (fieldStart < 0)
+			var fieldStart = line.IndexOf( '#' );
+			var fieldEnd = line.LastIndexOf( '#' );
+			if ( fieldStart < 0 )
 			{
 				var errorMessage = "input file contains invalid data: an entry had no name fields";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new MissingInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new MissingInputFieldException( errorMessage );
 			}
-			var name = line.Substring(fieldStart + 1, fieldEnd - (fieldStart + 1));
-			if (name.Length < 1)
+			var name = line.Substring( fieldStart + 1, fieldEnd - ( fieldStart + 1 ) );
+			if ( name.Length < 1 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new BlankInputFieldException( errorMessage );
 			}
 			identity.Name = name;
 		}
 
-		private static Person ParsePerson(string[] data, ref int index)
+		private static Person ParsePerson( string[] data, ref int index )
 		{
-			Log.WriteLineTimestamped("started parsing next entry");
+			Log.WriteLineTimestamped( "started parsing next entry" );
 			var person = new Person();
-			for (; index < data.Length; ++index)
+			for ( ; index < data.Length; ++index )
 			{
-				var result = ParseLine(data[index], ref person);
-				switch (result)
+				var result = ParseLine( data[ index ], ref person );
+				switch ( result )
 				{
 					case LineTypes.EntryEnd:
-						if (person.Identities.Count < 1)
+						if ( person.Identities.Count < 1 )
 						{
 							var noIdentities = "input file contains invalid data: an entry did not contain any identity fields";
-							Log.WriteLineTimestamped($"error: {noIdentities}");
-							throw new MissingInputFieldException(noIdentities);
+							Log.WriteLineTimestamped( $"error: { noIdentities }" );
+							throw new MissingInputFieldException( noIdentities );
 						}
 						return person;
 					case LineTypes.Unexpected:
 						var unexpectedChar = "input file contains invalid data: a line started with a character that was not expected at this time";
-						Log.WriteLineTimestamped($"error: {unexpectedChar}");
-						throw new UnexpectedCharacterException(unexpectedChar);
+						Log.WriteLineTimestamped( $"error: { unexpectedChar }" );
+						throw new UnexpectedCharacterException( unexpectedChar );
 					default:
 						break;
 				}
 			}
 			var lastEntryNotClosed = "input file contains invalid data: last entry was not closed";
-			Log.WriteLineTimestamped($"error: {lastEntryNotClosed}");
-			throw new InputEntryNotClosedException(lastEntryNotClosed);
+			Log.WriteLineTimestamped( $"error: { lastEntryNotClosed }" );
+			throw new InputEntryNotClosedException( lastEntryNotClosed );
 		}
 
-		private static void ParsePronoun(string line, ref Person person)
+		private static void ParsePronoun( string line, ref Person person )
 		{
-			if (person.Pronoun != string.Empty)
+			if ( person.Pronoun != string.Empty )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new DuplicateInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new DuplicateInputFieldException( errorMessage );
 			}
-			if (line.Length < 2)
+			if ( line.Length < 2 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new BlankInputFieldException( errorMessage );
 			}
-			person.Pronoun = line.Substring(1, line.Length - 1);
+			person.Pronoun = line.Substring( 1, line.Length - 1 );
 		}
 
-		private static void ParseTag(string line, ref Identity identity)
+		private static void ParseTag( string line, ref Identity identity )
 		{
-			var fieldStart = line.IndexOf('@');
-			if (fieldStart < 0)
+			var fieldStart = line.IndexOf( '@' );
+			if ( fieldStart < 0 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained an identity field without a tag field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new MissingInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new MissingInputFieldException( errorMessage );
 			}
-			var lastSpace = line.LastIndexOf(' ');
-			if (lastSpace >= fieldStart)
+			var lastSpace = line.LastIndexOf( ' ' );
+			if ( lastSpace >= fieldStart )
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new InvalidInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new InvalidInputFieldException( errorMessage );
 			}
-			var tag = line.Substring(fieldStart + 1, line.Length - (fieldStart + 1));
-			if (tag.Length < 1)
+			var tag = line.Substring( fieldStart + 1, line.Length - ( fieldStart + 1 ) );
+			if ( tag.Length < 1 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new BlankInputFieldException(errorMessage);
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new BlankInputFieldException( errorMessage );
 			}
 			identity.Tag = tag;
 		}
 
-		private static string[] ReadDataFromFile(string inputFilePath)
+		private static string[] ReadDataFromFile( string inputFilePath )
 		{
 			try
 			{
-				var data = File.ReadAllLines(inputFilePath);
-				Log.WriteLineTimestamped("successfully read data from input file");
+				var data = File.ReadAllLines( inputFilePath );
+				Log.WriteLineTimestamped( "successfully read data from input file" );
 				return data;
 			}
-			catch (Exception ex)
+			catch ( Exception ex )
 			{
 				var errorMessage = "failed to read data from input file";
-				Log.WriteLineTimestamped($"error: {errorMessage}; {ex.Message}");
-				throw new FileNotFoundException(errorMessage, ex);
+				Log.WriteLineTimestamped( $"error: { errorMessage }; { ex.Message }" );
+				throw new FileNotFoundException( errorMessage, ex );
 			}
 		}
 	}

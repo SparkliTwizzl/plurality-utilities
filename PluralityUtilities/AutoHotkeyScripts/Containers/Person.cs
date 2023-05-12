@@ -7,23 +7,23 @@
 		public string Decoration { get; set; } = string.Empty;
 
 
-		public static bool operator ==(Person left, Person right)
+		public static bool operator ==( Person left, Person right )
 		{
-			return left.Identities.SequenceEqual(right.Identities) && left.Pronoun.Equals(right.Pronoun) && left.Decoration.Equals(right.Decoration);
+			return left.Identities.SequenceEqual( right.Identities ) && left.Pronoun.Equals( right.Pronoun ) && left.Decoration.Equals( right.Decoration );
 		}
 
-		public static bool operator !=(Person left, Person right)
+		public static bool operator !=( Person left, Person right )
 		{
-			return !left.Identities.SequenceEqual(right.Identities) || !left.Pronoun.Equals(right.Pronoun) || !left.Decoration.Equals(right.Decoration);
+			return !left.Identities.SequenceEqual( right.Identities ) || !left.Pronoun.Equals( right.Pronoun ) || !left.Decoration.Equals( right.Decoration );
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals( object obj )
 		{
-			if (obj == null || GetType() != obj.GetType())
+			if ( obj == null || GetType() != obj.GetType() )
 			{
 				return false;
 			}
-			return this == (Person)obj;
+			return this == ( Person )obj;
 		}
 
 		public override int GetHashCode()
