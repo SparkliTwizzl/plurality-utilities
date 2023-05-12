@@ -7,12 +7,12 @@ namespace PluralityUtilities.Logging
 {
 	public static class Log
 	{
-		private static readonly string _defaultLogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log/";
-		private static readonly string _defaultLogFileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".log";
+		private static readonly string _defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
+		private static readonly string _defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
 		private static LogMode _mode = LogMode.Disabled;
-		private static string _logFolder = "";
-		private static string _logFileName = "";
-		private static string _logFilePath = "";
+		private static string _logFolder = string.Empty;
+		private static string _logFileName = string.Empty;
+		private static string _logFilePath = string.Empty;
 
 
 		public static void Disable()
@@ -30,66 +30,66 @@ namespace PluralityUtilities.Logging
 			_mode = LogMode.Verbose;
 		}
 
-		public static void SetLogFileName(string filename)
+		public static void SetLogFileName( string filename )
 		{
 			_logFileName = filename;
 			SetLogFilePath();
 		}
 
-		public static void SetLogFolder(string folder)
+		public static void SetLogFolder( string folder )
 		{
 			_logFolder = folder;
-			var lastChar = folder[folder.Length - 1];
-			if (lastChar != '\\' && lastChar != '/')
+			var lastChar = folder[ folder.Length - 1 ];
+			if ( lastChar != '\\' && lastChar != '/' )
 			{
 				_logFolder += '/';
 			}
-			Directory.CreateDirectory(_logFolder);
+			Directory.CreateDirectory( _logFolder );
 			SetLogFilePath();
 		}
 
-		public static void Write(string message = "")
+		public static void Write( string message = "" )
 		{
-			if (_mode != LogMode.Disabled)
+			if ( _mode != LogMode.Disabled )
 			{
-				if (_logFolder == "")
+				if ( _logFolder == "" )
 				{
-					SetLogFolder(_defaultLogFolder);
+					SetLogFolder( _defaultLogFolder );
 				}
-				if (_logFileName == "")
+				if ( _logFileName == "" )
 				{
-					SetLogFileName(_defaultLogFileName);
+					SetLogFileName( _defaultLogFileName );
 				}
-				using (StreamWriter logFile = File.AppendText(_logFilePath))
+				using ( StreamWriter logFile = File.AppendText( _logFilePath ) )
 				{
-					logFile.Write(message);
+					logFile.Write( message );
 				}
-				if (_mode == LogMode.Verbose)
+				if ( _mode == LogMode.Verbose )
 				{
-					Console.Write(message);
+					Console.Write( message );
 				}
 			}
 		}
 
-		public static void WriteTimestamped(string message = "")
+		public static void WriteTimestamped( string message = "" )
 		{
-			Write($"{DateTime.Now.ToString("yyyy-MM-dd:HH:mm:ss")} - {message}");
+			Write( $"{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss" ) } - { message }" );
 		}
 
-		public static void WriteLine(string message = "")
+		public static void WriteLine( string message = "" )
 		{
-			Write($"{message}\n");
+			Write( $"{ message }\n" );
 		}
 
-		public static void WriteLineTimestamped(string message = "")
+		public static void WriteLineTimestamped( string message = "" )
 		{
-			WriteTimestamped($"{message}\n");
+			WriteTimestamped( $"{ message }\n" );
 		}
 
 
 		private static void SetLogFilePath()
 		{
-			_logFilePath = _logFolder + _logFileName;
+			_logFilePath = $"{ _logFolder }{ _logFileName }";
 		}
 	}
 }

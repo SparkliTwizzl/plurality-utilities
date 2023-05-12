@@ -15,26 +15,26 @@ namespace PluralityUtilities.App
 		private static string _templatesFilePath = string.Empty;
 
 
-		static void Main(string[] args)
+		static void Main( string[] args )
 		{
 			_startTime = DateTime.Now;
-			Console.WriteLine($"PluralityUtilities v{AppVersion.CurrentVersion}");
-			if (args.Length < 1)
+			Console.WriteLine( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
+			if ( args.Length < 1 )
 			{
-				Console.WriteLine("usage:");
-				Console.WriteLine("pass input file as arg0");
-				Console.WriteLine("pass templates file as arg1");
-				Console.WriteLine("pass output file as arg2");
-				Console.WriteLine("pass \"-l\" as arg3 to enable basic logging (log file output only)");
-				Console.WriteLine("pass \"-v\" as arg3 to enable verbose logging (console and log file output)");
+				Console.WriteLine( "usage:" );
+				Console.WriteLine( "pass input file as arg0" );
+				Console.WriteLine( "pass templates file as arg1" );
+				Console.WriteLine( "pass output file as arg2" );
+				Console.WriteLine( "pass \"-l\" as arg3 to enable basic logging ( log file output only )" );
+				Console.WriteLine( "pass \"-v\" as arg3 to enable verbose logging ( console and log file output )" );
 				WaitForUserToExit();
 				return;
 			}
-			ParseArgs(args);
+			ParseArgs( args );
 			InitLogging();
-			Log.WriteLineTimestamped($"PluralityUtilities v{AppVersion.CurrentVersion}; execution started at {_startTime}");
+			Log.WriteLineTimestamped( $"PluralityUtilities v{ AppVersion.CurrentVersion }; execution started at { _startTime }" );
 			CreateAutoHotkeyScript();
-			Log.WriteLineTimestamped($"execution finished in {(DateTime.Now - _startTime).TotalSeconds} seconds");
+			Log.WriteLineTimestamped( $"execution finished in { ( DateTime.Now - _startTime ).TotalSeconds } seconds" );
 			WaitForUserToExit();
 		}
 
@@ -43,58 +43,58 @@ namespace PluralityUtilities.App
 		{
 			try
 			{
-				var people = InputParser.ParsePeopleFromFile(_inputFilePath);
-				var templates = TemplateParser.ParseTemplatesFromFile(_templatesFilePath);
-				var macros = TemplateParser.CreateAllMacrosFromTemplates(people, templates);
-				AutoHotkeyScriptGenerator.GenerateScript(macros, _outputFilePath);
+				var people = InputParser.ParsePeopleFromFile( _inputFilePath );
+				var templates = TemplateParser.ParseTemplatesFromFile( _templatesFilePath );
+				var macros = TemplateParser.CreateAllMacrosFromTemplates( people, templates );
+				AutoHotkeyScriptGenerator.GenerateScript( macros, _outputFilePath );
 				var successMessage = "generating script succeeded";
-				Console.WriteLine(successMessage);
-				Log.WriteLineTimestamped(successMessage);
+				Console.WriteLine( successMessage );
+				Log.WriteLineTimestamped( successMessage );
 			}
-			catch (Exception ex)
+			catch ( Exception ex )
 			{
-				var errorMessage = $"generating script failed with error: {ex.Message}";
-				if (_logMode != LogMode.Verbose)
+				var errorMessage = $"generating script failed with error: { ex.Message }";
+				if ( _logMode != LogMode.Verbose )
 				{
-					Console.WriteLine(errorMessage);
+					Console.WriteLine( errorMessage );
 				}
-				Log.WriteLineTimestamped(errorMessage);
+				Log.WriteLineTimestamped( errorMessage );
 			}
 		}
 
 		private static void InitLogging()
 		{
-			switch (_logMode)
+			switch ( _logMode )
 			{
 				case LogMode.Basic:
 					Log.EnableBasic();
-					Log.SetLogFolder(ProjectDirectories.LogDir);
-					Console.WriteLine("logging is enabled");
+					Log.SetLogFolder( ProjectDirectories.LogDir );
+					Console.WriteLine( "logging is enabled" );
 					break;
 				case LogMode.Verbose:
 					Log.EnableVerbose();
-					Log.SetLogFolder(ProjectDirectories.LogDir);
-					Console.WriteLine("verbose logging is enabled");
+					Log.SetLogFolder( ProjectDirectories.LogDir );
+					Console.WriteLine( "verbose logging is enabled" );
 					break;
 				default:
-					Console.WriteLine("logging is disabled");
+					Console.WriteLine( "logging is disabled" );
 					break;
 			}
 		}
 
-		private static void ParseArgs(string[] args)
+		private static void ParseArgs( string[] args )
 		{
-			_inputFilePath = args[0];
-			_templatesFilePath = args[1];
-			_outputFilePath = args[2];
-			if (args.Length > 3)
+			_inputFilePath = args[ 0 ];
+			_templatesFilePath = args[ 1 ];
+			_outputFilePath = args[ 2 ];
+			if ( args.Length > 3 )
 			{
-				var arg = args[3];
-				if (arg == "-l")
+				var arg = args[ 3 ];
+				if ( string.Compare( arg, "-l" ) == 0 )
 				{
 					_logMode = LogMode.Basic;
 				}
-				else if (arg == "-v")
+				else if ( string.Compare( arg, "-v" ) == 0 )
 				{
 					_logMode = LogMode.Verbose;
 				}
@@ -103,8 +103,8 @@ namespace PluralityUtilities.App
 
 		private static void WaitForUserToExit()
 		{
-			Console.Write("press any key to exit");
-			Console.ReadKey(true);
+			Console.Write( "press any key to exit" );
+			Console.ReadKey( true );
 		}
 	}
-}
+ }
