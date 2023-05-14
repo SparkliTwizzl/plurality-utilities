@@ -5,6 +5,6 @@ namespace PluralityUtilities.Common
 {
 	public static class AppVersion
 	{
-		public const string CurrentVersion = "0.6";
+		public const string CurrentVersion = "0.6.1";
 	}
 }
