@@ -1,6 +1,6 @@
 # PluralityUtilities
 
-## version 0.5 - 2023-01-06
+## version 0.6.1 - 2023-05-13
 
 
 ---
