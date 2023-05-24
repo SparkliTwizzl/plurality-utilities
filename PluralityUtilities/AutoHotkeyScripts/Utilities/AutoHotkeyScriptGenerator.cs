@@ -1,7 +1,7 @@
 ﻿using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
-
+using System.Text;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
@@ -14,13 +14,21 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var outputFilePath = $"{ outputFolder }{ outputFileName }";
 
 			Log.WriteLineTimestamped( $"generating output file ({ outputFilePath })..." );
-
 			Directory.CreateDirectory( outputFolder );
-			File.Create( outputFilePath ).Close();
+
+			var encoding = Encoding.UTF8;
+			using ( FileStream stream = new FileStream( outputFilePath, FileMode.Create ) )
+			{
+				using ( BinaryWriter writer = new BinaryWriter( stream, encoding ) )
+				{
+					writer.Write( encoding.GetPreamble() );
+				}
+			}
+
 			WriteHeaderToFile( outputFilePath );
 			WriteLinesToFile( outputFilePath, macros );
 
-			Log.WriteLineTimestamped( "successfully generated output file" );
+			Log.WriteLineTimestamped( $"successfully generated output file ({ outputFilePath })" );
 		}
 
 
@@ -41,7 +49,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private static void WriteHeaderToFile( string outputFilePath )
 		{
-			var header = new String[]
+			var header = new string[]
 			{
 				"#SingleInstance Force",
 				""
