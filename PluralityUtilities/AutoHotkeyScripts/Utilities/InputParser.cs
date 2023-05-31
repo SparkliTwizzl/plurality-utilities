@@ -62,7 +62,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var people = new List< Person >();
 			for ( int i = 0; i < data.Length; ++i )
 			{
-				if ( string.Compare( data[ i ], "{" ) == 0 )
+				var token = data[i];
+				if ( string.Compare( token, "{" ) == 0 )
 				{
 					++i;
 					var person = ParsePerson( data, ref i );
@@ -73,6 +74,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
 					}
 					Log.WriteLine( $"], pronoun [{ person.Pronoun }], decoration [{ person.Decoration }]" );
+				}
+				else if ( string.Compare( token, "" ) == 0 ) // ignore blank lines
+				{
+					continue;
 				}
 				else
 				{
