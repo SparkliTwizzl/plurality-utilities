@@ -13,7 +13,7 @@ namespace PluralityUtilities.AutoHotkeyScriptsTests.TestData
 
 		public static class TemplateParserData
 		{
-			public static readonly Person[] ValidPeople = ExpectedOutputData.ParsedInputData;
+			public static readonly Entry[] ValidPeople = ExpectedOutputData.ParsedInputData;
 			public static readonly string[] ValidTemplates = ExpectedOutputData.ParsedTemplateData;
 		}
 }

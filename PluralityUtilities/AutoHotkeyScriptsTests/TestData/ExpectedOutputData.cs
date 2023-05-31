@@ -27,9 +27,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 			"::@ax/:: #Alex $() &",
 		};
 
-		public static readonly Person[] ParsedInputData = new Person[]
+		public static readonly Entry[] ParsedInputData = new Entry[]
 		{
-			new Person()
+			new Entry()
 			{
 				Identities =
 				{
@@ -47,7 +47,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 				Pronoun = "they/them",
 				Decoration = "-> a person",
 			},
-			new Person()
+			new Entry()
 			{
 				Identities =
 				{

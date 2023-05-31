@@ -1,10 +1,16 @@
+entries:
 {
-    % #Sam# @sm
-    % #Sammy# @smy
-    $they/them
-    &-> a person
+	{
+		% #Sam# @sm
+		% #Sammy# @smy
+		$they/them
+		&-> a person
+	}
+	{
+		% #Alex# @ax
+	}
 }
 
+templates:
 {
-    % #Alex# @ax
 }

@@ -10,26 +10,53 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class TemplateParser
 	{
-		public static string[] CreateAllMacrosFromTemplates( Person[] people, string[] templates )
+		private static int IndentLevel { get; set; } = 0;
+
+
+		public static string[] CreateMacrosFromInput( Entry[] entries, string[] templates )
 		{
 			var results = new List< string >();
-			foreach ( var person in people )
+			foreach ( var person in entries )
 			{
 				results.AddRange( CreateAllPersonMacrosFromTemplates( templates, person ) );
 			}
 			return results.ToArray();
 		}
 
-		public static string[] ParseTemplatesFromFile( string filePath )
+		public static string[] ParseTemplatesFromFile( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( $"parsing templates from file ({ filePath })..." );
-			var inputData = File.ReadAllLines( filePath );
-			var outputData = new List< string >();
-			foreach ( var line in inputData )
+			Log.WriteLineTimestamped( $"started parsing templates from data" );
+			var templates = new List< string >();
+			for ( ; i < data.Length; ++i )
 			{
-				outputData.Add( ParseTemplateFromInputLine( line ) );
+				var token = data[ i ];
+				if ( string.Compare( token, "{" ) == 0 )
+				{
+					++IndentLevel;
+					if ( IndentLevel > 0 )
+					{
+						continue;
+					}
+				}
+				else if ( string.Compare( token, "}" ) == 0 )
+				{
+					--IndentLevel;
+					if ( IndentLevel < 1 )
+					{
+						break;
+					}
+				}
+				else if (string.Compare(token, "") == 0) // ignore blank lines
+				{
+					continue;
+				}
+				else
+				{
+					templates.Add( ParseTemplateFromInputLine( token ) );
+				}
 			}
-			return outputData.ToArray();
+			Log.WriteLineTimestamped( $"finished parsing templates from data" );
+			return templates.ToArray();
 		}
 
 
@@ -43,7 +70,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return results;
 		}
 
-		private static List< string > CreateAllPersonMacrosFromTemplates( string[] templates, Person person )
+		private static List< string > CreateAllPersonMacrosFromTemplates( string[] templates, Entry person )
 		{
 			var results = new List< string >();
 			foreach ( var identity in person.Identities )
@@ -73,6 +100,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private static string ParseTemplateFromInputLine( string input )
 		{
 			StringBuilder template = new StringBuilder();
+			input = input.Trim();
 			for ( int i = 0; i < input.Length; ++i )
 			{
 				var c = input[ i ];

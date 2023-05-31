@@ -1,3 +1,10 @@
+entries:
 {
-    % #Name# @t ag
+	{
+		% #Name# @t ag
+	}
+}
+
+templates:
+{
 }

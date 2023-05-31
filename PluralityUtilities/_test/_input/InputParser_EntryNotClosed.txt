@@ -1,2 +1,9 @@
+entries:
 {
-    % #Name# @tag
+	{
+		% #Name# @tag
+}
+
+templates:
+{
+}

@@ -1,6 +1,13 @@
 a
+entries:
 {
-    % #Name1# @n1
-    $pronouns/1
-    &decoration 1
+	{
+		% #Name1# @n1
+		$pronouns/1
+		&decoration 1
+	}
+}
+
+templates:
+{
 }
