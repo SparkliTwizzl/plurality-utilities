@@ -39,7 +39,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				}
 				else
 				{
-					var errorMessage = $"input file contains invalid data: an unknown token ( \"{ token }\" ) was read when a region name was expected";
+					var errorMessage = $"input file contains invalid data: an unknown Token ( \"{ token }\" ) was read when a region name was expected";
 					Log.WriteLineTimestamped($"error: {errorMessage}");
 					throw new UnknownTokenException(errorMessage);
 				}

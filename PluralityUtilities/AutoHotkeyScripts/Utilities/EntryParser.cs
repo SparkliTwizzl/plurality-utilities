@@ -116,7 +116,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					ParseDecoration( line, ref entry );
 					return LineTypes.Decoration;
 				default:
-					return LineTypes.Unexpected;
+					return LineTypes.Unknown;
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 							throw new MissingInputFieldException( noIdentities );
 						}
 						return entry;
-					case LineTypes.Unexpected:
+					case LineTypes.Unknown:
 						var unexpectedChar = line.Trim()[ 0 ];
 						var errorMessage = $"input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
 						Log.WriteLineTimestamped( $"error: { errorMessage }" );
