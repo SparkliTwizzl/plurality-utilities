@@ -1,5 +1,6 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
+using PluralityUtilities.Common.Enums;
 using PluralityUtilities.Logging;
 
 
@@ -7,6 +8,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class InputParser
 	{
+		private const string EntriesToken = "entries:";
+		private const string TemplatesToken = "templates:";
+
+
 		public static Input ParseInputFile( string inputFilePath )
 		{
 			Log.WriteLineTimestamped( $"started parsing input file: { inputFilePath }");
@@ -19,32 +24,45 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private static Input ParseInputData( string[] data )
 		{
-			var result = new Input();
+			var input = new Input();
+			var tokenParser = new TokenParser();
+			var expectedTokens = new string[]
+			{
+				EntriesToken,
+				TemplatesToken,
+			};
+
 			for ( int i = 0; i < data.Length; ++i )
 			{
-				var token = data[ i ];
-				if ( string.Compare( token, "entries:" ) == 0 )
+				var rawToken = data[ i ];
+				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );
+				switch ( qualifiedToken.Qualifier )
 				{
-					++i;
-					result.Entries = EntryParser.ParseEntriesFromData( data, ref i );
-				}
-				else if ( string.Compare( token, "templates:" ) == 0 )
-				{
-					++i;
-					result.Templates = TemplateParser.ParseTemplatesFromFile( data, ref i );
-				}
-				else if (string.Compare(token, "") == 0) // ignore blank lines
-				{
-					continue;
-				}
-				else
-				{
-					var errorMessage = $"input file contains invalid data: an unknown Token ( \"{ token }\" ) was read when a region name was expected";
-					Log.WriteLineTimestamped($"error: {errorMessage}");
-					throw new UnknownTokenException(errorMessage);
+					case TokenQualifiers.Recognized:
+						if ( string.Compare( qualifiedToken.Token, EntriesToken ) == 0 )
+						{
+							++i;
+							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
+						}
+						else if ( string.Compare( qualifiedToken.Token, TemplatesToken ) == 0 )
+						{
+							++i;
+							input.Templates = TemplateParser.ParseTemplatesFromFile( data, ref i );
+						}
+						break;
+
+					case TokenQualifiers.BlankLine:
+						break;
+
+					case TokenQualifiers.Unknown:
+					default:
+						var errorMessage = $"input file contains invalid data: an unknown Token ( \"{ qualifiedToken }\" ) was read when a region name was expected";
+						Log.WriteLineTimestamped($"error: {errorMessage}");
+						throw new UnknownTokenException(errorMessage);
 				}
 			}
-			return result;
+
+			return input;
 		}
 
 		private static string[] ReadDataFromFile( string inputFilePath )

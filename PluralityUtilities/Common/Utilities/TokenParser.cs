@@ -11,9 +11,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		public TokenParser() { }
 
 
-		public QualifiedToken ParseToken( string token, string expectedValue )
+		public QualifiedToken ParseToken( string token, string[] expectedValues )
 		{
-			Log.WriteLineTimestamped( $"started parsing Token \"{ token }\", expecting value \"{ expectedValue }\"");
+			Log.WriteLineTimestamped( $"started parsing token \"{ token }\", expecting a value from:");
+			foreach ( var tokenValue in expectedValues )
+			{
+				Log.WriteLineTimestamped( $"    { tokenValue }" );
+			}
+
 			var trimmedToken = token.Trim();
 			QualifiedToken qualifiedToken = new QualifiedToken();
 			qualifiedToken.Token = trimmedToken;
@@ -32,13 +37,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.BlankLine;
 			}
-			else if ( string.Compare( token, expectedValue ) == 0 )
-			{
-				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.Recognized;
-			}
 			else
 			{
-				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.Unknown;
+				for ( var i = 0; i < expectedValues.Length; ++i )
+				{
+					if ( string.Compare( token, expectedValues[ i ] ) == 0 )
+					{
+						qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.Recognized;
+						break;
+					}
+				}
 			}
 
 			return qualifiedToken;
