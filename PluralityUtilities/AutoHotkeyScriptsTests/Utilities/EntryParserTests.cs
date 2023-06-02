@@ -9,136 +9,124 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	{
 		public static class TestData
 		{
-			public static string[] InputData_BlankDecorationField = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @tag",
-				"		&",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_BlankNameField = new string[]
-			{
-				"{",
-				"	{",
-				"		% ## @tag",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_BlankPronounField = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @tag",
-				"		$",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_BlankTagField = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_EntryNotClosed = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @tag",
-				"}",
-			};
-			public static string[] InputData_MissingIdentityField = new string[]
-			{
-				"{",
-				"	{",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_MissingNameField = new string[]
-			{
-				"{",
-				"	{",
-				"		% @tag",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_MissingTagField = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name#",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_TagFieldContainsSpaces = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @t ag",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_TooManyDecorationFields = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @tag",
-				"		$pronoun",
-				"		&decoration",
-				"		&decoration",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_TooManyPronounFields = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name# @tag",
-				"		$pronoun",
-				"		$pronoun",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_UnexpectedCharBetweenEntries = new string[]
-			{
-				"{",
-				"	a",
-				"	{",
-				"		% #name# @tag",
-				"		$pronoun",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_UnexpectedCharInEntry = new string[]
-			{
-				"{",
-				"	{",
-				"		a",
-				"		% #name# @tag",
-				"		$pronoun",
-				"	}",
-				"}",
-			};
-			public static string[] InputData_Valid = new string[]
-			{
-				"{",
-				"	{",
-				"		% #name1# @tag1",
-				"		% #name2# @tag2",
-				"		$pronoun1",
-				"		decoration1",
-				"	}",
-				"	{",
-				"		% #name3# @tag3",
-				"		% #name3# @tag3",
-				"		$pronoun3",
-				"		decoration3",
-				"	}",
-				"}",
-			};
+			public const string InputData_BlankDecorationField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"		&|" +
+				"	}|" +
+				"}|";
+			public const string InputData_BlankNameField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% ## @tag|" +
+				"	}|" +
+				"}|";
+			public const string InputData_BlankPronounField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"		$|" +
+				"	}|" +
+				"}|";
+			public const string InputData_BlankTagField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @|" +
+				"	}|" +
+				"}|";
+			public const string InputData_EntryNotClosed =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"}|";
+			public const string InputData_MissingIdentityField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"	}|" +
+				"}|";
+			public const string InputData_MissingNameField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% @tag|" +
+				"	}|" +
+				"}|";
+			public const string InputData_MissingTagField =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name#|" +
+				"	}|" +
+				"}|";
+			//public const string InputData_TagFieldContainsSpaces =
+			//	"entries:|" +
+			//	"{|" +
+			//	"	{|" +
+			//	"		% #name# @t ag|" +
+			//	"	}|" +
+			//	"}|";
+			public const string InputData_TagFieldContainsSpaces =
+				"entries:|{|{|% #name# @t ag|}|}|";
+			public const string InputData_TooManyDecorationFields =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"		$pronoun|" +
+				"		&decoration|" +
+				"		&decoration|" +
+				"	}|" +
+				"}|";
+			public const string InputData_TooManyPronounFields =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"		$pronoun|" +
+				"		$pronoun|" +
+				"	}|" +
+				"}|";
+			public const string InputData_UnexpectedCharBetweenEntries =
+				"entries:|" +
+				"{|" +
+				"	a|" +
+				"	{|" +
+				"		% #name# @tag|" +
+				"		$pronoun|" +
+				"	}|" +
+				"}|";
+			public const string InputData_UnexpectedCharInEntry =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		a|" +
+				"		% #name# @tag|" +
+				"		$pronoun|" +
+				"	}|" +
+				"}|";
+			public const string InputData_Valid =
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name1# @tag1|" +
+				"		% #name2# @tag2|" +
+				"		$pronoun1|" +
+				"		&decoration1|" +
+				"	}|" +
+				"	{|" +
+				"		% #name3# @tag3|" +
+				"		% #name3# @tag3|" +
+				"		$pronoun3|" +
+				"		&decoration3|" +
+				"	}|" +
+				"}|";
 		}
 
 
@@ -150,64 +138,78 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[ TestMethod ]
-		public void ParseEntriesFromDataTest_Success()
+		[ DataRow( TestData.InputData_Valid ) ]
+		public void ParseEntriesFromDataTest_Success( string data )
 		{
-
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( BlankInputFieldException) ) ]
-		[ DataRow( "InputParser_BlankDecorationField.txt" ) ]
-		[ DataRow( "InputParser_BlankNameField.txt" ) ]
-		[ DataRow( "InputParser_BlankPronounField.txt" ) ]
-		[ DataRow( "InputParser_BlankTagField.txt" ) ]
-		public void ParseInputFileTest_ThrowsBlankInputFieldException( string fileName )
+		[ DataRow( TestData.InputData_BlankDecorationField ) ]
+		[ DataRow( TestData.InputData_BlankNameField ) ]
+		[ DataRow( TestData.InputData_BlankPronounField ) ]
+		[ DataRow( TestData.InputData_BlankTagField ) ]
+		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( DuplicateInputFieldException) ) ]
-		[ DataRow( "InputParser_TooManyDecorationFields.txt" ) ]
-		[ DataRow( "InputParser_TooManyPronounFields.txt" ) ]
-		public void ParseInputFileTest_ThrowsDuplicateInputFieldException( string fileName )
+		[ DataRow( TestData.InputData_TooManyDecorationFields ) ]
+		[ DataRow( TestData.InputData_TooManyPronounFields ) ]
+		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( InputEntryNotClosedException) ) ]
-		[ DataRow( "InputParser_EntryNotClosed.txt" ) ]
-		public void ParseInputFileTest_ThrowsInputEntryNotClosedException( string fileName )
+		[ DataRow( TestData.InputData_EntryNotClosed ) ]
+		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( InvalidInputFieldException) ) ]
-		[ DataRow( "InputParser_TagFieldContainsSpaces.txt" ) ]
-		public void ParseInputFileTest_ThrowsInvalidInputFieldException( string fileName )
+		[ DataRow( TestData.InputData_TagFieldContainsSpaces ) ]
+		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( MissingInputFieldException) ) ]
-		[ DataRow( "InputParser_MissingIdentityField.txt" ) ]
-		[ DataRow( "InputParser_MissingNameField.txt" ) ]
-		[ DataRow( "InputParser_MissingTagField.txt" ) ]
-		public void ParseInputFileTest_ThrowsMissingInputFieldException( string fileName )
+		[ DataRow( TestData.InputData_MissingIdentityField ) ]
+		[ DataRow( TestData.InputData_MissingNameField ) ]
+		[ DataRow( TestData.InputData_MissingTagField ) ]
+		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( UnexpectedCharacterException) ) ]
-		[ DataRow( "InputParser_UnexpectedCharacterBetweenEntries.txt" ) ]
-		[ DataRow( "InputParser_UnexpectedCharacterInsideEntry.txt" ) ]
-		public void ParseInputFileTest_ThrowsUnexpectedCharacterException( string fileName )
+		[ DataRow( TestData.InputData_UnexpectedCharBetweenEntries ) ]
+		[ DataRow( TestData.InputData_UnexpectedCharInEntry ) ]
+		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string data )
 		{
-			InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			var i = 1;
+			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+		}
+
+
+		private static string[] SplitDataString( string data )
+		{
+			return data.Split( '|' );
 		}
 	}
 }

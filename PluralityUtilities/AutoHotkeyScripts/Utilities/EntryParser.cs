@@ -67,6 +67,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					break;
 				}
 			}
+			if ( TokenParser.IndentLevel > 0 )
+			{
+				var errorMessage = "input file contains invalid data: an entry was not closed";
+				Log.WriteLineTimestamped($"error: {errorMessage}");
+				throw new InputEntryNotClosedException(errorMessage);
+			}
 			Log.WriteLineTimestamped( "finished parsing entries from input data" );
 			return entries.ToArray();
 		}
