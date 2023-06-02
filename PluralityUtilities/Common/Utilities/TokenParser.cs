@@ -21,7 +21,11 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 
 			var qualifiedToken = new QualifiedToken( token.Trim() );
-			if ( string.Compare( qualifiedToken.Token, "{" ) == 0 )
+			if ( string.Compare( qualifiedToken.Token, "" ) == 0 )
+			{
+				qualifiedToken.Qualifier = TokenQualifiers.BlankLine;
+			}
+			else if ( string.Compare( qualifiedToken.Token, "{" ) == 0 )
 			{
 				++IndentLevel;
 				qualifiedToken.Qualifier = TokenQualifiers.OpenBracket;
@@ -30,10 +34,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				--IndentLevel;
 				qualifiedToken.Qualifier = TokenQualifiers.CloseBracket;
-			}
-			else if ( string.Compare( qualifiedToken.Token, "" ) == 0 )
-			{
-				qualifiedToken.Qualifier = TokenQualifiers.BlankLine;
 			}
 			else
 			{
