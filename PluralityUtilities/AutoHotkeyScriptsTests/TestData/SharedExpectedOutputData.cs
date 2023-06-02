@@ -3,7 +3,7 @@
 
 namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 {
-	public static class ExpectedOutputData
+	public static class SharedExpectedOutputData
 	{
 		public static readonly Entry[] ParsedEntries = new Entry[]
 		{
@@ -36,12 +36,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Tests.TestData
 					}
 				},
 			},
-		};
-
-		public static readonly string[] ParsedTemplates = new string[]
-		{
-			"::@`tag`:: #`name`",
-			"::@`tag`/:: #`name` $(`pronoun`) &`decoration`",
 		};
 
 		public static readonly string[] GeneratedMacros = new string[]

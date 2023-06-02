@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.TestCommon.Utilities;
 
@@ -9,6 +9,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[ TestClass ]
 	public class InputParserTests
 	{
+		public static class ExpectedOutputData
+		{
+			public static Input ParsedInput = new Input();
+		}
+
+
 		[ TestInitialize ]
 		public void Setup()
 		{
@@ -16,14 +22,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
-		//[ TestMethod ]
-		//[ DataRow( "InputParser_Valid.txt" ) ]
-		//public void ParseInputFileTest_Success( string fileName )
-		//{
-		//	var expected = ExpectedOutputData.ParsedEntries;
-		//	var actual = InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
-		//	CollectionAssert.AreEqual( expected, actual );
-		//}
+		[ TestMethod ]
+		[ DataRow( "InputParser_Valid.txt" ) ]
+		public void ParseInputFileTest_Success( string fileName )
+		{
+			var expected = ExpectedOutputData.ParsedInput;
+			var actual = InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
+			Assert.AreEqual( expected, actual );
+		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( BlankInputFieldException) ) ]

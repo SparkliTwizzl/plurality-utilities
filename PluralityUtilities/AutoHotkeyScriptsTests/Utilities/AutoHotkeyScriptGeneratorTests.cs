@@ -1,17 +1,23 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
-using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
 using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 {
+
 	[ TestClass ]
 	public class AutoHotkeyScriptGeneratorTests
 	{
-		[ TestInitialize ]
+		public static class InputData
+		{
+			public static readonly string[] ValidMacroTemplates = SharedExpectedOutputData.GeneratedMacros;
+		}
+
+
+		[TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
@@ -22,8 +28,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $"{ TestDirectories.TestOutputDir }{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
-			AutoHotkeyScriptGenerator.GenerateScript( InputData.AutoHotkeyScriptGeneratorData.ValidMacroTemplates, outputFile );
-			var expected = ExpectedOutputData.GeneratedOutputFileContents;
+			AutoHotkeyScriptGenerator.GenerateScript( InputData.ValidMacroTemplates, outputFile );
+			var expected = SharedExpectedOutputData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );
 			CollectionAssert.AreEqual( expected, actual );
 		}

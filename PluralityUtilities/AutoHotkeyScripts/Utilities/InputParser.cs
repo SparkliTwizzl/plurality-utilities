@@ -48,7 +48,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						else if ( string.Compare( qualifiedToken.Value, TemplatesToken ) == 0 )
 						{
 							++i;
-							input.Templates = TemplateParser.ParseTemplatesFromFile( data, ref i );
+							input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
 						}
 						if ( tokenParser.IndentLevel > 0 )
 						{

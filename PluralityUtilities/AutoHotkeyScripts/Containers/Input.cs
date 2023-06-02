@@ -6,6 +6,14 @@
 		public string[] Templates { get; set; } = { };
 
 
+		public Input() { }
+		public Input( Entry[] entries, string[] templates )
+		{
+			Entries = entries;
+			Templates = templates;
+		}
+
+
 		public static bool operator ==( Input left, Input right )
 		{
 			return left.Entries.SequenceEqual( right.Entries ) && left.Templates.SequenceEqual( right.Templates );

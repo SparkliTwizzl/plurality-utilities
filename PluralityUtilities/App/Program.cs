@@ -42,7 +42,7 @@ namespace PluralityUtilities.App
 			try
 			{
 				var input = InputParser.ParseInputFile( _inputFilePath );
-				var macros = TemplateParser.CreateMacrosFromInput( input.Entries, input.Templates );
+				var macros = TemplateParser.GenerateMacrosFromInput( input );
 				AutoHotkeyScriptGenerator.GenerateScript( macros, _outputFilePath );
 				var successMessage = "generating script succeeded";
 				Console.WriteLine( successMessage );

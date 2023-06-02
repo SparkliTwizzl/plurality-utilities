@@ -1,14 +1,5 @@
 entries:
 {
-	{
-		% #Sam# @sm
-		% #Sammy# @smy
-		$they/them
-		&-> a person
-	}
-	{
-		% #Alex# @ax
-	}
 }
 
 templates:

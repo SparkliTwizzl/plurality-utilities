@@ -6,6 +6,14 @@
 		public string Tag { get; set; } = string.Empty;
 
 
+		public Identity() { }
+		public Identity( string name, string tag )
+		{
+			Name = name;
+			Tag = tag;
+		}
+
+
 		public static bool operator ==( Identity left, Identity right )
 		{
 			return left.Name.Equals( right.Name ) && left.Tag.Equals( right.Tag );

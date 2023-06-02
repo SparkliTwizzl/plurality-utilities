@@ -7,6 +7,15 @@
 		public string Decoration { get; set; } = string.Empty;
 
 
+		public Entry() { }
+		public Entry( List<Identity> identities, string pronoun, string decoration )
+		{
+			Identities = identities;
+			Pronoun = pronoun;
+			Decoration = decoration;
+		}
+
+
 		public static bool operator ==( Entry left, Entry right )
 		{
 			return left.Identities.SequenceEqual( right.Identities ) && left.Pronoun.Equals( right.Pronoun ) && left.Decoration.Equals( right.Decoration );

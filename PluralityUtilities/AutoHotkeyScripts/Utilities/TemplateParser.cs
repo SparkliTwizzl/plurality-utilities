@@ -14,17 +14,17 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private static TokenParser TokenParser = new TokenParser();
 
 
-		public static string[] CreateMacrosFromInput( Entry[] entries, string[] templates )
+		public static string[] GenerateMacrosFromInput( Input input )
 		{
-			var results = new List< string >();
-			foreach ( var person in entries )
+			var macros = new List< string >();
+			foreach ( var entry in input.Entries )
 			{
-				results.AddRange( CreateAllEntryMacrosFromTemplates( templates, person ) );
+				macros.AddRange( CreateAllEntryMacrosFromTemplates( input.Templates, entry ) );
 			}
-			return results.ToArray();
+			return macros.ToArray();
 		}
 
-		public static string[] ParseTemplatesFromFile( string[] data, ref int i )
+		public static string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing templates from data" );
 			var templates = new List< string >();
@@ -36,6 +36,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				switch (token.Qualifier)
 				{
 					case TokenQualifiers.BlankLine:
+						break;
+					case TokenQualifiers.OpenBracket:
 						break;
 					case TokenQualifiers.CloseBracket:
 						if ( TokenParser.IndentLevel < 1 )
@@ -59,22 +61,22 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		private static List< string > CreateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
 		{
-			var results = new List< string >();
+			var macros = new List< string >();
 			foreach ( var template in templates )
 			{
-				results.Add( CreateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
+				macros.Add( CreateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
 			}
-			return results;
+			return macros;
 		}
 
 		private static List< string > CreateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
 		{
-			var results = new List< string >();
+			var macros = new List< string >();
 			foreach ( var identity in entry.Identities )
 			{
-				results.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
+				macros.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
 			}
-			return results;
+			return macros;
 		}
 
 		private static string CreateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
