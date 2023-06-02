@@ -1,4 +1,5 @@
 ﻿using PluralityUtilities.Common.Containers;
+using PluralityUtilities.Common.Enums;
 using PluralityUtilities.Logging;
 
 
@@ -23,16 +24,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			if ( string.Compare( qualifiedToken.Token, "{" ) == 0 )
 			{
 				++IndentLevel;
-				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.OpenBracket;
+				qualifiedToken.Qualifier = TokenQualifiers.OpenBracket;
 			}
 			else if ( string.Compare( qualifiedToken.Token, "}" ) == 0 )
 			{
 				--IndentLevel;
-				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.CloseBracket;
+				qualifiedToken.Qualifier = TokenQualifiers.CloseBracket;
 			}
 			else if ( string.Compare( qualifiedToken.Token, "" ) == 0 )
 			{
-				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.BlankLine;
+				qualifiedToken.Qualifier = TokenQualifiers.BlankLine;
 			}
 			else
 			{
@@ -40,7 +41,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				{
 					if ( string.Compare( qualifiedToken.Token, expectedValues[ i ] ) == 0 )
 					{
-						qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.Recognized;
+						qualifiedToken.Qualifier = TokenQualifiers.Recognized;
 						break;
 					}
 				}
