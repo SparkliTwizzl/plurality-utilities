@@ -3,6 +3,7 @@
 using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.AutoHotkeyScripts.LookUpTables;
+using PluralityUtilities.Common.Enums;
 using PluralityUtilities.Logging;
 
 
@@ -10,7 +11,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class TemplateParser
 	{
-		private static int IndentLevel { get; set; } = 0;
+		private static TokenParser TokenParser = new TokenParser();
 
 
 		public static string[] CreateMacrosFromInput( Entry[] entries, string[] templates )
@@ -18,7 +19,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var results = new List< string >();
 			foreach ( var person in entries )
 			{
-				results.AddRange( CreateAllPersonMacrosFromTemplates( templates, person ) );
+				results.AddRange( CreateAllEntryMacrosFromTemplates( templates, person ) );
 			}
 			return results.ToArray();
 		}
@@ -27,32 +28,28 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			Log.WriteLineTimestamped( $"started parsing templates from data" );
 			var templates = new List< string >();
+			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
 			{
-				var token = data[ i ];
-				if ( string.Compare( token, "{" ) == 0 )
+				var token = TokenParser.ParseToken( data[ i ], expectedTokens);
+				var isParsingFinished = false;
+				switch (token.Qualifier)
 				{
-					++IndentLevel;
-					if ( IndentLevel > 0 )
-					{
-						continue;
-					}
-				}
-				else if ( string.Compare( token, "}" ) == 0 )
-				{
-					--IndentLevel;
-					if ( IndentLevel < 1 )
-					{
+					case TokenQualifiers.BlankLine:
 						break;
-					}
+					case TokenQualifiers.CloseBracket:
+						if ( TokenParser.IndentLevel < 1 )
+						{
+							isParsingFinished = true;
+						}
+						break;
+					default:
+						templates.Add( ParseTemplateFromInputLine( token.Value ) );
+						break;
 				}
-				else if (string.Compare(token, "") == 0) // ignore blank lines
+				if ( isParsingFinished )
 				{
-					continue;
-				}
-				else
-				{
-					templates.Add( ParseTemplateFromInputLine( token ) );
+					break;
 				}
 			}
 			Log.WriteLineTimestamped( $"finished parsing templates from data" );
@@ -70,12 +67,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return results;
 		}
 
-		private static List< string > CreateAllPersonMacrosFromTemplates( string[] templates, Entry person )
+		private static List< string > CreateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
 		{
 			var results = new List< string >();
-			foreach ( var identity in person.Identities )
+			foreach ( var identity in entry.Identities )
 			{
-				results.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, person.Pronoun, person.Decoration ) );
+				results.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
 			}
 			return results;
 		}

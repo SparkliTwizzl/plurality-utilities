@@ -35,16 +35,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 			for ( ; i < data.Length; ++i )
 			{
-				var isFinishedParsingEntries = false;
-				var qualifiedToken = TokenParser.ParseToken( data[ i ], expectedTokens );
-				switch ( qualifiedToken.Qualifier )
+				var isParsingFinished = false;
+				var token = TokenParser.ParseToken( data[ i ], expectedTokens );
+				switch ( token.Qualifier )
 				{
 					case TokenQualifiers.BlankLine:
 						break;
 					case TokenQualifiers.CloseBracket:
 						if ( TokenParser.IndentLevel == 0 )
 						{
-							isFinishedParsingEntries = true;
+							isParsingFinished = true;
 						}
 						break;
 					default:
@@ -62,7 +62,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						}
 						break;
 				}
-				if ( isFinishedParsingEntries )
+				if ( isParsingFinished )
 				{
 					break;
 				}

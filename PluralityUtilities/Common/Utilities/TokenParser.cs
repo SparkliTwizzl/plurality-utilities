@@ -21,16 +21,16 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 
 			var qualifiedToken = new QualifiedToken( token.Trim() );
-			if ( string.Compare( qualifiedToken.Token, "" ) == 0 )
+			if ( string.Compare( qualifiedToken.Value, "" ) == 0 )
 			{
 				qualifiedToken.Qualifier = TokenQualifiers.BlankLine;
 			}
-			else if ( string.Compare( qualifiedToken.Token, "{" ) == 0 )
+			else if ( string.Compare( qualifiedToken.Value, "{" ) == 0 )
 			{
 				++IndentLevel;
 				qualifiedToken.Qualifier = TokenQualifiers.OpenBracket;
 			}
-			else if ( string.Compare( qualifiedToken.Token, "}" ) == 0 )
+			else if ( string.Compare( qualifiedToken.Value, "}" ) == 0 )
 			{
 				--IndentLevel;
 				qualifiedToken.Qualifier = TokenQualifiers.CloseBracket;
@@ -39,7 +39,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				foreach ( var value in expectedValues )
 				{
-					if ( string.Compare( qualifiedToken.Token, value ) == 0 )
+					if ( string.Compare( qualifiedToken.Value, value ) == 0 )
 					{
 						qualifiedToken.Qualifier = TokenQualifiers.Recognized;
 						break;
