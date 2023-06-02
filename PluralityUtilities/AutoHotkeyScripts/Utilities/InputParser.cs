@@ -36,7 +36,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var rawToken = data[ i ];
 				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );
-				var errorMessage = string.Empty;
+				string? errorMessage;
 				switch ( qualifiedToken.Qualifier )
 				{
 					case TokenQualifiers.Recognized:
