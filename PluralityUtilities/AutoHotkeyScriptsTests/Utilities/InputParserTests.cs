@@ -8,7 +8,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[ TestClass ]
 	public class InputParserTests
 	{
-		public static class ExpectedOutputData
+		public static class TestData
 		{
 			public static Input ParsedInput = new Input();
 		}
@@ -25,7 +25,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[ DataRow( "InputParser_Valid.txt" ) ]
 		public void ParseInputFileTest_Success( string fileName )
 		{
-			var expected = ExpectedOutputData.ParsedInput;
+			var expected = TestData.ParsedInput;
 			var actual = InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
 			Assert.AreEqual( expected, actual );
 		}
