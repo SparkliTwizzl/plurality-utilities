@@ -37,9 +37,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 			else
 			{
-				for ( var i = 0; i < expectedValues.Length; ++i )
+				foreach ( var value in expectedValues )
 				{
-					if ( string.Compare( qualifiedToken.Token, expectedValues[ i ] ) == 0 )
+					if ( string.Compare( qualifiedToken.Token, value ) == 0 )
 					{
 						qualifiedToken.Qualifier = TokenQualifiers.Recognized;
 						break;
