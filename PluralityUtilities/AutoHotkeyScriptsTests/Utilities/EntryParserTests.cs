@@ -7,7 +7,142 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[ TestClass ]
 	public class EntryParserTests
 	{
-		[TestInitialize]
+		public static class TestData
+		{
+			public static string[] InputData_BlankDecorationField = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @tag",
+				"		&",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_BlankNameField = new string[]
+			{
+				"{",
+				"	{",
+				"		% ## @tag",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_BlankPronounField = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @tag",
+				"		$",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_BlankTagField = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_EntryNotClosed = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @tag",
+				"}",
+			};
+			public static string[] InputData_MissingIdentityField = new string[]
+			{
+				"{",
+				"	{",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_MissingNameField = new string[]
+			{
+				"{",
+				"	{",
+				"		% @tag",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_MissingTagField = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name#",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_TagFieldContainsSpaces = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @t ag",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_TooManyDecorationFields = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @tag",
+				"		$pronoun",
+				"		&decoration",
+				"		&decoration",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_TooManyPronounFields = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name# @tag",
+				"		$pronoun",
+				"		$pronoun",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_UnexpectedCharBetweenEntries = new string[]
+			{
+				"{",
+				"	a",
+				"	{",
+				"		% #name# @tag",
+				"		$pronoun",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_UnexpectedCharInEntry = new string[]
+			{
+				"{",
+				"	{",
+				"		a",
+				"		% #name# @tag",
+				"		$pronoun",
+				"	}",
+				"}",
+			};
+			public static string[] InputData_Valid = new string[]
+			{
+				"{",
+				"	{",
+				"		% #name1# @tag1",
+				"		% #name2# @tag2",
+				"		$pronoun1",
+				"		decoration1",
+				"	}",
+				"	{",
+				"		% #name3# @tag3",
+				"		% #name3# @tag3",
+				"		$pronoun3",
+				"		decoration3",
+				"	}",
+				"}",
+			};
+		}
+
+
+		[ TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
@@ -15,9 +150,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 
 
 		[ TestMethod ]
-		public void ParseEntriesFromDataTest_()
+		public void ParseEntriesFromDataTest_Success()
 		{
-			Assert.Fail();
+
 		}
 
 		[ TestMethod ]

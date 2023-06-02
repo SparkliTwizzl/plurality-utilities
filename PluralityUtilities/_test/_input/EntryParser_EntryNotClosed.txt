@@ -1,9 +1,0 @@
-entries:
-{
-	{
-		% #Name# @tag
-}
-
-templates:
-{
-}
