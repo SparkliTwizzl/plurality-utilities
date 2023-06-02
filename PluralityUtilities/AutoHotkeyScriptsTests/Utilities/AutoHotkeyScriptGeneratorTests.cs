@@ -23,7 +23,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		{
 			var outputFile = $"{ TestDirectories.TestOutputDir }{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
 			AutoHotkeyScriptGenerator.GenerateScript( InputData.AutoHotkeyScriptGeneratorData.ValidMacroTemplates, outputFile );
-			var expected = ExpectedOutputData.GeneratedOutputData;
+			var expected = ExpectedOutputData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );
 			CollectionAssert.AreEqual( expected, actual );
 		}

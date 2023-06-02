@@ -20,7 +20,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		//[ DataRow( "InputParser_Valid.txt" ) ]
 		//public void ParseInputFileTest_Success( string fileName )
 		//{
-		//	var expected = ExpectedOutputData.ParsedInputData;
+		//	var expected = ExpectedOutputData.ParsedEntries;
 		//	var actual = InputParser.ParseInputFile( TestUtilities.LocateInputFile( fileName ) );
 		//	CollectionAssert.AreEqual( expected, actual );
 		//}

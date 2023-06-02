@@ -8,13 +8,13 @@ namespace PluralityUtilities.AutoHotkeyScriptsTests.TestData
 	{
 		public static class AutoHotkeyScriptGeneratorData
 		{
-			public static readonly string[] ValidMacroTemplates = ExpectedOutputData.CreatedMacroData;
+			public static readonly string[] ValidMacroTemplates = ExpectedOutputData.GeneratedMacros;
 		}
 
 		public static class TemplateParserData
 		{
-			public static readonly Entry[] ValidPeople = ExpectedOutputData.ParsedInputData;
-			public static readonly string[] ValidTemplates = ExpectedOutputData.ParsedTemplateData;
+			public static readonly Entry[] ValidEntries = ExpectedOutputData.ParsedEntries;
+			public static readonly string[] ValidTemplates = ExpectedOutputData.ParsedTemplates;
 		}
 }
 }

@@ -20,10 +20,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[ TestMethod ]
 		public void CreateMacrosFromTemplatesTest_Success()
 		{
-			var people = InputData.TemplateParserData.ValidPeople;
+			var entries = InputData.TemplateParserData.ValidEntries;
 			var templates = InputData.TemplateParserData.ValidTemplates;
-			var results = TemplateParser.CreateMacrosFromInput( people, templates );
-			var expected = ExpectedOutputData.CreatedMacroData;
+			var results = TemplateParser.CreateMacrosFromInput( entries, templates );
+			var expected = ExpectedOutputData.GeneratedMacros;
 			var actual = results.ToArray();
 			Log.WriteLine( "expected:" );
 			foreach ( var line in expected )
@@ -44,7 +44,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		//public void ParseTemplatesFromFileTest_Success( string inputFile )
 		//{
 		//	var filePath = TestUtilities.LocateInputFile( inputFile );
-		//	var expected = ExpectedOutputData.ParsedTemplateData;
+		//	var expected = ExpectedOutputData.ParsedTemplates;
 		//	var actual = TemplateParser.ParseTemplatesFromFile( filePath );
 		//	CollectionAssert.AreEqual( expected, actual );
 		//}
