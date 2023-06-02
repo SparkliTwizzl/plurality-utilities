@@ -26,7 +26,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 		public static string[] ParseTemplatesFromFile( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( $"started parsing templates from data" );
+			Log.WriteLineTimestamped( "started parsing templates from data" );
 			var templates = new List< string >();
 			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
@@ -52,7 +52,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 					break;
 				}
 			}
-			Log.WriteLineTimestamped( $"finished parsing templates from data" );
+			Log.WriteLineTimestamped( "finished parsing templates from data" );
 			return templates.ToArray();
 		}
 
