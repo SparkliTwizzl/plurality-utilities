@@ -13,21 +13,19 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			var outputFilePath = $"{ outputFolder }{ outputFileName }";
 
-			Log.WriteLineTimestamped( $"generating output file ({ outputFilePath })..." );
-			Directory.CreateDirectory( outputFolder );
-
-			var encoding = Encoding.UTF8;
-			using ( FileStream stream = new FileStream( outputFilePath, FileMode.Create ) )
+			Log.WriteLineTimestamped( $"started generating output file ({ outputFilePath })" );
+			try
 			{
-				using ( BinaryWriter writer = new BinaryWriter( stream, encoding ) )
-				{
-					writer.Write( encoding.GetPreamble() );
-				}
+				Directory.CreateDirectory( outputFolder );
+				WriteByteOrderMarkToFile( outputFilePath );
+				WriteHeaderToFile( outputFilePath );
+				WriteLinesToFile( outputFilePath, macros );
 			}
-
-			WriteHeaderToFile( outputFilePath );
-			WriteLinesToFile( outputFilePath, macros );
-
+			catch (Exception e)
+			{
+				Log.WriteLineTimestamped( $"failed to generate output file ({ outputFilePath }) with exception: { e.Message }" );
+				throw new Exception( e.Message, e );
+			}
 			Log.WriteLineTimestamped( $"successfully generated output file ({ outputFilePath })" );
 		}
 
@@ -45,6 +43,18 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private static string GetNormalizedOutputFileName( string outputFile )
 		{
 			return $"{ outputFile.GetFileName().RemoveFileExtension() }.ahk";
+		}
+
+		private static void WriteByteOrderMarkToFile( string outputFilePath )
+		{
+			var encoding = Encoding.UTF8;
+			using ( FileStream stream = new FileStream( outputFilePath, FileMode.Create ) )
+			{
+				using ( BinaryWriter writer = new BinaryWriter( stream, encoding ) )
+				{
+					writer.Write( encoding.GetPreamble() );
+				}
+			}
 		}
 
 		private static void WriteHeaderToFile( string outputFilePath )
