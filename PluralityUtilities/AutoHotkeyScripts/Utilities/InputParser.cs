@@ -36,6 +36,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				var rawToken = data[ i ];
 				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );
+				var errorMessage = string.Empty;
 				switch ( qualifiedToken.Qualifier )
 				{
 					case TokenQualifiers.Recognized:
@@ -49,6 +50,12 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 							++i;
 							input.Templates = TemplateParser.ParseTemplatesFromFile( data, ref i );
 						}
+						if ( tokenParser.IndentLevel > 0 )
+						{
+							errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{ qualifiedToken.Token }\"";
+							Log.WriteLineTimestamped($"error: {errorMessage}");
+							throw new RegionNotClosedException(errorMessage);
+						}
 						break;
 
 					case TokenQualifiers.BlankLine:
@@ -56,7 +63,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 
 					case TokenQualifiers.Unknown:
 					default:
-						var errorMessage = $"input file contains invalid data: an unknown Token ( \"{ qualifiedToken }\" ) was read when a region name was expected";
+						errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Token }\" ) was read when a region name was expected";
 						Log.WriteLineTimestamped($"error: {errorMessage}");
 						throw new UnknownTokenException(errorMessage);
 				}
