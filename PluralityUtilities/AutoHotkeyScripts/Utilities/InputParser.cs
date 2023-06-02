@@ -32,7 +32,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 				TemplatesToken,
 			};
 
-			for ( int i = 0; i < data.Length; ++i )
+			for ( var i = 0; i < data.Length; ++i )
 			{
 				var rawToken = data[ i ];
 				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );

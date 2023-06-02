@@ -1,6 +1,7 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Enums;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
+using PluralityUtilities.Common.Enums;
 using PluralityUtilities.Logging;
 
 
@@ -8,7 +9,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class EntryParser
 	{
-		private static int IndentLevel { get; set; } = 0;
+		private static TokenParser TokenParser = new TokenParser();
 
 
 		/// <summary>
@@ -29,42 +30,40 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			Log.WriteLineTimestamped( "started parsing entries from input data");
 			var entries = new List< Entry >();
+			var expectedTokens = new string[] { };
+
 			for ( ; i < data.Length; ++i )
 			{
-				var token = data[i].Trim();
-				if ( string.Compare( token, "{" ) == 0 )
+				var isFinishedParsingEntries = false;
+				var qualifiedToken = TokenParser.ParseToken( data[ i ], expectedTokens );
+				switch ( qualifiedToken.Qualifier )
 				{
-					++IndentLevel;
-					if ( IndentLevel > 1 )
-					{
-						++i;
-						var entry = ParseEntry( data, ref i );
-						entries.Add( entry );
-						Log.WriteTimestamped( "successfully parsed entry: names/tags [" );
-						foreach ( Identity identity in entry.Identities )
-						{
-							Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
-						}
-						Log.WriteLine( $"], pronoun [{ entry.Pronoun }], decoration [{ entry.Decoration }]" );
-					}
-				}
-				else if ( string.Compare( token, "}" ) == 0 )
-				{
-					--IndentLevel;
-					if ( IndentLevel == 0 )
-					{
+					case TokenQualifiers.BlankLine:
 						break;
-					}
+					case TokenQualifiers.CloseBracket:
+						if ( TokenParser.IndentLevel == 0 )
+						{
+							isFinishedParsingEntries = true;
+						}
+						break;
+					default:
+						if ( TokenParser.IndentLevel > 1 )
+						{
+							++i;
+							var entry = ParseEntry( data, ref i );
+							entries.Add( entry );
+							Log.WriteTimestamped( "successfully parsed entry: names/tags [" );
+							foreach ( Identity identity in entry.Identities )
+							{
+								Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
+							}
+							Log.WriteLine( $"], pronoun [{ entry.Pronoun }], decoration [{ entry.Decoration }]" );
+						}
+						break;
 				}
-				else if ( string.Compare( token, "" ) == 0 ) // ignore blank lines
+				if ( isFinishedParsingEntries )
 				{
-					continue;
-				}
-				else
-				{
-					var errorMessage = $"input file contains invalid data: an unexpected character ( \"{ token }\" ) was read when '{{' was expected";
-					Log.WriteLineTimestamped( $"error: { errorMessage }" );
-					throw new UnexpectedCharacterException( errorMessage );
+					break;
 				}
 			}
 			Log.WriteLineTimestamped( "finished parsing entries from input data" );
@@ -104,7 +103,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			switch ( firstChar )
 			{
 				case '}':
-					--IndentLevel;
 					return LineTypes.EntryEnd;
 				case '%':
 					ParseIdentity( line, ref entry );
@@ -140,36 +138,38 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			identity.Name = name;
 		}
 
-		private static Entry ParseEntry( string[] data, ref int index )
+		private static Entry ParseEntry( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing next entry" );
 			var entry = new Entry();
-			for ( ; index < data.Length; ++index )
+			var errorMessage = string.Empty;
+			for ( ; i < data.Length; ++i )
 			{
-				var line = data[ index ];
+				var line = data[ i ];
 				var result = ParseLine( line, ref entry );
 				switch ( result )
 				{
 					case LineTypes.EntryEnd:
 						if ( entry.Identities.Count < 1 )
 						{
-							var noIdentities = "input file contains invalid data: an entry did not contain any identity fields";
-							Log.WriteLineTimestamped( $"error: { noIdentities }" );
-							throw new MissingInputFieldException( noIdentities );
+							errorMessage = "input file contains invalid data: an entry did not contain any identity fields";
+							Log.WriteLineTimestamped( $"error: { errorMessage }" );
+							throw new MissingInputFieldException( errorMessage );
 						}
+						--TokenParser.IndentLevel;
 						return entry;
 					case LineTypes.Unknown:
 						var unexpectedChar = line.Trim()[ 0 ];
-						var errorMessage = $"input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
+						errorMessage = $"input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
 						Log.WriteLineTimestamped( $"error: { errorMessage }" );
 						throw new UnexpectedCharacterException( errorMessage );
 					default:
 						break;
 				}
 			}
-			var lastEntryNotClosed = "input file contains invalid data: last entry was not closed";
-			Log.WriteLineTimestamped( $"error: { lastEntryNotClosed }" );
-			throw new InputEntryNotClosedException( lastEntryNotClosed );
+			errorMessage = "input file contains invalid data: last entry was not closed";
+			Log.WriteLineTimestamped( $"error: { errorMessage }" );
+			throw new InputEntryNotClosedException( errorMessage );
 		}
 
 		private static void ParsePronoun( string line, ref Entry entry )
