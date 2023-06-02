@@ -16,24 +16,21 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			Log.WriteLineTimestamped( $"started parsing token \"{ token }\", expecting a value from:");
 			foreach ( var tokenValue in expectedValues )
 			{
-				Log.WriteLineTimestamped( $"    { tokenValue }" );
+				Log.WriteLineTimestamped( $"	{ tokenValue }" );
 			}
 
-			var trimmedToken = token.Trim();
-			QualifiedToken qualifiedToken = new QualifiedToken();
-			qualifiedToken.Token = trimmedToken;
-
-			if ( string.Compare( trimmedToken, "{" ) == 0 )
+			var qualifiedToken = new QualifiedToken( token.Trim() );
+			if ( string.Compare( qualifiedToken.Token, "{" ) == 0 )
 			{
 				++IndentLevel;
 				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.OpenBracket;
 			}
-			else if ( string.Compare( token, "}" ) == 0 )
+			else if ( string.Compare( qualifiedToken.Token, "}" ) == 0 )
 			{
 				--IndentLevel;
 				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.CloseBracket;
 			}
-			else if ( string.Compare( token, "" ) == 0 )
+			else if ( string.Compare( qualifiedToken.Token, "" ) == 0 )
 			{
 				qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.BlankLine;
 			}
@@ -41,7 +38,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			{
 				for ( var i = 0; i < expectedValues.Length; ++i )
 				{
-					if ( string.Compare( token, expectedValues[ i ] ) == 0 )
+					if ( string.Compare( qualifiedToken.Token, expectedValues[ i ] ) == 0 )
 					{
 						qualifiedToken.Qualifier = Common.Enums.TokenQualifiers.Recognized;
 						break;
