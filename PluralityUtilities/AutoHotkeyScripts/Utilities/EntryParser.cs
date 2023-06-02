@@ -24,8 +24,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		/// throws MissingInputFieldException if file contains an identity field with no tag field<para/>
 		/// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character<para/>
 		/// </summary>
-		/// <param name="inputFilePath">path to input file to be parsed</param>
-		/// <returns>parsed input data</returns>
+		/// <param name="data">input data read from file</param>
+		/// <param name="i">index of first open bracket of entries region in the input data</param>
+		/// <returns>parsed entries</returns>
 		public static Entry[] ParseEntriesFromData( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing entries from input data");
