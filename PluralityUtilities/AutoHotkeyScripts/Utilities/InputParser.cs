@@ -6,13 +6,16 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public static class InputParser
+	public class InputParser
 	{
 		private const string EntriesToken = "entries:";
 		private const string TemplatesToken = "templates:";
 
 
-		public static Input ParseInputFile( string inputFilePath )
+		public InputParser() { }
+
+
+		public Input ParseInputFile( string inputFilePath )
 		{
 			Log.WriteLineTimestamped( $"started parsing input file: { inputFilePath }");
 			var data = ReadDataFromFile( inputFilePath );
@@ -72,7 +75,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return input;
 		}
 
-		private static string[] ReadDataFromFile( string inputFilePath )
+		private string[] ReadDataFromFile( string inputFilePath )
 		{
 			try
 			{

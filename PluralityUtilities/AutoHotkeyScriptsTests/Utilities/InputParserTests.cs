@@ -30,6 +30,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
+		public InputParser inputParser = new InputParser();
+
+
 		[ TestInitialize ]
 		public void Setup()
 		{
@@ -45,7 +48,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			var data = File.ReadAllText( filePath );
 			Log.WriteLineTimestamped( data );
 			var expected = TestData.ParsedInput;
-			var actual = InputParser.ParseInputFile( filePath );
+			var actual = inputParser.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -55,7 +58,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = InputParser.ParseInputFile( filePath );
+			_ = inputParser.ParseInputFile( filePath );
 		}
 	}
 }
