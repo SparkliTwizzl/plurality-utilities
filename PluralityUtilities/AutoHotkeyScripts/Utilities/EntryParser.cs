@@ -34,12 +34,20 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		{
 			Log.WriteLineTimestamped( "started parsing entries from input data");
 			var entries = new List< Entry >();
-			var expectedTokens = new string[] { };
+			var expectedTokens = new string[]
+			{
+				"%",
+				"$",
+				"&",
+			};
 
+			string? errorMessage;
 			for ( ; i < data.Length; ++i )
 			{
 				var isParsingFinished = false;
-				var token = TokenParser.ParseToken( data[ i ], expectedTokens );
+				var trimmedLine = data[ i ].Trim();
+				var firstChar = trimmedLine.FirstOrDefault();
+				var token = TokenParser.ParseToken( firstChar.ToString(), expectedTokens );
 				switch ( token.Qualifier )
 				{
 					case TokenQualifiers.BlankLine:
@@ -50,6 +58,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 							isParsingFinished = true;
 						}
 						break;
+					case TokenQualifiers.Unknown:
+						errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ firstChar }\" ) that was not expected at this time";
+						Log.WriteLineTimestamped( $"error: { errorMessage }" );
+						throw new UnexpectedCharacterException( errorMessage );
 					default:
 						if ( TokenParser.IndentLevel > 1 )
 						{
@@ -72,9 +84,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 			if ( TokenParser.IndentLevel > 0 )
 			{
-				var errorMessage = "input file contains invalid data: an entry was not closed";
-				Log.WriteLineTimestamped($"error: {errorMessage}");
-				throw new InputEntryNotClosedException(errorMessage);
+				errorMessage = "input file contains invalid data: an entry was not closed";
+				Log.WriteLineTimestamped($"error: { errorMessage }");
+				throw new InputEntryNotClosedException( errorMessage );
 			}
 			Log.WriteLineTimestamped( "finished parsing entries from input data" );
 			return entries.ToArray();
