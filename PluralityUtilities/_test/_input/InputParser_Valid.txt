@@ -1,5 +1,8 @@
 entries:
 {
+	{
+		% #name# @tag
+	}
 }
 
 templates:
