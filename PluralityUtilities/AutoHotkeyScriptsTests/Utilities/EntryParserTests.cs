@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
+using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon.Utilities;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
@@ -65,15 +66,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 				"		% #name#|" +
 				"	}|" +
 				"}|";
-			//public const string InputData_TagFieldContainsSpaces =
-			//	"entries:|" +
-			//	"{|" +
-			//	"	{|" +
-			//	"		% #name# @t ag|" +
-			//	"	}|" +
-			//	"}|";
 			public const string InputData_TagFieldContainsSpaces =
-				"entries:|{|{|% #name# @t ag|}|}|";
+				"entries:|" +
+				"{|" +
+				"	{|" +
+				"		% #name# @t ag|" +
+				"	}|" +
+				"}|";
 			public const string InputData_TooManyDecorationFields =
 				"entries:|" +
 				"{|" +
@@ -142,7 +141,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_Success( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -154,7 +153,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -164,7 +163,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -173,7 +172,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -182,7 +181,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -193,7 +192,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 		[ TestMethod ]
@@ -203,13 +202,21 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string data )
 		{
 			var i = 1;
-			EntryParser.ParseEntriesFromData( SplitDataString ( data ), ref i );
+			EntryParser.ParseEntriesFromData( SplitDataString( data ), ref i );
 		}
 
 
 		private static string[] SplitDataString( string data )
 		{
-			return data.Split( '|' );
+			Log.WriteLineTimestamped( $"raw data: \"{ data }\"" );
+			var tokens = data.Split( '|' );
+			Log.WriteLineTimestamped( "tokenized data:" );
+			foreach( var token in tokens )
+			{
+				Log.WriteLineTimestamped( $"	\"{ token }\"" );
+			}
+			Log.WriteLine();
+			return tokens;
 		}
 	}
 }

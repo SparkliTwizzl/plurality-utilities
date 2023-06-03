@@ -109,6 +109,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var firstChar = line[ 0 ];
 			switch ( firstChar )
 			{
+				case '{':
+					return LineTypes.EntryStart;
 				case '}':
 					return LineTypes.EntryEnd;
 				case '%':
@@ -153,13 +155,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			for ( ; i < data.Length; ++i )
 			{
 				var line = data[ i ];
-				var result = ParseLine( line, ref entry );
-				switch ( result )
+				var lineType = ParseLine( line, ref entry );
+				switch ( lineType )
 				{
 					case LineTypes.EntryEnd:
 						if ( entry.Identities.Count < 1 )
 						{
-							errorMessage = "input file contains invalid data: an entry did not contain any identity fields";
+							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: an entry did not contain any identity fields";
 							Log.WriteLineTimestamped( $"error: { errorMessage }" );
 							throw new MissingInputFieldException( errorMessage );
 						}
@@ -167,7 +169,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						return entry;
 					case LineTypes.Unknown:
 						var unexpectedChar = line.Trim()[ 0 ];
-						errorMessage = $"input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
+						errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
 						Log.WriteLineTimestamped( $"error: { errorMessage }" );
 						throw new UnexpectedCharacterException( errorMessage );
 					default:
