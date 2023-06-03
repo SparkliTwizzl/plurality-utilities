@@ -44,9 +44,12 @@ namespace PluralityUtilities.App
 				var entryParser = new EntryParser();
 				var templateParser = new TemplateParser();
 				var inputParser = new InputParser( entryParser, templateParser );
+				var scriptGenerator = new AutoHotkeyScriptGenerator();
+
 				var input = inputParser.ParseInputFile( _inputFilePath );
-				var macros = templateParser.GenerateMacrosFromInput( input );
-				AutoHotkeyScriptGenerator.GenerateScript( macros, _outputFilePath );
+				var macros = scriptGenerator.GenerateMacrosFromInput( input );
+				scriptGenerator.GenerateScript( macros, _outputFilePath );
+
 				var successMessage = "generating script succeeded";
 				Console.WriteLine( successMessage );
 				Log.WriteLineTimestamped( successMessage );

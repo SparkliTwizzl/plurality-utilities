@@ -1,6 +1,4 @@
 ﻿using System.Text;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.AutoHotkeyScripts.LookUpTables;
 using PluralityUtilities.Common.Enums;
@@ -13,16 +11,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 	{
 		private TokenParser TokenParser = new TokenParser();
 
-
-		public string[] GenerateMacrosFromInput( Input input )
-		{
-			var macros = new List< string >();
-			foreach ( var entry in input.Entries )
-			{
-				macros.AddRange( CreateAllEntryMacrosFromTemplates( input.Templates, entry ) );
-			}
-			return macros.ToArray();
-		}
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
@@ -58,43 +46,6 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return templates.ToArray();
 		}
 
-
-		private List< string > CreateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
-		{
-			var macros = new List< string >();
-			foreach ( var template in templates )
-			{
-				macros.Add( CreateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
-			}
-			return macros;
-		}
-
-		private List< string > CreateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
-		{
-			var macros = new List< string >();
-			foreach ( var identity in entry.Identities )
-			{
-				macros.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
-			}
-			return macros;
-		}
-
-		private string CreateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
-		{
-			var macro = template;
-			Dictionary< string, string > fields = new Dictionary< string, string >()
-			{
-				{ "name", identity.Name },
-				{ "tag", identity.Tag },
-				{ "pronoun", pronoun },
-				{ "decoration", decoration },
-			 };
-			foreach ( var marker in TemplateMarkers.LookUpTable )
-			{
-				macro = macro.Replace( $"`{ marker.Value }`", fields[ marker.Value ] );
-			}
-			return macro;
-		}
 
 		private string ParseTemplateFromInputLine( string input )
 		{
