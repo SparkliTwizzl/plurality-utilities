@@ -121,7 +121,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 				"	}|" +
 				"	{|" +
 				"		% #name3# @tag3|" +
-				"		% #name3# @tag3|" +
+				"		% #name4# @tag4|" +
 				"		$pronoun3|" +
 				"		&decoration3|" +
 				"	}|" +
