@@ -9,12 +9,12 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public static class TemplateParser
+	public class TemplateParser
 	{
-		private static TokenParser TokenParser = new TokenParser();
+		private TokenParser TokenParser = new TokenParser();
 
 
-		public static string[] GenerateMacrosFromInput( Input input )
+		public string[] GenerateMacrosFromInput( Input input )
 		{
 			var macros = new List< string >();
 			foreach ( var entry in input.Entries )
@@ -24,7 +24,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macros.ToArray();
 		}
 
-		public static string[] ParseTemplatesFromData( string[] data, ref int i )
+		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing templates from data" );
 			var templates = new List< string >();
@@ -59,7 +59,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private static List< string > CreateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
+		private List< string > CreateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
 		{
 			var macros = new List< string >();
 			foreach ( var template in templates )
@@ -69,7 +69,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macros;
 		}
 
-		private static List< string > CreateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
+		private List< string > CreateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
 		{
 			var macros = new List< string >();
 			foreach ( var identity in entry.Identities )
@@ -79,7 +79,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macros;
 		}
 
-		private static string CreateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
+		private string CreateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
 		{
 			var macro = template;
 			Dictionary< string, string > fields = new Dictionary< string, string >()
@@ -96,7 +96,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			return macro;
 		}
 
-		private static string ParseTemplateFromInputLine( string input )
+		private string ParseTemplateFromInputLine( string input )
 		{
 			StringBuilder template = new StringBuilder();
 			input = input.Trim();

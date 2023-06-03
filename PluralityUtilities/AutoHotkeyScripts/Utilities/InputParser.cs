@@ -11,11 +11,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		private const string EntriesToken = "entries:";
 		private const string TemplatesToken = "templates:";
 		private EntryParser EntryParser { get; set; }
+		private TemplateParser TemplateParser { get; set; }
 
 
-		public InputParser( EntryParser entryParser )
+		public InputParser( EntryParser entryParser, TemplateParser templateParser )
 		{
 			EntryParser = entryParser;
+			TemplateParser = templateParser;
 		}
 
 

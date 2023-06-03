@@ -28,9 +28,9 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
-		public int i;
 		public EntryParser? EntryParser;
 		public InputParser? InputParser;
+		public TemplateParser? TemplateParser;
 
 
 		[ TestInitialize ]
@@ -39,7 +39,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			TestUtilities.InitializeLoggingForTests();
 
 			EntryParser = new EntryParser();
-			InputParser = new InputParser( EntryParser );
+			TemplateParser = new TemplateParser();
+			InputParser = new InputParser( EntryParser, TemplateParser );
 		}
 
 

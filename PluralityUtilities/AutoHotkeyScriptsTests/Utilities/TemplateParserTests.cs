@@ -43,10 +43,15 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
+		public TemplateParser? TemplateParser;
+
+
 		[ TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
+
+			TemplateParser = new TemplateParser();
 		}
 
 
