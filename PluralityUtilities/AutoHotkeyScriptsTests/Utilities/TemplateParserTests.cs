@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
-using PluralityUtilities.AutoHotkeyScripts.Tests.TestData;
-using PluralityUtilities.AutoHotkeyScriptsTests.TestData;
-using PluralityUtilities.Logging;
 using PluralityUtilities.TestCommon.Utilities;
 
 
@@ -11,52 +8,56 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	[ TestClass ]
 	public class TemplateParserTests
 	{
+		public static class TestData
+		{
+			public static readonly string[] RawTemplateData_Valid = new string[]
+			{
+				"{",
+				@"	::\@@:: #",
+				@"	::\@\$\&@:: # $ &",
+				"}",
+			};
+			public static readonly string[] RawTemplateData_TrailingEscapeCharacter = new string[]
+			{
+				"{",
+				@"::\@@:: #\",
+				"}",
+			};
+			public static readonly string[] Templates = new string[]
+			{
+				"::@`tag`:: `name`",
+				"::@$&`tag`:: `name` `pronoun` `decoration`",
+			};
+		}
+
+
+		public TemplateParser? TemplateParser;
+
+
 		[ TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
+
+			TemplateParser = new TemplateParser();
 		}
 
 
 		[ TestMethod ]
-		public void CreateAllMacrosFromTemplatesTest_Success()
+		public void ParseTemplatesFromFileTest_Success()
 		{
-			var people = InputData.TemplateParserData.ValidPeople;
-			var templates = InputData.TemplateParserData.ValidTemplates;
-			var results = TemplateParser.CreateAllMacrosFromTemplates( people, templates );
-			var expected = ExpectedOutputData.CreatedMacroData;
-			var actual = results.ToArray();
-			Log.WriteLine( "expected:" );
-			foreach ( var line in expected )
-			{
-				Log.WriteLine( $"[{ line }]" );
-			}
-			Log.WriteLine();
-			Log.WriteLine( "actual:" );
-			foreach ( var line in actual )
-			{
-				Log.WriteLine( $"[{ line }]" );
-			}
-			CollectionAssert.AreEqual( expected, actual );
-		}
-
-		[ TestMethod ]
-		[ DataRow( "TemplateParser_ValidTemplates.txt" ) ]
-		public void ParseTemplatesFromFileTest_Success( string inputFile )
-		{
-			var filePath = TestUtilities.LocateInputFile( inputFile );
-			var expected = ExpectedOutputData.ParsedTemplateData;
-			var actual = TemplateParser.ParseTemplatesFromFile( filePath );
+			var expected = TestData.Templates;
+			var i = 0;
+			var actual = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_Valid, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( EscapeCharacterMismatchException ) ) ]
-		[ DataRow( "TemplateParser_TrailingEscapeCharacter.txt" ) ]
-		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException( string inputFile )
+		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException()
 		{
-			var filePath = TestUtilities.LocateInputFile( inputFile );
-			_ = TemplateParser.ParseTemplatesFromFile( filePath );
+			var i = 0;
+			_ = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_TrailingEscapeCharacter, ref i );
 		}
 	}
 }

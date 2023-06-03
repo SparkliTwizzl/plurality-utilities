@@ -12,7 +12,6 @@ namespace PluralityUtilities.App
 		private static LogMode _logMode = LogMode.Disabled;
 		private static string _outputFilePath = string.Empty;
 		private static DateTime _startTime;
-		private static string _templatesFilePath = string.Empty;
 
 
 		static void Main( string[] args )
@@ -23,10 +22,9 @@ namespace PluralityUtilities.App
 			{
 				Console.WriteLine( "usage:" );
 				Console.WriteLine( "pass input file as arg0" );
-				Console.WriteLine( "pass templates file as arg1" );
-				Console.WriteLine( "pass output file as arg2" );
-				Console.WriteLine( "pass \"-l\" as arg3 to enable basic logging ( log file output only )" );
-				Console.WriteLine( "pass \"-v\" as arg3 to enable verbose logging ( console and log file output )" );
+				Console.WriteLine( "pass output file as arg1" );
+				Console.WriteLine( "pass \"-l\" as arg2 to enable basic logging ( log file output only )" );
+				Console.WriteLine( "pass \"-v\" as arg2 to enable verbose logging ( console and log file output )" );
 				WaitForUserToExit();
 				return;
 			}
@@ -43,10 +41,15 @@ namespace PluralityUtilities.App
 		{
 			try
 			{
-				var people = InputParser.ParsePeopleFromFile( _inputFilePath );
-				var templates = TemplateParser.ParseTemplatesFromFile( _templatesFilePath );
-				var macros = TemplateParser.CreateAllMacrosFromTemplates( people, templates );
-				AutoHotkeyScriptGenerator.GenerateScript( macros, _outputFilePath );
+				var entryParser = new EntryParser();
+				var templateParser = new TemplateParser();
+				var inputParser = new InputParser( entryParser, templateParser );
+				var scriptGenerator = new AutoHotkeyScriptGenerator();
+
+				var input = inputParser.ParseInputFile( _inputFilePath );
+				var macros = scriptGenerator.GenerateMacrosFromInput( input );
+				scriptGenerator.GenerateScript( macros, _outputFilePath );
+
 				var successMessage = "generating script succeeded";
 				Console.WriteLine( successMessage );
 				Log.WriteLineTimestamped( successMessage );
@@ -85,11 +88,10 @@ namespace PluralityUtilities.App
 		private static void ParseArgs( string[] args )
 		{
 			_inputFilePath = args[ 0 ];
-			_templatesFilePath = args[ 1 ];
-			_outputFilePath = args[ 2 ];
-			if ( args.Length > 3 )
+			_outputFilePath = args[ 1 ];
+			if ( args.Length > 2 )
 			{
-				var arg = args[ 3 ];
+				var arg = args[ 2 ];
 				if ( string.Compare( arg, "-l" ) == 0 )
 				{
 					_logMode = LogMode.Basic;

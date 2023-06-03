@@ -1,10 +1,10 @@
+entries:
 {
-    % #Sam# @sm
-    % #Sammy# @smy
-    $they/them
-    &-> a person
+	{
+		% #name# @tag
+	}
 }
 
+templates:
 {
-    % #Alex# @ax
 }

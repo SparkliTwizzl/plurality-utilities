@@ -1,78 +1,56 @@
 ﻿using System.Text;
-
-using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.Exceptions;
 using PluralityUtilities.AutoHotkeyScripts.LookUpTables;
+using PluralityUtilities.Common.Enums;
 using PluralityUtilities.Logging;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public static class TemplateParser
+	public class TemplateParser
 	{
-		public static string[] CreateAllMacrosFromTemplates( Person[] people, string[] templates )
+		private TokenParser TokenParser = new TokenParser();
+
+
+		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			var results = new List< string >();
-			foreach ( var person in people )
+			Log.WriteLineTimestamped( "started parsing templates from data" );
+			var templates = new List< string >();
+			var expectedTokens = new string[] { };
+			for ( ; i < data.Length; ++i )
 			{
-				results.AddRange( CreateAllPersonMacrosFromTemplates( templates, person ) );
+				var token = TokenParser.ParseToken( data[ i ], expectedTokens);
+				var isParsingFinished = false;
+				switch (token.Qualifier)
+				{
+					case TokenQualifiers.BlankLine:
+						break;
+					case TokenQualifiers.OpenBracket:
+						break;
+					case TokenQualifiers.CloseBracket:
+						if ( TokenParser.IndentLevel < 1 )
+						{
+							isParsingFinished = true;
+						}
+						break;
+					default:
+						templates.Add( ParseTemplateFromInputLine( token.Value ) );
+						break;
+				}
+				if ( isParsingFinished )
+				{
+					break;
+				}
 			}
-			return results.ToArray();
+			Log.WriteLineTimestamped( "finished parsing templates from data" );
+			return templates.ToArray();
 		}
 
-		public static string[] ParseTemplatesFromFile( string filePath )
-		{
-			Log.WriteLineTimestamped( $"parsing templates from file ({ filePath })..." );
-			var inputData = File.ReadAllLines( filePath );
-			var outputData = new List< string >();
-			foreach ( var line in inputData )
-			{
-				outputData.Add( ParseTemplateFromInputLine( line ) );
-			}
-			return outputData.ToArray();
-		}
 
-
-		private static List< string > CreateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
-		{
-			var results = new List< string >();
-			foreach ( var template in templates )
-			{
-				results.Add( CreateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
-			}
-			return results;
-		}
-
-		private static List< string > CreateAllPersonMacrosFromTemplates( string[] templates, Person person )
-		{
-			var results = new List< string >();
-			foreach ( var identity in person.Identities )
-			{
-				results.AddRange( CreateAllIdentityMacrosFromTemplates( templates, identity, person.Pronoun, person.Decoration ) );
-			}
-			return results;
-		}
-
-		private static string CreateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
-		{
-			var macro = template;
-			Dictionary< string, string > fields = new Dictionary< string, string >()
-			{
-				{ "name", identity.Name },
-				{ "tag", identity.Tag },
-				{ "pronoun", pronoun },
-				{ "decoration", decoration },
-			 };
-			foreach ( var marker in TemplateMarkers.LookUpTable )
-			{
-				macro = macro.Replace( $"`{ marker.Value }`", fields[ marker.Value ] );
-			}
-			return macro;
-		}
-
-		private static string ParseTemplateFromInputLine( string input )
+		private string ParseTemplateFromInputLine( string input )
 		{
 			StringBuilder template = new StringBuilder();
+			input = input.Trim();
 			for ( int i = 0; i < input.Length; ++i )
 			{
 				var c = input[ i ];

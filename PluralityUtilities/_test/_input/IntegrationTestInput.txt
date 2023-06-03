@@ -1,12 +1,22 @@
+entries:
 {
-    % #Sam# @sm
-    % #Sammy# @smy
-    $they/them
-    &-> a person
+	{
+		% #Sam# @sm
+		% #Sammy# @smy
+		$they/them
+		&-> a person
+	}
+	{
+		% #ALEX# @AX
+		$IT/ITS
+		&[A PERSON TOO]
+	}
 }
 
+templates:
 {
-    % #ALEX# @AX
-    $IT/ITS
-    &[A PERSON TOO]
+	::\@@:: \##
+	::\@@-:: \## \$($)
+	::\@@/:: \## \&&
+	::\@@-/:: \## \$($) \&&
 }

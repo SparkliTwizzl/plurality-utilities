@@ -2,7 +2,7 @@
 {
 	public enum LineTypes
 	{
-		Unexpected,
+		Unknown,
 		EntryStart,
 		EntryEnd,
 		Name,

@@ -51,4 +51,8 @@
 		<Exec Command="@echo }&gt;&gt; $(AppVersionClass)" />
 	</Target>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Logging\Logging.csproj" />
+	</ItemGroup>
+
 </Project>
