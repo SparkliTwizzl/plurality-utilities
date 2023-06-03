@@ -11,9 +11,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 	{
 		public static class TestData
 		{
-			public static Input ParsedInput = new Input
-				(
-					new Entry[]
+			public static Entry[] Entries = new Entry[]
 					{
 						new Entry
 						(
@@ -24,19 +22,24 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 							"",
 							""
 						),
-					},
-					new string[] { }
-				);
+					};
+			public static string[] Templates = new string[] { };
+			public static Input ParsedInput = new Input( Entries, Templates );
 		}
 
 
-		public InputParser inputParser = new InputParser();
+		public int i;
+		public EntryParser? EntryParser;
+		public InputParser? InputParser;
 
 
 		[ TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
+
+			EntryParser = new EntryParser();
+			InputParser = new InputParser( EntryParser );
 		}
 
 
@@ -48,7 +51,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 			var data = File.ReadAllText( filePath );
 			Log.WriteLineTimestamped( data );
 			var expected = TestData.ParsedInput;
-			var actual = inputParser.ParseInputFile( filePath );
+			var actual = InputParser.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -58,7 +61,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = inputParser.ParseInputFile( filePath );
+			_ = InputParser.ParseInputFile( filePath );
 		}
 	}
 }

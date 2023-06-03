@@ -10,9 +10,13 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 	{
 		private const string EntriesToken = "entries:";
 		private const string TemplatesToken = "templates:";
+		private EntryParser EntryParser { get; set; }
 
 
-		public InputParser() { }
+		public InputParser( EntryParser entryParser )
+		{
+			EntryParser = entryParser;
+		}
 
 
 		public Input ParseInputFile( string inputFilePath )
@@ -25,7 +29,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private static Input ParseInputData( string[] data )
+		private Input ParseInputData( string[] data )
 		{
 			var input = new Input();
 			var tokenParser = new TokenParser();

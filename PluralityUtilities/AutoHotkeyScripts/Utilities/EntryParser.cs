@@ -7,9 +7,12 @@ using PluralityUtilities.Logging;
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
-	public static class EntryParser
+	public class EntryParser
 	{
-		private static TokenParser TokenParser = new TokenParser();
+		private TokenParser TokenParser = new TokenParser();
+
+
+		public EntryParser() { }
 
 
 		/// <summary>
@@ -27,7 +30,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		/// <param name="data">input data read from file</param>
 		/// <param name="i">index of first open bracket of entries region in the input data</param>
 		/// <returns>parsed entries</returns>
-		public static Entry[] ParseEntriesFromData( string[] data, ref int i )
+		public Entry[] ParseEntriesFromData( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing entries from input data");
 			var entries = new List< Entry >();
@@ -78,7 +81,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 		}
 
 
-		private static void ParseDecoration( string line, ref Entry entry )
+		private void ParseDecoration( string line, ref Entry entry )
 		{
 			if ( entry.Decoration != string.Empty )
 			{
@@ -95,7 +98,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			entry.Decoration = line.Substring( 1, line.Length - 1 );
 		}
 
-		private static void ParseIdentity( string line, ref Entry entry )
+		private void ParseIdentity( string line, ref Entry entry )
 		{
 			Identity identity = new Identity();
 			ParseName( line, ref identity );
@@ -103,7 +106,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			entry.Identities.Add( identity );
 		}
 
-		private static LineTypes ParseLine( string line, ref Entry entry )
+		private LineTypes ParseLine( string line, ref Entry entry )
 		{
 			line = line.TrimStart();
 			var firstChar = line[ 0 ];
@@ -127,7 +130,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private static void ParseName( string line, ref Identity identity )
+		private void ParseName( string line, ref Identity identity )
 		{
 			var fieldStart = line.IndexOf( '#' );
 			var fieldEnd = line.LastIndexOf( '#' );
@@ -147,7 +150,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			identity.Name = name;
 		}
 
-		private static Entry ParseEntry( string[] data, ref int i )
+		private Entry ParseEntry( string[] data, ref int i )
 		{
 			Log.WriteLineTimestamped( "started parsing next entry" );
 			var entry = new Entry();
@@ -181,7 +184,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			throw new InputEntryNotClosedException( errorMessage );
 		}
 
-		private static void ParsePronoun( string line, ref Entry entry )
+		private void ParsePronoun( string line, ref Entry entry )
 		{
 			if ( entry.Pronoun != string.Empty )
 			{
@@ -198,7 +201,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			entry.Pronoun = line.Substring( 1, line.Length - 1 );
 		}
 
-		private static void ParseTag( string line, ref Identity identity )
+		private void ParseTag( string line, ref Identity identity )
 		{
 			var fieldStart = line.IndexOf( '@' );
 			if ( fieldStart < 0 )

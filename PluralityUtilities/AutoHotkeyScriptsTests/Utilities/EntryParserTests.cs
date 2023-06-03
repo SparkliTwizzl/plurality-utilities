@@ -129,10 +129,14 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
+		public EntryParser EntryParser;
+
+
 		[ TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
+			EntryParser = new EntryParser();
 		}
 
 

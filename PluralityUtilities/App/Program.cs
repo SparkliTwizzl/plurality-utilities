@@ -41,7 +41,8 @@ namespace PluralityUtilities.App
 		{
 			try
 			{
-				var inputParser = new InputParser();
+				var entryParser = new EntryParser();
+				var inputParser = new InputParser( entryParser );
 				var input = inputParser.ParseInputFile( _inputFilePath );
 				var macros = TemplateParser.GenerateMacrosFromInput( input );
 				AutoHotkeyScriptGenerator.GenerateScript( macros, _outputFilePath );
