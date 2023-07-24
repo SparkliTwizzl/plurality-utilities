@@ -8,16 +8,20 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 {
 	public static class InputParser
 	{
-		// throws BlankInputFieldException if file contains a field with no value
-		// throws DuplicateInputFieldException if file contains an entry with more than one decoration field
-		// throws DuplicateInputFieldException if file contains an entry with more than one pronoun field
-		// throws InputEntryNotClosedException if file contains an entry that is not closed
-		// throws FileNotFoundException if file data could not be read
-		// throws InvalidInputFieldException if file contains a tag field with spaces in it
-		// throws MissingInputFieldException if file contains an entry with no identity fields
-		// throws MissingInputFieldException if file contains an identity field with no name field
-		// throws MissingInputFieldException if file contains an identity field with no tag field
-		// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character
+		/// <summary>
+		/// throws BlankInputFieldException if file contains a field with no value<para/>
+		/// throws DuplicateInputFieldException if file contains an entry with more than one decoration field<para/>
+		/// throws DuplicateInputFieldException if file contains an entry with more than one pronoun field<para/>
+		/// throws InputEntryNotClosedException if file contains an entry that is not closed<para/>
+		/// throws FileNotFoundException if file data could not be read<para/>
+		/// throws InvalidInputFieldException if file contains a tag field with spaces in it<para/>
+		/// throws MissingInputFieldException if file contains an entry with no identity fields<para/>
+		/// throws MissingInputFieldException if file contains an identity field with no name field<para/>
+		/// throws MissingInputFieldException if file contains an identity field with no tag field<para/>
+		/// throws UnexpectedCharacterException if file contains a line that starts with an unexpected character<para/>
+		/// </summary>
+		/// <param name="inputFilePath">path to input file to be parsed</param>
+		/// <returns>parsed input data</returns>
 		public static Person[] ParsePeopleFromFile( string inputFilePath )
 		{
 			Log.WriteLineTimestamped( $"started parsing input file: { inputFilePath }");
@@ -58,7 +62,8 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var people = new List< Person >();
 			for ( int i = 0; i < data.Length; ++i )
 			{
-				if ( string.Compare( data[ i ], "{" ) == 0 )
+				var token = data[i];
+				if ( string.Compare( token, "{" ) == 0 )
 				{
 					++i;
 					var person = ParsePerson( data, ref i );
@@ -69,6 +74,10 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 						Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
 					}
 					Log.WriteLine( $"], pronoun [{ person.Pronoun }], decoration [{ person.Decoration }]" );
+				}
+				else if ( string.Compare( token, "" ) == 0 ) // ignore blank lines
+				{
+					continue;
 				}
 				else
 				{
