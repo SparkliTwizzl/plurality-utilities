@@ -1,6 +1,5 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.AutoHotkeyScripts.LookUpTables;
-using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
 using System.Text;

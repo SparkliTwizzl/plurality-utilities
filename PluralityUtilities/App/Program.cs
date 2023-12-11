@@ -1,5 +1,4 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Utilities;
-using PluralityUtilities.Common;
 using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
 using PluralityUtilities.Logging.Enums;
@@ -7,7 +6,7 @@ using PluralityUtilities.Logging.Enums;
 
 namespace PluralityUtilities.App
 {
-    static class Program
+	static class Program
 	{
 		private static string _inputFilePath = string.Empty;
 		private static LogMode _logMode = LogMode.Disabled;

@@ -1,4 +1,4 @@
-namespace PluralityUtilities.Common
+namespace PluralityUtilities.Common.Utilities
 {
 	public static class AppVersion
 	{
