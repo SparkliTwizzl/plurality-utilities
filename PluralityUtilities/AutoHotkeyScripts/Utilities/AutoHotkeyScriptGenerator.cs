@@ -83,7 +83,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities
 			var outputFolder = outputFile.GetDirectory();
 			if ( outputFolder == string.Empty )
 			{
-				return ProjectDirectories.OutputDir;
+				return ProjectDirectories.OutputDirectory;
 			}
 			return outputFolder;
 		}

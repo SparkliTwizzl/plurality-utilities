@@ -5,13 +5,20 @@ namespace PluralityUtilities.Common.Utilities
 {
 	public static class ProjectDirectories
 	{
-		public static readonly string BuildDir = $@"{ExecutingDir}_build\";
-		public static readonly string ExecutingDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\";
-		public static readonly string LogDir = $@"{ExecutingDir}_log\";
-		public static readonly string OutputDir = $@"{ExecutingDir}_output\";
-		public static readonly string TestDir = $@"{ExecutingDir}_test\";
-		public static readonly string TestInputDir = $@"{ExecutingDir}_test\_input\";
-		public static readonly string TestLogDir = $@"{ExecutingDir}_test\_log\";
-		public static readonly string TestOutputDir = $@"{ExecutingDir}_test\_output\";
+		private const string buildDirectoryName = "_build";
+		private const string inputDirectoryName = "_input";
+		private const string logDirectoryName = "_log";
+		private const string outputDirectoryName = "_output";
+		private const string testDirectoryName = "_test";
+
+
+		public static string BuildDirectory => $@"{ExecutingDirectory}\{buildDirectoryName}";
+		public static string ExecutingDirectory => $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
+		public static string LogDirectory => $@"{ExecutingDirectory}\{logDirectoryName}";
+		public static string OutputDirectory => $@"{ExecutingDirectory}\{outputDirectoryName}";
+		public static string TestDirectory => $@"{ExecutingDirectory}\{testDirectoryName}";
+		public static string TestInputDirectory => $@"{TestDirectory}\{inputDirectoryName}";
+		public static string TestLogDirectory => $@"{TestDirectory}\{logDirectoryName}";
+		public static string TestOutputDirectory => $@"{TestDirectory}\{outputDirectoryName}";
 	}
 }
