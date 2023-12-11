@@ -1,14 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 {
 
-	[ TestClass ]
+    [ TestClass ]
 	public class AutoHotkeyScriptGeneratorTests
 	{
 		public static class TestData

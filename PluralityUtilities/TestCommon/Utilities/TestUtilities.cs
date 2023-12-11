@@ -2,7 +2,7 @@
 
 namespace PluralityUtilities.TestCommon.Utilities
 {
-	public static class TestUtilities
+    public static class TestUtilities
 	{
 		public static void InitializeLoggingForTests()
 		{
