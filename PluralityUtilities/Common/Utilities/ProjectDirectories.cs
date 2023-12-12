@@ -3,22 +3,18 @@ using System.Reflection;
 
 namespace PluralityUtilities.Common.Utilities
 {
-	public static class ProjectDirectories
+	public class ProjectDirectories
 	{
-		private const string buildDirectoryName = "_build";
-		private const string inputDirectoryName = "_input";
-		private const string logDirectoryName = "_log";
-		private const string outputDirectoryName = "_output";
-		private const string testDirectoryName = "_test";
+		protected const string buildDirectoryName = "_build";
+		protected const string inputDirectoryName = "_input";
+		protected const string logDirectoryName = "_log";
+		protected const string outputDirectoryName = "_output";
 
 
-		public static string BuildDirectory => $@"{ExecutingDirectory}\{buildDirectoryName}";
-		public static string ExecutingDirectory => $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
-		public static string LogDirectory => $@"{ExecutingDirectory}\{logDirectoryName}";
-		public static string OutputDirectory => $@"{ExecutingDirectory}\{outputDirectoryName}";
-		public static string TestDirectory => $@"{ExecutingDirectory}\{testDirectoryName}";
-		public static string TestInputDirectory => $@"{TestDirectory}\{inputDirectoryName}";
-		public static string TestLogDirectory => $@"{TestDirectory}\{logDirectoryName}";
-		public static string TestOutputDirectory => $@"{TestDirectory}\{outputDirectoryName}";
+		public static string BaseDirectory => $"{ AppContext.BaseDirectory }";
+		public static string BuildDirectory => $@"{ BaseDirectory }\{ buildDirectoryName }";
+		public static string ExecutingDirectory => $"{ Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) }";
+		public static string LogDirectory => $@"{ BaseDirectory }\{ logDirectoryName }";
+		public static string OutputDirectory => $@"{ BaseDirectory }\{ outputDirectoryName }";
 	}
 }

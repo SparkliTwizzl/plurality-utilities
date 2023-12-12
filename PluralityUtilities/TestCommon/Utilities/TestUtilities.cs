@@ -1,8 +1,9 @@
 ﻿using PluralityUtilities.Logging;
 
+
 namespace PluralityUtilities.TestCommon.Utilities
 {
-    public static class TestUtilities
+	public static class TestUtilities
 	{
 		public static void InitializeLoggingForTests()
 		{
@@ -13,7 +14,7 @@ namespace PluralityUtilities.TestCommon.Utilities
 
 		public static string LocateInputFile( string fileName )
 		{
-			return $"{ TestDirectories.TestInputDirectory }{ fileName }";
+			return $@"{ TestDirectories.TestInputDirectory }\{ fileName }";
 		}
 	}
 }

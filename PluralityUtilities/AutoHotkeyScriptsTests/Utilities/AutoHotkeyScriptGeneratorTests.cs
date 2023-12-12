@@ -72,7 +72,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[ TestMethod ]
 		public void GenerateScriptTest_Success()
 		{
-			var outputFile = $"{ TestDirectories.TestOutputDirectory }{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
+			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
 			ScriptGenerator.GenerateScript( TestData.Macros, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;
