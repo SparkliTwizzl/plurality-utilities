@@ -30,9 +30,9 @@ namespace Petrichor.Logging
 			mode = LogMode.Verbose;
 		}
 
-		public static void SetLogFileName( string filename )
+		public static void SetLogFileName( string fileName )
 		{
-			logFileName = filename;
+			logFileName = fileName;
 			SetLogFilePath();
 		}
 
