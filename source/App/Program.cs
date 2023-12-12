@@ -52,7 +52,10 @@ namespace Petrichor.App
 				scriptGenerator.GenerateScript( macros, outputFilePath );
 
 				var successMessage = "generating script succeeded";
-				Console.WriteLine( successMessage );
+				if ( logMode != LogMode.Verbose )
+				{
+					Console.WriteLine( successMessage );
+				}
 				Log.WriteLine( successMessage );
 			}
 			catch ( Exception ex )
