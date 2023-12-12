@@ -30,6 +30,11 @@ namespace Petrichor.Logging
 			mode = LogMode.Verbose;
 		}
 
+		public static void Error( string message = "" )
+		{
+			WriteLine( $"ERROR: { message }" );
+		}
+
 		public static void SetLogFileName( string fileName )
 		{
 			logFileName = fileName;
@@ -46,6 +51,16 @@ namespace Petrichor.Logging
 			}
 			Directory.CreateDirectory( logFolder );
 			SetLogFilePath();
+		}
+
+		public static void TaskFinished( string message = "" )
+		{
+			WriteLine( $"FINISHED: { message }" );
+		}
+		
+		public static void TaskStarted( string message = "" )
+		{
+			WriteLine( $"STARTED: { message }" );
 		}
 
 		public static void Write( string message = "" )

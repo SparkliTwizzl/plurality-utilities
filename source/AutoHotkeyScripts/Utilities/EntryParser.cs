@@ -32,7 +32,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		/// <returns>parsed entries</returns>
 		public Entry[] ParseEntriesFromData( string[] data, ref int i )
 		{
-			Log.WriteLine( "STARTED: parsing entries from input data");
+			Log.TaskStarted( "parsing entries from input data");
 			var entries = new List< Entry >();
 			var expectedTokens = new string[]
 			{
@@ -67,7 +67,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					case TokenQualifiers.Unknown:
 						{
 							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ firstChar }\" ) that was not expected at this time";
-							Log.WriteLine( $"error: { errorMessage }" );
+							Log.Error( errorMessage );
 							throw new UnexpectedCharacterException( errorMessage );
 						}
 
@@ -78,7 +78,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 								++i;
 								var entry = ParseEntry( data, ref i );
 								entries.Add( entry );
-								Log.WriteLine( "successfully parsed entry: names/tags [" );
+								Log.WriteLine( "parsed entry: names/tags [" );
 								foreach ( Identity identity in entry.Identities )
 								{
 									Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
@@ -96,10 +96,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			if ( TokenParser.IndentLevel > 0 )
 			{
 				errorMessage = "input file contains invalid data: an entry was not closed";
-				Log.WriteLine($"error: { errorMessage }");
+				Log.Error( errorMessage );
 				throw new InputEntryNotClosedException( errorMessage );
 			}
-			Log.WriteLine( "FINISHED: parsing entries from input data" );
+			Log.TaskFinished( "parsing entries from input data" );
 			return entries.ToArray();
 		}
 
@@ -109,13 +109,13 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			if ( entry.Decoration != string.Empty )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one decoration field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new DuplicateInputFieldException( errorMessage );
 			}
 			if ( line.Length < 2 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank decoration field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
 			entry.Decoration = line.Substring( 1, line.Length - 1 );
@@ -177,14 +177,14 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			if ( fieldStart < 0 )
 			{
 				var errorMessage = "input file contains invalid data: an entry had no name fields";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new MissingInputFieldException( errorMessage );
 			}
 			var name = line.Substring( fieldStart + 1, fieldEnd - ( fieldStart + 1 ) );
 			if ( name.Length < 1 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
 			identity.Name = name;
@@ -192,7 +192,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private Entry ParseEntry( string[] data, ref int i )
 		{
-			Log.WriteLine( "STARTED: parsing entry" );
+			Log.TaskStarted( "parsing entry" );
 			var entry = new Entry();
 			var errorMessage = string.Empty;
 			for ( ; i < data.Length; ++i )
@@ -206,11 +206,11 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							if ( entry.Identities.Count < 1 )
 							{
 								errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: an entry did not contain any identity fields";
-								Log.WriteLine( $"error: { errorMessage }" );
+								Log.Error( errorMessage );
 								throw new MissingInputFieldException( errorMessage );
 							}
 							--TokenParser.IndentLevel;
-							Log.WriteLine( "FINISHED: parsing entry" );
+							Log.TaskFinished( "parsing entry" );
 							return entry;
 						}
 
@@ -218,7 +218,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 						{
 							var unexpectedChar = line.Trim()[ 0 ];
 							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
-							Log.WriteLine( $"error: { errorMessage }" );
+							Log.Error( errorMessage );
 							throw new UnexpectedCharacterException( errorMessage );
 						}
 
@@ -229,7 +229,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				}
 			}
 			errorMessage = "input file contains invalid data: last entry was not closed";
-			Log.WriteLine( $"error: { errorMessage }" );
+			Log.Error( errorMessage );
 			throw new InputEntryNotClosedException( errorMessage );
 		}
 
@@ -238,13 +238,13 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			if ( entry.Pronoun != string.Empty )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new DuplicateInputFieldException( errorMessage );
 			}
 			if ( line.Length < 2 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
 			entry.Pronoun = line.Substring( 1, line.Length - 1 );

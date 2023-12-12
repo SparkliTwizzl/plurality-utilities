@@ -14,7 +14,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public QualifiedToken ParseToken( string token, string[] expectedValues )
 		{
-			Log.WriteLine( $"STARTED: parsing token \"{ token }\"; expecting a value from:");
+			Log.TaskFinished( $"parsing token \"{ token }\"; expecting a value from:");
 			foreach ( var tokenValue in expectedValues )
 			{
 				Log.WriteLine( $"	{ tokenValue }" );
@@ -46,7 +46,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					}
 				}
 			}
-			Log.WriteLine( "FINISHED: parsing token" );
+			Log.TaskFinished( "parsing token" );
 			return qualifiedToken;
 		}
 	}

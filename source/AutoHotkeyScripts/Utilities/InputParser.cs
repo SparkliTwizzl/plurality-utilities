@@ -23,10 +23,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public Input ParseInputFile( string inputFilePath )
 		{
-			Log.WriteLine( $"STARTED: parsing input file: { inputFilePath }");
+			Log.TaskStarted( $"parsing input file: { inputFilePath }");
 			var data = ReadDataFromFile( inputFilePath );
 			var input = ParseInputData( data );
-			Log.WriteLine( "FINISHED: parsing input file" );
+			Log.TaskFinished( "parsing input file" );
 			return input;
 		}
 
