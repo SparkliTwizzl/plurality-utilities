@@ -38,7 +38,7 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Important( string message = "" )
-			=> WriteLineWithTimestamp( $"{ message }", ConsoleColor.Magenta );
+			=> WriteLineWithTimestamp( $"{ message }", ConsoleColor.Cyan );
 
 		/// <summary>
 		/// Write formatted information to log.
@@ -77,14 +77,14 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void TaskStarted( string message = "" )
-			=> WriteLineWithTimestamp( $"STARTED: { message }", ConsoleColor.Cyan );
+			=> WriteLineWithTimestamp( $"STARTED: { message }", ConsoleColor.Yellow );
 
 		/// <summary>
 		/// Write formatted details about a warning starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Warning( string message = "" )
-			=> WriteLineWithTimestamp( $"WARNING: { message }", ConsoleColor.Yellow );
+			=> WriteLineWithTimestamp( $"WARNING: { message }", ConsoleColor.White, ConsoleColor.DarkYellow );
 
 		/// <summary>
 		/// Write text directly to log without timestamp.
