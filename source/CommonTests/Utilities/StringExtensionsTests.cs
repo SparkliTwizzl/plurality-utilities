@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Petrichor.Logging;
-using Petrichor.TestCommon.Utilities;
+using Petrichor.TestShared.Utilities;
+
 
 namespace Petrichor.Common.Utilities.Tests
 {
