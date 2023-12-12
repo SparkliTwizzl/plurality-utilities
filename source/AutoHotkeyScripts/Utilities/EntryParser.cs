@@ -78,7 +78,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 								++i;
 								var entry = ParseEntry( data, ref i );
 								entries.Add( entry );
-								Log.WriteLine( "parsed entry: names/tags [" );
+								Log.WriteWithTimestamp( "parsed entry: names/tags [" );
 								foreach ( Identity identity in entry.Identities )
 								{
 									Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
@@ -256,21 +256,21 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			if ( fieldStart < 0 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained an identity field without a tag field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new MissingInputFieldException( errorMessage );
 			}
 			var lastSpace = line.LastIndexOf( ' ' );
 			if ( lastSpace >= fieldStart )
 			{
 				var errorMessage = "input file contains invalid data: tag fields cannot contain spaces";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new InvalidInputFieldException( errorMessage );
 			}
 			var tag = line.Substring( fieldStart + 1, line.Length - ( fieldStart + 1 ) );
 			if ( tag.Length < 1 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";
-				Log.WriteLine( $"error: { errorMessage }" );
+				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
 			identity.Tag = tag;

@@ -63,8 +63,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							if ( tokenParser.IndentLevel > 0 )
 							{
 								errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{ qualifiedToken.Value }\"";
-								Log.WriteLine($"error: {errorMessage}");
-								throw new RegionNotClosedException(errorMessage);
+								Log.Error( errorMessage );
+								throw new RegionNotClosedException( errorMessage );
 							}
 							break;
 						}
@@ -78,8 +78,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					default:
 						{
 							errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Value }\" ) was read when a region name was expected";
-							Log.WriteLine($"error: {errorMessage}");
-							throw new UnknownTokenException(errorMessage);
+							Log.Error( errorMessage );
+							throw new UnknownTokenException( errorMessage );
 						}
 				}
 			}
@@ -92,13 +92,13 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			try
 			{
 				var data = File.ReadAllLines( inputFilePath );
-				Log.WriteLine( "successfully read data from input file" );
+				Log.Info( "successfully read data from input file" );
 				return data;
 			}
 			catch ( Exception ex )
 			{
 				var errorMessage = "failed to read data from input file";
-				Log.WriteLine( $"error: { errorMessage }; { ex.Message }" );
+				Log.Error( errorMessage );
 				throw new FileNotFoundException( errorMessage, ex );
 			}
 		}

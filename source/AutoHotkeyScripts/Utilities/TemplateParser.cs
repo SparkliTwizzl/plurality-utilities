@@ -75,9 +75,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					}
 					catch ( Exception ex )
 					{
-						var error = "a template contained a trailing escape character ('\\') with no following character to escape";
-						Log.WriteLine( $"error: { error }; { ex.Message }" );
-						throw new EscapeCharacterMismatchException( error, ex );
+						var errorMessage = "a template contained a trailing escape character ('\\') with no following character to escape";
+						Log.Error( errorMessage );
+						throw new EscapeCharacterMismatchException( errorMessage, ex );
 					}
 				}
 				if ( TemplateMarkers.LookUpTable.TryGetValue( c, out var value ) )
@@ -90,7 +90,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				}
 			}
 			var result = template.ToString();
-			Log.WriteLine( $"parsed template: { result }" );
+			Log.Info( $"parsed template: { result }" );
 			return result;
 		}
 	}

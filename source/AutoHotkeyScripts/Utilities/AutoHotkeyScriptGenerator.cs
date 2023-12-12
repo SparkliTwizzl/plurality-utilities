@@ -143,7 +143,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				WriteLineToFile( outputFilePath, line );
 				++linesWritten;
 			}
-			Log.WriteLine( $"wrote { linesWritten } lines to output file" );
+			Log.Info( $"wrote { linesWritten } lines to output file" );
 		}
 	}
 }

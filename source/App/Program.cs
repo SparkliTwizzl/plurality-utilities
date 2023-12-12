@@ -12,6 +12,7 @@ namespace Petrichor.App
 		private static LogMode logMode = LogMode.Disabled;
 		private static string outputFilePath = string.Empty;
 		private static DateTime startTime;
+		private const ConsoleColor highlightedMessageTextColor = ConsoleColor.Magenta;
 
 
 		static void Main( string[] args )
@@ -30,10 +31,10 @@ namespace Petrichor.App
 			}
 			ParseArgs( args );
 			InitLogging();
-			Log.WriteLine( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
-			Log.WriteLine( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
+			Log.WriteLineWithTimestamp( $"PluralityUtilities v{ AppVersion.CurrentVersion }", highlightedMessageTextColor );
+			Log.WriteLineWithTimestamp( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }", highlightedMessageTextColor );
 			CreateAutoHotkeyScript();
-			Log.WriteLine( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
+			Log.WriteLineWithTimestamp( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)", highlightedMessageTextColor );
 			WaitForUserToExit();
 		}
 
@@ -56,7 +57,7 @@ namespace Petrichor.App
 				{
 					Console.WriteLine( successMessage );
 				}
-				Log.WriteLine( successMessage );
+				Log.Info( successMessage );
 			}
 			catch ( Exception ex )
 			{
@@ -65,7 +66,7 @@ namespace Petrichor.App
 				{
 					Console.WriteLine( errorMessage );
 				}
-				Log.WriteLine( errorMessage );
+				Log.Error( errorMessage );
 			}
 		}
 
@@ -75,7 +76,7 @@ namespace Petrichor.App
 			{
 				case LogMode.Basic:
 					{
-						Log.EnableBasic();
+						Log.EnableInBasicMode();
 						Log.SetLogFolder( ProjectDirectories.LogDirectory );
 						Console.WriteLine( "logging is enabled" );
 						break;
@@ -83,7 +84,7 @@ namespace Petrichor.App
 
 				case LogMode.Verbose:
 					{
-						Log.EnableVerbose();
+						Log.EnableInVerboseMode();
 						Log.SetLogFolder( ProjectDirectories.LogDirectory );
 						Console.WriteLine( "verbose logging is enabled" );
 						break;

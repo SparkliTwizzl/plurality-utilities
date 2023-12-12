@@ -17,7 +17,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			Log.TaskFinished( $"parsing token \"{ token }\"; expecting a value from:");
 			foreach ( var tokenValue in expectedValues )
 			{
-				Log.WriteLine( $"	{ tokenValue }" );
+				Log.Info( $"	{ tokenValue }" );
 			}
 
 			var qualifiedToken = new QualifiedToken( token.Trim() );
