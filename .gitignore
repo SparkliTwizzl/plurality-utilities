@@ -1,10 +1,11 @@
 .cr/
 .vs/
+bin/
+obj/
 _build/
 _log/
 _output/
 _results/
-bin/
-obj/
+GitIgnore/
 
 *.log
