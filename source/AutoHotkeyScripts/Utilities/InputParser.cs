@@ -23,10 +23,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public Input ParseInputFile( string inputFilePath )
 		{
-			Log.WriteLineTimestamped( $"STARTED: parsing input file: { inputFilePath }");
+			Log.WriteLine( $"STARTED: parsing input file: { inputFilePath }");
 			var data = ReadDataFromFile( inputFilePath );
 			var input = ParseInputData( data );
-			Log.WriteLineTimestamped( "FINISHED: parsing input file" );
+			Log.WriteLine( "FINISHED: parsing input file" );
 			return input;
 		}
 
@@ -63,7 +63,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							if ( tokenParser.IndentLevel > 0 )
 							{
 								errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{ qualifiedToken.Value }\"";
-								Log.WriteLineTimestamped($"error: {errorMessage}");
+								Log.WriteLine($"error: {errorMessage}");
 								throw new RegionNotClosedException(errorMessage);
 							}
 							break;
@@ -78,7 +78,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					default:
 						{
 							errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Value }\" ) was read when a region name was expected";
-							Log.WriteLineTimestamped($"error: {errorMessage}");
+							Log.WriteLine($"error: {errorMessage}");
 							throw new UnknownTokenException(errorMessage);
 						}
 				}
@@ -92,13 +92,13 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			try
 			{
 				var data = File.ReadAllLines( inputFilePath );
-				Log.WriteLineTimestamped( "successfully read data from input file" );
+				Log.WriteLine( "successfully read data from input file" );
 				return data;
 			}
 			catch ( Exception ex )
 			{
 				var errorMessage = "failed to read data from input file";
-				Log.WriteLineTimestamped( $"error: { errorMessage }; { ex.Message }" );
+				Log.WriteLine( $"error: { errorMessage }; { ex.Message }" );
 				throw new FileNotFoundException( errorMessage, ex );
 			}
 		}

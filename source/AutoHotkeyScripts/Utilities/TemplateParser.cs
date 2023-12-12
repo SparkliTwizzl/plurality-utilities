@@ -14,7 +14,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( "STARTED: parsing templates from data" );
+			Log.WriteLine( "STARTED: parsing templates from data" );
 			var templates = new List< string >();
 			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
@@ -53,7 +53,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					break;
 				}
 			}
-			Log.WriteLineTimestamped( "FINISHED: parsing templates from data" );
+			Log.WriteLine( "FINISHED: parsing templates from data" );
 			return templates.ToArray();
 		}
 
@@ -76,7 +76,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					catch ( Exception ex )
 					{
 						var error = "a template contained a trailing escape character ('\\') with no following character to escape";
-						Log.WriteLineTimestamped( $"error: { error }; { ex.Message }" );
+						Log.WriteLine( $"error: { error }; { ex.Message }" );
 						throw new EscapeCharacterMismatchException( error, ex );
 					}
 				}
@@ -90,7 +90,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				}
 			}
 			var result = template.ToString();
-			Log.WriteLineTimestamped( $"parsed template: { result }" );
+			Log.WriteLine( $"parsed template: { result }" );
 			return result;
 		}
 	}

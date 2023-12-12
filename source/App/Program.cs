@@ -30,10 +30,10 @@ namespace Petrichor.App
 			}
 			ParseArgs( args );
 			InitLogging();
-			Log.WriteLineTimestamped( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
-			Log.WriteLineTimestamped( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
+			Log.WriteLine( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
+			Log.WriteLine( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			CreateAutoHotkeyScript();
-			Log.WriteLineTimestamped( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
+			Log.WriteLine( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
 			WaitForUserToExit();
 		}
 
@@ -53,7 +53,7 @@ namespace Petrichor.App
 
 				var successMessage = "generating script succeeded";
 				Console.WriteLine( successMessage );
-				Log.WriteLineTimestamped( successMessage );
+				Log.WriteLine( successMessage );
 			}
 			catch ( Exception ex )
 			{
@@ -62,7 +62,7 @@ namespace Petrichor.App
 				{
 					Console.WriteLine( errorMessage );
 				}
-				Log.WriteLineTimestamped( errorMessage );
+				Log.WriteLine( errorMessage );
 			}
 		}
 

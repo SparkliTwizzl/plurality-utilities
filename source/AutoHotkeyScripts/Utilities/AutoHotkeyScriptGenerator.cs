@@ -24,7 +24,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			var outputFilePath = $"{ outputFolder }{ outputFileName }";
 
-			Log.WriteLineTimestamped( $"STARTED: generating output file ({ outputFilePath })" );
+			Log.WriteLine( $"STARTED: generating output file ({ outputFilePath })" );
 			try
 			{
 				Directory.CreateDirectory( outputFolder );
@@ -34,10 +34,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			catch ( Exception ex )
 			{
 				var errorMessage = $"failed to generate output file ({ outputFilePath })";
-				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				Log.WriteLine( $"error: { errorMessage }" );
 				throw new Exception( errorMessage, ex );
 			}
-			Log.WriteLineTimestamped( "FINISHED: generating output file" );
+			Log.WriteLine( "FINISHED: generating output file" );
 		}
 
 
@@ -107,7 +107,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private void WriteHeaderToFile( string outputFilePath )
 		{
-			Log.WriteLineTimestamped( "STARTED: writing header to output file" );
+			Log.WriteLine( "STARTED: writing header to output file" );
 			WriteByteOrderMarkToFile( outputFilePath );
 			var header = new string[]
 			{
@@ -115,7 +115,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				"",
 			};
 			WriteLinesToFile( outputFilePath, header );
-			Log.WriteLineTimestamped( "FINISHED: writing header to output file" );
+			Log.WriteLine( "FINISHED: writing header to output file" );
 		}
 
 		private void WriteLineToFile( string outputFilePath, string line = "" )
@@ -130,7 +130,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			catch ( Exception ex )
 			{
 				var errorMessage = "failed to write line to output file";
-				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				Log.WriteLine( $"error: { errorMessage }" );
 				throw new FileLoadException( errorMessage, ex );
 			}
 		}
@@ -143,7 +143,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				WriteLineToFile( outputFilePath, line );
 				++linesWritten;
 			}
-			Log.WriteLineTimestamped( $"wrote { linesWritten } lines to output file" );
+			Log.WriteLine( $"wrote { linesWritten } lines to output file" );
 		}
 	}
 }

@@ -50,40 +50,38 @@ namespace Petrichor.Logging
 
 		public static void Write( string message = "" )
 		{
-			if ( mode != LogMode.Disabled )
+			if ( mode == LogMode.Disabled || message == "" )
 			{
-				if ( logFolder == "" )
-				{
-					SetLogFolder( defaultLogFolder );
-				}
-				if ( logFileName == "" )
-				{
-					SetLogFileName( defaultLogFileName );
-				}
-				using ( StreamWriter logFile = File.AppendText( logFilePath ) )
-				{
-					logFile.Write( message );
-				}
-				if ( mode == LogMode.Verbose )
-				{
-					Console.Write( message );
-				}
+				return;
 			}
-		}
 
-		public static void WriteTimestamped( string message = "" )
-		{
-			Write( $"{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } - { message }" );
+			if ( message != "\n" )
+			{
+				message = $"[{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }] { message }";
+			}
+
+			if ( logFolder == "" )
+			{
+				SetLogFolder( defaultLogFolder );
+			}
+			if ( logFileName == "" )
+			{
+				SetLogFileName( defaultLogFileName );
+			}
+
+			using ( StreamWriter logFile = File.AppendText( logFilePath ) )
+			{
+				logFile.Write( message );
+			}
+			if ( mode == LogMode.Verbose )
+			{
+				Console.Write( message );
+			}
 		}
 
 		public static void WriteLine( string message = "" )
 		{
 			Write( $"{ message }\n" );
-		}
-
-		public static void WriteLineTimestamped( string message = "" )
-		{
-			WriteTimestamped( $"{ message }\n" );
 		}
 
 
