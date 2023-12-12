@@ -34,6 +34,13 @@ namespace Petrichor.Logging
 			=> WriteLineWithTimestamp( $"ERROR: { message }", ConsoleColor.White, ConsoleColor.Red );
 
 		/// <summary>
+		/// Write formatted important information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Important( string message = "" )
+			=> WriteLineWithTimestamp( $"{ message }", ConsoleColor.Magenta );
+
+		/// <summary>
 		/// Write formatted information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>

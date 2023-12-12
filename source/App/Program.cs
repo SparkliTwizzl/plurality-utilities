@@ -12,7 +12,6 @@ namespace Petrichor.App
 		private static LogMode logMode = LogMode.Disabled;
 		private static string outputFilePath = string.Empty;
 		private static DateTime startTime;
-		private const ConsoleColor highlightedMessageTextColor = ConsoleColor.Magenta;
 
 
 		static void Main( string[] args )
@@ -31,10 +30,10 @@ namespace Petrichor.App
 			}
 			ParseArgs( args );
 			InitLogging();
-			Log.WriteLineWithTimestamp( $"PluralityUtilities v{ AppVersion.CurrentVersion }", highlightedMessageTextColor );
-			Log.WriteLineWithTimestamp( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }", highlightedMessageTextColor );
+			Log.Important( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
+			Log.Important( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			CreateAutoHotkeyScript();
-			Log.WriteLineWithTimestamp( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)", highlightedMessageTextColor );
+			Log.Important( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
 			WaitForUserToExit();
 		}
 
@@ -43,25 +42,26 @@ namespace Petrichor.App
 		{
 			try
 			{
+				Log.Important( "generating AutoHotkey shortcuts script..." );
+
 				var entryParser = new EntryParser();
 				var templateParser = new TemplateParser();
 				var inputParser = new InputParser( entryParser, templateParser );
 				var scriptGenerator = new AutoHotkeyScriptGenerator();
-
 				var input = inputParser.ParseInputFile( inputFilePath );
 				var macros = scriptGenerator.GenerateMacrosFromInput( input );
 				scriptGenerator.GenerateScript( macros, outputFilePath );
 
-				var successMessage = "generating script succeeded";
+				var successMessage = "generated AutoHotkey shortcuts script successfully";
 				if ( logMode != LogMode.Verbose )
 				{
 					Console.WriteLine( successMessage );
 				}
-				Log.Info( successMessage );
+				Log.Important( successMessage );
 			}
 			catch ( Exception ex )
 			{
-				var errorMessage = $"generating script failed with error: { ex.Message }";
+				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: { ex.Message }";
 				if ( logMode != LogMode.Verbose )
 				{
 					Console.WriteLine( errorMessage );
