@@ -8,15 +8,15 @@ namespace Petrichor.App
 {
 	static class Program
 	{
-		private static string _inputFilePath = string.Empty;
-		private static LogMode _logMode = LogMode.Disabled;
-		private static string _outputFilePath = string.Empty;
-		private static DateTime _startTime;
+		private static string inputFilePath = string.Empty;
+		private static LogMode logMode = LogMode.Disabled;
+		private static string outputFilePath = string.Empty;
+		private static DateTime startTime;
 
 
 		static void Main( string[] args )
 		{
-			_startTime = DateTime.Now;
+			startTime = DateTime.Now;
 			Console.WriteLine( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
 			if ( args.Length < 1 )
 			{
@@ -30,9 +30,10 @@ namespace Petrichor.App
 			}
 			ParseArgs( args );
 			InitLogging();
-			Log.WriteLineTimestamped( $"PluralityUtilities v{ AppVersion.CurrentVersion }; execution started at { _startTime }" );
+			Log.WriteLineTimestamped( $"PluralityUtilities v{ AppVersion.CurrentVersion }" );
+			Log.WriteLineTimestamped( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			CreateAutoHotkeyScript();
-			Log.WriteLineTimestamped( $"execution finished in { ( DateTime.Now - _startTime ).TotalSeconds } seconds" );
+			Log.WriteLineTimestamped( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
 			WaitForUserToExit();
 		}
 
@@ -46,9 +47,9 @@ namespace Petrichor.App
 				var inputParser = new InputParser( entryParser, templateParser );
 				var scriptGenerator = new AutoHotkeyScriptGenerator();
 
-				var input = inputParser.ParseInputFile( _inputFilePath );
+				var input = inputParser.ParseInputFile( inputFilePath );
 				var macros = scriptGenerator.GenerateMacrosFromInput( input );
-				scriptGenerator.GenerateScript( macros, _outputFilePath );
+				scriptGenerator.GenerateScript( macros, outputFilePath );
 
 				var successMessage = "generating script succeeded";
 				Console.WriteLine( successMessage );
@@ -57,7 +58,7 @@ namespace Petrichor.App
 			catch ( Exception ex )
 			{
 				var errorMessage = $"generating script failed with error: { ex.Message }";
-				if ( _logMode != LogMode.Verbose )
+				if ( logMode != LogMode.Verbose )
 				{
 					Console.WriteLine( errorMessage );
 				}
@@ -67,38 +68,46 @@ namespace Petrichor.App
 
 		private static void InitLogging()
 		{
-			switch ( _logMode )
+			switch ( logMode )
 			{
 				case LogMode.Basic:
-					Log.EnableBasic();
-					Log.SetLogFolder( ProjectDirectories.LogDirectory );
-					Console.WriteLine( "logging is enabled" );
-					break;
+					{
+						Log.EnableBasic();
+						Log.SetLogFolder( ProjectDirectories.LogDirectory );
+						Console.WriteLine( "logging is enabled" );
+						break;
+					}
+
 				case LogMode.Verbose:
-					Log.EnableVerbose();
-					Log.SetLogFolder( ProjectDirectories.LogDirectory );
-					Console.WriteLine( "verbose logging is enabled" );
-					break;
+					{
+						Log.EnableVerbose();
+						Log.SetLogFolder( ProjectDirectories.LogDirectory );
+						Console.WriteLine( "verbose logging is enabled" );
+						break;
+					}
+
 				default:
-					Console.WriteLine( "logging is disabled" );
-					break;
+					{
+						Console.WriteLine( "logging is disabled" );
+						break;
+					}
 			}
 		}
 
 		private static void ParseArgs( string[] args )
 		{
-			_inputFilePath = args[ 0 ];
-			_outputFilePath = args[ 1 ];
+			inputFilePath = args[ 0 ];
+			outputFilePath = args[ 1 ];
 			if ( args.Length > 2 )
 			{
 				var arg = args[ 2 ];
 				if ( string.Compare( arg, "-l" ) == 0 )
 				{
-					_logMode = LogMode.Basic;
+					logMode = LogMode.Basic;
 				}
 				else if ( string.Compare( arg, "-v" ) == 0 )
 				{
-					_logMode = LogMode.Verbose;
+					logMode = LogMode.Verbose;
 				}
 			}
 		}

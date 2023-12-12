@@ -23,10 +23,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public Input ParseInputFile( string inputFilePath )
 		{
-			Log.WriteLineTimestamped( $"started parsing input file: { inputFilePath }");
+			Log.WriteLineTimestamped( $"STARTED: parsing input file: { inputFilePath }");
 			var data = ReadDataFromFile( inputFilePath );
 			var input = ParseInputData( data );
-			Log.WriteLineTimestamped( "finished parsing input file" );
+			Log.WriteLineTimestamped( "FINISHED: parsing input file" );
 			return input;
 		}
 
@@ -49,32 +49,38 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				switch ( qualifiedToken.Qualifier )
 				{
 					case TokenQualifiers.Recognized:
-						if ( string.Compare( qualifiedToken.Value, EntriesToken ) == 0 )
 						{
-							++i;
-							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
+							if ( string.Compare( qualifiedToken.Value, EntriesToken ) == 0 )
+							{
+								++i;
+								input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
+							}
+							else if ( string.Compare( qualifiedToken.Value, TemplatesToken ) == 0 )
+							{
+								++i;
+								input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
+							}
+							if ( tokenParser.IndentLevel > 0 )
+							{
+								errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{ qualifiedToken.Value }\"";
+								Log.WriteLineTimestamped($"error: {errorMessage}");
+								throw new RegionNotClosedException(errorMessage);
+							}
+							break;
 						}
-						else if ( string.Compare( qualifiedToken.Value, TemplatesToken ) == 0 )
-						{
-							++i;
-							input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
-						}
-						if ( tokenParser.IndentLevel > 0 )
-						{
-							errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{ qualifiedToken.Value }\"";
-							Log.WriteLineTimestamped($"error: {errorMessage}");
-							throw new RegionNotClosedException(errorMessage);
-						}
-						break;
 
 					case TokenQualifiers.BlankLine:
-						break;
+						{
+							break;
+						}
 
 					case TokenQualifiers.Unknown:
 					default:
-						errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Value }\" ) was read when a region name was expected";
-						Log.WriteLineTimestamped($"error: {errorMessage}");
-						throw new UnknownTokenException(errorMessage);
+						{
+							errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Value }\" ) was read when a region name was expected";
+							Log.WriteLineTimestamped($"error: {errorMessage}");
+							throw new UnknownTokenException(errorMessage);
+						}
 				}
 			}
 

@@ -24,20 +24,20 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			var outputFilePath = $"{ outputFolder }{ outputFileName }";
 
-			Log.WriteLineTimestamped( $"started generating output file ({ outputFilePath })" );
+			Log.WriteLineTimestamped( $"STARTED: generating output file ({ outputFilePath })" );
 			try
 			{
 				Directory.CreateDirectory( outputFolder );
-				WriteByteOrderMarkToFile( outputFilePath );
 				WriteHeaderToFile( outputFilePath );
 				WriteLinesToFile( outputFilePath, macros );
 			}
-			catch (Exception e)
+			catch ( Exception ex )
 			{
-				Log.WriteLineTimestamped( $"failed to generate output file ({ outputFilePath }) with exception: { e.Message }" );
-				throw new Exception( e.Message, e );
+				var errorMessage = $"failed to generate output file ({ outputFilePath })";
+				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				throw new Exception( errorMessage, ex );
 			}
-			Log.WriteLineTimestamped( $"successfully generated output file ({ outputFilePath })" );
+			Log.WriteLineTimestamped( "FINISHED: generating output file" );
 		}
 
 
@@ -107,12 +107,15 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private void WriteHeaderToFile( string outputFilePath )
 		{
+			Log.WriteLineTimestamped( "STARTED: writing header to output file" );
+			WriteByteOrderMarkToFile( outputFilePath );
 			var header = new string[]
 			{
 				"#SingleInstance Force",
-				""
-			 };
+				"",
+			};
 			WriteLinesToFile( outputFilePath, header );
+			Log.WriteLineTimestamped( "FINISHED: writing header to output file" );
 		}
 
 		private void WriteLineToFile( string outputFilePath, string line = "" )
@@ -122,12 +125,11 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				using ( StreamWriter writer = File.AppendText( outputFilePath ) )
 				{
 					writer.WriteLine( line );
-					Log.WriteLineTimestamped( $"wrote line to output file: { line }" );
 				}
 			}
 			catch ( Exception ex )
 			{
-				var errorMessage = "failed to write to output file";
+				var errorMessage = "failed to write line to output file";
 				Log.WriteLineTimestamped( $"error: { errorMessage }" );
 				throw new FileLoadException( errorMessage, ex );
 			}
@@ -135,10 +137,13 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private void WriteLinesToFile( string outputFilePath, string[] data )
 		{
+			var linesWritten = 0;
 			foreach ( string line in data )
 			{
 				WriteLineToFile( outputFilePath, line );
+				++linesWritten;
 			}
+			Log.WriteLineTimestamped( $"wrote { linesWritten } lines to output file" );
 		}
 	}
 }

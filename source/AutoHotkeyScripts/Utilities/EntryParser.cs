@@ -32,7 +32,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		/// <returns>parsed entries</returns>
 		public Entry[] ParseEntriesFromData( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( "started parsing entries from input data");
+			Log.WriteLineTimestamped( "STARTED: parsing entries from input data");
 			var entries = new List< Entry >();
 			var expectedTokens = new string[]
 			{
@@ -51,31 +51,42 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				switch ( token.Qualifier )
 				{
 					case TokenQualifiers.BlankLine:
-						break;
+						{
+							break;
+						}
+
 					case TokenQualifiers.CloseBracket:
-						if ( TokenParser.IndentLevel == 0 )
 						{
-							isParsingFinished = true;
-						}
-						break;
-					case TokenQualifiers.Unknown:
-						errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ firstChar }\" ) that was not expected at this time";
-						Log.WriteLineTimestamped( $"error: { errorMessage }" );
-						throw new UnexpectedCharacterException( errorMessage );
-					default:
-						if ( TokenParser.IndentLevel > 1 )
-						{
-							++i;
-							var entry = ParseEntry( data, ref i );
-							entries.Add( entry );
-							Log.WriteTimestamped( "successfully parsed entry: names/tags [" );
-							foreach ( Identity identity in entry.Identities )
+							if ( TokenParser.IndentLevel == 0 )
 							{
-								Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
+								isParsingFinished = true;
 							}
-							Log.WriteLine( $"], pronoun [{ entry.Pronoun }], decoration [{ entry.Decoration }]" );
+							break;
 						}
-						break;
+
+					case TokenQualifiers.Unknown:
+						{
+							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ firstChar }\" ) that was not expected at this time";
+							Log.WriteLineTimestamped( $"error: { errorMessage }" );
+							throw new UnexpectedCharacterException( errorMessage );
+						}
+
+					default:
+						{
+							if ( TokenParser.IndentLevel > 1 )
+							{
+								++i;
+								var entry = ParseEntry( data, ref i );
+								entries.Add( entry );
+								Log.WriteTimestamped( "successfully parsed entry: names/tags [" );
+								foreach ( Identity identity in entry.Identities )
+								{
+									Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
+								}
+								Log.WriteLine( $"], pronoun [{ entry.Pronoun }], decoration [{ entry.Decoration }]" );
+							}
+							break;
+						}
 				}
 				if ( isParsingFinished )
 				{
@@ -88,7 +99,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				Log.WriteLineTimestamped($"error: { errorMessage }");
 				throw new InputEntryNotClosedException( errorMessage );
 			}
-			Log.WriteLineTimestamped( "finished parsing entries from input data" );
+			Log.WriteLineTimestamped( "FINISHED: parsing entries from input data" );
 			return entries.ToArray();
 		}
 
@@ -125,20 +136,37 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			switch ( firstChar )
 			{
 				case '{':
-					return LineTypes.EntryStart;
+					{
+						return LineTypes.EntryStart;
+					}
+				
 				case '}':
-					return LineTypes.EntryEnd;
+					{
+						return LineTypes.EntryEnd;
+					}
+
 				case '%':
-					ParseIdentity( line, ref entry );
-					return LineTypes.Name;
+					{
+						ParseIdentity( line, ref entry );
+						return LineTypes.Name;
+					}
+
 				case '$':
-					ParsePronoun( line, ref entry );
-					return LineTypes.Pronoun;
+					{
+						ParsePronoun( line, ref entry );
+						return LineTypes.Pronoun;
+					}
+
 				case '&':
-					ParseDecoration( line, ref entry );
-					return LineTypes.Decoration;
+					{
+						ParseDecoration( line, ref entry );
+						return LineTypes.Decoration;
+					}
+
 				default:
-					return LineTypes.Unknown;
+					{
+						return LineTypes.Unknown;
+					}
 			}
 		}
 
@@ -164,7 +192,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private Entry ParseEntry( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( "started parsing next entry" );
+			Log.WriteLineTimestamped( "STARTED: parsing entry" );
 			var entry = new Entry();
 			var errorMessage = string.Empty;
 			for ( ; i < data.Length; ++i )
@@ -174,21 +202,30 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				switch ( lineType )
 				{
 					case LineTypes.EntryEnd:
-						if ( entry.Identities.Count < 1 )
 						{
-							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: an entry did not contain any identity fields";
-							Log.WriteLineTimestamped( $"error: { errorMessage }" );
-							throw new MissingInputFieldException( errorMessage );
+							if ( entry.Identities.Count < 1 )
+							{
+								errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: an entry did not contain any identity fields";
+								Log.WriteLineTimestamped( $"error: { errorMessage }" );
+								throw new MissingInputFieldException( errorMessage );
+							}
+							--TokenParser.IndentLevel;
+							Log.WriteLineTimestamped( "FINISHED: parsing entry" );
+							return entry;
 						}
-						--TokenParser.IndentLevel;
-						return entry;
+
 					case LineTypes.Unknown:
-						var unexpectedChar = line.Trim()[ 0 ];
-						errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
-						Log.WriteLineTimestamped( $"error: { errorMessage }" );
-						throw new UnexpectedCharacterException( errorMessage );
+						{
+							var unexpectedChar = line.Trim()[ 0 ];
+							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
+							Log.WriteLineTimestamped( $"error: { errorMessage }" );
+							throw new UnexpectedCharacterException( errorMessage );
+						}
+
 					default:
-						break;
+						{
+							break;
+						}
 				}
 			}
 			errorMessage = "input file contains invalid data: last entry was not closed";

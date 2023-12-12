@@ -7,64 +7,64 @@ namespace Petrichor.Logging
 {
 	public static class Log
 	{
-		private static readonly string _defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
-		private static readonly string _defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
-		private static LogMode _mode = LogMode.Disabled;
-		private static string _logFolder = string.Empty;
-		private static string _logFileName = string.Empty;
-		private static string _logFilePath = string.Empty;
+		private static readonly string defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
+		private static readonly string defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
+		private static LogMode mode = LogMode.Disabled;
+		private static string logFolder = string.Empty;
+		private static string logFileName = string.Empty;
+		private static string logFilePath = string.Empty;
 
 
 		public static void Disable()
 		{
-			_mode = LogMode.Disabled;
+			mode = LogMode.Disabled;
 		}
 
 		public static void EnableBasic()
 		{
-			_mode = LogMode.Basic;
+			mode = LogMode.Basic;
 		}
 
 		public static void EnableVerbose()
 		{
-			_mode = LogMode.Verbose;
+			mode = LogMode.Verbose;
 		}
 
 		public static void SetLogFileName( string filename )
 		{
-			_logFileName = filename;
+			logFileName = filename;
 			SetLogFilePath();
 		}
 
 		public static void SetLogFolder( string folder )
 		{
-			_logFolder = folder;
+			logFolder = folder;
 			var lastChar = folder[ folder.Length - 1 ];
 			if ( lastChar != '\\' && lastChar != '/' )
 			{
-				_logFolder += '/';
+				logFolder += '/';
 			}
-			Directory.CreateDirectory( _logFolder );
+			Directory.CreateDirectory( logFolder );
 			SetLogFilePath();
 		}
 
 		public static void Write( string message = "" )
 		{
-			if ( _mode != LogMode.Disabled )
+			if ( mode != LogMode.Disabled )
 			{
-				if ( _logFolder == "" )
+				if ( logFolder == "" )
 				{
-					SetLogFolder( _defaultLogFolder );
+					SetLogFolder( defaultLogFolder );
 				}
-				if ( _logFileName == "" )
+				if ( logFileName == "" )
 				{
-					SetLogFileName( _defaultLogFileName );
+					SetLogFileName( defaultLogFileName );
 				}
-				using ( StreamWriter logFile = File.AppendText( _logFilePath ) )
+				using ( StreamWriter logFile = File.AppendText( logFilePath ) )
 				{
 					logFile.Write( message );
 				}
-				if ( _mode == LogMode.Verbose )
+				if ( mode == LogMode.Verbose )
 				{
 					Console.Write( message );
 				}
@@ -73,7 +73,7 @@ namespace Petrichor.Logging
 
 		public static void WriteTimestamped( string message = "" )
 		{
-			Write( $"{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss" ) } - { message }" );
+			Write( $"{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } - { message }" );
 		}
 
 		public static void WriteLine( string message = "" )
@@ -89,7 +89,7 @@ namespace Petrichor.Logging
 
 		private static void SetLogFilePath()
 		{
-			_logFilePath = $"{ _logFolder }{ _logFileName }";
+			logFilePath = $"{ logFolder }{ logFileName }";
 		}
 	}
 }

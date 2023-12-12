@@ -14,7 +14,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( "started parsing templates from data" );
+			Log.WriteLineTimestamped( "STARTED: parsing templates from data" );
 			var templates = new List< string >();
 			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
@@ -24,25 +24,36 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				switch (token.Qualifier)
 				{
 					case TokenQualifiers.BlankLine:
-						break;
-					case TokenQualifiers.OpenBracket:
-						break;
-					case TokenQualifiers.CloseBracket:
-						if ( TokenParser.IndentLevel < 1 )
 						{
-							isParsingFinished = true;
+							break;
 						}
-						break;
+
+					case TokenQualifiers.OpenBracket:
+						{
+							break;
+						}
+
+					case TokenQualifiers.CloseBracket:
+						{
+							if ( TokenParser.IndentLevel < 1 )
+							{
+								isParsingFinished = true;
+							}
+							break;
+						}
+
 					default:
-						templates.Add( ParseTemplateFromInputLine( token.Value ) );
-						break;
+						{
+							templates.Add( ParseTemplateFromInputLine( token.Value ) );
+							break;
+						}
 				}
 				if ( isParsingFinished )
 				{
 					break;
 				}
 			}
-			Log.WriteLineTimestamped( "finished parsing templates from data" );
+			Log.WriteLineTimestamped( "FINISHED: parsing templates from data" );
 			return templates.ToArray();
 		}
 
