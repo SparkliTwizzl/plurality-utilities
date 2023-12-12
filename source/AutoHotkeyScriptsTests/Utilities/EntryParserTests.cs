@@ -208,12 +208,12 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 
 		private static string[] SplitDataString( string data )
 		{
-			Log.WriteLineTimestamped( $"raw data: \"{ data }\"" );
+			Log.WriteLine( $"raw data: \"{ data }\"" );
 			var tokens = data.Split( '|' );
-			Log.WriteLineTimestamped( "tokenized data:" );
+			Log.WriteLine( "tokenized data:" );
 			foreach( var token in tokens )
 			{
-				Log.WriteLineTimestamped( $"	\"{ token }\"" );
+				Log.WriteLine( $"	\"{ token }\"" );
 			}
 			Log.WriteLine();
 			return tokens;

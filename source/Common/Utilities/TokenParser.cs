@@ -14,11 +14,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public QualifiedToken ParseToken( string token, string[] expectedValues )
 		{
-			Log.WriteLineTimestamped( $"started parsing token \"{ token }\", expecting a value from:");
-			foreach ( var tokenValue in expectedValues )
-			{
-				Log.WriteLineTimestamped( $"	{ tokenValue }" );
-			}
+			var taskMessage = $"parsing token \"{ token }\"";
+			Log.TaskStarted( taskMessage );
 
 			var qualifiedToken = new QualifiedToken( token.Trim() );
 			if ( string.Compare( qualifiedToken.Value, "" ) == 0 )
@@ -46,7 +43,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					}
 				}
 			}
-
+			Log.TaskFinished( taskMessage );
 			return qualifiedToken;
 		}
 	}

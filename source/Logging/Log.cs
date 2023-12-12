@@ -7,89 +7,153 @@ namespace Petrichor.Logging
 {
 	public static class Log
 	{
-		private static readonly string _defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
-		private static readonly string _defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
-		private static LogMode _mode = LogMode.Disabled;
-		private static string _logFolder = string.Empty;
-		private static string _logFileName = string.Empty;
-		private static string _logFilePath = string.Empty;
+		private const ConsoleColor defaultConsoleBackgroundColor = ConsoleColor.Black;
+		private const ConsoleColor defaultConsoleForegroundColor = ConsoleColor.White;
+		private static readonly string defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
+		private static readonly string defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
+		private static LogMode mode = LogMode.Disabled;
+		private static string logFolder = string.Empty;
+		private static string logFileName = string.Empty;
+		private static string logFilePath = string.Empty;
 
 
 		public static void Disable()
-		{
-			_mode = LogMode.Disabled;
-		}
+			=> mode = LogMode.Disabled;
 
-		public static void EnableBasic()
-		{
-			_mode = LogMode.Basic;
-		}
+		public static void EnableInBasicMode()
+			=> mode = LogMode.Basic;
 
-		public static void EnableVerbose()
-		{
-			_mode = LogMode.Verbose;
-		}
+		public static void EnableInVerboseMode()
+			=> mode = LogMode.Verbose;
 
-		public static void SetLogFileName( string filename )
+		/// <summary>
+		/// Write formatted details about an error to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Error( string message = "" )
+			=> WriteLineWithTimestamp( $"ERROR: { message }", ConsoleColor.White, ConsoleColor.Red );
+
+		/// <summary>
+		/// Write formatted important information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Important( string message = "" )
+			=> WriteLineWithTimestamp( $"{ message }", ConsoleColor.Cyan );
+
+		/// <summary>
+		/// Write formatted information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Info( string message = "" )
+			=> WriteLineWithTimestamp( $"{ message }" );
+
+		public static void SetLogFileName( string fileName )
 		{
-			_logFileName = filename;
+			logFileName = fileName;
 			SetLogFilePath();
 		}
 
 		public static void SetLogFolder( string folder )
 		{
-			_logFolder = folder;
+			logFolder = folder;
 			var lastChar = folder[ folder.Length - 1 ];
 			if ( lastChar != '\\' && lastChar != '/' )
 			{
-				_logFolder += '/';
+				logFolder += '/';
 			}
-			Directory.CreateDirectory( _logFolder );
+			Directory.CreateDirectory( logFolder );
 			SetLogFilePath();
 		}
 
-		public static void Write( string message = "" )
+		/// <summary>
+		/// Write formatted details about a task finishing to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void TaskFinished( string message = "" )
+			=> WriteLineWithTimestamp( $"FINISHED: { message }", ConsoleColor.Green );
+		
+		/// <summary>
+		/// Write formatted details about a task starting to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void TaskStarted( string message = "" )
+			=> WriteLineWithTimestamp( $"STARTED: { message }", ConsoleColor.Yellow );
+
+		/// <summary>
+		/// Write formatted details about a warning starting to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Warning( string message = "" )
+			=> WriteLineWithTimestamp( $"WARNING: { message }", ConsoleColor.White, ConsoleColor.DarkYellow );
+
+		/// <summary>
+		/// Write text directly to log without timestamp.
+		/// </summary>
+		/// <param name="message">Text to write to log.</param>
+		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
+		public static void Write( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
 		{
-			if ( _mode != LogMode.Disabled )
+			if ( mode == LogMode.Disabled || message == "" )
 			{
-				if ( _logFolder == "" )
-				{
-					SetLogFolder( _defaultLogFolder );
-				}
-				if ( _logFileName == "" )
-				{
-					SetLogFileName( _defaultLogFileName );
-				}
-				using ( StreamWriter logFile = File.AppendText( _logFilePath ) )
-				{
-					logFile.Write( message );
-				}
-				if ( _mode == LogMode.Verbose )
-				{
-					Console.Write( message );
-				}
+				return;
+			}
+
+			if ( logFolder == "" )
+			{
+				SetLogFolder( defaultLogFolder );
+			}
+			if ( logFileName == "" )
+			{
+				SetLogFileName( defaultLogFileName );
+			}
+
+			using ( StreamWriter logFile = File.AppendText( logFilePath ) )
+			{
+				logFile.Write( message );
+			}
+			if ( mode == LogMode.Verbose )
+			{
+				Console.BackgroundColor = consoleHighlightColor;
+				Console.ForegroundColor = consoleTextColor;
+				Console.Write( message );
+				Console.BackgroundColor = defaultConsoleBackgroundColor;
+				Console.ForegroundColor = defaultConsoleForegroundColor;
 			}
 		}
 
-		public static void WriteTimestamped( string message = "" )
-		{
-			Write( $"{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss" ) } - { message }" );
-		}
+		/// <summary>
+		/// Write text directly to log without timestamp, followed by a newline.
+		/// </summary>
+		/// <param name="message">Text to write to log.</param>
+		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteLine( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+			=> Write( $"{ message }\n", consoleTextColor, consoleHighlightColor );
 
-		public static void WriteLine( string message = "" )
-		{
-			Write( $"{ message }\n" );
-		}
+		/// <summary>
+		/// Write text directly to log with timestamp, followed by a newline.
+		/// </summary>
+		/// <param name="message">Text to write to log.</param>
+		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteLineWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+			=> WriteLine( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
 
-		public static void WriteLineTimestamped( string message = "" )
-		{
-			WriteTimestamped( $"{ message }\n" );
-		}
+		/// <summary>
+		/// Write text directly to log with timestamp, followed by a newline.
+		/// </summary>
+		/// <param name="message">Text to write to log.</param>
+		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+			=> Write( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
 
+
+		private static string AddTimestampToMessage( string message = "" )
+			=> $"[{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }] { message }";
 
 		private static void SetLogFilePath()
-		{
-			_logFilePath = $"{ _logFolder }{ _logFileName }";
-		}
+			=> logFilePath = $"{ logFolder }{ logFileName }";
 	}
 }

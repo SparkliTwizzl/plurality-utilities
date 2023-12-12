@@ -50,7 +50,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			var data = File.ReadAllText( filePath );
-			Log.WriteLineTimestamped( data );
+			Log.WriteLine( data );
 			var expected = TestData.ParsedInput;
 			var actual = InputParser.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );

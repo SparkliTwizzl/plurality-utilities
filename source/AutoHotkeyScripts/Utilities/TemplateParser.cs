@@ -14,7 +14,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			Log.WriteLineTimestamped( "started parsing templates from data" );
+			var taskMessage = "parsing templates from data";
+			Log.TaskStarted( taskMessage );
 			var templates = new List< string >();
 			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
@@ -24,25 +25,36 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				switch (token.Qualifier)
 				{
 					case TokenQualifiers.BlankLine:
-						break;
-					case TokenQualifiers.OpenBracket:
-						break;
-					case TokenQualifiers.CloseBracket:
-						if ( TokenParser.IndentLevel < 1 )
 						{
-							isParsingFinished = true;
+							break;
 						}
-						break;
+
+					case TokenQualifiers.OpenBracket:
+						{
+							break;
+						}
+
+					case TokenQualifiers.CloseBracket:
+						{
+							if ( TokenParser.IndentLevel < 1 )
+							{
+								isParsingFinished = true;
+							}
+							break;
+						}
+
 					default:
-						templates.Add( ParseTemplateFromInputLine( token.Value ) );
-						break;
+						{
+							templates.Add( ParseTemplateFromInputLine( token.Value ) );
+							break;
+						}
 				}
 				if ( isParsingFinished )
 				{
 					break;
 				}
 			}
-			Log.WriteLineTimestamped( "finished parsing templates from data" );
+			Log.TaskFinished( taskMessage );
 			return templates.ToArray();
 		}
 
@@ -64,9 +76,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					}
 					catch ( Exception ex )
 					{
-						var error = "a template contained a trailing escape character ('\\') with no following character to escape";
-						Log.WriteLineTimestamped( $"error: { error }; { ex.Message }" );
-						throw new EscapeCharacterMismatchException( error, ex );
+						var errorMessage = "a template contained a trailing escape character ('\\') with no following character to escape";
+						Log.Error( errorMessage );
+						throw new EscapeCharacterMismatchException( errorMessage, ex );
 					}
 				}
 				if ( TemplateMarkers.LookUpTable.TryGetValue( c, out var value ) )
@@ -79,7 +91,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				}
 			}
 			var result = template.ToString();
-			Log.WriteLineTimestamped( $"parsed template: { result }" );
+			Log.Info( $"parsed template: { result }" );
 			return result;
 		}
 	}

@@ -8,6 +8,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 {
 	public class AutoHotkeyScriptGenerator
 	{
+		private string outputFilePath = string.Empty;
+
+
 		public string[] GenerateMacrosFromInput( Input input )
 		{
 			var macros = new List< string >();
@@ -22,22 +25,24 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		{
 			var outputFolder = GetNormalizedOutputFolder( outputFile );
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
-			var outputFilePath = $"{ outputFolder }{ outputFileName }";
+			outputFilePath = $"{ outputFolder }{ outputFileName }";
 
-			Log.WriteLineTimestamped( $"started generating output file ({ outputFilePath })" );
+			var taskMessage = $"generating output file \"{ outputFilePath }\"";
+			Log.TaskStarted( taskMessage );
+			
 			try
 			{
 				Directory.CreateDirectory( outputFolder );
-				WriteByteOrderMarkToFile( outputFilePath );
-				WriteHeaderToFile( outputFilePath );
-				WriteLinesToFile( outputFilePath, macros );
+				WriteHeaderToFile();
+				WriteMacrosToFile( macros );
 			}
-			catch (Exception e)
+			catch ( Exception ex )
 			{
-				Log.WriteLineTimestamped( $"failed to generate output file ({ outputFilePath }) with exception: { e.Message }" );
-				throw new Exception( e.Message, e );
+				var errorMessage = $"failed to generate output file ({ outputFilePath })";
+				Log.Error( errorMessage );
+				throw new Exception( errorMessage, ex );
 			}
-			Log.WriteLineTimestamped( $"successfully generated output file ({ outputFilePath })" );
+			Log.TaskFinished( taskMessage );
 		}
 
 
@@ -93,7 +98,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			return $"{ outputFile.GetFileName().RemoveFileExtension() }.ahk";
 		}
 
-		private void WriteByteOrderMarkToFile( string outputFilePath )
+		private void WriteByteOrderMarkToFile()
 		{
 			var encoding = Encoding.UTF8;
 			using ( FileStream stream = new FileStream( outputFilePath, FileMode.Create ) )
@@ -105,40 +110,54 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			}
 		}
 
-		private void WriteHeaderToFile( string outputFilePath )
+		private void WriteHeaderToFile()
 		{
+			var taskMessage = "writing header to output file";
+			Log.TaskStarted( taskMessage );
+			WriteByteOrderMarkToFile();
 			var header = new string[]
 			{
 				"#SingleInstance Force",
-				""
-			 };
-			WriteLinesToFile( outputFilePath, header );
+				"",
+			};
+			WriteLinesToFile( header );
+			Log.TaskFinished( taskMessage );
 		}
 
-		private void WriteLineToFile( string outputFilePath, string line = "" )
+		private void WriteLineToFile( string line = "" )
 		{
 			try
 			{
 				using ( StreamWriter writer = File.AppendText( outputFilePath ) )
 				{
 					writer.WriteLine( line );
-					Log.WriteLineTimestamped( $"wrote line to output file: { line }" );
 				}
 			}
 			catch ( Exception ex )
 			{
-				var errorMessage = "failed to write to output file";
-				Log.WriteLineTimestamped( $"error: { errorMessage }" );
+				var errorMessage = "failed to write line to output file";
+				Log.Error( errorMessage );
 				throw new FileLoadException( errorMessage, ex );
 			}
 		}
 
-		private void WriteLinesToFile( string outputFilePath, string[] data )
+		private void WriteLinesToFile( string[] data )
 		{
+			var linesWritten = 0;
 			foreach ( string line in data )
 			{
-				WriteLineToFile( outputFilePath, line );
+				WriteLineToFile( line );
+				++linesWritten;
 			}
+			Log.Info( $"wrote { linesWritten } lines to output file" );
+		}
+
+		private void WriteMacrosToFile( string[] macros )
+		{
+			var taskMessage = "writing macros to output file";
+			Log.TaskStarted( taskMessage );
+			WriteLinesToFile( macros );
+			Log.TaskFinished( taskMessage );
 		}
 	}
 }
