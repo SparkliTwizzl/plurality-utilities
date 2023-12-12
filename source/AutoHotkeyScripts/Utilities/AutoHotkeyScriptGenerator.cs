@@ -27,7 +27,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			outputFilePath = $"{ outputFolder }{ outputFileName }";
 
-			Log.TaskStarted( $"generating output file ({ outputFilePath })" );
+			var taskMessage = $"generating output file \"{ outputFilePath }\"";
+			Log.TaskStarted( taskMessage );
+			
 			try
 			{
 				Directory.CreateDirectory( outputFolder );
@@ -40,7 +42,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				Log.Error( errorMessage );
 				throw new Exception( errorMessage, ex );
 			}
-			Log.TaskFinished( "generating output file" );
+			Log.TaskFinished( taskMessage );
 		}
 
 
@@ -110,7 +112,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private void WriteHeaderToFile()
 		{
-			Log.TaskStarted( "writing header to output file" );
+			var taskMessage = "writing header to output file";
+			Log.TaskStarted( taskMessage );
 			WriteByteOrderMarkToFile();
 			var header = new string[]
 			{
@@ -118,7 +121,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				"",
 			};
 			WriteLinesToFile( header );
-			Log.TaskFinished( "writing header to output file" );
+			Log.TaskFinished( taskMessage );
 		}
 
 		private void WriteLineToFile( string line = "" )
@@ -151,9 +154,10 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private void WriteMacrosToFile( string[] macros )
 		{
-			Log.TaskStarted( "writing macros to output file" );
+			var taskMessage = "writing macros to output file";
+			Log.TaskStarted( taskMessage );
 			WriteLinesToFile( macros );
-			Log.TaskFinished( "writing macros to output file" );
+			Log.TaskFinished( taskMessage );
 		}
 	}
 }

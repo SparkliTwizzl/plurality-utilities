@@ -32,7 +32,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		/// <returns>parsed entries</returns>
 		public Entry[] ParseEntriesFromData( string[] data, ref int i )
 		{
-			Log.TaskStarted( "parsing entries from input data");
+			var taskMessage = "parsing entries from input data";
+			Log.TaskStarted( taskMessage );
+
 			var entries = new List< Entry >();
 			var expectedTokens = new string[]
 			{
@@ -99,7 +101,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				Log.Error( errorMessage );
 				throw new InputEntryNotClosedException( errorMessage );
 			}
-			Log.TaskFinished( "parsing entries from input data" );
+
+			Log.TaskFinished( taskMessage );
 			return entries.ToArray();
 		}
 
@@ -192,7 +195,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		private Entry ParseEntry( string[] data, ref int i )
 		{
-			Log.TaskStarted( "parsing entry" );
+			var taskMessage = "parsing entry";
+			Log.TaskStarted( taskMessage );
+
 			var entry = new Entry();
 			var errorMessage = string.Empty;
 			for ( ; i < data.Length; ++i )
@@ -210,7 +215,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 								throw new MissingInputFieldException( errorMessage );
 							}
 							--TokenParser.IndentLevel;
-							Log.TaskFinished( "parsing entry" );
+							Log.TaskFinished( taskMessage );
 							return entry;
 						}
 

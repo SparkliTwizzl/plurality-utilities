@@ -23,10 +23,11 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public Input ParseInputFile( string inputFilePath )
 		{
-			Log.TaskStarted( $"parsing input file: { inputFilePath }");
+			var taskMessage = $"parsing input file \"{ inputFilePath }\"";
+			Log.TaskStarted( taskMessage );
 			var data = ReadDataFromFile( inputFilePath );
 			var input = ParseInputData( data );
-			Log.TaskFinished( "parsing input file" );
+			Log.TaskFinished( taskMessage );
 			return input;
 		}
 
@@ -91,9 +92,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		{
 			try
 			{
-				var data = File.ReadAllLines( inputFilePath );
-				Log.Info( "successfully read data from input file" );
-				return data;
+				return File.ReadAllLines( inputFilePath );
 			}
 			catch ( Exception ex )
 			{

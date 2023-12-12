@@ -14,7 +14,8 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			Log.TaskStarted( "parsing templates from data" );
+			var taskMessage = "parsing templates from data";
+			Log.TaskStarted( taskMessage );
 			var templates = new List< string >();
 			var expectedTokens = new string[] { };
 			for ( ; i < data.Length; ++i )
@@ -53,7 +54,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 					break;
 				}
 			}
-			Log.TaskStarted( "parsing templates from data" );
+			Log.TaskFinished( taskMessage );
 			return templates.ToArray();
 		}
 
