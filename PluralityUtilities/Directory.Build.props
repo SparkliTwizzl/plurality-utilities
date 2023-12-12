@@ -4,8 +4,6 @@
 		<BuildDir>_build\</BuildDir>
 		<LogDir>_log\</LogDir>
 		<OutputDir>_output\</OutputDir>
-		<PreBuildOutputDir>PreBuildOutput\</PreBuildOutputDir>
-		<GitIgnorePreBuildOutputDir>$(PreBuildOutputDir)GitIgnore\</GitIgnorePreBuildOutputDir>
 		<TestDir>_test\</TestDir>
 		<TestInputDir>$(TestDir)_input\</TestInputDir>
 		<TestLogDir>$(TestDir)$(LogDir)</TestLogDir>
