@@ -1,0 +1,22 @@
+<Project>
+
+	<PropertyGroup>
+		<BuildDir>_build\</BuildDir>
+		<LogDir>_log\</LogDir>
+		<OutputDir>_output\</OutputDir>
+		<TestDir>_test\</TestDir>
+		<TestInputDir>$(TestDir)_input\</TestInputDir>
+		<TestLogDir>$(TestDir)$(LogDir)</TestLogDir>
+		<TestOutputDir>$(TestDir)$(OutputDir)</TestOutputDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<BaseIntermediateOutputPath>$(SolutionDir)$(BuildDir)$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
+		<IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+		<BaseOutputPath>$(SolutionDir)$(BuildDir)$(MSBuildProjectName)\bin\</BaseOutputPath>
+		<OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
+	</PropertyGroup>
+
+</Project>
