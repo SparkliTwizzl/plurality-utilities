@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.AutoHotkeyScripts.Containers;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.TestShared.Utilities;
 
 
 namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 {
-
-    [ TestClass ]
+	[ TestClass ]
 	public class AutoHotkeyScriptGeneratorTests
 	{
 		public static class TestData
@@ -29,6 +29,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 			};
 			public static readonly string[] GeneratedOutputFileContents = new string[]
 			{
+				$"; Generated with { AppInfo.AppName } v{ AppInfo.CurrentVersion }",
+				"",
+				"",
 				"#SingleInstance Force",
 				"",
 				"::@tag:: name",
