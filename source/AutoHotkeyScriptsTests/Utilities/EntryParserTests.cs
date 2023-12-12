@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.AutoHotkeyScripts.Exceptions;
 using Petrichor.Logging;
-using Petrichor.TestCommon.Utilities;
+using Petrichor.TestShared.Utilities;
+
 
 namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 {
