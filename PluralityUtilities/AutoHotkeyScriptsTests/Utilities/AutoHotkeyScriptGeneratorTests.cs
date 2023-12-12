@@ -1,14 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluralityUtilities.AutoHotkeyScripts.Containers;
 using PluralityUtilities.Logging;
-using PluralityUtilities.TestCommon;
 using PluralityUtilities.TestCommon.Utilities;
 
 
 namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 {
 
-	[ TestClass ]
+    [ TestClass ]
 	public class AutoHotkeyScriptGeneratorTests
 	{
 		public static class TestData
@@ -73,7 +72,7 @@ namespace PluralityUtilities.AutoHotkeyScripts.Utilities.Tests
 		[ TestMethod ]
 		public void GenerateScriptTest_Success()
 		{
-			var outputFile = $"{ TestDirectories.TestOutputDir }{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
+			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
 			ScriptGenerator.GenerateScript( TestData.Macros, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;

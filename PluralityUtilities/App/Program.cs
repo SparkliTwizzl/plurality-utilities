@@ -1,5 +1,5 @@
 ﻿using PluralityUtilities.AutoHotkeyScripts.Utilities;
-using PluralityUtilities.Common;
+using PluralityUtilities.Common.Utilities;
 using PluralityUtilities.Logging;
 using PluralityUtilities.Logging.Enums;
 
@@ -71,12 +71,12 @@ namespace PluralityUtilities.App
 			{
 				case LogMode.Basic:
 					Log.EnableBasic();
-					Log.SetLogFolder( ProjectDirectories.LogDir );
+					Log.SetLogFolder( ProjectDirectories.LogDirectory );
 					Console.WriteLine( "logging is enabled" );
 					break;
 				case LogMode.Verbose:
 					Log.EnableVerbose();
-					Log.SetLogFolder( ProjectDirectories.LogDir );
+					Log.SetLogFolder( ProjectDirectories.LogDirectory );
 					Console.WriteLine( "verbose logging is enabled" );
 					break;
 				default:
