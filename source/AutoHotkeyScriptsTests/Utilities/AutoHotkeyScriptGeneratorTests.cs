@@ -29,7 +29,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 			};
 			public static readonly string[] GeneratedOutputFileContents = new string[]
 			{
-				$"; Generated with { AppInfo.AppName } v{ AppInfo.CurrentVersion }",
+				$"; Generated with { AppInfo.AppNameAndVersion }",
 				"",
 				"",
 				"#SingleInstance Force",

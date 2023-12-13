@@ -117,7 +117,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			WriteByteOrderMarkToFile();
 			var header = new string[]
 			{
-				$"; Generated with { AppInfo.AppName } v{ AppInfo.CurrentVersion }",
+				$"; Generated with { AppInfo.AppNameAndVersion }",
 				"",
 				"",
 				"#SingleInstance Force",
