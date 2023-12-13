@@ -3,7 +3,8 @@
 	public enum LogMode
 	{
 		Disabled,
-		Basic,
-		Verbose,
+		ConsoleOnly,
+		FileOnly,
+		All,
 	}
 }

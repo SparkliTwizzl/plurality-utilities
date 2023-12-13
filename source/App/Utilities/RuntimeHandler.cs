@@ -8,14 +8,15 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		private static string inputFilePath = string.Empty;
+		private static string entriesFilePath = string.Empty;
 		private static LogMode activeLogMode = LogMode.Disabled;
 		private static string outputFilePath = string.Empty;
+		private static string templatesFilePath = string.Empty;
 
-		public static string InputFilePath
+		public static string EntriesFilePath
 		{
-			get => inputFilePath;
-			set => inputFilePath = value;
+			get => entriesFilePath;
+			set => entriesFilePath = value;
 		}
 		public static LogMode ActiveLogMode
 		{
@@ -27,39 +28,16 @@ namespace Petrichor.App.Utilities
 			get => outputFilePath;
 			set => outputFilePath = value;
 		}
+		public static string TemplatesFilePath
+		{
+			get => templatesFilePath;
+			set => templatesFilePath = value;
+		}
 
 
 		public static void Execute()
 		{
 			CreateAutoHotkeyScript();
-		}
-
-		public static void InitLogging()
-		{
-			switch (ActiveLogMode)
-			{
-				case LogMode.Basic:
-					{
-						Log.EnableInBasicMode();
-						Log.SetLogFolder(ProjectDirectories.LogDirectory);
-						Console.WriteLine("Logging is enabled.");
-						break;
-					}
-
-				case LogMode.Verbose:
-					{
-						Log.EnableInVerboseMode();
-						Log.SetLogFolder(ProjectDirectories.LogDirectory);
-						Console.WriteLine("verbose logging is enabled.");
-						break;
-					}
-
-				default:
-					{
-						Console.WriteLine("Logging is disabled.");
-						break;
-					}
-			}
 		}
 
 		public static void WaitForUserAndExit()
@@ -80,12 +58,12 @@ namespace Petrichor.App.Utilities
 				var templateParser = new TemplateParser();
 				var inputParser = new InputParser(entryParser, templateParser);
 				var scriptGenerator = new AutoHotkeyScriptGenerator();
-				var input = inputParser.ParseInputFile(InputFilePath);
+				var input = inputParser.ParseInputFile(EntriesFilePath);
 				var macros = scriptGenerator.GenerateMacrosFromInput(input);
 				scriptGenerator.GenerateScript(macros, OutputFilePath);
 
 				var successMessage = "generated AutoHotkey shortcuts script successfully";
-				if (ActiveLogMode != LogMode.Verbose)
+				if (ActiveLogMode != LogMode.All)
 				{
 					Console.WriteLine(successMessage);
 				}
@@ -94,7 +72,7 @@ namespace Petrichor.App.Utilities
 			catch (Exception ex)
 			{
 				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: {ex.Message}";
-				if (ActiveLogMode != LogMode.Verbose)
+				if (ActiveLogMode != LogMode.All)
 				{
 					Console.WriteLine(errorMessage);
 				}

@@ -1,0 +1,11 @@
+{
+	% #Sam# @sm
+	% #Sammy# @smy
+	$they/them
+	&-> a person
+}
+{
+	% #ALEX# @AX
+	$IT/ITS
+	&[A PERSON TOO]
+}

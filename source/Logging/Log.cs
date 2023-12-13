@@ -17,14 +17,35 @@ namespace Petrichor.Logging
 		private static string logFilePath = string.Empty;
 
 
+		public static LogMode Mode => mode;
+
+
 		public static void Disable()
-			=> mode = LogMode.Disabled;
+		{
+			mode = LogMode.Disabled;
+			Console.WriteLine( "Logging is disabled." );
+		}
 
-		public static void EnableInBasicMode()
-			=> mode = LogMode.Basic;
+		public static void EnableForConsoleOnly( string logDirectory )
+		{
+			mode = LogMode.ConsoleOnly;
+			Log.SetLogFolder( logDirectory );
+			Console.WriteLine( "Console logging is enabled." );
+		}
 
-		public static void EnableInVerboseMode()
-			=> mode = LogMode.Verbose;
+		public static void EnableForFileOnly( string logDirectory )
+		{
+			mode = LogMode.FileOnly;
+			Log.SetLogFolder( logDirectory );
+			Console.WriteLine( "File logging is enabled." );
+		}
+
+		public static void EnableForAll( string logDirectory )
+		{
+			mode = LogMode.All;
+			Log.SetLogFolder( logDirectory );
+			Console.WriteLine( "Console and file logging are enabled." );
+		}
 
 		/// <summary>
 		/// Write formatted details about an error to log.
@@ -112,7 +133,7 @@ namespace Petrichor.Logging
 			{
 				logFile.Write( message );
 			}
-			if ( mode == LogMode.Verbose )
+			if ( mode == LogMode.All )
 			{
 				Console.BackgroundColor = consoleHighlightColor;
 				Console.ForegroundColor = consoleTextColor;
