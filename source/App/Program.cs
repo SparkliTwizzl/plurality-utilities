@@ -15,9 +15,7 @@ namespace Petrichor.App
 			startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			CommandLineHandler.ParseArguments( args );
-			RuntimeHandler.InitLogging();
 			Log.Important( AppInfo.AppNameAndVersion );
-			Log.Important( $"PluralityUtilities v{ AppInfo.CurrentVersion }" );
 			Log.Important( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			RuntimeHandler.Execute();
 			Log.Important( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
