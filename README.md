@@ -41,19 +41,18 @@ NOTE: Currently, Petrichor exports AutoHotkey v1 scripts, so you'll need to inst
 ---
 ## 4 - How do i use it?
 
-In order to get a useful result from the tool, there are four main steps:
+In order to get a useful result from the tool, there are 3 main steps:
 
 1. Write an input file.
-2. Write a templates file.
-3. Run the tool using the above.
-4. Run the resulting script with AutoHotkey.
+2. Run the tool using the above.
+3. Run the resulting script with AutoHotkey.
 
 
 ---
 ### 4.1 - Input files
 
 
-#### 4.1.1 - Input files are made up of two regions: entries and templates.
+#### 4.1.1 - Input files are made up of 2 regions: entries and templates.
 
 Blank lines in input files are ignored, so use as many as you want.
 
@@ -150,7 +149,7 @@ In order for Petrichor to know what format(s) you want the macros in your script
 
 #### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work.
 
-All templates have to start with two colons `::`, a string of text including an at sign `@` representing the tag, then two more colons `::`.
+All templates have to start with 2 colons `::`, a string of text including an at sign `@` representing the tag, then 2 more colons `::`.
 
 The tag string can be anything you want, as long as it contains at least one at sign `@` and no spaces. Additional text is optional.
 
