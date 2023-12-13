@@ -17,7 +17,7 @@ namespace Petrichor.App
 		static void Main( string[] args )
 		{
 			startTime = DateTime.Now;
-			Console.WriteLine( $"PluralityUtilities v{ AppInfo.CurrentVersion }" );
+			Console.WriteLine( $"{ AppInfo.AppNameAndVersion }" );
 			if ( args.Length < 1 )
 			{
 				Console.WriteLine( "usage:" );
@@ -30,7 +30,7 @@ namespace Petrichor.App
 			}
 			ParseArgs( args );
 			InitLogging();
-			Log.Important( $"PluralityUtilities v{ AppInfo.CurrentVersion }" );
+			Log.Important( $"{ AppInfo.AppNameAndVersion }" );
 			Log.Important( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			CreateAutoHotkeyScript();
 			Log.Important( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
