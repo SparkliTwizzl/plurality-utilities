@@ -331,7 +331,7 @@ C:\path\to\tool\folder\Petrichor\
 
 Pass the path to the input file as the first argument (arg0) and the path to where you want the output file to be generated as the second argument (arg1).
 
-You must include the file extensions for the input and templates files, but the extension on the output file will be ignored and is optional.
+You must include the file extension for the input file, but the extension on the output file will be ignored and is irrelevant.
 
 IMPORTANT NOTE: If you pass the path to an existing output file, it will be overwritten.
 
