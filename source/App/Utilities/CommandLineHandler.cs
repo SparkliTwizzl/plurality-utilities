@@ -1,7 +1,7 @@
 ﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
-using Petrichor.Logging.Enums;
 using System.CommandLine;
+using System.IO;
 
 
 namespace Petrichor.App.Utilities
@@ -12,104 +12,67 @@ namespace Petrichor.App.Utilities
 		{
 			if ( arguments.Length < 1 )
 			{
-				PrintHelpText();
+				Console.WriteLine( "Run with --help to see usage." );
 				RuntimeHandler.WaitForUserAndExit();
 			}
 
-			var entriesFileOption = new Option< FileInfo? >( name: "--entries", description: "File with input entries data." );
-			var templatesFileOption = new Option< FileInfo? >( name: "--templates", description: "File with input templates data." );
-			var outputFileOption = new Option< FileInfo? >( name: "--output", description: "Output file for generated AutoHotkey script." );
-			var logModeOption = new Option< string? >( name: "--logMode", description: "Logging mode to enable." );
+			var inputFileOption = new Option< string >( name: "--input", description: "Path to input file with entries and templates data." );
+			var outputFileOption = new Option< string >( name: "--output", description: "Path to output file for generated AutoHotkey script." );
+			var logModeOption = new Option< string >( name: "--logMode", description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
 
-			var rootCommand = new RootCommand( "Parse input files and generate an AutoHotkey script." );
-			rootCommand.AddOption( entriesFileOption );
-			rootCommand.AddOption( templatesFileOption );
-			rootCommand.AddOption( outputFileOption );
-			rootCommand.AddOption( logModeOption );
+			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
+			var generateAHKScriptCommand = new Command( "generateAHKShortcutScript", "Parse input files and generate an AutoHotkey script." )
+			{
+				inputFileOption,
+				outputFileOption,
+				logModeOption,
+			};
+			rootCommand.AddCommand(generateAHKScriptCommand);
 
-			rootCommand.SetHandler( ( file ) =>
+			generateAHKScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode ) =>
 					{
-						StoreEntriesFilePath( file! );
+						RuntimeHandler.InputFilePath = inputFilePath;
+						RuntimeHandler.OutputFilePath = outputFilePath;
+						await InitalizeLogging( logMode );
 					},
-					entriesFileOption
-				);
-			rootCommand.SetHandler( ( file ) =>
-					{
-						StoreTemplatesFilePath( file! );
-					},
-					templatesFileOption
-				);
-			rootCommand.SetHandler( ( file ) =>
-					{
-						StoreOutputFilePath( file! );
-					},
-					outputFileOption
-				);
-			rootCommand.SetHandler( ( logMode ) =>
-					{
-						InitalizeLogging( logMode! );
-					},
-					logModeOption
+					inputFileOption, outputFileOption, logModeOption
 				);
 
 			return await rootCommand.InvokeAsync(arguments);
 		}
 
 
-		private static void InitalizeLogging( string logModeArgument )
+		private static async Task InitalizeLogging( string logModeArgument )
 		{
-			switch ( logModeArgument )
+			await Task.Run(() =>
 			{
-				case "consoleOnly":
-					{
-						Log.EnableForConsoleOnly( ProjectDirectories.LogDirectory );
-						break;
-					}
+				switch ( logModeArgument )
+				{
+					case "consoleOnly":
+						{
+							Log.EnableForConsoleOnly( ProjectDirectories.LogDirectory );
+							break;
+						}
 
-				case "fileOnly":
-					{
-						Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
-						break;
-					}
+					case "fileOnly":
+						{
+							Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
+							break;
+						}
 
-				case "all":
-					{
-						Log.EnableForAll( ProjectDirectories.LogDirectory );
-						break;
-					}
+					case "all":
+						{
+							Log.EnableForAll( ProjectDirectories.LogDirectory );
+							break;
+						}
 
-				default:
-					{
-						Log.Disable();
-						break;
-					}
-			}
+					default:
+						{
+							Log.Disable();
+							break;
+						}
+				}
+			});
 		}
-
-		private static void PrintHelpText()
-		{
-			Console.WriteLine("HELP:");
-			Console.WriteLine("Pass input entries file path with \"--entries [file path]\".");
-			Console.WriteLine("Pass input templates file path with \"--templates [file path]\".");
-			Console.WriteLine("Pass output script file path with \"--output [file path]\".");
-			Console.WriteLine("Pass logging mode to enable with \"--output [console/file/all]\".");
-		}
-
-		private static void StoreEntriesFilePath( FileInfo file )
-		{
-			RuntimeHandler.EntriesFilePath = file.FullName;
-		}
-
-		private static void StoreTemplatesFilePath( FileInfo file )
-		{
-			RuntimeHandler.TemplatesFilePath = file.FullName;
-		}
-
-		private static void StoreOutputFilePath( FileInfo file )
-		{
-			RuntimeHandler.OutputFilePath = file.FullName;
-		}
-
-
 	}
 }

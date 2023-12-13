@@ -8,15 +8,14 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		private static string entriesFilePath = string.Empty;
+		private static string inputFilePath = string.Empty;
 		private static LogMode activeLogMode = LogMode.Disabled;
 		private static string outputFilePath = string.Empty;
-		private static string templatesFilePath = string.Empty;
 
-		public static string EntriesFilePath
+		public static string InputFilePath
 		{
-			get => entriesFilePath;
-			set => entriesFilePath = value;
+			get => inputFilePath;
+			set => inputFilePath = value;
 		}
 		public static LogMode ActiveLogMode
 		{
@@ -27,11 +26,6 @@ namespace Petrichor.App.Utilities
 		{
 			get => outputFilePath;
 			set => outputFilePath = value;
-		}
-		public static string TemplatesFilePath
-		{
-			get => templatesFilePath;
-			set => templatesFilePath = value;
 		}
 
 
@@ -58,7 +52,7 @@ namespace Petrichor.App.Utilities
 				var templateParser = new TemplateParser();
 				var inputParser = new InputParser(entryParser, templateParser);
 				var scriptGenerator = new AutoHotkeyScriptGenerator();
-				var input = inputParser.ParseInputFile(EntriesFilePath);
+				var input = inputParser.ParseInputFile(InputFilePath);
 				var macros = scriptGenerator.GenerateMacrosFromInput(input);
 				scriptGenerator.GenerateScript(macros, OutputFilePath);
 
