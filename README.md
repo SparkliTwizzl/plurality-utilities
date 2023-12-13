@@ -6,6 +6,19 @@
 
 
 ---
+# Terms of use
+
+By using this project or its source code, for any purpose and in any shape or form, you grant your implicit agreement to all the following statements:
+
+- You attest that transgender and/or nonbinary people are people, rights for trans/NBi people are human rights which benefit all people, and trans/NBi people are fully capable of making decisions about their own lives.
+- You attest that otherwise queer and/or LGBTQIA+ people are people, rights for queer/LGBTQIA+ people are human rights which benefit all people, and queer/LGBTQIA+ people are fully capable of making decisions about their own lives.
+- You attest that autistic people are people, rights for autistic people are human rights which benefit all people, and autistic people are fully capable of making decisions about their own lives.
+- You attest that otherwise neurodiverse people are people, rights for neurodiverse people are human rights which benefit all people, and neurodiverse people are fully capable of making decisions about their own lives.
+- You condemn the unlawful invasion and/or occupancy of sovereign states, including but not limited to that by Russia to Ukraine.
+- You condemn all forms of genocide against any peoples for any reason, including but not limited to that of the peoples of Palestine and western Sudan.
+
+
+---
 ## 1 - What is it?
 
 This tool is a command-line app with miscellaneous utilities. Currently wi're the only maintainer, so currently it only has stuff that wi feel the need to add to it.
