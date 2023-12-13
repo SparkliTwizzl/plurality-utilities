@@ -16,6 +16,9 @@ namespace Petrichor.Logging
 		private static string logFileName = string.Empty;
 		private static string logFilePath = string.Empty;
 
+		private static bool IsLoggingToConsoleEnabled => Mode == LogMode.ConsoleOnly || Mode == LogMode.All;
+		private static bool IsLoggingToFileEnabled => Mode == LogMode.FileOnly || Mode == LogMode.All;
+
 
 		public static LogMode Mode => mode;
 
@@ -129,17 +132,20 @@ namespace Petrichor.Logging
 				SetLogFileName( defaultLogFileName );
 			}
 
-			using ( StreamWriter logFile = File.AppendText( logFilePath ) )
-			{
-				logFile.Write( message );
-			}
-			if ( mode == LogMode.All )
+			if ( IsLoggingToConsoleEnabled )
 			{
 				Console.BackgroundColor = consoleHighlightColor;
 				Console.ForegroundColor = consoleTextColor;
 				Console.Write( message );
 				Console.BackgroundColor = defaultConsoleBackgroundColor;
 				Console.ForegroundColor = defaultConsoleForegroundColor;
+			}
+			if ( IsLoggingToFileEnabled )
+			{
+				using ( StreamWriter logFile = File.AppendText( logFilePath ) )
+				{
+					logFile.Write( message );
+				}
 			}
 		}
 
