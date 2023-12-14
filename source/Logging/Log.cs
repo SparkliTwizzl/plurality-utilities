@@ -32,21 +32,20 @@ namespace Petrichor.Logging
 		public static void EnableForConsoleOnly( string logDirectory )
 		{
 			mode = LogMode.ConsoleOnly;
-			Log.SetLogFolder( logDirectory );
 			Console.WriteLine( "Console logging is enabled." );
 		}
 
 		public static void EnableForFileOnly( string logDirectory )
 		{
 			mode = LogMode.FileOnly;
-			Log.SetLogFolder( logDirectory );
+			SetLogFolder( logDirectory );
 			Console.WriteLine( "File logging is enabled." );
 		}
 
 		public static void EnableForAll( string logDirectory )
 		{
 			mode = LogMode.All;
-			Log.SetLogFolder( logDirectory );
+			SetLogFolder( logDirectory );
 			Console.WriteLine( "Console and file logging are enabled." );
 		}
 
@@ -181,6 +180,12 @@ namespace Petrichor.Logging
 			=> $"[{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }] { message }";
 
 		private static void SetLogFilePath()
-			=> logFilePath = $"{ logFolder }{ logFileName }";
+		{
+			logFilePath = $"{ logFolder }{ logFileName }";
+			if ( logFileName != "" )
+			{
+				Console.WriteLine( $"Log file will be created at \"{ logFilePath }\"" );
+			}
+		}
 	}
 }

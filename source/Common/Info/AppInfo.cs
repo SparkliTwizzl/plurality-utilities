@@ -1,9 +1,9 @@
-namespace Petrichor.Common
+namespace Petrichor.Common.Info
 {
 	public struct AppInfo
 	{
 		private const string releaseAppVerion = "0.8";
-		private const string developmentAppVersion = $"{ releaseAppVerion }-dev";
+		private const string developmentAppVersion = $"{releaseAppVerion}-dev";
 
 
 		public const string AppName = "Petrichor";

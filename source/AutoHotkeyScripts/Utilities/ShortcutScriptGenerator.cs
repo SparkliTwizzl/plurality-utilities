@@ -1,6 +1,6 @@
 ﻿using Petrichor.AutoHotkeyScripts.Containers;
 using Petrichor.AutoHotkeyScripts.LookUpTables;
-using Petrichor.Common;
+using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.Text;

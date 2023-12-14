@@ -1,4 +1,4 @@
-﻿using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.CommandLine;
 
