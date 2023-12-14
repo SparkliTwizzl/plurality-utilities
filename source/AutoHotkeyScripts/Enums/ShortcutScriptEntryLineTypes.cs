@@ -1,11 +1,11 @@
 ﻿namespace Petrichor.AutoHotkeyScripts.Enums
 {
-	public enum LineTypes
+	public enum ShortcutScriptEntryLineTypes
 	{
 		Unknown,
 		EntryStart,
 		EntryEnd,
-		Name,
+		Identity,
 		Pronoun,
 		Decoration,
 	}

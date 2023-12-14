@@ -8,20 +8,20 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 {
 	[ TestClass ]
-	public class AutoHotkeyScriptGeneratorTests
+	public class ShortcutScriptGeneratorTests
 	{
 		public static class TestData
 		{
-			public static readonly Entry[] Entries = new Entry[]
+			public static readonly ShortcutScriptEntry[] Entries = new ShortcutScriptEntry[]
 			{
-				new Entry( new List<Identity>(){ new Identity( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ShortcutScriptEntry( new List<ShortcutScriptIdentity>(){ new ShortcutScriptIdentity( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
 			public static readonly string[] Templates = new string[]
 			{
 				"::@`tag`:: `name`",
 				"::@$&`tag`:: `name` `pronoun` `decoration`",
 			};
-			public static readonly Input Input = new Input( Entries, Templates );
+			public static readonly ShortcutScriptInput Input = new ShortcutScriptInput( Entries, Templates );
 			public static readonly string[] Macros = new string[]
 			{
 				"::@tag:: name",
@@ -41,14 +41,14 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 		}
 
 
-		public AutoHotkeyScriptGenerator? ScriptGenerator;
+		public ShortcutScriptGenerator? ScriptGenerator;
 
 
 		[TestInitialize ]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			ScriptGenerator = new AutoHotkeyScriptGenerator();
+			ScriptGenerator = new ShortcutScriptGenerator();
 		}
 
 
@@ -76,7 +76,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 		[ TestMethod ]
 		public void GenerateScriptTest_Success()
 		{
-			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( AutoHotkeyScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
+			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( ShortcutScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
 			ScriptGenerator.GenerateScript( TestData.Macros, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;

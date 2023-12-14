@@ -7,30 +7,30 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 {
 	[ TestClass ]
-	public class InputParserTests
+	public class ShortcutScriptInputParserTests
 	{
 		public static class TestData
 		{
-			public static Entry[] Entries = new Entry[]
+			public static ShortcutScriptEntry[] Entries = new ShortcutScriptEntry[]
 					{
-						new Entry
+						new ShortcutScriptEntry
 						(
-							new List<Identity>
+							new List<ShortcutScriptIdentity>
 							{
-								new Identity("name", "tag")
+								new ShortcutScriptIdentity("name", "tag")
 							},
 							"",
 							""
 						),
 					};
 			public static string[] Templates = new string[] { };
-			public static Input ParsedInput = new Input( Entries, Templates );
+			public static ShortcutScriptInput ParsedInput = new Input( Entries, Templates );
 		}
 
 
-		public EntryParser? EntryParser;
-		public InputParser? InputParser;
-		public TemplateParser? TemplateParser;
+		public ShortcutScriptEntryParser? EntryParser;
+		public ShortcutScriptInputParser? InputParser;
+		public ShortcutScriptTemplateParser? TemplateParser;
 
 
 		[ TestInitialize ]
@@ -38,9 +38,9 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			EntryParser = new EntryParser();
-			TemplateParser = new TemplateParser();
-			InputParser = new InputParser( EntryParser, TemplateParser );
+			EntryParser = new ShortcutScriptEntryParser();
+			TemplateParser = new ShortcutScriptTemplateParser();
+			InputParser = new ShortcutScriptInputParser( EntryParser, TemplateParser );
 		}
 
 

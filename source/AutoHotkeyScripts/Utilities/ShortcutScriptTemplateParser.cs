@@ -7,9 +7,9 @@ using Petrichor.Logging;
 
 namespace Petrichor.AutoHotkeyScripts.Utilities
 {
-	public class TemplateParser
+	public class ShortcutScriptTemplateParser
 	{
-		private TokenParser TokenParser = new TokenParser();
+		private StringTokenParser TokenParser = new StringTokenParser();
 
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
@@ -24,17 +24,17 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				var isParsingFinished = false;
 				switch (token.Qualifier)
 				{
-					case TokenQualifiers.BlankLine:
+					case StringTokenQualifiers.BlankLine:
 						{
 							break;
 						}
 
-					case TokenQualifiers.OpenBracket:
+					case StringTokenQualifiers.OpenBracket:
 						{
 							break;
 						}
 
-					case TokenQualifiers.CloseBracket:
+					case StringTokenQualifiers.CloseBracket:
 						{
 							if ( TokenParser.IndentLevel < 1 )
 							{
@@ -81,7 +81,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 						throw new EscapeCharacterMismatchException( errorMessage, ex );
 					}
 				}
-				if ( TemplateMarkers.LookUpTable.TryGetValue( c, out var value ) )
+				if ( ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value ) )
 				{
 					template.Append( $"`{ value }`" );
 				}

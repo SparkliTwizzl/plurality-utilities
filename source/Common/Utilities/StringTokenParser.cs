@@ -5,32 +5,33 @@ using Petrichor.Logging;
 
 namespace Petrichor.AutoHotkeyScripts.Utilities
 {
-	public class TokenParser
+	public class StringTokenParser
 	{
 		public int IndentLevel { get; set; } = 0;
 
-		public TokenParser() { }
+
+		public StringTokenParser() { }
 
 
-		public QualifiedToken ParseToken( string token, string[] expectedValues )
+		public QualifiedStringToken ParseToken( string token, string[] expectedValues )
 		{
 			var taskMessage = $"parsing token \"{ token }\"";
 			Log.TaskStarted( taskMessage );
 
-			var qualifiedToken = new QualifiedToken( token.Trim() );
+			var qualifiedToken = new QualifiedStringToken( token.Trim() );
 			if ( string.Compare( qualifiedToken.Value, "" ) == 0 )
 			{
-				qualifiedToken.Qualifier = TokenQualifiers.BlankLine;
+				qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
 			}
 			else if ( string.Compare( qualifiedToken.Value, "{" ) == 0 )
 			{
 				++IndentLevel;
-				qualifiedToken.Qualifier = TokenQualifiers.OpenBracket;
+				qualifiedToken.Qualifier = StringTokenQualifiers.OpenBracket;
 			}
 			else if ( string.Compare( qualifiedToken.Value, "}" ) == 0 )
 			{
 				--IndentLevel;
-				qualifiedToken.Qualifier = TokenQualifiers.CloseBracket;
+				qualifiedToken.Qualifier = StringTokenQualifiers.CloseBracket;
 			}
 			else
 			{
@@ -38,7 +39,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				{
 					if ( string.Compare( qualifiedToken.Value, value ) == 0 )
 					{
-						qualifiedToken.Qualifier = TokenQualifiers.Recognized;
+						qualifiedToken.Qualifier = StringTokenQualifiers.Recognized;
 						break;
 					}
 				}

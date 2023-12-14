@@ -6,22 +6,22 @@ using Petrichor.Logging;
 
 namespace Petrichor.AutoHotkeyScripts.Utilities
 {
-	public class InputParser
+	public class ShortcutScriptInputParser
 	{
-		private const string EntriesToken = "entries:";
-		private const string TemplatesToken = "templates:";
-		private EntryParser EntryParser { get; set; }
-		private TemplateParser TemplateParser { get; set; }
+		private const string entriesToken = "entries:";
+		private const string templatesToken = "templates:";
+		private ShortcutScriptEntryParser EntryParser { get; set; }
+		private ShortcutScriptTemplateParser TemplateParser { get; set; }
 
 
-		public InputParser( EntryParser entryParser, TemplateParser templateParser )
+		public ShortcutScriptInputParser( ShortcutScriptEntryParser entryParser, ShortcutScriptTemplateParser templateParser )
 		{
 			EntryParser = entryParser;
 			TemplateParser = templateParser;
 		}
 
 
-		public Input ParseInputFile( string inputFilePath )
+		public ShortcutScriptInput ParseInputFile( string inputFilePath )
 		{
 			var taskMessage = $"parsing input file \"{ inputFilePath }\"";
 			Log.TaskStarted( taskMessage );
@@ -32,14 +32,14 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		}
 
 
-		private Input ParseInputData( string[] data )
+		private ShortcutScriptInput ParseInputData( string[] data )
 		{
-			var input = new Input();
-			var tokenParser = new TokenParser();
+			var input = new ShortcutScriptInput();
+			var tokenParser = new StringTokenParser();
 			var expectedTokens = new string[]
 			{
-				EntriesToken,
-				TemplatesToken,
+				entriesToken,
+				templatesToken,
 			};
 
 			for ( var i = 0; i < data.Length; ++i )
@@ -49,14 +49,14 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				string? errorMessage;
 				switch ( qualifiedToken.Qualifier )
 				{
-					case TokenQualifiers.Recognized:
+					case StringTokenQualifiers.Recognized:
 						{
-							if ( string.Compare( qualifiedToken.Value, EntriesToken ) == 0 )
+							if ( string.Compare( qualifiedToken.Value, entriesToken ) == 0 )
 							{
 								++i;
 								input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
 							}
-							else if ( string.Compare( qualifiedToken.Value, TemplatesToken ) == 0 )
+							else if ( string.Compare( qualifiedToken.Value, templatesToken ) == 0 )
 							{
 								++i;
 								input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
@@ -70,12 +70,12 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							break;
 						}
 
-					case TokenQualifiers.BlankLine:
+					case StringTokenQualifiers.BlankLine:
 						{
 							break;
 						}
 
-					case TokenQualifiers.Unknown:
+					case StringTokenQualifiers.Unknown:
 					default:
 						{
 							errorMessage = $"input file contains invalid data: an unknown token ( \"{ qualifiedToken.Value }\" ) was read when a region name was expected";

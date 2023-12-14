@@ -7,7 +7,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 {
 	[ TestClass ]
-	public class EntryParserTests
+	public class ShortcutScriptEntryParserTests
 	{
 		public static class TestData
 		{
@@ -131,7 +131,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 
 
 		public int i;
-		public EntryParser? EntryParser;
+		public ShortcutScriptEntryParser? EntryParser;
 
 
 		[ TestInitialize ]
@@ -139,7 +139,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 			i = 1;
-			EntryParser = new EntryParser();
+			EntryParser = new ShortcutScriptEntryParser();
 		}
 
 

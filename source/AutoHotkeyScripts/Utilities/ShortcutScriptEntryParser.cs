@@ -7,12 +7,12 @@ using Petrichor.Logging;
 
 namespace Petrichor.AutoHotkeyScripts.Utilities
 {
-	public class EntryParser
+	public class ShortcutScriptEntryParser
 	{
-		private TokenParser TokenParser = new TokenParser();
+		private StringTokenParser TokenParser = new StringTokenParser();
 
 
-		public EntryParser() { }
+		public ShortcutScriptEntryParser() { }
 
 
 		/// <summary>
@@ -30,12 +30,12 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		/// <param name="data">input data read from file</param>
 		/// <param name="i">index of first open bracket of entries region in the input data</param>
 		/// <returns>parsed entries</returns>
-		public Entry[] ParseEntriesFromData( string[] data, ref int i )
+		public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
 		{
 			var taskMessage = "parsing entries from input data";
 			Log.TaskStarted( taskMessage );
 
-			var entries = new List< Entry >();
+			var entries = new List< ShortcutScriptEntry >();
 			var expectedTokens = new string[]
 			{
 				"%",
@@ -52,12 +52,12 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				var token = TokenParser.ParseToken( firstChar.ToString(), expectedTokens );
 				switch ( token.Qualifier )
 				{
-					case TokenQualifiers.BlankLine:
+					case StringTokenQualifiers.BlankLine:
 						{
 							break;
 						}
 
-					case TokenQualifiers.CloseBracket:
+					case StringTokenQualifiers.CloseBracket:
 						{
 							if ( TokenParser.IndentLevel == 0 )
 							{
@@ -66,7 +66,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							break;
 						}
 
-					case TokenQualifiers.Unknown:
+					case StringTokenQualifiers.Unknown:
 						{
 							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ firstChar }\" ) that was not expected at this time";
 							Log.Error( errorMessage );
@@ -81,7 +81,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 								var entry = ParseEntry( data, ref i );
 								entries.Add( entry );
 								Log.WriteWithTimestamp( "parsed entry: names/tags [" );
-								foreach ( Identity identity in entry.Identities )
+								foreach ( ShortcutScriptIdentity identity in entry.Identities )
 								{
 									Log.Write( $"{ identity.Name }/{ identity.Tag }, " );
 								}
@@ -107,7 +107,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		}
 
 
-		private void ParseDecoration( string line, ref Entry entry )
+		private void ParseDecoration( string line, ref ShortcutScriptEntry entry )
 		{
 			if ( entry.Decoration != string.Empty )
 			{
@@ -124,15 +124,15 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			entry.Decoration = line.Substring( 1, line.Length - 1 );
 		}
 
-		private void ParseIdentity( string line, ref Entry entry )
+		private void ParseIdentity( string line, ref ShortcutScriptEntry entry )
 		{
-			Identity identity = new Identity();
+			ShortcutScriptIdentity identity = new ShortcutScriptIdentity();
 			ParseName( line, ref identity );
 			ParseTag( line, ref identity );
 			entry.Identities.Add( identity );
 		}
 
-		private LineTypes ParseLine( string line, ref Entry entry )
+		private ShortcutScriptEntryLineTypes ParseLine( string line, ref ShortcutScriptEntry entry )
 		{
 			line = line.TrimStart();
 			var firstChar = line[ 0 ];
@@ -140,40 +140,40 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			{
 				case '{':
 					{
-						return LineTypes.EntryStart;
+						return ShortcutScriptEntryLineTypes.EntryStart;
 					}
 				
 				case '}':
 					{
-						return LineTypes.EntryEnd;
+						return ShortcutScriptEntryLineTypes.EntryEnd;
 					}
 
 				case '%':
 					{
 						ParseIdentity( line, ref entry );
-						return LineTypes.Name;
+						return ShortcutScriptEntryLineTypes.Identity;
 					}
 
 				case '$':
 					{
 						ParsePronoun( line, ref entry );
-						return LineTypes.Pronoun;
+						return ShortcutScriptEntryLineTypes.Pronoun;
 					}
 
 				case '&':
 					{
 						ParseDecoration( line, ref entry );
-						return LineTypes.Decoration;
+						return ShortcutScriptEntryLineTypes.Decoration;
 					}
 
 				default:
 					{
-						return LineTypes.Unknown;
+						return ShortcutScriptEntryLineTypes.Unknown;
 					}
 			}
 		}
 
-		private void ParseName( string line, ref Identity identity )
+		private void ParseName( string line, ref ShortcutScriptIdentity identity )
 		{
 			var fieldStart = line.IndexOf( '#' );
 			var fieldEnd = line.LastIndexOf( '#' );
@@ -193,12 +193,12 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			identity.Name = name;
 		}
 
-		private Entry ParseEntry( string[] data, ref int i )
+		private ShortcutScriptEntry ParseEntry( string[] data, ref int i )
 		{
 			var taskMessage = "parsing entry";
 			Log.TaskStarted( taskMessage );
 
-			var entry = new Entry();
+			var entry = new ShortcutScriptEntry();
 			var errorMessage = string.Empty;
 			for ( ; i < data.Length; ++i )
 			{
@@ -206,7 +206,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				var lineType = ParseLine( line, ref entry );
 				switch ( lineType )
 				{
-					case LineTypes.EntryEnd:
+					case ShortcutScriptEntryLineTypes.EntryEnd:
 						{
 							if ( entry.Identities.Count < 1 )
 							{
@@ -219,7 +219,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 							return entry;
 						}
 
-					case LineTypes.Unknown:
+					case ShortcutScriptEntryLineTypes.Unknown:
 						{
 							var unexpectedChar = line.Trim()[ 0 ];
 							errorMessage = $"parsing entries failed at token # { i } :: input file contains invalid data: a line started with a character ( \"{ unexpectedChar }\" ) that was not expected at this time";
@@ -238,7 +238,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			throw new InputEntryNotClosedException( errorMessage );
 		}
 
-		private void ParsePronoun( string line, ref Entry entry )
+		private void ParsePronoun( string line, ref ShortcutScriptEntry entry )
 		{
 			if ( entry.Pronoun != string.Empty )
 			{
@@ -255,7 +255,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			entry.Pronoun = line.Substring( 1, line.Length - 1 );
 		}
 
-		private void ParseTag( string line, ref Identity identity )
+		private void ParseTag( string line, ref ShortcutScriptIdentity identity )
 		{
 			var fieldStart = line.IndexOf( '@' );
 			if ( fieldStart < 0 )

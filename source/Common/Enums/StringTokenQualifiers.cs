@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.Common.Enums
 {
-	public enum TokenQualifiers
+	public enum StringTokenQualifiers
 	{
 		Unknown,
 		BlankLine,

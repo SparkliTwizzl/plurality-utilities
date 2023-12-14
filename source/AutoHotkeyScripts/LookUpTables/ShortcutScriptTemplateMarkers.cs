@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.AutoHotkeyScripts.LookUpTables
 {
-	public static class TemplateMarkers
+	public static class ShortcutScriptTemplateMarkers
 	{
 		public static readonly Dictionary< char, string > LookUpTable = new Dictionary< char, string >()
 		{

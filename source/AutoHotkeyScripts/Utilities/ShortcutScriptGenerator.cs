@@ -4,14 +4,15 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.Text;
 
+
 namespace Petrichor.AutoHotkeyScripts.Utilities
 {
-	public class AutoHotkeyScriptGenerator
+	public class ShortcutScriptGenerator
 	{
 		private string outputFilePath = string.Empty;
 
 
-		public string[] GenerateMacrosFromInput( Input input )
+		public string[] GenerateMacrosFromInput( ShortcutScriptInput input )
 		{
 			var macros = new List< string >();
 			foreach ( var entry in input.Entries )
@@ -46,7 +47,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 		}
 
 
-		private List< string > GenerateAllIdentityMacrosFromTemplates( string[] templates, Identity identity, string pronoun, string decoration )
+		private List< string > GenerateAllIdentityMacrosFromTemplates( string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration )
 		{
 			var macros = new List< string >();
 			foreach ( var template in templates )
@@ -56,7 +57,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			return macros;
 		}
 
-		private List< string > GenerateAllEntryMacrosFromTemplates( string[] templates, Entry entry )
+		private List< string > GenerateAllEntryMacrosFromTemplates( string[] templates, ShortcutScriptEntry entry )
 		{
 			var macros = new List< string >();
 			foreach ( var identity in entry.Identities )
@@ -66,7 +67,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			return macros;
 		}
 
-		private string GenerateIdentityMacroFromTemplate( string template, Identity identity, string pronoun, string decoration )
+		private string GenerateIdentityMacroFromTemplate( string template, ShortcutScriptIdentity identity, string pronoun, string decoration )
 		{
 			var macro = template;
 			Dictionary< string, string > fields = new Dictionary< string, string >()
@@ -76,7 +77,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 				{ "pronoun", pronoun },
 				{ "decoration", decoration },
 			 };
-			foreach ( var marker in TemplateMarkers.LookUpTable )
+			foreach ( var marker in ShortcutScriptTemplateMarkers.LookUpTable )
 			{
 				macro = macro.Replace( $"`{ marker.Value }`", fields[ marker.Value ] );
 			}

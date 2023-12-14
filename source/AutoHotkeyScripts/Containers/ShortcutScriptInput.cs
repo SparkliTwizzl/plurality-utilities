@@ -1,25 +1,25 @@
 ﻿namespace Petrichor.AutoHotkeyScripts.Containers
 {
-	public class Input
+	public class ShortcutScriptInput
 	{
-		public Entry[] Entries { get; set; } = { };
+		public ShortcutScriptEntry[] Entries { get; set; } = { };
 		public string[] Templates { get; set; } = { };
 
 
-		public Input() { }
-		public Input( Entry[] entries, string[] templates )
+		public ShortcutScriptInput() { }
+		public ShortcutScriptInput( ShortcutScriptEntry[] entries, string[] templates )
 		{
 			Entries = entries;
 			Templates = templates;
 		}
 
 
-		public static bool operator ==( Input left, Input right )
+		public static bool operator ==( ShortcutScriptInput left, ShortcutScriptInput right )
 		{
 			return left.Entries.SequenceEqual( right.Entries ) && left.Templates.SequenceEqual( right.Templates );
 		}
 
-		public static bool operator !=( Input left, Input right )
+		public static bool operator !=( ShortcutScriptInput left, ShortcutScriptInput right )
 		{
 			return !left.Entries.SequenceEqual( right.Entries ) || !left.Templates.SequenceEqual( right.Templates );
 		}
@@ -30,7 +30,7 @@
 			{
 				return false;
 			}
-			return this == ( Input )obj;
+			return this == ( ShortcutScriptInput )obj;
 		}
 
 		public override int GetHashCode()
