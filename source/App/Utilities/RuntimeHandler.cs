@@ -8,16 +8,10 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		private static string iconFilePath = string.Empty;
 		private static string inputFilePath = string.Empty;
 		private static LogMode activeLogMode = LogMode.Disabled;
 		private static string outputFilePath = string.Empty;
 
-		public static string IconFilePath
-		{
-			get => iconFilePath;
-			set => iconFilePath = value;
-		}
 		public static string InputFilePath
 		{
 			get => inputFilePath;
@@ -53,7 +47,6 @@ namespace Petrichor.App.Utilities
 			try
 			{
 				Log.Important("generating AutoHotkey shortcuts script...");
-
 				var entryParser = new EntryParser();
 				var templateParser = new TemplateParser();
 				var inputParser = new InputParser(entryParser, templateParser);

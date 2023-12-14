@@ -1,7 +1,6 @@
 ﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.CommandLine;
-using System.IO;
 
 
 namespace Petrichor.App.Utilities
@@ -18,7 +17,6 @@ namespace Petrichor.App.Utilities
 
 			var inputFileOption = new Option< string >( name: "--input", description: "Path to input file with entries and templates data." );
 			var outputFileOption = new Option< string >( name: "--output", description: "Path and filename to generate AutoHotkey script at." );
-			var iconFileOption = new Option< string >( name: "--icon", description: "Path to icon to apply to generated AutoHotkey script." );
 			var logModeOption = new Option< string >( name: "--logMode", description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
 
 			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
@@ -26,19 +24,17 @@ namespace Petrichor.App.Utilities
 			{
 				inputFileOption,
 				outputFileOption,
-				iconFileOption,
 				logModeOption,
 			};
 			rootCommand.AddCommand(generateAHKScriptCommand);
 
-			generateAHKScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, iconFilePath, logMode ) =>
+			generateAHKScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode ) =>
 					{
 						RuntimeHandler.InputFilePath = inputFilePath;
 						RuntimeHandler.OutputFilePath = outputFilePath;
-						RuntimeHandler.IconFilePath = iconFilePath;
 						await InitalizeLogging( logMode );
 					},
-					inputFileOption, outputFileOption, iconFileOption, logModeOption
+					inputFileOption, outputFileOption, logModeOption
 				);
 
 			return await rootCommand.InvokeAsync(arguments);
