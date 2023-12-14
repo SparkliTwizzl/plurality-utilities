@@ -9,7 +9,7 @@ namespace Petrichor.App.Utilities
 	public static class RuntimeHandler
 	{
 		private static string inputFilePath = string.Empty;
-		private static LogMode activeLogMode = LogMode.Disabled;
+		private static LogMode activeLogMode = LogMode.None;
 		private static string outputFilePath = string.Empty;
 
 		public static string InputFilePath
@@ -56,7 +56,7 @@ namespace Petrichor.App.Utilities
 				scriptGenerator.GenerateScript(macros, OutputFilePath);
 
 				var successMessage = "generated AutoHotkey shortcuts script successfully";
-				if (ActiveLogMode != LogMode.All)
+				if ( Log.IsLoggingToConsoleDisabled )
 				{
 					Console.WriteLine(successMessage);
 				}
@@ -64,8 +64,8 @@ namespace Petrichor.App.Utilities
 			}
 			catch (Exception ex)
 			{
-				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: {ex.Message}";
-				if (ActiveLogMode != LogMode.All)
+				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: { ex.Message }";
+				if ( Log.IsLoggingToConsoleDisabled )
 				{
 					Console.WriteLine(errorMessage);
 				}

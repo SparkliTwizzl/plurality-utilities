@@ -2,7 +2,7 @@
 {
 	public enum LogMode
 	{
-		Disabled,
+		None,
 		ConsoleOnly,
 		FileOnly,
 		All,

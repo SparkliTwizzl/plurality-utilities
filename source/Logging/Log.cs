@@ -1,52 +1,51 @@
-﻿using System.Reflection;
-
-using Petrichor.Logging.Enums;
+﻿using Petrichor.Logging.Enums;
 
 
 namespace Petrichor.Logging
 {
 	public static class Log
 	{
+		private static LogMode activeMode = LogMode.None;
 		private const ConsoleColor defaultConsoleBackgroundColor = ConsoleColor.Black;
 		private const ConsoleColor defaultConsoleForegroundColor = ConsoleColor.White;
-		private static readonly string defaultLogFolder = $"{ Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) }/log/";
+		private static readonly string defaultLogFolder = $"{ AppContext.BaseDirectory }/log/";
 		private static readonly string defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
-		private static LogMode mode = LogMode.Disabled;
 		private static string logFolder = string.Empty;
 		private static string logFileName = string.Empty;
 		private static string logFilePath = string.Empty;
 
-		private static bool IsLoggingToConsoleEnabled => Mode == LogMode.ConsoleOnly || Mode == LogMode.All;
-		private static bool IsLoggingToFileEnabled => Mode == LogMode.FileOnly || Mode == LogMode.All;
 
-
-		public static LogMode Mode => mode;
+		public static LogMode ActiveMode => activeMode;
+		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
+		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
+		public static bool IsLoggingToConsoleEnabled => ActiveMode == LogMode.ConsoleOnly || ActiveMode == LogMode.All;
+		public static bool IsLoggingToFileEnabled => ActiveMode == LogMode.FileOnly || ActiveMode == LogMode.All;
 
 
 		public static void Disable()
 		{
-			mode = LogMode.Disabled;
+			activeMode = LogMode.None;
 			Console.WriteLine( "Logging is disabled." );
 		}
 
 		public static void EnableForConsoleOnly( string logDirectory )
 		{
-			mode = LogMode.ConsoleOnly;
+			activeMode = LogMode.ConsoleOnly;
 			Console.WriteLine( "Console logging is enabled." );
 		}
 
 		public static void EnableForFileOnly( string logDirectory )
 		{
-			mode = LogMode.FileOnly;
-			SetLogFolder( logDirectory );
+			activeMode = LogMode.FileOnly;
 			Console.WriteLine( "File logging is enabled." );
+			SetLogFolder( logDirectory );
 		}
 
 		public static void EnableForAll( string logDirectory )
 		{
-			mode = LogMode.All;
-			SetLogFolder( logDirectory );
+			activeMode = LogMode.All;
 			Console.WriteLine( "Console and file logging are enabled." );
+			SetLogFolder( logDirectory );
 		}
 
 		/// <summary>
@@ -78,12 +77,7 @@ namespace Petrichor.Logging
 
 		public static void SetLogFolder( string folder )
 		{
-			logFolder = folder;
-			var lastChar = folder[ folder.Length - 1 ];
-			if ( lastChar != '\\' && lastChar != '/' )
-			{
-				logFolder += '/';
-			}
+			logFolder = AddTrailingSlashToDirectoryPath( folder );
 			Directory.CreateDirectory( logFolder );
 			SetLogFilePath();
 		}
@@ -117,7 +111,7 @@ namespace Petrichor.Logging
 		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
 		public static void Write( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
 		{
-			if ( mode == LogMode.Disabled || message == "" )
+			if ( activeMode == LogMode.None || message == "" )
 			{
 				return;
 			}
@@ -179,10 +173,20 @@ namespace Petrichor.Logging
 		private static string AddTimestampToMessage( string message = "" )
 			=> $"[{ DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }] { message }";
 
+		private static string AddTrailingSlashToDirectoryPath( string directory )
+		{
+			var lastChar = directory[ directory.Length - 1];
+			if (lastChar != '\\' && lastChar != '/')
+			{
+				directory += '/';
+			}
+			return directory;
+		}
+
 		private static void SetLogFilePath()
 		{
 			logFilePath = $"{ logFolder }{ logFileName }";
-			if ( logFileName != "" )
+			if ( logFileName.CompareTo( "" ) != 0 )
 			{
 				Console.WriteLine( $"Log file will be created at \"{ logFilePath }\"" );
 			}
