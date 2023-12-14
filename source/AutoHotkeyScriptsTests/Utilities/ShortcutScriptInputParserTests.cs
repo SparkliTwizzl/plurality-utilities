@@ -24,7 +24,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 						),
 					};
 			public static string[] Templates = new string[] { };
-			public static ShortcutScriptInput ParsedInput = new Input( Entries, Templates );
+			public static ShortcutScriptInput ParsedInput = new ShortcutScriptInput( Entries, Templates );
 		}
 
 
