@@ -8,9 +8,9 @@ namespace Petrichor.Logging
 		private static LogMode activeMode = LogMode.None;
 		private const ConsoleColor defaultConsoleBackgroundColor = ConsoleColor.Black;
 		private const ConsoleColor defaultConsoleForegroundColor = ConsoleColor.White;
-		private static readonly string defaultLogFolder = $"{ AppContext.BaseDirectory }/log/";
+		private static readonly string defaultLogDirectory = $"{ AppContext.BaseDirectory }/log/";
 		private static readonly string defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
-		private static string logFolder = string.Empty;
+		private static string logDirectory = string.Empty;
 		private static string logFileName = string.Empty;
 		private static string logFilePath = string.Empty;
 
@@ -38,14 +38,14 @@ namespace Petrichor.Logging
 		{
 			activeMode = LogMode.FileOnly;
 			Console.WriteLine( "File logging is enabled." );
-			SetLogFolder( logDirectory );
+			SetLogDirectory( logDirectory );
 		}
 
 		public static void EnableForAll( string logDirectory )
 		{
 			activeMode = LogMode.All;
 			Console.WriteLine( "Console and file logging are enabled." );
-			SetLogFolder( logDirectory );
+			SetLogDirectory( logDirectory );
 		}
 
 		/// <summary>
@@ -75,10 +75,10 @@ namespace Petrichor.Logging
 			SetLogFilePath();
 		}
 
-		public static void SetLogFolder( string folder )
+		public static void SetLogDirectory( string directory )
 		{
-			logFolder = AddTrailingSlashToDirectoryPath( folder );
-			Directory.CreateDirectory( logFolder );
+			logDirectory = AddTrailingSlashToDirectoryPath( directory );
+			Directory.CreateDirectory( logDirectory );
 			SetLogFilePath();
 		}
 
@@ -116,9 +116,9 @@ namespace Petrichor.Logging
 				return;
 			}
 
-			if ( logFolder == "" )
+			if ( logDirectory == "" )
 			{
-				SetLogFolder( defaultLogFolder );
+				SetLogDirectory( defaultLogDirectory );
 			}
 			if ( logFileName == "" )
 			{
@@ -185,7 +185,7 @@ namespace Petrichor.Logging
 
 		private static void SetLogFilePath()
 		{
-			logFilePath = $"{ logFolder }{ logFileName }";
+			logFilePath = $"{ logDirectory }{ logFileName }";
 			if ( logFileName.CompareTo( "" ) != 0 )
 			{
 				Console.WriteLine( $"Log file will be created at \"{ logFilePath }\"" );

@@ -25,16 +25,16 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 
 		public void GenerateScript( string[] macros, string outputFile )
 		{
-			var outputFolder = GetNormalizedOutputFolder( outputFile );
+			var outputDirectory = GetNormalizedOutputDirectory( outputFile );
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
-			outputFilePath = $"{ outputFolder }{ outputFileName }";
+			outputFilePath = $"{ outputDirectory }{ outputFileName }";
 
 			var taskMessage = $"generating output file \"{ outputFilePath }\"";
 			Log.TaskStarted( taskMessage );
 			
 			try
 			{
-				Directory.CreateDirectory( outputFolder );
+				Directory.CreateDirectory( outputDirectory );
 				WriteHeaderToFile();
 				WriteMacrosToFile( macros );
 			}
@@ -85,14 +85,14 @@ namespace Petrichor.AutoHotkeyScripts.Utilities
 			return macro;
 		}
 
-		private string GetNormalizedOutputFolder( string outputFile )
+		private string GetNormalizedOutputDirectory( string outputFile )
 		{
-			var outputFolder = outputFile.GetDirectory();
-			if ( outputFolder == string.Empty )
+			var outputDirectory = outputFile.GetDirectory();
+			if ( outputDirectory == string.Empty )
 			{
 				return ProjectDirectories.OutputDirectory;
 			}
-			return outputFolder;
+			return outputDirectory;
 		}
 
 		private string GetNormalizedOutputFileName( string outputFile )

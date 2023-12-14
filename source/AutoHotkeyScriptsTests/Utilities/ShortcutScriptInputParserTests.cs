@@ -45,7 +45,7 @@ namespace Petrichor.AutoHotkeyScripts.Utilities.Tests
 
 
 		[ TestMethod ]
-		[ DataRow( "InputParser_Valid.txt" ) ]
+		[ DataRow( "ShortcutScriptInputParser_Valid.txt" ) ]
 		public void ParseInputFileTest_Success( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );

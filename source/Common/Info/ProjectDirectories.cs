@@ -23,6 +23,7 @@ namespace Petrichor.Common.Info
 		}
 
 		public static string BuildDirectory => $@"{BaseDirectory}\{buildDirectoryName}";
+		public static string InputDirectory => $@"{BaseDirectory}\{inputDirectoryName}";
 		public static string LogDirectory => $@"{BaseDirectory}\{logDirectoryName}";
 		public static string OutputDirectory => $@"{BaseDirectory}\{outputDirectoryName}";
 	}
