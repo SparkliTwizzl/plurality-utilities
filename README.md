@@ -1,6 +1,9 @@
-# Petrichor
+<div align="center"><image width="200" src="./logo.png"></div>
+<h1 align="center">Petrichor</h1>
+<h3 align="center">Version 0.8</h3>
 
-## Version 0.8
+
+---
 
 [Source code and releases](https://github.com/SparkliTwizzl/plurality-utilities)
 
@@ -57,7 +60,7 @@ Example:
 ```
 
 
-#### 4.1.2.1 - Between the braces, write the fields for the entry on separate lines.
+##### 4.1.2.1 - Between the braces, write the fields for the entry on separate lines.
 
 Whitespace at the start of lines for fields is ignored, so feel free to indent or not as you prefer to.
 
@@ -93,7 +96,7 @@ Example:
 ```
 
 
-#### 4.1.2.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique.
+##### 4.1.2.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique.
 
 If you want to, for example, have the same set of names paired with a different pronoun and/or decoration, you can include multiple entries that are the same aside from small changes (see below).
 
@@ -129,13 +132,12 @@ entries:
 ```
 
 
----
-### 4.1.3 - Templates are how the tool converts entries into AutoHotkey macros.
+#### 4.1.3 - Templates are how the tool converts entries into AutoHotkey macros.
 
 In order for Petrichor to know what format(s) you want the macros in your script to have, you need to provide templates for them.
 
 
-#### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work.
+##### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work.
 
 All templates have to start with two colons `::`, a string of text including an at sign `@` representing the tag, then two more colons `::`.
 
@@ -152,7 +154,7 @@ templates:
 ```
 
 
-#### 4.1.3.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything.
+##### 4.1.3.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything.
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -188,7 +190,7 @@ This produces this output file:
 ```
 
 
-#### 4.1.3.3 - You can use each marker symbol in a template as many times as you want.
+##### 4.1.3.3 - You can use each marker symbol in a template as many times as you want.
 
 Example:
 ```
@@ -215,7 +217,7 @@ This produces this output file:
 ```
 
 
-#### 4.1.3.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced.
+##### 4.1.3.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced.
 
 Note that you can apply an escape character to a backslash in order to make it print literally.
 
@@ -244,7 +246,7 @@ This produces this output file:
 ```
 
 
-#### 4.1.3.5 - The templates region can have as many templates as you want.
+##### 4.1.3.5 - The templates region can have as many templates as you want.
 
 Although templates dont have to be unique, repeating a template will generate duplicate macros, which could break the generated script.
 
