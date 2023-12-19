@@ -7,7 +7,12 @@
 		<Nullable>enable</Nullable>
 		<AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
 		<RootNamespace>$(SolutionName).$(MSBuildProjectName)</RootNamespace>
+		<ApplicationIcon>app.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="app.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
