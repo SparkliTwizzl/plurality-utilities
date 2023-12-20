@@ -11,17 +11,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.runsettings = .runsettings
 		Directory.Build.props = Directory.Build.props
+		ShortcutScriptGeneration\ShortcutScriptGeneration.csproj = ShortcutScriptGeneration\ShortcutScriptGeneration.csproj
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHotkeyScripts", "AutoHotkeyScripts\AutoHotkeyScripts.csproj", "{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHotkeyScriptsTests", "AutoHotkeyScriptsTests\AutoHotkeyScriptsTests.csproj", "{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{BC2F99B0-5681-4396-8A11-85A0773ED956}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonTests", "CommonTests\CommonTests.csproj", "{D6C7C058-5C03-46A3-A56E-DF23BDB003FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestShared", "TestShared\TestShared.csproj", "{B31B3F11-D7D9-4BED-B8A4-B18D10AE7302}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortcutScriptGeneration", "ShortcutScriptGeneration\ShortcutScriptGeneration.csproj", "{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortcutScriptGenerationTests", "ShortcutScriptGenerationTests\ShortcutScriptGenerationTests.csproj", "{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +38,6 @@ Global
 		{86EB0171-E3DD-48FE-995C-DDBA1216A035}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86EB0171-E3DD-48FE-995C-DDBA1216A035}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86EB0171-E3DD-48FE-995C-DDBA1216A035}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D73E446-B55C-48C3-8DCD-60DC8CEE157E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD1B6855-7852-403C-A70E-F0E06D6DCBF1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC2F99B0-5681-4396-8A11-85A0773ED956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC2F99B0-5681-4396-8A11-85A0773ED956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC2F99B0-5681-4396-8A11-85A0773ED956}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +50,14 @@ Global
 		{B31B3F11-D7D9-4BED-B8A4-B18D10AE7302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B31B3F11-D7D9-4BED-B8A4-B18D10AE7302}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B31B3F11-D7D9-4BED-B8A4-B18D10AE7302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
