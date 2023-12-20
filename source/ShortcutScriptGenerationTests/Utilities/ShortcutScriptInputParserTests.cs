@@ -9,23 +9,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[ TestClass ]
 	public class ShortcutScriptInputParserTests
 	{
-		public static class TestData
+		public struct TestData
 		{
-			public static ShortcutScriptEntry[] Entries = new ShortcutScriptEntry[]
-					{
-						new ShortcutScriptEntry
-						(
-							new List<ShortcutScriptIdentity>
-							{
-								new ShortcutScriptIdentity("name", "tag")
-							},
-							"pronoun",
-							"decorator"
-						),
-					};
-			public static ShortcutScriptInput Input = new ShortcutScriptInput( Entries!, Metadata!, Templates! );
-			public static ShortcutScriptMetadata Metadata = new("./IconDefault.ico");
-			public static string[] Templates = new string[] { };
+			public static ShortcutScriptEntry[] Entries => new[]
+			{
+				new ShortcutScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
+			};
+			public static ShortcutScriptInput Input => new( Entries!, Metadata!, Templates! );
+			public static ShortcutScriptMetadata Metadata => new("./IconDefault.ico");
+			public static string[] Templates => Array.Empty<string>();
 		}
 
 

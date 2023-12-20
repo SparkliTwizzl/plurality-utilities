@@ -9,7 +9,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[ TestClass ]
 	public class ShortcutScriptEntryParserTests
 	{
-		public static class TestData
+		public struct TestData
 		{
 			public const string InputData_BlankDecorationField =
 				"entries:|" +

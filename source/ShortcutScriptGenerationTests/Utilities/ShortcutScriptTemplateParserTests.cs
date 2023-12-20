@@ -8,22 +8,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[ TestClass ]
 	public class ShortcutScriptTemplateParserTests
 	{
-		public static class TestData
+		public struct TestData
 		{
-			public static readonly string[] RawTemplateData_Valid = new string[]
+			public static string[] ValidTemplates => new[]
 			{
 				"{",
 				@"	::\@@:: #",
 				@"	::\@\$\&@:: # $ &",
 				"}",
 			};
-			public static readonly string[] RawTemplateData_TrailingEscapeCharacter = new string[]
+			public static string[] TemplateWithTrailingExcapeCharacter => new[]
 			{
 				"{",
-				@"::\@@:: #\",
+				@"	::\@@:: #\",
 				"}",
 			};
-			public static readonly string[] Templates = new string[]
+			public static string[] ParsedTemplates => new[]
 			{
 				"::@`tag`:: `name`",
 				"::@$&`tag`:: `name` `pronoun` `decoration`",
@@ -46,9 +46,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ TestMethod ]
 		public void ParseTemplatesFromFileTest_Success()
 		{
-			var expected = TestData.Templates;
+			var expected = TestData.ParsedTemplates;
 			var i = 0;
-			var actual = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_Valid, ref i );
+			var actual = TemplateParser.ParseTemplatesFromData( TestData.ValidTemplates, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
@@ -57,7 +57,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException()
 		{
 			var i = 0;
-			_ = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_TrailingEscapeCharacter, ref i );
+			_ = TemplateParser.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
 		}
 	}
 }
