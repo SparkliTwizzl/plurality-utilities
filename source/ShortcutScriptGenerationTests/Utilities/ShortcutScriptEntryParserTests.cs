@@ -34,7 +34,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				),
 			};
 			public const string InputData_BlankDecorationField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @tag|" +
@@ -42,14 +41,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_BlankNameField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% ## @tag|" +
 				"	}|" +
 				"}|";
 			public const string InputData_BlankPronounField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @tag|" +
@@ -57,47 +54,40 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_BlankTagField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @|" +
 				"	}|" +
 				"}|";
 			public const string InputData_EntryNotClosed =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @tag|" +
 				"}|";
 			public const string InputData_MissingIdentityField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"	}|" +
 				"}|";
 			public const string InputData_MissingNameField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% @tag|" +
 				"	}|" +
 				"}|";
 			public const string InputData_MissingTagField =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name#|" +
 				"	}|" +
 				"}|";
 			public const string InputData_TagFieldContainsSpaces =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @t ag|" +
 				"	}|" +
 				"}|";
 			public const string InputData_TooManyDecorationFields =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @tag|" +
@@ -107,7 +97,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_TooManyPronounFields =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name# @tag|" +
@@ -116,7 +105,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_UnexpectedCharBetweenEntries =
-				"entries:|" +
 				"{|" +
 				"	a|" +
 				"	{|" +
@@ -125,7 +113,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_UnexpectedCharInEntry =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		a|" +
@@ -134,7 +121,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"	}|" +
 				"}|";
 			public const string InputData_Valid =
-				"entries:|" +
 				"{|" +
 				"	{|" +
 				"		% #name1# @tag1|" +
@@ -160,7 +146,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			i = 1;
+			i = 0;
 			entryParser = new ShortcutScriptEntryParser();
 		}
 
