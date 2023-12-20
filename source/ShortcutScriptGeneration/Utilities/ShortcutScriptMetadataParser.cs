@@ -1,5 +1,4 @@
 ﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Enums;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -9,7 +8,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptMetadataParser : IShortcutScriptMetadataParser
 	{
-		private const string DefaultIconFilePathToken = "default-icon:";
+		private const string DefaultIconFilePathToken = "default-icon";
 
 		private int IndentLevel { get; set; } = 0;
 		private ShortcutScriptMetadata Metadata { get; set; } = new();
