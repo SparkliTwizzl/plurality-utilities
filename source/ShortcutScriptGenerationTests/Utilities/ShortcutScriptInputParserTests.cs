@@ -19,12 +19,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 							{
 								new ShortcutScriptIdentity("name", "tag")
 							},
-							"",
-							""
+							"pronoun",
+							"decorator"
 						),
 					};
+			public static ShortcutScriptInput Input = new ShortcutScriptInput( Entries!, Metadata!, Templates! );
+			public static ShortcutScriptMetadata Metadata = new("./IconDefault.ico");
 			public static string[] Templates = new string[] { };
-			public static ShortcutScriptInput ParsedInput = new ShortcutScriptInput( Entries, Templates );
 		}
 
 
@@ -51,7 +52,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			var data = File.ReadAllText( filePath );
 			Log.WriteLine( data );
-			var expected = TestData.ParsedInput;
+			var expected = TestData.Input;
 			var actual = InputParser.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
