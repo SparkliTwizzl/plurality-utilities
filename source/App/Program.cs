@@ -18,7 +18,7 @@ namespace Petrichor.App
 			Log.Important( AppInfo.AppNameAndVersion );
 			Log.Important( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			RuntimeHandler.Execute();
-			Log.Important( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } (took { ( DateTime.Now - startTime ).TotalSeconds } seconds)" );
+			Log.Important( $"execution finished at { DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) } and took { ( DateTime.Now - startTime ).TotalSeconds } seconds" );
 			RuntimeHandler.WaitForUserAndExit();
 		}
 	}
