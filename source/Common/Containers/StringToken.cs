@@ -38,7 +38,7 @@
 			var valueLength = rawToken.Length - valueStartsAt;
 
 			Name = rawToken.Substring( 0, nameEndsAt ).Trim();
-			Value = rawToken.Substring( valueStartsAt, valueLength );
+			Value = rawToken.Substring( valueStartsAt, valueLength ).Trim();
 		}
 	}
 }
