@@ -17,7 +17,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ShortcutScriptEntry[] ParseEntriesFromData(string[] data, ref int i)
 		{
-			var taskMessage = "parsing entries from input data";
+			var taskMessage = "parsing entries region data";
 			Log.TaskStarted(taskMessage);
 
 			var entries = new List<ShortcutScriptEntry>();
