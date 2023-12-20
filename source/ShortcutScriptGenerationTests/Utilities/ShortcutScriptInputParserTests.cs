@@ -2,6 +2,7 @@
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.Logging;
 using Petrichor.TestShared.Utilities;
+using Petrichor.TestShared.Info;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
@@ -15,8 +16,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ShortcutScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
-			public static ShortcutScriptInput Input => new( Entries!, Metadata!, Templates! );
-			public static ShortcutScriptMetadata Metadata => new("./IconDefault.ico");
+			public static ShortcutScriptInput Input => new( Metadata!, Entries!, Templates! );
+			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFileName );
 			public static string[] Templates => Array.Empty<string>();
 		}
 

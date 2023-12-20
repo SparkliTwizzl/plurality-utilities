@@ -8,7 +8,7 @@
 
 
 		public ShortcutScriptInput() { }
-		public ShortcutScriptInput( ShortcutScriptEntry[] entries, ShortcutScriptMetadata metadata, string[] templates )
+		public ShortcutScriptInput( ShortcutScriptMetadata metadata, ShortcutScriptEntry[] entries, string[] templates )
 		{
 			Entries = entries;
 			Metadata = metadata;
