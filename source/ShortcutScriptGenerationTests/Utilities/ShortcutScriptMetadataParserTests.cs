@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;
@@ -60,6 +61,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.MetadataWithOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithOptionalTokens, ref i);
+			Log.WriteLine();
+			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -68,6 +72,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.MetadataWithoutOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithoutOptionalTokens, ref i);
+			Log.WriteLine();
+			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
 			Assert.AreEqual(expected, actual);
 		}
 
