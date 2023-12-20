@@ -50,10 +50,12 @@ namespace Petrichor.App.Utilities
 				var entryParser = new ShortcutScriptEntryParser();
 				var templateParser = new ShortcutScriptTemplateParser();
 				var inputParser = new ShortcutScriptInputParser(entryParser, templateParser);
-				var scriptGenerator = new ShortcutScriptGenerator();
+				var macroParser = new ShortcutScriptMacroParser();
 				var input = inputParser.ParseInputFile(InputFilePath);
-				var macros = scriptGenerator.GenerateMacrosFromInput(input);
-				scriptGenerator.GenerateScript(macros, OutputFilePath);
+				input.Macros = macroParser.GenerateMacrosFromInput(input);
+
+				var scriptGenerator = new ShortcutScriptGenerator( input );
+				scriptGenerator.GenerateScript(OutputFilePath);
 
 				var successMessage = "generated AutoHotkey shortcuts script successfully";
 				if ( Log.IsLoggingToConsoleDisabled )

@@ -13,92 +13,54 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private string outputFilePath = string.Empty;
 
 
-		public string[] GenerateMacrosFromInput( ShortcutScriptInput input )
+		private ShortcutScriptInput Input { get; set; }
+
+
+		public ShortcutScriptGenerator( ShortcutScriptInput input )
 		{
-			var macros = new List< string >();
-			foreach ( var entry in input.Entries )
-			{
-				macros.AddRange( GenerateAllEntryMacrosFromTemplates( input.Templates, entry ) );
-			}
-			return macros.ToArray();
+			Input = input;
 		}
 
-		public void GenerateScript( string[] macros, string outputFile )
-		{
-			var outputDirectory = GetNormalizedOutputDirectory( outputFile );
-			var outputFileName = GetNormalizedOutputFileName( outputFile );
-			outputFilePath = $"{ outputDirectory }{ outputFileName }";
 
-			var taskMessage = $"generating output file \"{ outputFilePath }\"";
-			Log.TaskStarted( taskMessage );
-			
+		public void GenerateScript( string outputFile)
+		{
+			var outputDirectory = GetNormalizedOutputDirectory(outputFile);
+			var outputFileName = GetNormalizedOutputFileName(outputFile);
+			outputFilePath = $"{outputDirectory}{outputFileName}";
+
+			var taskMessage = $"generating output file \"{outputFilePath}\"";
+			Log.TaskStarted(taskMessage);
+
 			try
 			{
-				Directory.CreateDirectory( outputDirectory );
+				Directory.CreateDirectory(outputDirectory);
 				WriteHeaderToFile();
-				WriteMacrosToFile( macros );
+				WriteMacrosToFile();
 			}
-			catch ( Exception ex )
+			catch (Exception ex)
 			{
-				var errorMessage = $"failed to generate output file ({ outputFilePath })";
-				Log.Error( errorMessage );
-				throw new Exception( errorMessage, ex );
+				var errorMessage = $"failed to generate output file ({outputFilePath})";
+				Log.Error(errorMessage);
+				throw new Exception(errorMessage, ex);
 			}
-			Log.TaskFinished( taskMessage );
+			Log.TaskFinished(taskMessage);
 		}
 
-
-		private List< string > GenerateAllIdentityMacrosFromTemplates( string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration )
-		{
-			var macros = new List< string >();
-			foreach ( var template in templates )
-			{
-				macros.Add( GenerateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
-			}
-			return macros;
-		}
-
-		private List< string > GenerateAllEntryMacrosFromTemplates( string[] templates, ShortcutScriptEntry entry )
-		{
-			var macros = new List< string >();
-			foreach ( var identity in entry.Identities )
-			{
-				macros.AddRange( GenerateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
-			}
-			return macros;
-		}
-
-		private string GenerateIdentityMacroFromTemplate( string template, ShortcutScriptIdentity identity, string pronoun, string decoration )
-		{
-			var macro = template;
-			Dictionary< string, string > fields = new Dictionary< string, string >()
-			{
-				{ "name", identity.Name },
-				{ "tag", identity.Tag },
-				{ "pronoun", pronoun },
-				{ "decoration", decoration },
-			 };
-			foreach ( var marker in ShortcutScriptTemplateMarkers.LookUpTable )
-			{
-				macro = macro.Replace( $"`{ marker.Value }`", fields[ marker.Value ] );
-			}
-			return macro;
-		}
-
-		private string GetNormalizedOutputDirectory( string outputFile )
+		private string GetNormalizedOutputDirectory(string outputFile)
 		{
 			var outputDirectory = outputFile.GetDirectory();
-			if ( outputDirectory == string.Empty )
+			if (outputDirectory == string.Empty)
 			{
 				return ProjectDirectories.OutputDirectory;
 			}
 			return outputDirectory;
 		}
 
-		private string GetNormalizedOutputFileName( string outputFile )
+		private string GetNormalizedOutputFileName(string outputFile)
 		{
-			return $"{ outputFile.GetFileName().RemoveFileExtension() }.ahk";
+			return $"{outputFile.GetFileName().RemoveFileExtension()}.ahk";
 		}
+
 
 		private void WriteByteOrderMarkToFile()
 		{
@@ -158,11 +120,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.Info( $"wrote { linesWritten } lines to output file" );
 		}
 
-		private void WriteMacrosToFile( string[] macros )
+		private void WriteMacrosToFile()
 		{
 			var taskMessage = "writing macros to output file";
 			Log.TaskStarted( taskMessage );
-			WriteLinesToFile( macros );
+			WriteLinesToFile( Input.Macros );
 			Log.TaskFinished( taskMessage );
 		}
 	}

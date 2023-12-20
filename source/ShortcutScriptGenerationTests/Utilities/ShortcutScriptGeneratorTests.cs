@@ -22,7 +22,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"::@`tag`:: `name`",
 				"::@$&`tag`:: `name` `pronoun` `decoration`",
 			};
-			public static ShortcutScriptInput Input => new( Metadata!, Entries!, Templates! );
+			public static ShortcutScriptInput Input => new( Metadata!, Entries!, Templates!, Macros! );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
@@ -50,36 +50,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			scriptGenerator = new ShortcutScriptGenerator();
+			scriptGenerator = new ShortcutScriptGenerator( TestData.Input );
 		}
 
-
-		[ TestMethod ]
-		public void GenerateMacrosFromTemplatesTest_Success()
-		{
-			var expected = TestData.Macros;
-			var actual = scriptGenerator!.GenerateMacrosFromInput( TestData.Input ).ToArray();
-
-			Log.Info( "expected:" );
-			foreach ( var line in expected )
-			{
-				Log.Info( $"[{ line }]" );
-			}
-			Log.WriteLine();
-			Log.Info( "actual:" );
-			foreach ( var line in actual )
-			{
-				Log.Info( $"[{ line }]" );
-			}
-
-			CollectionAssert.AreEqual( expected, actual );
-		}
 
 		[ TestMethod ]
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( ShortcutScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
-			scriptGenerator!.GenerateScript( TestData.Macros, outputFile );
+			scriptGenerator!.GenerateScript( outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );
