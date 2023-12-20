@@ -28,6 +28,12 @@
 		private void SplitAndStoreRawToken( string rawToken )
 		{
 			var nameEndsAt = rawToken.IndexOf( ':' );
+			if ( nameEndsAt < 0 )
+			{
+				Name = rawToken.Trim();
+				return;
+			}
+
 			var valueStartsAt = nameEndsAt + 1;
 			var valueLength = rawToken.Length - valueStartsAt;
 
