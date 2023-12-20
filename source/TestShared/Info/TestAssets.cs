@@ -7,6 +7,8 @@
 
 
 		public static string DefaultIconFileName => defaultIconFileName;
+		public static string DefaultIconFilePath => $@"{ TestDirectories.TestInputDirectory }\{ DefaultIconFileName }";
 		public static string SuspendIconFileName => suspendIconFileName;
+		public static string SuspendIconFilePath => $@"{ TestDirectories.TestInputDirectory }\{ SuspendIconFileName }";
 	}
 }
