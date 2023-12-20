@@ -3,6 +3,7 @@ using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Utilities;
 using Petrichor.TestShared.Info;
+using Moq;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
@@ -16,17 +17,55 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ShortcutScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
-			public static ShortcutScriptInput Input => new( Metadata!, Entries!, Templates! );
-			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFileName );
-			public static string[] Templates => Array.Empty<string>();
+			public static int EntriesRegionLength => 7;
+			public static ShortcutScriptInput Input => new( Metadata, Entries, Templates, Macros );
+			public static string[] Macros => new[]
+			{
+				"::tag::name pronoun decorator",
+			};
+			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFilePath );
+			public static int MetadataRegionLength => 3;
+			public static string[] Templates => new[]
+			{
+				"::`tag`::`name` `pronoun` `decorator`",
+			};
+			public static int TemplatesRegionLength => 3;
 		}
 
 
-		public ShortcutScriptEntryParser? entryParser;
+		public class ShortcutScriptEntryParserStub : IShortcutScriptEntryParser
+		{
+			public ShortcutScriptEntry[] ParseEntriesFromData(string[] data, ref int i)
+			{
+				i += TestData.EntriesRegionLength;
+				return TestData.Entries;
+			}
+		}
+
+		public class ShortcutScriptMetadataParserStub : IShortcutScriptMetadataParser
+		{
+			public ShortcutScriptMetadata ParseMetadataFromData(string[] data, ref int i)
+			{
+				i += TestData.MetadataRegionLength;
+				return TestData.Metadata;
+			}
+		}
+
+		public class ShortcutScriptTemplateParserStub : IShortcutScriptTemplateParser
+		{
+			public string[] ParseTemplatesFromData(string[] data, ref int i)
+			{
+				i += TestData.TemplatesRegionLength;
+				return TestData.Templates;
+			}
+		}
+
+
+		public ShortcutScriptEntryParserStub? entryParserStub;
 		public ShortcutScriptInputParser? inputParser;
-		public ShortcutScriptMacroParser? macroParser;
-		public ShortcutScriptMetadataParser? metadataParser;
-		public ShortcutScriptTemplateParser? templateParser;
+		public Mock<IShortcutScriptMacroParser>? macroParserMock;
+		public ShortcutScriptMetadataParserStub? metadataParserStub;
+		public ShortcutScriptTemplateParserStub? templateParserStub;
 
 
 		[ TestInitialize ]
@@ -34,11 +73,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			metadataParser = new();
-			entryParser = new();
-			templateParser = new();
-			macroParser = new();
-			inputParser = new( metadataParser, entryParser, templateParser, macroParser );
+			entryParserStub = new();
+			macroParserMock = new();
+			macroParserMock
+				.Setup(x => x.GenerateMacrosFromInput(It.IsAny<ShortcutScriptInput>()))
+				.Returns(TestData.Macros);
+			metadataParserStub = new();
+			templateParserStub = new();
+
+			inputParser = new ShortcutScriptInputParser(metadataParserStub, entryParserStub, templateParserStub, macroParserMock.Object);
 		}
 
 

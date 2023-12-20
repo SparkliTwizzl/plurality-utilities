@@ -13,13 +13,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private const string metadataToken = "metadata:";
 		private const string templatesToken = "templates:";
 
-		private ShortcutScriptEntryParser EntryParser { get; set; }
-		private ShortcutScriptMacroParser MacroParser { get; set; }
-		private ShortcutScriptMetadataParser MetadataParser { get; set; }
-		private ShortcutScriptTemplateParser TemplateParser { get; set; }
+		private IShortcutScriptEntryParser EntryParser { get; set; }
+		private IShortcutScriptMacroParser MacroParser { get; set; }
+		private IShortcutScriptMetadataParser MetadataParser { get; set; }
+		private IShortcutScriptTemplateParser TemplateParser { get; set; }
 
 
-		public ShortcutScriptInputParser(ShortcutScriptMetadataParser metadataParser, ShortcutScriptEntryParser entryParser, ShortcutScriptTemplateParser templateParser, ShortcutScriptMacroParser macroParser)
+		public ShortcutScriptInputParser(IShortcutScriptMetadataParser metadataParser, IShortcutScriptEntryParser entryParser, IShortcutScriptTemplateParser templateParser, IShortcutScriptMacroParser macroParser)
 		{
 			EntryParser = entryParser;
 			MacroParser = macroParser;
