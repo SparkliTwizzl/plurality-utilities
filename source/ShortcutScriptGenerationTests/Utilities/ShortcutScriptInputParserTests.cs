@@ -43,7 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			var data = File.ReadAllText( filePath );
-			Log.WriteLine( data );
+			Log.Info( data );
 			var expected = TestData.Input;
 			var actual = InputParser.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );

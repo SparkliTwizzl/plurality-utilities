@@ -60,16 +60,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expected = TestData.Macros;
 			var actual = ScriptGenerator.GenerateMacrosFromInput( TestData.Input ).ToArray();
 
-			Log.WriteLine( "expected:" );
+			Log.Info( "expected:" );
 			foreach ( var line in expected )
 			{
-				Log.WriteLine( $"[{ line }]" );
+				Log.Info( $"[{ line }]" );
 			}
 			Log.WriteLine();
-			Log.WriteLine( "actual:" );
+			Log.Info( "actual:" );
 			foreach ( var line in actual )
 			{
-				Log.WriteLine( $"[{ line }]" );
+				Log.Info( $"[{ line }]" );
 			}
 
 			CollectionAssert.AreEqual( expected, actual );

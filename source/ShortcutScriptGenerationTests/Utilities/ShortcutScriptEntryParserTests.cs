@@ -208,14 +208,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		private static string[] SplitDataString( string data )
 		{
-			Log.WriteLine( $"raw data: \"{ data }\"" );
+			Log.Info( $"raw data: \"{ data }\"" );
 			var tokens = data.Split( '|' );
-			Log.WriteLine( "tokenized data:" );
+			Log.Info( "tokenized data:" );
 			foreach( var token in tokens )
 			{
-				Log.WriteLine( $"	\"{ token }\"" );
+				Log.Info( $"	\"{ token }\"" );
 			}
-			Log.WriteLine();
+			Log.Info();
 			return tokens;
 		}
 	}
