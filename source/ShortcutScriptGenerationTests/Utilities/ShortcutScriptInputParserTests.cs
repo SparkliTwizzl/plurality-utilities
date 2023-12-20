@@ -22,9 +22,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutScriptEntryParser? EntryParser;
-		public ShortcutScriptInputParser? InputParser;
-		public ShortcutScriptTemplateParser? TemplateParser;
+		public ShortcutScriptEntryParser? entryParser;
+		public ShortcutScriptInputParser? inputParser;
+		public ShortcutScriptTemplateParser? templateParser;
 
 
 		[ TestInitialize ]
@@ -32,9 +32,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			EntryParser = new ShortcutScriptEntryParser();
-			TemplateParser = new ShortcutScriptTemplateParser();
-			InputParser = new ShortcutScriptInputParser( EntryParser, TemplateParser );
+			entryParser = new ShortcutScriptEntryParser();
+			templateParser = new ShortcutScriptTemplateParser();
+			inputParser = new ShortcutScriptInputParser( entryParser, templateParser );
 		}
 
 
@@ -46,7 +46,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var data = File.ReadAllText( filePath );
 			Log.Info( data );
 			var expected = TestData.Input;
-			var actual = InputParser!.ParseInputFile( filePath );
+			var actual = inputParser!.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -56,7 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = InputParser!.ParseInputFile( filePath );
+			_ = inputParser!.ParseInputFile( filePath );
 		}
 	}
 }
