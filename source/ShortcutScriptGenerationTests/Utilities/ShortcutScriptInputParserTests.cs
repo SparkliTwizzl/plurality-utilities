@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.Logging;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Utilities;
 using Petrichor.TestShared.Info;
 
