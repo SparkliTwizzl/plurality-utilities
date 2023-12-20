@@ -7,7 +7,7 @@ using Petrichor.ShortcutScriptGeneration.Utilities;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptInputParser
+	public class ShortcutScriptInputParser : IShortcutScriptInputParser
 	{
 		private const string entriesToken = "entries:";
 		private const string metadataToken = "metadata:";

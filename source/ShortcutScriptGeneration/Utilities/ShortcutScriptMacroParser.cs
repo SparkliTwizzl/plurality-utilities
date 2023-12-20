@@ -4,7 +4,7 @@ using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptMacroParser
+	public class ShortcutScriptMacroParser : IShortcutScriptMacroParser
 	{
 		public ShortcutScriptMacroParser() { }
 
