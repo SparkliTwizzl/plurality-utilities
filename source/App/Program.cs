@@ -10,11 +10,11 @@ namespace Petrichor.App
 		private static DateTime startTime;
 
 
-		static void Main( string[] args )
+		static async Task Main( string[] args )
 		{
 			startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
-			CommandLineHandler.ParseArguments( args );
+			await CommandLineHandler.ParseArguments( args );
 			Log.Important( AppInfo.AppNameAndVersion );
 			Log.Important( $"execution started at { startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" ) }" );
 			RuntimeHandler.Execute();
