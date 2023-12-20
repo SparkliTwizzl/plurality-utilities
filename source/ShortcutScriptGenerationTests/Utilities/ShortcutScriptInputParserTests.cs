@@ -24,6 +24,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public ShortcutScriptEntryParser? entryParser;
 		public ShortcutScriptInputParser? inputParser;
+		public ShortcutScriptMacroParser? macroParser;
+		public ShortcutScriptMetadataParser? metadataParser;
 		public ShortcutScriptTemplateParser? templateParser;
 
 
@@ -32,9 +34,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			entryParser = new ShortcutScriptEntryParser();
-			templateParser = new ShortcutScriptTemplateParser();
-			inputParser = new ShortcutScriptInputParser( entryParser, templateParser );
+			metadataParser = new();
+			entryParser = new();
+			templateParser = new();
+			macroParser = new();
+			inputParser = new( metadataParser, entryParser, templateParser, macroParser );
 		}
 
 
