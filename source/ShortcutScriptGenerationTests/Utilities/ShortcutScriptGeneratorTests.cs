@@ -58,7 +58,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void GenerateMacrosFromTemplatesTest_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = ScriptGenerator.GenerateMacrosFromInput( TestData.Input ).ToArray();
+			var actual = ScriptGenerator!.GenerateMacrosFromInput( TestData.Input ).ToArray();
 
 			Log.Info( "expected:" );
 			foreach ( var line in expected )
@@ -79,7 +79,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void GenerateScriptTest_Success()
 		{
 			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( ShortcutScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
-			ScriptGenerator.GenerateScript( TestData.Macros, outputFile );
+			ScriptGenerator!.GenerateScript( TestData.Macros, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );

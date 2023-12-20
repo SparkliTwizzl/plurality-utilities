@@ -45,7 +45,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var data = File.ReadAllText( filePath );
 			Log.Info( data );
 			var expected = TestData.Input;
-			var actual = InputParser.ParseInputFile( filePath );
+			var actual = InputParser!.ParseInputFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -55,7 +55,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = InputParser.ParseInputFile( filePath );
+			_ = InputParser!.ParseInputFile( filePath );
 		}
 	}
 }

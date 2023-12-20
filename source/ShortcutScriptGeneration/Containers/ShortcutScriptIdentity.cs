@@ -24,7 +24,7 @@
 			return !left.Name.Equals( right.Name ) || !left.Tag.Equals( right.Tag );
 		}
 
-		public override bool Equals( object obj )
+		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )
 			{

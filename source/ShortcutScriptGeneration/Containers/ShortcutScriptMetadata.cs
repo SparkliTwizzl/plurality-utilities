@@ -29,7 +29,7 @@
 			return !left.DefaultIconPath.Equals( right.DefaultIconPath );
 		}
 
-		public override bool Equals( object obj )
+		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )
 			{

@@ -26,7 +26,7 @@
 			return !left.Entries.SequenceEqual( right.Entries ) || !left.Metadata.Equals( right.Metadata ) || !left.Templates.SequenceEqual( right.Templates );
 		}
 
-		public override bool Equals( object obj )
+		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )
 			{

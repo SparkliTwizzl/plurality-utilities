@@ -48,7 +48,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.ParsedTemplates;
 			var i = 0;
-			var actual = TemplateParser.ParseTemplatesFromData( TestData.ValidTemplates, ref i );
+			var actual = TemplateParser!.ParseTemplatesFromData( TestData.ValidTemplates, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
@@ -57,7 +57,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException()
 		{
 			var i = 0;
-			_ = TemplateParser.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
+			_ = TemplateParser!.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
 		}
 	}
 }
