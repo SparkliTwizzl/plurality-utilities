@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.Logging;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;
 
@@ -11,6 +12,27 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
+			public static ShortcutScriptEntry[] Entries => new[]
+			{
+				new ShortcutScriptEntry(
+					new List<ShortcutScriptIdentity>
+					{
+						new("name1", "tag1"),
+						new("name2", "tag2"),
+					},
+					"pronoun1",
+					"decoration1"
+				),
+				new(
+					new List<ShortcutScriptIdentity>
+					{
+						new("name3", "tag3"),
+						new("name4", "tag4"),
+					},
+					"pronoun3",
+					"decoration3"
+				),
+			};
 			public const string InputData_BlankDecorationField =
 				"entries:|" +
 				"{|" +
@@ -145,9 +167,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[ TestMethod ]
 		[ DataRow( TestData.InputData_Valid ) ]
-		public void ParseEntriesFromDataTest_Success( string data )
+		public void ParseEntriesFromDataTest_Success( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			var expected = TestData.Entries;
+			var actual = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		[ TestMethod ]
@@ -156,34 +180,34 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ DataRow( TestData.InputData_BlankNameField ) ]
 		[ DataRow( TestData.InputData_BlankPronounField ) ]
 		[ DataRow( TestData.InputData_BlankTagField ) ]
-		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string data )
+		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( DuplicateInputFieldException) ) ]
 		[ DataRow( TestData.InputData_TooManyDecorationFields ) ]
 		[ DataRow( TestData.InputData_TooManyPronounFields ) ]
-		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string data )
+		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( InputEntryNotClosedException) ) ]
 		[ DataRow( TestData.InputData_EntryNotClosed ) ]
-		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string data )
+		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( InvalidInputFieldException) ) ]
 		[ DataRow( TestData.InputData_TagFieldContainsSpaces ) ]
-		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string data )
+		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 
 		[ TestMethod ]
@@ -191,32 +215,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ DataRow( TestData.InputData_MissingIdentityField ) ]
 		[ DataRow( TestData.InputData_MissingNameField ) ]
 		[ DataRow( TestData.InputData_MissingTagField ) ]
-		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string data )
+		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 
 		[ TestMethod ]
 		[ ExpectedException( typeof( UnexpectedCharacterException) ) ]
 		[ DataRow( TestData.InputData_UnexpectedCharBetweenEntries ) ]
 		[ DataRow( TestData.InputData_UnexpectedCharInEntry ) ]
-		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string data )
+		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string regionDataString )
 		{
-			entryParser!.ParseEntriesFromData( SplitDataString( data ), ref i );
-		}
-
-
-		private static string[] SplitDataString( string data )
-		{
-			Log.Info( $"raw data: \"{ data }\"" );
-			var tokens = data.Split( '|' );
-			Log.Info( "tokenized data:" );
-			foreach( var token in tokens )
-			{
-				Log.Info( $"	\"{ token }\"" );
-			}
-			Log.Info();
-			return tokens;
+			entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
 		}
 	}
 }
