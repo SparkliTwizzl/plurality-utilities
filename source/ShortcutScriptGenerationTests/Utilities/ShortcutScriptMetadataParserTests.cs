@@ -16,20 +16,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
 			public static string[] RegionDataWithUnknownToken => new[]
 			{
-				"{|",
-				"	unknown: token|",
-				"}|",
+				"{",
+				"	unknown: token",
+				"}",
 			};
 			public static string[] ValidRegionDataWithOptionalTokens => new[]
 			{
-				"{|",
-				$"	default-icon: { IconPath }|",
-				"}|",
+				"{",
+				$"	default-icon: { IconPath }",
+				"}",
 			};
 			public static string[] ValidRegionDataWithoutOptionalTokens => new[]
 			{
-				"{|",
-				"}|",
+				"{",
+				"}",
 			};
 		}
 
