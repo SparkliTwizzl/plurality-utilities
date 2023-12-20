@@ -1,0 +1,63 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.TestShared.Utilities;
+
+
+namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
+{
+	[ TestClass ]
+	public class ShortcutScriptTemplateParserTests
+	{
+		public static class TestData
+		{
+			public static readonly string[] RawTemplateData_Valid = new string[]
+			{
+				"{",
+				@"	::\@@:: #",
+				@"	::\@\$\&@:: # $ &",
+				"}",
+			};
+			public static readonly string[] RawTemplateData_TrailingEscapeCharacter = new string[]
+			{
+				"{",
+				@"::\@@:: #\",
+				"}",
+			};
+			public static readonly string[] Templates = new string[]
+			{
+				"::@`tag`:: `name`",
+				"::@$&`tag`:: `name` `pronoun` `decoration`",
+			};
+		}
+
+
+		public ShortcutScriptTemplateParser? TemplateParser;
+
+
+		[ TestInitialize ]
+		public void Setup()
+		{
+			TestUtilities.InitializeLoggingForTests();
+
+			TemplateParser = new ShortcutScriptTemplateParser();
+		}
+
+
+		[ TestMethod ]
+		public void ParseTemplatesFromFileTest_Success()
+		{
+			var expected = TestData.Templates;
+			var i = 0;
+			var actual = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_Valid, ref i );
+			CollectionAssert.AreEqual( expected, actual );
+		}
+
+		[ TestMethod ]
+		[ ExpectedException( typeof( EscapeCharacterMismatchException ) ) ]
+		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException()
+		{
+			var i = 0;
+			_ = TemplateParser.ParseTemplatesFromData( TestData.RawTemplateData_TrailingEscapeCharacter, ref i );
+		}
+	}
+}

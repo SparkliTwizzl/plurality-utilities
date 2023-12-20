@@ -3,7 +3,7 @@ using Petrichor.Common.Enums;
 using Petrichor.Logging;
 
 
-namespace Petrichor.AutoHotkeyScripts.Utilities
+namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class StringTokenParser
 	{

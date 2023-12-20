@@ -1,7 +1,7 @@
 ﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging.Enums;
 using Petrichor.Logging;
-using Petrichor.AutoHotkeyScripts.Utilities;
+using Petrichor.ShortcutScriptGeneration.Utilities;
 
 
 namespace Petrichor.App.Utilities
