@@ -22,4 +22,8 @@
 		<ProjectReference Include="..\TestShared\TestShared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Utilities\" />
+	</ItemGroup>
+
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.Common.Info;
-using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.Text;
 
@@ -47,8 +46,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private string GetNormalizedOutputDirectory(string outputFile)
 		{
-			var outputDirectory = outputFile.GetDirectory();
-			if (outputDirectory == string.Empty)
+			var outputDirectory = Path.GetDirectoryName(outputFile);
+			if (outputDirectory is null || outputDirectory == string.Empty)
 			{
 				return ProjectDirectories.OutputDirectory;
 			}
@@ -57,7 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private string GetNormalizedOutputFileName(string outputFile)
 		{
-			return $"{outputFile.GetFileName().RemoveFileExtension()}.ahk";
+			return Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
 		}
 
 

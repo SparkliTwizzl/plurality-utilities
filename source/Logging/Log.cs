@@ -8,7 +8,7 @@ namespace Petrichor.Logging
 		private static LogMode activeMode = LogMode.None;
 		private const ConsoleColor defaultConsoleBackgroundColor = ConsoleColor.Black;
 		private const ConsoleColor defaultConsoleForegroundColor = ConsoleColor.White;
-		private static readonly string defaultLogDirectory = $"{ AppContext.BaseDirectory }/log/";
+		private static readonly string defaultLogDirectory = $@"{ AppContext.BaseDirectory }\log";
 		private static readonly string defaultLogFileName = $"{ DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" ) }.log";
 		private static string logDirectory = string.Empty;
 		private static string logFileName = string.Empty;
@@ -69,6 +69,25 @@ namespace Petrichor.Logging
 		public static void Info( string message = "" )
 			=> WriteLineWithTimestamp( $"{ message }" );
 
+		/// <summary>
+		/// Set log file directory and/or name.
+		/// </summary>
+		/// <param name="file">File name and/or directory to generate log file at.</param>
+		public static void SetLogFile( string file )
+		{
+			string? directory = Path.GetDirectoryName( file );
+			if ( directory is not null )
+			{
+				SetLogDirectory( directory );
+			}
+			string? fileName = Path.GetFileName( file );
+			if ( fileName is not null )
+			{
+				SetLogFileName( fileName );
+			}
+			SetLogFilePath();
+		}
+		
 		public static void SetLogFileName( string fileName )
 		{
 			logFileName = fileName;
@@ -178,14 +197,14 @@ namespace Petrichor.Logging
 			var lastChar = directory[ directory.Length - 1];
 			if (lastChar != '\\' && lastChar != '/')
 			{
-				directory += '/';
+				directory += '\\';
 			}
 			return directory;
 		}
 
 		private static void SetLogFilePath()
 		{
-			logFilePath = $"{ logDirectory }{ logFileName }";
+			logFilePath = $@"{ logDirectory }{ logFileName }";
 			if ( logFileName.CompareTo( "" ) != 0 )
 			{
 				Console.WriteLine( $"Log file will be created at \"{ logFilePath }\"" );
