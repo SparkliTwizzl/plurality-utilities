@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using Petrichor.Common.Enums;
+using Petrichor.Common.Utilities;
+using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
-using Petrichor.Common.Enums;
-using Petrichor.Logging;
+using System.Text;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
