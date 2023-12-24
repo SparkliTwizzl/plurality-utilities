@@ -13,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public struct TestData
 		{
 			public static string IconPath => "path/to/icon.ico";
-			public static ShortcutScriptMetadata MetadataWithOptionalData => new( IconPath );
+			public static ShortcutScriptMetadata MetadataWithOptionalData => new( IconPath, IconPath );
 			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
 			public static string[] RegionDataWithDanglingCloseBracket => new[]
 			{
