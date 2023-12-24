@@ -9,7 +9,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ShortcutScriptMetadataParser : IShortcutScriptMetadataParser
 	{
 		private const string DefaultIconFilePathToken = "default-icon";
-		private const string SuspendIconFilePathToken = "suspend-icon";
 
 		private int IndentLevel { get; set; } = 0;
 		private ShortcutScriptMetadata Metadata { get; set; } = new();
@@ -23,7 +22,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var expectedTokens = new string[]
 			{
 				DefaultIconFilePathToken,
-				SuspendIconFilePathToken,
 			};
 			for (; i < data.Length; ++i)
 			{
@@ -58,13 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					case DefaultIconFilePathToken:
 						{
-							Metadata.DefaultIconPath = token.Value;
-							break;
-						}
-
-					case SuspendIconFilePathToken:
-						{
-							Metadata.SuspendIconPath = token.Value;
+							StoreDefaultIconPath( token.Value );
 							break;
 						}
 
@@ -90,6 +82,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			Log.TaskFinished( taskMessage );
 			return Metadata;
+		}
+
+
+		private void StoreDefaultIconPath( string filePath )
+		{
+			Metadata.DefaultIconFilePath = filePath;
 		}
 	}
 }

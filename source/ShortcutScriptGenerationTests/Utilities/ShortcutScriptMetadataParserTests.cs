@@ -62,8 +62,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expected = TestData.MetadataWithOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithOptionalTokens, ref i);
 			Log.WriteLine();
-			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
-			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
+			Log.Info( $"expected: default-icon={ expected.DefaultIconFilePath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconFilePath }" );
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -73,8 +73,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expected = TestData.MetadataWithoutOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithoutOptionalTokens, ref i);
 			Log.WriteLine();
-			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
-			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
+			Log.Info( $"expected: default-icon={ expected.DefaultIconFilePath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconFilePath }" );
 			Assert.AreEqual(expected, actual);
 		}
 

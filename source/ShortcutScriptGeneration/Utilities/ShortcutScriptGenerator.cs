@@ -131,8 +131,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var lines = new string[]
 			{
-				$"defaultIcon := \"{ Input.Metadata.DefaultIconPath }\"",
-				$"suspendIcon := \"{ Input.Metadata.SuspendIconPath }\"",
+				$"defaultIcon := \"{ Input.Metadata.DefaultIconFilePath }\"",
+				$"suspendIcon := \"{ Input.Metadata.SuspendIconFilePath }\"",
 				"",
 				"",
 			};
