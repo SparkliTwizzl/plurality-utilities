@@ -21,7 +21,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"::@`tag`:: `name`",
 				"::@$&`tag`:: `name` `pronoun` `decoration`",
 			};
-			public static ShortcutScriptInput Input => new( Metadata!, Entries!, Templates!, Macros! );
+			public static ShortcutScriptInput Input => new( Metadata, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
@@ -37,10 +37,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"#Requires AutoHotkey v2.0",
 				"#SingleInstance Force",
 				"",
-				$"defaultIcon := \"{ TestAssets.DefaultIconFilePath }\"",
-				$"suspendIcon := \"{ TestAssets.SuspendIconFilePath }\"",
+				$"defaultIcon := \"{ Input.Metadata.DefaultIconFilePath }\"",
+				$"suspendIcon := \"{ Input.Metadata.SuspendIconFilePath }\"",
 				"",
 				"",
+				"; constants used for icon handling",
 				"FREEZE_ICON := true",
 				"ID_FILE_SUSPEND:= 65305",
 				"ID_TRAY_SUSPEND:= 65404",
@@ -49,6 +50,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"SUSPEND_TOGGLE:= -1",
 				"WM_COMMAND:= 0x111",
 				"",
+				"",
+				"; icon handling",
+				"; based on code by ntepa on autohotkey.com/boards: https://www.autohotkey.com/boards/viewtopic.php?p=497349#p497349",
 				"SuspendC := Suspend.GetMethod( \"Call\" )",
 				"Suspend.DefineProp( \"Call\",",
 				"	{",
@@ -94,6 +98,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"SetIcon( defaultIcon )",
 				"",
 				"",
+				"; macros generated from entries and templates",
 				"::@tag:: name",
 				"::@$&tag:: name pronoun decoration",
 			};
