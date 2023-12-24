@@ -1,3 +1,11 @@
+metadata:
+{
+	default-icon: ./IconDefault.ico
+	suspend-icon: ./IconSuspend.ico
+	reload-shortcut: #r
+	suspend-shortcut: #s
+}
+
 entries:
 {
 	{
