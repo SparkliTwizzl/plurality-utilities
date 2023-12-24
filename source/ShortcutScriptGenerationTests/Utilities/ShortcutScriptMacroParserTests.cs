@@ -22,7 +22,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"::@tag:: name",
 				"::@$&tag:: name pronoun decoration",
 			};
-			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut );
+			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string[] Templates => new[]
 			{
 				"::@`tag`:: `name`",
