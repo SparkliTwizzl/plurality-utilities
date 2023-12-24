@@ -113,6 +113,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var lines = new string[]
 			{
 				$"defaultIcon := \"{ Input.Metadata.DefaultIconPath }\"",
+				$"suspendIcon := \"{ Input.Metadata.SuspendIconPath }\"",
 				"",
 				"",
 			};
@@ -126,7 +127,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"#SuspendExempt true",
 				"SetIcon()",
 				"{",
-				"	scriptIcon := defaultIcon",
+				"	scriptIcon := A_IsSuspended ? suspendIcon : defaultIcon",
 				"	TraySetIcon(scriptIcon,, true)",
 				"}",
 				"#SuspendExempt false",
