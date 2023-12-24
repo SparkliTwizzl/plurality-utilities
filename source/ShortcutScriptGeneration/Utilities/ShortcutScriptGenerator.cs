@@ -77,6 +77,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var lines = new string[]
 			{
+				"#Requires AutoHotkey v2.0",
 				"#SingleInstance Force",
 				"",
 			};
@@ -103,6 +104,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteGeneratedByMessageToFile();
 			WriteControlStatementsToFile();
 			WriteIconFilePathsToFile();
+			WriteSetIconFunctionToFile();
 			Log.TaskFinished(taskMessage);
 		}
 
@@ -111,13 +113,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var lines = new string[]
 			{
 				$"defaultIcon := \"{ Input.Metadata.DefaultIconPath }\"",
-				"if ( defaultIcon != \"\" )",
+				"",
+				"",
+			};
+			WriteLinesToFile(lines);
+		}
+
+		private void WriteSetIconFunctionToFile()
+		{
+			var lines = new string[]
+			{
+				"#SuspendExempt true",
+				"SetIcon()",
 				"{",
-				"	IfExist, %defaultIcon%",
-				"	{",
-				"		Menu, Tray, Icon, %defaultIcon%",
-				"	}",
+				"	scriptIcon := defaultIcon",
+				"	TraySetIcon(scriptIcon,, true)",
 				"}",
+				"#SuspendExempt false",
+				"",
+				"SetIcon()",
 				"",
 				"",
 			};
