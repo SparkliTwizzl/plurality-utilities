@@ -11,6 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private const string DefaultIconFilePathToken = "default-icon";
 		private const string ReloadShortcutToken = "reload-shortcut";
 		private const string SuspendIconFilePathToken = "suspend-icon";
+		private const string SuspendShortcutToken = "suspend-shortcut";
 
 		private int IndentLevel { get; set; } = 0;
 		private ShortcutScriptMetadata Metadata { get; set; } = new();
@@ -23,7 +24,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			for (; i < data.Length; ++i)
 			{
-				var token = new StringToken( data[ i ] );
+				var rawToken = data[ i ];
+				var token = new StringToken( rawToken );
+
 				var isParsingFinished = false;
 				string? errorMessage;
 				switch (token.Name)
@@ -70,9 +73,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							break;
 						}
 
+					case SuspendShortcutToken:
+						{
+							Metadata.SuspendShortcut = token.Value;
+							break;
+						}
+
 					default:
 						{
-							errorMessage = $"an unrecognized token ({token.Value}) was found when parsing metadata region";
+							errorMessage = $"an unrecognized token (\"{ rawToken.Trim() }\") was found when parsing metadata region";
 							Log.Error(errorMessage);
 							throw new UnknownTokenException(errorMessage);
 						}

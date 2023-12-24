@@ -79,16 +79,38 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				"; constants used for icon handling",
 				"FREEZE_ICON := true",
-				"ID_FILE_SUSPEND:= 65305",
-				"ID_TRAY_SUSPEND:= 65404",
-				"SUSPEND_OFF:= 0",
-				"SUSPEND_ON:= 1",
-				"SUSPEND_TOGGLE:= -1",
-				"WM_COMMAND:= 0x111",
+				"ID_FILE_SUSPEND := 65305",
+				"ID_TRAY_SUSPEND := 65404",
+				"SUSPEND_OFF := 0",
+				"SUSPEND_ON := 1",
+				"SUSPEND_TOGGLE := -1",
+				"WM_COMMAND := 0x111",
 				"",
 				"",
 			};
 			WriteLinesToFile(lines);
+		}
+
+		private void WriteControlShortcutsToFile()
+		{
+			if ( Input.Metadata.ReloadShortcut == string.Empty && Input.Metadata.SuspendShortcut == string.Empty )
+			{
+				return;
+			}
+
+			WriteLineToFile( "; script reload / suspend shortcut(s)" );
+			WriteLineToFile( "#SuspendExempt true" );
+			if ( Input.Metadata.ReloadShortcut != string.Empty )
+			{
+				WriteLineToFile( $"{ Input.Metadata.ReloadShortcut }::Reload()" );
+			}
+			if ( Input.Metadata.SuspendShortcut != string.Empty )
+			{
+				WriteLineToFile( $"{ Input.Metadata.SuspendShortcut }::Suspend( SUSPEND_TOGGLE )" );
+			}
+			WriteLineToFile( "#SuspendExempt false" );
+			WriteLineToFile();
+			WriteLineToFile();
 		}
 		
 		private void WriteControlStatementsToFile()
@@ -124,7 +146,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteIconFilePathsToFile();
 			WriteConstantsToFile();
 			WriteIconHandlingToFile();
-			WriteReloadShortcutToFile();
+			WriteControlShortcutsToFile();
 			Log.TaskFinished(taskMessage);
 		}
 
@@ -229,18 +251,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteLineToFile( "; macros generated from entries and templates" );
 			WriteLinesToFile(Input.Macros);
 			Log.TaskFinished(taskMessage);
-		}
-
-		private void WriteReloadShortcutToFile()
-		{
-			var lines = new string[]
-			{
-				"; script reload shortcut",
-				$"{ Input.Metadata.ReloadShortcut }::Reload()",
-				"",
-				"",
-			};
-			WriteLinesToFile(lines);
 		}
 	}
 }
