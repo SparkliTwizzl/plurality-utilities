@@ -69,6 +69,19 @@ namespace Petrichor.Logging
 		public static void Info( string message = "" )
 			=> WriteLineWithTimestamp( $"{ message }" );
 
+		/// <summary>
+		/// Set log file directory and/or name.
+		/// </summary>
+		/// <param name="file">File name and/or directory to generate log file at.</param>
+		public static void SetLogFile( string file )
+		{
+			string? directory = Path.GetDirectoryName( file );
+			logDirectory = ( directory != null ) ? ( directory + "\\" ) : string.Empty;
+			string? fileName = Path.GetFileName( file );
+			logFileName = ( fileName != null ) ? fileName : string.Empty;
+			SetLogFilePath();
+		}
+		
 		public static void SetLogFileName( string fileName )
 		{
 			logFileName = fileName;
