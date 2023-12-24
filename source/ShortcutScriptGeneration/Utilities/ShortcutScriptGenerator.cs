@@ -124,6 +124,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteIconFilePathsToFile();
 			WriteConstantsToFile();
 			WriteIconHandlingToFile();
+			WriteReloadShortcutToFile();
 			Log.TaskFinished(taskMessage);
 		}
 
@@ -186,7 +187,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"	}",
 				"}",
 				"",
-				"",
 				"SetIcon( defaultIcon )",
 				"",
 				"",
@@ -229,6 +229,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteLineToFile( "; macros generated from entries and templates" );
 			WriteLinesToFile(Input.Macros);
 			Log.TaskFinished(taskMessage);
+		}
+
+		private void WriteReloadShortcutToFile()
+		{
+			var lines = new string[]
+			{
+				"; script reload shortcut",
+				$"{ Input.Metadata.ReloadShortcut }::Reload()",
+				"",
+				"",
+			};
+			WriteLinesToFile(lines);
 		}
 	}
 }

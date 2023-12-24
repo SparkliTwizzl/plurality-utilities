@@ -9,6 +9,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ShortcutScriptMetadataParser : IShortcutScriptMetadataParser
 	{
 		private const string DefaultIconFilePathToken = "default-icon";
+		private const string ReloadShortcutToken = "reload-shortcut";
 		private const string SuspendIconFilePathToken = "suspend-icon";
 
 		private int IndentLevel { get; set; } = 0;
@@ -20,17 +21,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var taskMessage = "parsing metadata region data";
 			Log.TaskStarted( taskMessage );
 
-			var expectedTokens = new string[]
-			{
-				DefaultIconFilePathToken,
-				SuspendIconFilePathToken,
-			};
 			for (; i < data.Length; ++i)
 			{
 				var token = new StringToken( data[ i ] );
-				var errorMessage = string.Empty;
 				var isParsingFinished = false;
-				switch ( token.Name )
+				string? errorMessage;
+				switch (token.Name)
 				{
 					case "{":
 						{
@@ -42,14 +38,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						{
 							--IndentLevel;
 
-							if ( IndentLevel < 0 )
+							if (IndentLevel < 0)
 							{
 								errorMessage = $"a mismatched closing curly brace was found when parsing metadata region";
-								Log.Error( errorMessage );
-								throw new BracketMismatchException( errorMessage );
+								Log.Error(errorMessage);
+								throw new BracketMismatchException(errorMessage);
 							}
 
-							if ( IndentLevel == 0 )
+							if (IndentLevel == 0)
 							{
 								isParsingFinished = true;
 							}
@@ -62,6 +58,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							break;
 						}
 
+					case ReloadShortcutToken:
+						{
+							Metadata.ReloadShortcut = token.Value;
+							break;
+						}
+
 					case SuspendIconFilePathToken:
 						{
 							Metadata.SuspendIconFilePath = token.Value;
@@ -70,9 +72,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					default:
 						{
-							errorMessage = $"an unrecognized token ({ token.Value }) was found when parsing metadata region";
-							Log.Error( errorMessage );
-							throw new UnknownTokenException( errorMessage );
+							errorMessage = $"an unrecognized token ({token.Value}) was found when parsing metadata region";
+							Log.Error(errorMessage);
+							throw new UnknownTokenException(errorMessage);
 						}
 				}
 				if ( isParsingFinished )

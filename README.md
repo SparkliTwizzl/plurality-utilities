@@ -103,6 +103,21 @@ metadata:
 }
 ```
 
+##### 4.1.1.2 - Keyboard shortcut to reload script
+
+If desired, you can include a keyboard shortcut to reload the script
+
+To include a reload shortcut, add a token to the metadata region called `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
+
+Example:
+
+```
+metadata:
+{
+    reload-shortcut: #r ; Windows key + R
+}
+```
+
 ---
 
 #### 4.1.2 - Entries are blocks of data which are made up of fields.
