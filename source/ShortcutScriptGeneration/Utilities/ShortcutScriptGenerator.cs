@@ -79,19 +79,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				"; constants used for icon handling",
 				"FREEZE_ICON := true",
-				"ID_FILE_SUSPEND:= 65305",
-				"ID_TRAY_SUSPEND:= 65404",
-				"SUSPEND_OFF:= 0",
-				"SUSPEND_ON:= 1",
-				"SUSPEND_TOGGLE:= -1",
-				"WM_COMMAND:= 0x111",
+				"ID_FILE_SUSPEND := 65305",
+				"ID_TRAY_SUSPEND := 65404",
+				"SUSPEND_OFF := 0",
+				"SUSPEND_ON := 1",
+				"SUSPEND_TOGGLE := -1",
+				"WM_COMMAND := 0x111",
 				"",
 				"",
 			};
 			WriteLinesToFile(lines);
 		}
 
-		private void WriteControlShortcutToFile()
+		private void WriteControlShortcutsToFile()
 		{
 			if ( Input.Metadata.ReloadShortcut == string.Empty && Input.Metadata.SuspendShortcut == string.Empty )
 			{
@@ -99,16 +99,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 
 			WriteLineToFile( "; script reload / suspend shortcut(s)" );
+			WriteLineToFile( "#SuspendExempt true" );
 			if ( Input.Metadata.ReloadShortcut != string.Empty )
 			{
 				WriteLineToFile( $"{ Input.Metadata.ReloadShortcut }::Reload()" );
 			}
 			if ( Input.Metadata.SuspendShortcut != string.Empty )
 			{
-				WriteLineToFile( "#SuspendExempt true" );
 				WriteLineToFile( $"{ Input.Metadata.SuspendShortcut }::Suspend( SUSPEND_TOGGLE )" );
-				WriteLineToFile( "#SuspendExempt false" );
 			}
+			WriteLineToFile( "#SuspendExempt false" );
 			WriteLineToFile();
 			WriteLineToFile();
 		}
@@ -146,7 +146,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteIconFilePathsToFile();
 			WriteConstantsToFile();
 			WriteIconHandlingToFile();
-			WriteControlShortcutToFile();
+			WriteControlShortcutsToFile();
 			Log.TaskFinished(taskMessage);
 		}
 
