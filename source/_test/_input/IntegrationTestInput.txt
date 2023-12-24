@@ -1,0 +1,30 @@
+metadata:
+{
+	default-icon: ../_input/IconDefault.ico
+	suspend-icon: ../_input/IconSuspend.ico
+	reload-shortcut: #r
+	suspend-shortcut: #s
+}
+
+entries:
+{
+	{
+		% #Sam# @sm
+		% #Sammy# @smy
+		$they/them
+		&-> a person
+	}
+	{
+		% #ALEX# @AX
+		$IT/ITS
+		&[A PERSON TOO]
+	}
+}
+
+templates:
+{
+	::\@@:: \##
+	::\@@-:: \## \$($)
+	::\@@/:: \## \&&
+	::\@@-/:: \## \$($) \&&
+}

@@ -1,6 +1,0 @@
-{
-    a
-    % #Name1# @n1
-    $pronouns/1
-    &decoration 1
-}
