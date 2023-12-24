@@ -2,31 +2,26 @@
 {
 	public class ShortcutScriptMetadata
 	{
-		private string defaultIconPath = string.Empty;
-
-
-		public string DefaultIconPath
-		{
-			get => defaultIconPath;
-			set => defaultIconPath = value;
-		}
+		public string DefaultIconFilePath { get; set; } = string.Empty;
+		public string SuspendIconFilePath { get; set; } = string.Empty;
 
 
 		public ShortcutScriptMetadata() { }
-		public ShortcutScriptMetadata( string defaultIconPath )
+		public ShortcutScriptMetadata( string defaultIconPath, string suspendIconPath )
 		{
-			DefaultIconPath = defaultIconPath;
+			DefaultIconFilePath = defaultIconPath;
+			SuspendIconFilePath = suspendIconPath;
 		}
 
 
 		public static bool operator ==( ShortcutScriptMetadata left, ShortcutScriptMetadata right )
 		{
-			return left.DefaultIconPath.Equals( right.DefaultIconPath );
+			return left.DefaultIconFilePath.Equals( right.DefaultIconFilePath ) && left.SuspendIconFilePath.Equals( right.SuspendIconFilePath );
 		}
 
 		public static bool operator !=( ShortcutScriptMetadata left, ShortcutScriptMetadata right )
 		{
-			return !left.DefaultIconPath.Equals( right.DefaultIconPath );
+			return !left.DefaultIconFilePath.Equals( right.DefaultIconFilePath ) || !left.SuspendIconFilePath.Equals( right.SuspendIconFilePath );
 		}
 
 		public override bool Equals( object? obj )
@@ -40,7 +35,7 @@
 
 		public override int GetHashCode()
 		{
-			return DefaultIconPath.GetHashCode();
+			return DefaultIconFilePath.GetHashCode() ^ SuspendIconFilePath.GetHashCode();
 		}
 	}
 }

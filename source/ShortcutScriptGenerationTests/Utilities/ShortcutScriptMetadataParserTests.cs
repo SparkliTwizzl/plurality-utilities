@@ -13,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public struct TestData
 		{
 			public static string IconPath => "path/to/icon.ico";
-			public static ShortcutScriptMetadata MetadataWithOptionalData => new( IconPath );
+			public static ShortcutScriptMetadata MetadataWithOptionalData => new( IconPath, IconPath );
 			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
 			public static string[] RegionDataWithDanglingCloseBracket => new[]
 			{
@@ -33,6 +33,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				"{",
 				$"	default-icon: { IconPath }",
+				$"	suspend-icon: { IconPath }",
 				"}",
 			};
 			public static string[] ValidRegionDataWithoutOptionalTokens => new[]
@@ -62,8 +63,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expected = TestData.MetadataWithOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithOptionalTokens, ref i);
 			Log.WriteLine();
-			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
-			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
+			Log.Info( $"expected: default-icon={ expected.DefaultIconFilePath }, suspend-icon={ expected.SuspendIconFilePath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconFilePath }, suspend-icon={ actual.SuspendIconFilePath }" );
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -73,8 +74,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expected = TestData.MetadataWithoutOptionalData;
 			var actual = metadataParser!.ParseMetadataFromData(TestData.ValidRegionDataWithoutOptionalTokens, ref i);
 			Log.WriteLine();
-			Log.Info( $"expected: default-icon={ expected.DefaultIconPath }" );
-			Log.Info( $"actual: default-icon={ actual.DefaultIconPath }" );
+			Log.Info( $"expected: default-icon={ expected.DefaultIconFilePath }, suspend-icon={ expected.SuspendIconFilePath }" );
+			Log.Info( $"actual: default-icon={ actual.DefaultIconFilePath }, suspend-icon={ actual.SuspendIconFilePath }" );
 			Assert.AreEqual(expected, actual);
 		}
 

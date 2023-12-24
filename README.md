@@ -61,17 +61,19 @@ Blank lines in input files are ignored, so use as many as you want.
 
 #### 4.1.1 - Metadata
 
-This region is optional. It allows you to set a custom icon on the shortcut script if desired.
+This region is optional. It allows you to set custom icons on the shortcut script if desired.
 
 ##### 4.1.1.1 - Custom icons
 
-If desired, you can specify a filepath to a custom icon for the shortcut script to use.
+If desired, you can specify filepaths to custom icons for the shortcut script to use.
 
-To do so, add a token to the metadata region called `default-icon` and set its value to the path to the icon file.
+To set the default icon, add a token to the metadata region called `default-icon` and set its value to the path to the icon file you want to use.
+
+If you want a different icon to be used when the script is suspended, add a token to the metadata region called `suspend-icon` and set its value to the path to the icon file you want to use.
 
 
 
-**IMPORTANT NOTE:** If you move the icon file and do not update the path in your input file and regenerate the script, the icon will not be found by AutoHotkey and will not be applied.
+**IMPORTANT NOTE:** If you move an icon file and do not update its path in your input file and regenerate the script, the icon will not be found by AutoHotkey and will not be applied.
 
 
 
@@ -80,13 +82,14 @@ Example:
 ```
 metadata:
 {
-    default-icon: {path to icon file}.ico
+    default-icon: {path to default icon file}.ico
+    suspend-icon: {path to suspend icon file}.ico
 }
 ```
 
 
 
-For simplicity, if the icon file will be in the same folder as the shortcut script, you can use a relative path (see 4.2.3 below for more on how relative paths work).
+For simplicity, if an icon file will be in the same folder as the shortcut script, you can use a relative path (see 4.2.3 below for more on how relative paths work).
 
 
 
@@ -95,7 +98,8 @@ Example:
 ```
 metadata:
 {
-    default-icon: ./{icon file name}.ico
+    default-icon: ./{default icon file name}.ico
+    suspend-icon: ./{suspend icon file name}.ico
 }
 ```
 
