@@ -2,13 +2,10 @@
 {
 	public struct TestAssets
 	{
-		private const string defaultIconFileName = "IconDefault.ico";
-		private const string suspendIconFileName = "IconSuspend.ico";
-
-
-		public static string DefaultIconFileName => defaultIconFileName;
+		public static string DefaultIconFileName => "IconDefault.ico";
 		public static string DefaultIconFilePath => $@"{ TestDirectories.TestInputDirectory }\{ DefaultIconFileName }";
-		public static string SuspendIconFileName => suspendIconFileName;
+		public static string ReloadShortcut => "#*";
+		public static string SuspendIconFileName => "IconSuspend.ico";
 		public static string SuspendIconFilePath => $@"{ TestDirectories.TestInputDirectory }\{ SuspendIconFileName }";
 	}
 }
