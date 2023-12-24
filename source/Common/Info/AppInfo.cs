@@ -2,16 +2,16 @@ namespace Petrichor.Common.Info
 {
 	public struct AppInfo
 	{
-		private const string releaseAppVerion = "0.8";
-		private const string developmentAppVersion = $"{releaseAppVerion}-dev";
+		private const string releaseAppVersion = "0.8";
+		private const string developmentAppVersion = $"{releaseAppVersion}-dev";
 
 
 		public const string AppName = "Petrichor";
-		public const string AppNameAndVersion = $"{AppName} v{AppVersion}";
+		public static string AppNameAndVersion => $"{AppName} v{AppVersion}";
 #if DEBUG
-		public const string AppVersion = developmentAppVersion;
+		public static string AppVersion => developmentAppVersion;
 #else
-		public const string AppVersion = releaseAppVersion;
+		public static string AppVersion => releaseAppVersion;
 #endif
 	}
 }

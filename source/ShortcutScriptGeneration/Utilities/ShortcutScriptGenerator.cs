@@ -49,9 +49,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var outputDirectory = Path.GetDirectoryName(outputFile);
 			if (outputDirectory is null || outputDirectory == string.Empty)
 			{
-				return ProjectDirectories.OutputDirectory;
+				return ProjectDirectories.OutputDirectory + @"\";
 			}
-			return outputDirectory;
+			return outputDirectory + @"\";
 		}
 
 		private string GetNormalizedOutputFileName(string outputFile)
