@@ -73,6 +73,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 		}
 
+		private void WriteConstantsToFile()
+		{
+			var lines = new string[]
+			{
+				"; constants used for icon handling",
+				"FREEZE_ICON := true",
+				"ID_FILE_SUSPEND:= 65305",
+				"ID_TRAY_SUSPEND:= 65404",
+				"SUSPEND_OFF:= 0",
+				"SUSPEND_ON:= 1",
+				"SUSPEND_TOGGLE:= -1",
+				"WM_COMMAND:= 0x111",
+				"",
+				"",
+			};
+			WriteLinesToFile(lines);
+		}
+		
 		private void WriteControlStatementsToFile()
 		{
 			var lines = new string[]
@@ -104,7 +122,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteGeneratedByMessageToFile();
 			WriteControlStatementsToFile();
 			WriteIconFilePathsToFile();
-			WriteSetIconFunctionToFile();
+			WriteConstantsToFile();
+			WriteIconHandlingToFile();
 			Log.TaskFinished(taskMessage);
 		}
 
@@ -120,19 +139,55 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteLinesToFile(lines);
 		}
 
-		private void WriteSetIconFunctionToFile()
+		private void WriteIconHandlingToFile()
 		{
 			var lines = new string[]
 			{
-				"#SuspendExempt true",
-				"SetIcon()",
+				"; icon handling",
+				"; based on code by ntepa on autohotkey.com/boards: https://www.autohotkey.com/boards/viewtopic.php?p=497349#p497349",
+				"SuspendC := Suspend.GetMethod( \"Call\" )",
+				"Suspend.DefineProp( \"Call\",",
+				"	{",
+				"		Call:( this, mode := SUSPEND_TOGGLE ) => ( SuspendC( this, mode ), OnSuspend( A_IsSuspended ) )",
+				"	})",
+				"OnMessage( WM_COMMAND, OnSuspendMsg )",
+				"OnSuspendMsg( wparam, * )",
 				"{",
-				"	scriptIcon := A_IsSuspended ? suspendIcon : defaultIcon",
-				"	TraySetIcon(scriptIcon,, true)",
+				"	if ( wparam = ID_FILE_SUSPEND ) || ( wparam = ID_TRAY_SUSPEND )",
+				"	{",
+				"		OnSuspend( !A_IsSuspended )",
+				"	}",
 				"}",
-				"#SuspendExempt false",
 				"",
-				"SetIcon()",
+				"OnSuspend( mode )",
+				"{",
+				"	scriptIcon := SelectIcon( mode )",
+				"	SetIcon( scriptIcon )",
+				"}",
+				"",
+				"SelectIcon( suspendMode )",
+				"{",
+				"	if ( suspendMode = SUSPEND_ON )",
+				"	{",
+				"		return suspendIcon",
+				"	}",
+				"	else if ( suspendMode = SUSPEND_OFF )",
+				"	{",
+				"		return defaultIcon",
+				"	}",
+				"	return \"\"",
+				"}",
+				"",
+				"SetIcon( scriptIcon )",
+				"{",
+				"	if ( FileExist( scriptIcon ) )",
+				"	{",
+				"		TraySetIcon( scriptIcon,, FREEZE_ICON )",
+				"	}",
+				"}",
+				"",
+				"",
+				"SetIcon( defaultIcon )",
 				"",
 				"",
 			};
@@ -171,6 +226,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var taskMessage = "writing macros to output file";
 			Log.TaskStarted(taskMessage);
+			WriteLineToFile( "; macros generated from entries and templates" );
 			WriteLinesToFile(Input.Macros);
 			Log.TaskFinished(taskMessage);
 		}
