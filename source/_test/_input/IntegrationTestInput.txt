@@ -1,7 +1,7 @@
 metadata:
 {
-	default-icon: ./IconDefault.ico
-	suspend-icon: ./IconSuspend.ico
+	default-icon: ../_input/IconDefault.ico
+	suspend-icon: ../_input/IconSuspend.ico
 	reload-shortcut: #r
 	suspend-shortcut: #s
 }
