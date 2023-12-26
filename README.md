@@ -69,11 +69,7 @@ To set the default icon, add a token to the metadata region called `default-icon
 
 If you want a different icon to be used when the script is suspended, add a token to the metadata region called `suspend-icon` and set its value to the path to the icon file you want to use.
 
-
-
 **IMPORTANT NOTE:** If you move an icon file and do not update its path in your input file and regenerate the script, the icon will not be found by AutoHotkey and will not be applied.
-
-
 
 Example:
 
@@ -85,11 +81,7 @@ metadata:
 }
 ```
 
-
-
 For simplicity, if an icon file will be in the same folder as the shortcut script, you can use a relative path (see 4.2.3 below for more on how relative paths work).
-
-
 
 Example:
 
@@ -133,13 +125,11 @@ metadata:
 
 ---
 
-#### 4.1.2 - Entries are blocks of data which are made up of fields.
+#### 4.1.2 - Entries are blocks of data which are made up of fields
 
 Each entry represents a person and must contain at least one identity (a name paired with a tag).
 
 To write an entry, start with an open curly brace `{` on one line and a close curly brace `}` on another, with nothing else on those lines.
-
-
 
 Example:
 
@@ -148,7 +138,7 @@ Example:
 }
 ```
 
-##### 4.1.2.1 - Between the braces, write the fields for the entry on separate lines.
+##### 4.1.2.1 - Between the braces, write the fields for the entry on separate lines
 
 Whitespace at the start of lines for fields is ignored, so feel free to indent or not as you prefer to.
 
@@ -174,8 +164,6 @@ Identity fields are a special case, as they consist of pairs of name and tag fie
   - Every entry must contain at least one identity field.
   - There is no upper limit to how many identity fields an entry can have.
 
-
-
 Example:
 
 ```
@@ -186,13 +174,11 @@ Example:
 }
 ```
 
-##### 4.1.2.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique.
+##### 4.1.2.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique
 
 If you want to, for example, have the same set of names paired with a different pronoun and/or decoration, you can include multiple entries that are the same aside from small changes (see below).
 
 **IMPORTANT NOTE:** All tag fields *should* be unique in order for the generated script to work correctly, even though Petrichor wont take issue with it. If a tag field is repeated, only the first one in the script will work.
-
-
 
 Example:
 
@@ -226,19 +212,17 @@ entries:
 
 ---
 
-#### 4.1.3 - Templates are how the tool converts entries into AutoHotkey macros.
+#### 4.1.3 - Templates are how the tool converts entries into AutoHotkey macros
 
 In order for Petrichor to know what format(s) you want the macros in your script to have, you need to provide templates for them.
 
-##### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work.
+##### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work
 
 All templates have to start with 2 colons `::`, a string of text including an at sign `@` representing the tag, then 2 more colons `::`.
 
 The tag string can be anything you want, as long as it contains at least one at sign `@` and no spaces. Additional text is optional.
 
 If this is not followed, the generated script wont work, even though Petrichor will run without errors.
-
-
 
 Example:
 
@@ -249,7 +233,7 @@ templates:
 }
 ```
 
-##### 4.1.3.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything.
+##### 4.1.3.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -259,8 +243,6 @@ Below is a list of the marker symbols and the fields they will be replaced by wh
 - `@ → tag`
 - `$ → pronoun`
 - `& → decoration`
-
-
 
 Example:
 
@@ -288,9 +270,7 @@ This produces this output file:
 ::smy::Sammy (they/them) | [-- a person]
 ```
 
-##### 4.1.3.3 - You can use each marker symbol in a template as many times as you want.
-
-
+##### 4.1.3.3 - You can use each marker symbol in a template as many times as you want
 
 Example:
 
@@ -318,11 +298,9 @@ This produces this output file:
 ::smysmy::Sammy (they/them) | [Sammy is a person]
 ```
 
-##### 4.1.3.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced.
+##### 4.1.3.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced
 
 Note that you can apply an escape character to a backslash in order to make it print literally.
-
-
 
 Example:
 
@@ -350,11 +328,9 @@ This produces this output file:
 ::@smy::Sammy (they/them) \ [#a person]
 ```
 
-##### 4.1.3.5 - The templates region can have as many templates as you want.
+##### 4.1.3.5 - The templates region can have as many templates as you want
 
 Although templates dont have to be unique, repeating a template will generate duplicate macros, which could break the generated script.
-
-
 
 Example:
 
@@ -397,7 +373,7 @@ This produces this output file:
 ::<@sm>::Sam (they/them) | [-- a person]
 ::@smy::Sammy
 ::@smy-::Sammy (they/them)
-::<@smy?::Sammy (they/them) | [-- a person]
+::<@smy>::Sammy (they/them) | [-- a person]
 ::@ax::Alex
 ::@ax-::Alex (it/its)
 ::<@ax>::Alex (it/its) | [[a person too]]
@@ -413,135 +389,161 @@ This produces this output file:
 
 ### 4.2 - Running the tool
 
-#### 4.2.1 - Call the executable (.exe file) via command line to run it.
+#### 4.2.1 - Call the executable (`.exe` file) via command line to run it
 
 It's easier to write a batch script (.bat file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
 
-
-
 Example:
 
 ```
-C:\path\to\tool\folder\Petrichor\
+{path to tool folder}\Petrichor\
 >Petrichor.exe
 ```
 
-#### 4.2.2 - In order to generate an AutoHotkey script with the tool, you need an input file and a templates file (see above for how to write them).
+#### 4.2.2 - Generating AutoHotkey shortcut scripts (generateAHKShortcutScript command)
 
-Pass the path to the input file as the first argument (arg0) and the path to where you want the output file to be generated as the second argument (arg1).
+To generate an AutoHotkey shortcut script, call Petrichor with the command argument `generateAHKShortcutScript`. This command has several options, some of which are required, which are explained below.
 
-You must include the file extension for the input file, but the extension on the output file will be ignored and is irrelevant.
+**Example:**
 
-**IMPORTANT NOTE:** If you pass the path to an existing output file, it will be overwritten.
+```
+{path to tool folder}\Petrichor\
+>Petrichor.exe generateAHKShortcutScript
+```
 
+##### 4.2.2.1 - generateAHKShortcutScript command `--input` option (REQUIRED)
 
+Add the `--input` option to the `generateAHKShortcutScript` command and pass the path to the input file after it. You must include the path and the file extension for the input file. Relative file paths can be used (see 4.2.3).
 
 Example:
 
 ```
-C:\path\to\tool\folder\Petrichor\
->Petrichor.exe C:\path\to\input\file\input.txt C:\path\to\output\file\output
+{path to tool folder}\Petrichor\
+>Petrichor.exe generateAHKShortcutScript --input C:\path\to\input\file\inputFile.txt
 ```
 
-#### 4.2.3 - If you dont like having to get the full path for files, you can use relative paths instead.
+##### 4.2.2.2 - generateAHKShortcutScript command `--output` option
+
+Add the `--outout` option to the `generateAHKShortcutScript` command and pass the output file after it.
+
+The output file can be either a full filepath or just a filename. In the case of the latter, the output file will be created in a default location.
+
+A file extension is not required, and if one is included it will be replaced with `.ahk` automatically. Relative file paths can be used (see 4.2.3).
+
+**Example (full filepath, specify output location):**
+
+```
+{path to tool folder}\Petrichor\
+>Petrichor.exe generateAHKShortcutScript --input {input file} --output C:\path\to\output\file\outputFile
+
+RESULT:
+
+C:\path\to\output\file\outputFile.ahk ← will be generated by Petrichor
+```
+
+**Example (filename only, default output location):**
+
+```
+{path to tool folder}\Petrichor\
+>Petrichor.exe generateAHKShortcutScript --input {input file} --output outputFile
+
+RESULT:
+
+C:\path\to\tool\folder\Petrichor\_output\outputFile.ahk ← will be generated by Petrichor
+```
+
+##### 4.2.2.3 - generateAHKShortcutScript command `--logMode` option
+
+This option is used to control where logs are sent.
+
+Values for this option are:
+
+- `none` - disable logging (default)
+
+- `consoleOnly` - send logs only to console output
+
+- `fileOnly` - send logs onto to log file
+
+- `all` - send logs to all output locations
+
+##### 4.2.2.4 - generateAHKShortcutScript command `--logFile` option
+
+This option is used to customize the file name and/or location to generate a log file at.
+
+NOTE: log file will only be created if logging to file is enabled (see 4.2.2.3).
+
+**Example (filename only, default directory):**
+
+```
+Petrichor.exe generateAHKShortcutScript --input {input file} --logMode all --logFile logFile.txt
+
+RESULT:
+
+{path}/Petrichor/_log/logFile.txt ← will be generated by Petrichor
+```
+
+**Example (directory path only, default filename):**
+
+```
+Petrichor.exe generateAHKShortcutScript --input {input file} --logMode all --logFile {log path}/
+
+RESULT:
+
+{log path}/{yyyy}-{MM}-{dd}_{HH}-{mm}-{ss}.log ← will be generated by Petrichor
+```
+
+**Example: (full filepath, no defaults):**
+
+```
+Petrichor.exe generateAHKShortcutScript --input {input file} --logMode all --logFile {log path}/logFile.txt
+
+RESULT:
+
+{log path}/logFile.txt ← will be generated by Petrichor
+```
+
+#### 4.2.3 - If you dont like having to get the full path for files, you can use relative paths instead
 
 `./` gets the folder the .exe file is in, and `../` gets the parent folder of that folder.
 
-
-
-Example:
+**Example:**
 
 ```
-folder contents:
+FOLDER CONTENTS:
 
 - parent/
   - Petrichor/
-    - output.ahk (will be generated after running)
+    - outputFile.ahk (will be generated after running)
     - Petrichor.exe
-  - input.txt
+  - inputFile.txt
 
 
-in command prompt:
+IN COMMAND PROMPT:
 
-C:\path\to\parent\Petrichor\
->Petrichor.exe ../input.txt ./output
+{path to tool folder}\Petrichor\
+>Petrichor.exe generateAHKShortcutScript --input ../inputFile.txt --output ./outputFile
 ```
 
-#### 4.2.4 - A note about slashes in paths:
+#### 4.2.4 - A note about slashes in paths
 
 On Windows, backslashes `\` and forward slashes `/` both work the same way. Use whichever you prefer to. They are not equivalent to each other in input files, however.
 
-#### 4.2.5 - You can pass just a filename for the output file and it will be generated in a default location.
-
-If you pass a filename with no path, the file will be generated in a folder called `_output` inside the tool's folder.
-
-
-
-Example:
-
-```
-folder contents:
-
-- parent/
-  - Petrichor/
-    - _output/
-      - output.ahk (will be generated after running)
-    - Petrichor.exe
-  - input.txt
-
-
-in command prompt:
-
-C:\path\to\parent\Petrichor\
->Petrichor.exe ../input.txt output
-```
-
-#### 4.2.6 - Optionally, you can pass a third argument to enable logging.
-
-Pass `-l` as the third argument (arg2) to enable logging in basic mode (writes log info to log file only), or `-v` to enable logging in verbose mode (writes log info to log file and to the console window).
-
-Log files are found in a folder called `_log` inside the tool's folder. Log file names are automatically generated using the date and time when the tool is run.
-
-
-
-Example:
-
-```
-folder contents:
-
-- parent\
-  - Petrichor\
-    - _log
-      - yyyy-MM-dd_HH-mm-ss.log (will be generated after running)
-    - Petrichor.exe
-  - input.txt
-  - output.txt
-
-
-in command prompt:
-
-C:\path\to\parent\folder\Petrichor\
->Petrichor.exe ../input.txt ../output -l
-```
-
-#### 4.2.7 - You can make a batch script (.bat file) to run the tool for you.
+#### 4.2.5 - You can make a batch script (.bat file) to run the tool for you
 
 If you're going to run the tool with the same arguments every time, it's much simpler to write a simple .bat file to run the tool for you.
 
-##### 4.2.7.1 - Make a new text file, name it whatever you want, and change its extension to .bat.
+##### 4.2.5.1 - Make a new text file, name it whatever you want, and change its extension to `.bat`
 
 You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
 
-##### 4.2.7.2 - Open the file in a text editor program, such as Notepad.
+##### 4.2.5.2 - Open the file in a text editor program, such as Notepad
 
-##### 4.2.7.3 - In the file, put in the command usage as shown above, then save it.
+##### 4.2.5.3 - In the file, put in the command usage as shown above, then save it
 
-
-
-Example:
+**Example:**
 
 ```
-folder contents:
+FOLDER CONTENTS:
 
 - parent\
   - Petrichor\
@@ -549,38 +551,39 @@ folder contents:
       - (log files will be generated here after running the tool if logging is enabled)
     - Petrichor.exe
   - example batch file.bat
-  - input.txt
-  - output.ahk (will be generated after running the tool)
+  - inputFile.txt
+  - outputFile.ahk (will be generated after running the tool)
 
 
-in file "example batch file.bat":
+IN FILE "example batch file.bat":
 
-Petrichor/Petrichor.exe ./input.txt ./output -v
+Petrichor\Petrichor.exe generateAHKShortcutScript --input ..\inputFile.txt --output ..\outputFile
+
 ```
 
-##### 4.2.7.4 - Once you've done all that, run the .bat file by double clicking it.
+##### 4.2.5.4 - Once you've done all that, run the .bat file by double clicking it
 
 Assuming the .bat file was made correctly, it will run Petrichor with all the arguments you set.
 
 ---
 
-### 4.3 - Using the script generated by Petrichor
+## 5 - Using the script generated by Petrichor
 
-#### 4.3.1 - Before you can do anything with your script, you need to install AutoHotkey.
+### 5.1 - Before you can do anything with your script, you need to install AutoHotkey v2
 
 Download it [here](https://www.autohotkey.com) and install it, then continue.
 
-#### 4.3.2 - Now that AutoHotkey is installed, you need to run the script.
+### 5.2 - Now that AutoHotkey is installed, you need to run the script
 
 Either double-click the .ahk file or right click on it and click "run script" in the dropdown menu.
 
-#### 4.3.3 - Having to launch the script every time you boot your computer can get annoying.
+### 5.3 - Having to launch the script every time you boot your computer can get annoying
 
 If you get sick of it, you can follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-windows-startup/) to make it run automatically. It might still sometimes fail to launch, but it works the majority of the time.
 
 ---
 
-## 5 - I think i found a bug? / I have an idea for the project.
+## 6 - I think i found a bug / I have an idea for the project
 
 Report bugs and make suggestions here: [GitHub issues board](https://github.com/SparkliTwizzl/plurality-utilities/issues)
 
