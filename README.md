@@ -397,16 +397,16 @@ This produces this output file:
 ::<@sm>::Sam (they/them) | [-- a person]
 ::@smy::Sammy
 ::@smy-::Sammy (they/them)
-::@smy::Sammy (they/them) | [-- a person]
+::<@smy?::Sammy (they/them) | [-- a person]
 ::@ax::Alex
 ::@ax-::Alex (it/its)
-::@ax::Alex (it/its) | [[a person too]]
+::<@ax>::Alex (it/its) | [[a person too]]
 ::@rvn::Raven
 ::@rvn-::Raven (thon/thons>they/them)
-::@rvn::Raven (thon/thons>they/them) || []
+::<@rvn>::Raven (thon/thons>they/them) || []
 ::@bk::Beck
 ::@bk-::Beck ()
-::@bk::Beck () || []
+::<@bk>::Beck () || []
 ```
 
 ---
