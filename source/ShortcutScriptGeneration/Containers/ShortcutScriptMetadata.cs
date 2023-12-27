@@ -18,16 +18,6 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptMetadata left, ShortcutScriptMetadata right )
-		{
-			return left.DefaultIconFilePath.Equals( right.DefaultIconFilePath ) && left.ReloadShortcut.Equals( right.ReloadShortcut ) && left.SuspendIconFilePath.Equals( right.SuspendIconFilePath ) && left.SuspendShortcut.Equals( right.SuspendShortcut );
-		}
-
-		public static bool operator !=( ShortcutScriptMetadata left, ShortcutScriptMetadata right )
-		{
-			return !left.DefaultIconFilePath.Equals( right.DefaultIconFilePath ) || !left.ReloadShortcut.Equals( right.ReloadShortcut ) || !left.SuspendIconFilePath.Equals( right.SuspendIconFilePath ) || !left.SuspendShortcut.Equals( right.SuspendShortcut );
-		}
-
 		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )

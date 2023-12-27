@@ -25,16 +25,6 @@
 		}
 
 
-		public static bool operator ==(ShortcutScriptInput left, ShortcutScriptInput right)
-		{
-			return left.Entries.SequenceEqual(right.Entries) && left.Macros.SequenceEqual(right.Macros) && left.Metadata.Equals(right.Metadata) && left.Templates.SequenceEqual(right.Templates);
-		}
-
-		public static bool operator !=(ShortcutScriptInput left, ShortcutScriptInput right)
-		{
-			return !left.Entries.SequenceEqual(right.Entries) || !left.Macros.SequenceEqual(right.Macros) || !left.Metadata.Equals(right.Metadata) || !left.Templates.SequenceEqual(right.Templates);
-		}
-
 		public override bool Equals(object? obj)
 		{
 			if (obj == null || GetType() != obj.GetType())

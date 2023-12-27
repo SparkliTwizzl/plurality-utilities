@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptEntryParser : IShortcutScriptEntryParser
 	{
-		private StringTokenParser TokenParser = new StringTokenParser();
+		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
 		public ShortcutScriptEntryParser() { }

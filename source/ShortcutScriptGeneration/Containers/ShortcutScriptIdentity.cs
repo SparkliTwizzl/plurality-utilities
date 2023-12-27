@@ -14,16 +14,6 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptIdentity left, ShortcutScriptIdentity right )
-		{
-			return left.Name.Equals( right.Name ) && left.Tag.Equals( right.Tag );
-		}
-
-		public static bool operator !=( ShortcutScriptIdentity left, ShortcutScriptIdentity right )
-		{
-			return !left.Name.Equals( right.Name ) || !left.Tag.Equals( right.Tag );
-		}
-
 		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )

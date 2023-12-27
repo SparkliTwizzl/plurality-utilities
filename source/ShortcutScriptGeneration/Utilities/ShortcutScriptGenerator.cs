@@ -2,6 +2,7 @@
 using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.Text;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -39,7 +40,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				var errorMessage = $"failed to generate output file ({outputFilePath})";
 				Log.Error(errorMessage);
-				throw new Exception(errorMessage, ex);
+				throw new ScriptGenerationException(errorMessage, ex);
 			}
 			Log.TaskFinished(taskMessage);
 		}
