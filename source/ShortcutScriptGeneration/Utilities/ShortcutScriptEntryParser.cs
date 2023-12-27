@@ -170,7 +170,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				throw new MissingInputFieldException(errorMessage);
 			}
 			var nameStart = fieldStart + 1;
-			var nameEnd = fieldEnd - 1;
+			var nameEnd = fieldEnd;
 			var name = line[ nameStart .. nameEnd ];
 			if (name.Length < 1)
 			{
