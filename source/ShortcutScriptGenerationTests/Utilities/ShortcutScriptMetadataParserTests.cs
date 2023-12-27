@@ -12,8 +12,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static string IconPath => "path/to/icon.ico";
-			public static ShortcutScriptMetadata MetadataWithOptionalData => new( IconPath, IconPath, ReloadShortcut, SuspendShortcut );
+			public static string DefaultIconPath => "path/to/defaulticon.ico";
+			public static string SuspendIconPath => "path/to/suspendicon.ico";
+			public static ShortcutScriptMetadata MetadataWithOptionalData => new( DefaultIconPath, SuspendIconPath, ReloadShortcut, SuspendShortcut );
 			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
 			public static string[] RegionDataWithDanglingCloseBracket => new[]
 			{
@@ -34,8 +35,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] ValidRegionDataWithOptionalTokens => new[]
 			{
 				"{",
-				$"	default-icon: { IconPath }",
-				$"	suspend-icon: { IconPath }",
+				$"	default-icon: { DefaultIconPath }",
+				$"	suspend-icon: { SuspendIconPath }",
 				$"	reload-shortcut: { ReloadShortcut }",
 				$"	suspend-shortcut: { SuspendShortcut }",
 				"}",
