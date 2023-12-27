@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public class ShortcutScriptIdentity
+	public sealed class ShortcutScriptIdentity : IEquatable<ShortcutScriptIdentity>
 	{
 		public string Name { get; set; } = string.Empty;
 		public string Tag { get; set; } = string.Empty;
@@ -14,14 +14,14 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptIdentity left, ShortcutScriptIdentity right )
+		public static bool operator ==( ShortcutScriptIdentity a, ShortcutScriptIdentity b )
 		{
-			return left.Name.Equals( right.Name ) && left.Tag.Equals( right.Tag );
+			return a.Equals(b);
 		}
 
-		public static bool operator !=( ShortcutScriptIdentity left, ShortcutScriptIdentity right )
+		public static bool operator !=( ShortcutScriptIdentity a, ShortcutScriptIdentity b )
 		{
-			return !left.Name.Equals( right.Name ) || !left.Tag.Equals( right.Tag );
+			return !a.Equals(b);
 		}
 
 		public override bool Equals( object? obj )
@@ -30,7 +30,16 @@
 			{
 				return false;
 			}
-			return this == ( ShortcutScriptIdentity )obj;
+			return Equals((ShortcutScriptIdentity)obj);
+		}
+
+		public bool Equals(ShortcutScriptIdentity? other)
+		{
+			if (other is null)
+			{
+				return false;
+			}
+			return Name.Equals( other.Name ) && Tag.Equals( other.Tag );
 		}
 
 		public override int GetHashCode()

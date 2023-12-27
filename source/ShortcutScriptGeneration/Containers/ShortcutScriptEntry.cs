@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public class ShortcutScriptEntry
+	public sealed class ShortcutScriptEntry : IEquatable<ShortcutScriptEntry>
 	{
 		public List<ShortcutScriptIdentity> Identities { get; set; } = new List<ShortcutScriptIdentity>();
 		public string Pronoun { get; set; } = string.Empty;
@@ -16,14 +16,14 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptEntry left, ShortcutScriptEntry right )
+		public static bool operator ==( ShortcutScriptEntry a, ShortcutScriptEntry b )
 		{
-			return left.Identities.SequenceEqual( right.Identities ) && left.Pronoun.Equals( right.Pronoun ) && left.Decoration.Equals( right.Decoration );
+			return a.Equals( b );
 		}
 
-		public static bool operator !=( ShortcutScriptEntry left, ShortcutScriptEntry right )
+		public static bool operator !=( ShortcutScriptEntry a, ShortcutScriptEntry b )
 		{
-			return !left.Identities.SequenceEqual( right.Identities ) || !left.Pronoun.Equals( right.Pronoun ) || !left.Decoration.Equals( right.Decoration );
+			return !a.Equals( b );
 		}
 
 		public override bool Equals( object? obj )
@@ -32,7 +32,16 @@
 			{
 				return false;
 			}
-			return this == ( ShortcutScriptEntry )obj;
+			return Equals( (ShortcutScriptEntry)obj );
+		}
+
+		public bool Equals( ShortcutScriptEntry? other )
+		{
+			if ( other is null )
+			{
+				return false;
+			}
+			return Identities.SequenceEqual( other.Identities ) && Pronoun.Equals( other.Pronoun ) && Decoration.Equals( other.Decoration );
 		}
 
 		public override int GetHashCode()
