@@ -1,5 +1,8 @@
+#: top-level comment
+
 metadata:
 {
+	#: comment in metadata region
 	default-icon: ../_input/IconDefault.ico
 	suspend-icon: ../_input/IconSuspend.ico
 	reload-shortcut: #r
@@ -8,12 +11,15 @@ metadata:
 
 entries:
 {
+	#: comment before entries in entries region
 	{
 		% #Sam# @sm
 		% #Sammy# @smy
 		$they/them
 		&-> a person
 	}
+	
+	#: comment between entries in entries region
 	{
 		% #ALEX# @AX
 		$IT/ITS
@@ -23,6 +29,7 @@ entries:
 
 templates:
 {
+	#: comment in templates region
 	::\@@:: \##
 	::\@@-:: \## \$($)
 	::\@@/:: \## \&&

@@ -1,3 +1,5 @@
+#: top-level comment
+
 metadata:
 {
 	default-icon: "./IconDefault.ico"
@@ -5,14 +7,23 @@ metadata:
 
 entries:
 {
+	#: comment before entries in entries region
 	{
 		% #name# @tag
+		$pronoun
+		&decorator
 	}
-	$pronoun
-	&decorator
+	
+	#: comment between entries in entries region
+	{
+		% #name# @tag
+		$pronoun
+		&decorator
+	}
 }
 
 templates:
 {
+	#: comment in templates region
 	::@::# $ &
 }

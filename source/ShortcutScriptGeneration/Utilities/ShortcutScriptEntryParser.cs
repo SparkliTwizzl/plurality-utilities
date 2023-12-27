@@ -1,4 +1,5 @@
 ﻿using Petrichor.Common.Enums;
+using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -34,15 +35,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				var isParsingFinished = false;
 				var trimmedLine = data[ i ].Trim();
+				if ( trimmedLine.Length < 1 )
+				{
+					continue;
+				}
+
 				var firstChar = trimmedLine.FirstOrDefault();
 				var token = TokenParser.ParseToken( firstChar.ToString(), expectedTokens );
 				switch ( token.Qualifier )
 				{
-					case StringTokenQualifiers.BlankLine:
-					{
-						break;
-					}
-
 					case StringTokenQualifiers.CloseBracket:
 					{
 						if ( TokenParser.IndentLevel == 0 )
@@ -120,7 +121,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static ShortcutScriptEntryLineTypes ParseLine( string line, ref ShortcutScriptEntry entry )
 		{
-			line = line.TrimStart();
 			var firstChar = line[ 0 ];
 			switch ( firstChar )
 			{
@@ -190,7 +190,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			string? errorMessage;
 			for ( ; i < data.Length ; ++i )
 			{
-				var line = data[ i ];
+				var line = data[ i ].Trim();
+				if ( line == string.Empty || line[ 0..CommonSyntax.LineCommentToken.Length ] == CommonSyntax.LineCommentToken )
+				{
+					break;
+				}
+
 				var lineType = ParseLine( line, ref entry );
 				switch ( lineType )
 				{
@@ -198,7 +203,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					{
 						if ( entry.Identities.Count < 1 )
 						{
-							errorMessage = $"parsing entries failed at token # {i} :: input file contains invalid data: an entry did not contain any identity fields";
+							errorMessage = $"parsing entries failed at token #{i} :: input file contains invalid data: an entry did not contain any identity fields";
 							Log.Error( errorMessage );
 							throw new MissingInputFieldException( errorMessage );
 						}
@@ -209,8 +214,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					case ShortcutScriptEntryLineTypes.Unknown:
 					{
-						var unexpectedChar = line.Trim()[ 0 ];
-						errorMessage = $"parsing entries failed at token # {i} :: input file contains invalid data: a line started with a character ( \"{unexpectedChar}\" ) that was not expected at this time";
+						var unexpectedChar = line[ 0 ];
+						errorMessage = $"parsing entries failed at token #{i} :: input file contains invalid data: a line started with a character ( \"{unexpectedChar}\" ) that was not expected at this time";
 						Log.Error( errorMessage );
 						throw new UnexpectedCharacterException( errorMessage );
 					}

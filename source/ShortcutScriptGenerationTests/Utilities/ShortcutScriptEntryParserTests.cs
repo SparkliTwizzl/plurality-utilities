@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;
@@ -33,107 +34,109 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				),
 			};
 			public const string InputData_BlankDecorationField =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		&|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				"\t\t&|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_BlankNameField =
-				"{|" +
-				"	{|" +
-				"		% ## @tag|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% ## @tag|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_BlankPronounField =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				"\t\t$|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_BlankTagField =
 				"{|" +
-				"	{|" +
-				"		% #name# @|" +
-				"	}|" +
-				"}|";
+				"\t{|" +
+				"\t\t% #name# @|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_EntryNotClosed =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_MissingIdentityField =
-				"{|" +
-				"	{|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_MissingNameField =
-				"{|" +
-				"	{|" +
-				"		% @tag|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% @tag|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_MissingTagField =
-				"{|" +
-				"	{|" +
-				"		% #name#|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name#|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_TagFieldContainsSpaces =
-				"{|" +
-				"	{|" +
-				"		% #name# @t ag|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @t ag|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_TooManyDecorationFields =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"		&decoration|" +
-				"		&decoration|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				"\t\t$pronoun|" +
+				"\t\t&decoration|" +
+				"\t\t&decoration|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_TooManyPronounFields =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				"\t\t$pronoun|" +
+				"\t\t$pronoun|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_UnexpectedCharBetweenEntries =
-				"{|" +
-				"	a|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\ta|" +
+				"\t{|" +
+				"\t\t% #name# @tag|" +
+				"\t\t$pronoun|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_UnexpectedCharInEntry =
-				"{|" +
-				"	{|" +
-				"		a|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\ta|" +
+				"\t\t% #name# @tag|" +
+				"\t\t$pronoun|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 			public const string InputData_Valid =
-				"{|" +
-				"	{|" +
-				"		% #name1# @tag1|" +
-				"		% #name2# @tag2|" +
-				"		$pronoun1|" +
-				"		&decoration1|" +
-				"	}|" +
-				"	{|" +
-				"		% #name3# @tag3|" +
-				"		% #name4# @tag4|" +
-				"		$pronoun3|" +
-				"		&decoration3|" +
-				"	}|" +
-				"}|";
+				CommonSyntax.OpenBracketToken + "|" +
+				"\t{|" +
+				"\t\t% #name1# @tag1|" +
+				"\t\t% #name2# @tag2|" +
+				"\t\t$pronoun1|" +
+				"\t\t&decoration1|" +
+				"\t}|" +
+				"\t|" +
+				"\t" + CommonSyntax.LineCommentToken + ": comment|" +
+				"\t{|" +
+				"\t\t% #name3# @tag3|" +
+				"\t\t% #name4# @tag4|" +
+				"\t\t$pronoun3|" +
+				"\t\t&decoration3|" +
+				"\t}|" +
+				CommonSyntax.CloseBracketToken;
 		}
 
 
@@ -155,7 +158,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseEntriesFromDataTest_Success( string regionDataString )
 		{
 			var expected = TestData.Entries;
-			var actual = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			var actual = entryParser!.ParseEntriesFromData( input, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
@@ -166,26 +170,38 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DataRow( TestData.InputData_BlankPronounField )]
 		[DataRow( TestData.InputData_BlankTagField )]
 		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( DuplicateInputFieldException ) )]
 		[DataRow( TestData.InputData_TooManyDecorationFields )]
 		[DataRow( TestData.InputData_TooManyPronounFields )]
 		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( InputEntryNotClosedException ) )]
 		[DataRow( TestData.InputData_EntryNotClosed )]
 		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( InvalidInputFieldException ) )]
 		[DataRow( TestData.InputData_TagFieldContainsSpaces )]
 		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( MissingInputFieldException ) )]
@@ -193,13 +209,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DataRow( TestData.InputData_MissingNameField )]
 		[DataRow( TestData.InputData_MissingTagField )]
 		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( UnexpectedCharacterException ) )]
 		[DataRow( TestData.InputData_UnexpectedCharBetweenEntries )]
 		[DataRow( TestData.InputData_UnexpectedCharInEntry )]
 		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		{
+			var input = TestUtilities.SplitRegionDataString( regionDataString );
+			_ = entryParser!.ParseEntriesFromData( input, ref i );
+		}
 	}
 }

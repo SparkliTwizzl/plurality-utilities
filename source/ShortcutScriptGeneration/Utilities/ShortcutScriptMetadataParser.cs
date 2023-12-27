@@ -1,18 +1,15 @@
 ﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Info;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptMetadataParser : IShortcutScriptMetadataParser
 	{
-		private const string DefaultIconFilePathToken = "default-icon";
-		private const string ReloadShortcutToken = "reload-shortcut";
-		private const string SuspendIconFilePathToken = "suspend-icon";
-		private const string SuspendShortcutToken = "suspend-shortcut";
-
 		private int IndentLevel { get; set; } = 0;
 		private ShortcutScriptMetadata Metadata { get; set; } = new();
 
@@ -31,19 +28,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				string? errorMessage;
 				switch ( token.Name )
 				{
-					case "{":
+					case "":
+					case CommonSyntax.LineCommentToken:
+					{
+						break;
+					}
+
+					case CommonSyntax.OpenBracketToken:
 					{
 						++IndentLevel;
 						break;
 					}
 
-					case "}":
+					case CommonSyntax.CloseBracketToken:
 					{
 						--IndentLevel;
 
 						if ( IndentLevel < 0 )
 						{
-							errorMessage = $"a mismatched closing curly brace was found when parsing metadata region";
+							errorMessage = $"a mismatched closing bracket was found when parsing metadata region";
 							Log.Error( errorMessage );
 							throw new BracketMismatchException( errorMessage );
 						}
@@ -55,25 +58,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						break;
 					}
 
-					case DefaultIconFilePathToken:
+					case ShortcutScriptGenerationSyntax.DefaultIconFilePathToken:
 					{
 						Metadata.DefaultIconFilePath = token.Value;
 						break;
 					}
 
-					case ReloadShortcutToken:
+					case ShortcutScriptGenerationSyntax.ReloadShortcutToken:
 					{
 						Metadata.ReloadShortcut = token.Value;
 						break;
 					}
 
-					case SuspendIconFilePathToken:
+					case ShortcutScriptGenerationSyntax.SuspendIconFilePathToken:
 					{
 						Metadata.SuspendIconFilePath = token.Value;
 						break;
 					}
 
-					case SuspendShortcutToken:
+					case ShortcutScriptGenerationSyntax.SuspendShortcutToken:
 					{
 						Metadata.SuspendShortcut = token.Value;
 						break;

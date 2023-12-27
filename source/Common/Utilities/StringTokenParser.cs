@@ -1,5 +1,6 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Enums;
+using Petrichor.Common.Info;
 using Petrichor.Logging;
 
 
@@ -19,29 +20,47 @@ namespace Petrichor.Common.Utilities
 			Log.TaskStarted( taskMessage );
 
 			var qualifiedToken = new QualifiedStringToken( token.Trim() );
-			if ( string.Compare( qualifiedToken.Value, "" ) == 0 )
+
+
+			switch ( qualifiedToken.Value )
 			{
-				qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
-			}
-			else if ( string.Compare( qualifiedToken.Value, "{" ) == 0 )
-			{
-				++IndentLevel;
-				qualifiedToken.Qualifier = StringTokenQualifiers.OpenBracket;
-			}
-			else if ( string.Compare( qualifiedToken.Value, "}" ) == 0 )
-			{
-				--IndentLevel;
-				qualifiedToken.Qualifier = StringTokenQualifiers.CloseBracket;
-			}
-			else
-			{
-				foreach ( var value in expectedValues )
+				case "":
 				{
-					if ( string.Compare( qualifiedToken.Value, value ) == 0 )
+					qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
+					break;
+				}
+
+				case CommonSyntax.OpenBracketToken:
+				{
+					++IndentLevel;
+					qualifiedToken.Qualifier = StringTokenQualifiers.OpenBracket;
+					break;
+				}
+
+				case CommonSyntax.CloseBracketToken:
+				{
+					--IndentLevel;
+					qualifiedToken.Qualifier = StringTokenQualifiers.CloseBracket;
+					break;
+				}
+
+				default:
+				{
+					if ( qualifiedToken.Value[ 0..CommonSyntax.LineCommentToken.Length ] == CommonSyntax.LineCommentToken )
 					{
-						qualifiedToken.Qualifier = StringTokenQualifiers.Recognized;
+						qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
 						break;
 					}
+
+					foreach ( var value in expectedValues )
+					{
+						if ( string.Compare( qualifiedToken.Value, value ) == 0 )
+						{
+							qualifiedToken.Qualifier = StringTokenQualifiers.Recognized;
+							break;
+						}
+					}
+					break;
 				}
 			}
 			Log.TaskFinished( taskMessage );
