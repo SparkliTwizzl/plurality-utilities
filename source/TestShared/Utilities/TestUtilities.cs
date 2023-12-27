@@ -24,7 +24,7 @@ namespace Petrichor.TestShared.Utilities
 			Log.Info("tokenized data:");
 			foreach (var token in tokens)
 			{
-				Log.Info($"	\"{token}\"");
+				Log.Info($"\t\"{token}\"");
 			}
 			Log.Info();
 			return tokens;
