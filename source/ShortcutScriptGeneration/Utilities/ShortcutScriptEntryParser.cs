@@ -187,7 +187,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.TaskStarted(taskMessage);
 
 			var entry = new ShortcutScriptEntry();
-			var errorMessage = string.Empty;
+			string? errorMessage;
 			for (; i < data.Length; ++i)
 			{
 				var line = data[i];
