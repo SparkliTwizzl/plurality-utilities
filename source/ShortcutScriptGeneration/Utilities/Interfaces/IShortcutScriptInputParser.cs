@@ -4,6 +4,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public interface IShortcutScriptInputParser
 	{
-		ShortcutScriptInput ParseInputFile(string inputFilePath);
+		ShortcutScriptInput ParseInputFile( string inputFilePath );
 	}
 }

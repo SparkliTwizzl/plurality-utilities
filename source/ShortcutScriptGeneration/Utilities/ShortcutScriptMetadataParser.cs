@@ -22,69 +22,69 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var taskMessage = "parsing metadata region data";
 			Log.TaskStarted( taskMessage );
 
-			for (; i < data.Length; ++i)
+			for ( ; i < data.Length ; ++i )
 			{
 				var rawToken = data[ i ];
 				var token = new StringToken( rawToken );
 
 				var isParsingFinished = false;
 				string? errorMessage;
-				switch (token.Name)
+				switch ( token.Name )
 				{
 					case "{":
-						{
-							++IndentLevel;
-							break;
-						}
+					{
+						++IndentLevel;
+						break;
+					}
 
 					case "}":
+					{
+						--IndentLevel;
+
+						if ( IndentLevel < 0 )
 						{
-							--IndentLevel;
-
-							if (IndentLevel < 0)
-							{
-								errorMessage = $"a mismatched closing curly brace was found when parsing metadata region";
-								Log.Error(errorMessage);
-								throw new BracketMismatchException(errorMessage);
-							}
-
-							if (IndentLevel == 0)
-							{
-								isParsingFinished = true;
-							}
-							break;
+							errorMessage = $"a mismatched closing curly brace was found when parsing metadata region";
+							Log.Error( errorMessage );
+							throw new BracketMismatchException( errorMessage );
 						}
+
+						if ( IndentLevel == 0 )
+						{
+							isParsingFinished = true;
+						}
+						break;
+					}
 
 					case DefaultIconFilePathToken:
-						{
-							Metadata.DefaultIconFilePath = token.Value;
-							break;
-						}
+					{
+						Metadata.DefaultIconFilePath = token.Value;
+						break;
+					}
 
 					case ReloadShortcutToken:
-						{
-							Metadata.ReloadShortcut = token.Value;
-							break;
-						}
+					{
+						Metadata.ReloadShortcut = token.Value;
+						break;
+					}
 
 					case SuspendIconFilePathToken:
-						{
-							Metadata.SuspendIconFilePath = token.Value;
-							break;
-						}
+					{
+						Metadata.SuspendIconFilePath = token.Value;
+						break;
+					}
 
 					case SuspendShortcutToken:
-						{
-							Metadata.SuspendShortcut = token.Value;
-							break;
-						}
+					{
+						Metadata.SuspendShortcut = token.Value;
+						break;
+					}
 
 					default:
-						{
-							errorMessage = $"an unrecognized token (\"{ rawToken.Trim() }\") was found when parsing metadata region";
-							Log.Error(errorMessage);
-							throw new UnknownTokenException(errorMessage);
-						}
+					{
+						errorMessage = $"an unrecognized token (\"{rawToken.Trim()}\") was found when parsing metadata region";
+						Log.Error( errorMessage );
+						throw new UnknownTokenException( errorMessage );
+					}
 				}
 				if ( isParsingFinished )
 				{

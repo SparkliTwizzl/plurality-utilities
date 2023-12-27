@@ -9,38 +9,38 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public ShortcutScriptMacroParser() { }
 
 
-		public string[] GenerateMacrosFromInput(ShortcutScriptInput input)
+		public string[] GenerateMacrosFromInput( ShortcutScriptInput input )
 		{
 			var macros = new List<string>();
-			foreach (var entry in input.Entries)
+			foreach ( var entry in input.Entries )
 			{
-				macros.AddRange(GenerateAllEntryMacrosFromTemplates(input.Templates, entry));
+				macros.AddRange( GenerateAllEntryMacrosFromTemplates( input.Templates, entry ) );
 			}
 			return macros.ToArray();
 		}
 
 
-		private static List<string> GenerateAllIdentityMacrosFromTemplates(string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration)
+		private static List<string> GenerateAllIdentityMacrosFromTemplates( string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration )
 		{
 			var macros = new List<string>();
-			foreach (var template in templates)
+			foreach ( var template in templates )
 			{
-				macros.Add(GenerateIdentityMacroFromTemplate(template, identity, pronoun, decoration));
+				macros.Add( GenerateIdentityMacroFromTemplate( template, identity, pronoun, decoration ) );
 			}
 			return macros;
 		}
 
-		private static List<string> GenerateAllEntryMacrosFromTemplates(string[] templates, ShortcutScriptEntry entry)
+		private static List<string> GenerateAllEntryMacrosFromTemplates( string[] templates, ShortcutScriptEntry entry )
 		{
 			var macros = new List<string>();
-			foreach (var identity in entry.Identities)
+			foreach ( var identity in entry.Identities )
 			{
-				macros.AddRange(GenerateAllIdentityMacrosFromTemplates(templates, identity, entry.Pronoun, entry.Decoration));
+				macros.AddRange( GenerateAllIdentityMacrosFromTemplates( templates, identity, entry.Pronoun, entry.Decoration ) );
 			}
 			return macros;
 		}
 
-		private static string GenerateIdentityMacroFromTemplate(string template, ShortcutScriptIdentity identity, string pronoun, string decoration)
+		private static string GenerateIdentityMacroFromTemplate( string template, ShortcutScriptIdentity identity, string pronoun, string decoration )
 		{
 			var macro = template;
 			var fields = new Dictionary<string, string>()
@@ -50,9 +50,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ "pronoun", pronoun },
 				{ "decoration", decoration },
 			 };
-			foreach (var marker in ShortcutScriptTemplateMarkers.LookUpTable.Select(marker => marker.Value))
+			foreach ( var marker in ShortcutScriptTemplateMarkers.LookUpTable.Select( marker => marker.Value ) )
 			{
-				macro = macro.Replace($"`{marker}`", fields[marker]);
+				macro = macro.Replace( $"`{marker}`", fields[ marker ] );
 			}
 			return macro;
 		}

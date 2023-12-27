@@ -14,15 +14,9 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptIdentity a, ShortcutScriptIdentity b )
-		{
-			return a.Equals(b);
-		}
+		public static bool operator ==( ShortcutScriptIdentity a, ShortcutScriptIdentity b ) => a.Equals( b );
 
-		public static bool operator !=( ShortcutScriptIdentity a, ShortcutScriptIdentity b )
-		{
-			return !a.Equals(b);
-		}
+		public static bool operator !=( ShortcutScriptIdentity a, ShortcutScriptIdentity b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -30,21 +24,18 @@
 			{
 				return false;
 			}
-			return Equals((ShortcutScriptIdentity)obj);
+			return Equals( ( ShortcutScriptIdentity ) obj );
 		}
 
-		public bool Equals(ShortcutScriptIdentity? other)
+		public bool Equals( ShortcutScriptIdentity? other )
 		{
-			if (other is null)
+			if ( other is null )
 			{
 				return false;
 			}
 			return Name.Equals( other.Name ) && Tag.Equals( other.Tag );
 		}
 
-		public override int GetHashCode()
-		{
-			return Name.GetHashCode() ^ Tag.GetHashCode();
-		}
+		public override int GetHashCode() => Name.GetHashCode() ^ Tag.GetHashCode();
 	}
 }

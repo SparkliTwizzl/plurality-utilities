@@ -2,6 +2,6 @@
 {
 	public interface IShortcutScriptGenerator
 	{
-		void GenerateScript(string outputFile);
+		void GenerateScript( string outputFile );
 	}
 }

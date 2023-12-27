@@ -17,9 +17,6 @@ namespace Petrichor.Common.Containers
 			Value = other.Value;
 		}
 
-		public QualifiedStringToken( string token )
-		{
-			Value = token;
-		}
+		public QualifiedStringToken( string token ) => Value = token;
 	}
 }

@@ -19,6 +19,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// <param name="data">input data read from file</param>
 		/// <param name="i">index of first open bracket of entries region in the input data</param>
 		/// <returns>parsed entries</returns>
-		ShortcutScriptEntry[] ParseEntriesFromData(string[] data, ref int i);
+		ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i );
 	}
 }

@@ -5,7 +5,7 @@ using Petrichor.TestShared.Utilities;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
-	[ TestClass ]
+	[TestClass]
 	public class ShortcutScriptTemplateParserTests
 	{
 		public struct TestData
@@ -35,7 +35,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public ShortcutScriptTemplateParser? templateParser;
 
 
-		[ TestInitialize ]
+		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
@@ -44,7 +44,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		[ TestMethod ]
+		[TestMethod]
 		public void ParseTemplatesFromFileTest_Success()
 		{
 			var expected = TestData.ParsedTemplates;
@@ -52,11 +52,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
-		[ TestMethod ]
-		[ ExpectedException( typeof( EscapeCharacterMismatchException ) ) ]
+		[TestMethod]
+		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
 		public void ParseTemplatesFromFileTest_ThrowsEscapeCharacterMismatchException()
-		{
-			_ = templateParser!.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
-		}
+			=> _ = templateParser!.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
 	}
 }

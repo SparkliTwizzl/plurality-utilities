@@ -2,6 +2,6 @@
 {
 	public interface IShortcutScriptTemplateParser
 	{
-		string[] ParseTemplatesFromData(string[] data, ref int i);
+		string[] ParseTemplatesFromData( string[] data, ref int i );
 	}
 }

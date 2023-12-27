@@ -16,7 +16,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ShortcutScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
-			public static ShortcutScriptInput Input => new(Metadata, Entries, Templates);
+			public static ShortcutScriptInput Input => new( Metadata, Entries, Templates );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
@@ -46,21 +46,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void GenerateMacrosFromTemplatesTest_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = macroParser!.GenerateMacrosFromInput(TestData.Input).ToArray();
+			var actual = macroParser!.GenerateMacrosFromInput( TestData.Input ).ToArray();
 
-			Log.Info("expected:");
-			foreach (var line in expected)
+			Log.Info( "expected:" );
+			foreach ( var line in expected )
 			{
-				Log.Info($"[{line}]");
+				Log.Info( $"[{line}]" );
 			}
 			Log.WriteLine();
-			Log.Info("actual:");
-			foreach (var line in actual)
+			Log.Info( "actual:" );
+			foreach ( var line in actual )
 			{
-				Log.Info($"[{line}]");
+				Log.Info( $"[{line}]" );
 			}
 
-			CollectionAssert.AreEqual(expected, actual);
+			CollectionAssert.AreEqual( expected, actual );
 		}
 	}
 }
