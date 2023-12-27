@@ -1,6 +1,6 @@
 <div align="center"><image width="200" src="./logo.png"></div>
 <h1 align="center">Petrichor</h1>
-<h3 align="center">Version 0.8</h3>
+<h3 align="center">Version 0.9</h3>
 
 ---
 
