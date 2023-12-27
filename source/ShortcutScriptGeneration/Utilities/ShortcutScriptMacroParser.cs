@@ -20,7 +20,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private List<string> GenerateAllIdentityMacrosFromTemplates(string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration)
+		private static List<string> GenerateAllIdentityMacrosFromTemplates(string[] templates, ShortcutScriptIdentity identity, string pronoun, string decoration)
 		{
 			var macros = new List<string>();
 			foreach (var template in templates)
@@ -30,7 +30,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return macros;
 		}
 
-		private List<string> GenerateAllEntryMacrosFromTemplates(string[] templates, ShortcutScriptEntry entry)
+		private static List<string> GenerateAllEntryMacrosFromTemplates(string[] templates, ShortcutScriptEntry entry)
 		{
 			var macros = new List<string>();
 			foreach (var identity in entry.Identities)
@@ -40,7 +40,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return macros;
 		}
 
-		private string GenerateIdentityMacroFromTemplate(string template, ShortcutScriptIdentity identity, string pronoun, string decoration)
+		private static string GenerateIdentityMacroFromTemplate(string template, ShortcutScriptIdentity identity, string pronoun, string decoration)
 		{
 			var macro = template;
 			var fields = new Dictionary<string, string>()

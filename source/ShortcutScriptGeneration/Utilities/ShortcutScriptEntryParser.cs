@@ -93,7 +93,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private void ParseDecoration(string line, ref ShortcutScriptEntry entry)
+		private static void ParseDecoration(string line, ref ShortcutScriptEntry entry)
 		{
 			if (entry.Decoration != string.Empty)
 			{
@@ -110,7 +110,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			entry.Decoration = line[ 1 .. ];
 		}
 
-		private void ParseIdentity(string line, ref ShortcutScriptEntry entry)
+		private static void ParseIdentity(string line, ref ShortcutScriptEntry entry)
 		{
 			var identity = new ShortcutScriptIdentity();
 			ParseName(line, ref identity);
@@ -118,7 +118,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			entry.Identities.Add(identity);
 		}
 
-		private ShortcutScriptEntryLineTypes ParseLine(string line, ref ShortcutScriptEntry entry)
+		private static ShortcutScriptEntryLineTypes ParseLine(string line, ref ShortcutScriptEntry entry)
 		{
 			line = line.TrimStart();
 			var firstChar = line[0];
@@ -159,7 +159,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 		}
 
-		private void ParseName(string line, ref ShortcutScriptIdentity identity)
+		private static void ParseName(string line, ref ShortcutScriptIdentity identity)
 		{
 			var fieldStart = line.IndexOf('#');
 			var fieldEnd = line.LastIndexOf('#');
@@ -226,7 +226,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			throw new InputEntryNotClosedException(errorMessage);
 		}
 
-		private void ParsePronoun(string line, ref ShortcutScriptEntry entry)
+		private static void ParsePronoun(string line, ref ShortcutScriptEntry entry)
 		{
 			if (entry.Pronoun != string.Empty)
 			{
@@ -243,7 +243,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			entry.Pronoun = line[ 1 .. ];
 		}
 
-		private void ParseTag(string line, ref ShortcutScriptIdentity identity)
+		private static void ParseTag(string line, ref ShortcutScriptIdentity identity)
 		{
 			var fieldStart = line.IndexOf('@');
 			if (fieldStart < 0)

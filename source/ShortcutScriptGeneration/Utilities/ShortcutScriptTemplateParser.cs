@@ -60,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private string ParseTemplateFromInputLine(string input)
+		private static string ParseTemplateFromInputLine(string input)
 		{
 			var template = new StringBuilder();
 			input = input.Trim();

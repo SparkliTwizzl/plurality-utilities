@@ -45,7 +45,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.TaskFinished(taskMessage);
 		}
 
-		private string GetNormalizedOutputDirectory(string outputFile)
+		private static string GetNormalizedOutputDirectory(string outputFile)
 		{
 			var outputDirectory = Path.GetDirectoryName(outputFile);
 			if (outputDirectory is null || outputDirectory == string.Empty)
@@ -55,7 +55,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return outputDirectory + @"\";
 		}
 
-		private string GetNormalizedOutputFileName(string outputFile)
+		private static string GetNormalizedOutputFileName(string outputFile)
 		{
 			return Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
 		}
