@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="CSharp" ToolsVersion="17.0">
+  <!-- Assumes this file is in the same folder as the solution file -->
+  <Include Path=".sonarlint\sonarlint-visualstudiocsharp.ruleset" Action="Default" />
+</RuleSet>

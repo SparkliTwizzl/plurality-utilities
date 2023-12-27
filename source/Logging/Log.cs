@@ -28,7 +28,7 @@ namespace Petrichor.Logging
 			Console.WriteLine( "Logging is disabled." );
 		}
 
-		public static void EnableForConsoleOnly( string logDirectory )
+		public static void EnableForConsoleOnly()
 		{
 			activeMode = LogMode.ConsoleOnly;
 			Console.WriteLine( "Console logging is enabled." );
@@ -154,10 +154,8 @@ namespace Petrichor.Logging
 			}
 			if ( IsLoggingToFileEnabled )
 			{
-				using ( StreamWriter logFile = File.AppendText( logFilePath ) )
-				{
-					logFile.Write( message );
-				}
+				using var logFile = File.AppendText(logFilePath);
+				logFile.Write( message );
 			}
 		}
 
@@ -194,7 +192,7 @@ namespace Petrichor.Logging
 
 		private static string AddTrailingSlashToDirectoryPath( string directory )
 		{
-			var lastChar = directory[ directory.Length - 1];
+			var lastChar = directory[^1];
 			if (lastChar != '\\' && lastChar != '/')
 			{
 				directory += '\\';

@@ -2,6 +2,7 @@
 using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.Text;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -39,12 +40,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				var errorMessage = $"failed to generate output file ({outputFilePath})";
 				Log.Error(errorMessage);
-				throw new Exception(errorMessage, ex);
+				throw new ScriptGenerationException(errorMessage, ex);
 			}
 			Log.TaskFinished(taskMessage);
 		}
 
-		private string GetNormalizedOutputDirectory(string outputFile)
+		private static string GetNormalizedOutputDirectory(string outputFile)
 		{
 			var outputDirectory = Path.GetDirectoryName(outputFile);
 			if (outputDirectory is null || outputDirectory == string.Empty)
@@ -54,7 +55,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return outputDirectory + @"\";
 		}
 
-		private string GetNormalizedOutputFileName(string outputFile)
+		private static string GetNormalizedOutputFileName(string outputFile)
 		{
 			return Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
 		}
@@ -63,13 +64,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private void WriteByteOrderMarkToFile()
 		{
 			var encoding = Encoding.UTF8;
-			using (FileStream stream = new FileStream(outputFilePath, FileMode.Create))
-			{
-				using (BinaryWriter writer = new BinaryWriter(stream, encoding))
-				{
-					writer.Write(encoding.GetPreamble());
-				}
-			}
+			using var stream = new FileStream(outputFilePath, FileMode.Create);
+			using var writer = new BinaryWriter(stream, encoding);
+			writer.Write(encoding.GetPreamble());
 		}
 
 		private void WriteConstantsToFile()
@@ -169,43 +166,43 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"; based on code by ntepa on autohotkey.com/boards: https://www.autohotkey.com/boards/viewtopic.php?p=497349#p497349",
 				"SuspendC := Suspend.GetMethod( \"Call\" )",
 				"Suspend.DefineProp( \"Call\",",
-				"	{",
-				"		Call:( this, mode := SUSPEND_TOGGLE ) => ( SuspendC( this, mode ), OnSuspend( A_IsSuspended ) )",
-				"	})",
+				"\t{",
+				"\t\tCall:( this, mode := SUSPEND_TOGGLE ) => ( SuspendC( this, mode ), OnSuspend( A_IsSuspended ) )",
+				"\t})",
 				"OnMessage( WM_COMMAND, OnSuspendMsg )",
 				"OnSuspendMsg( wparam, * )",
 				"{",
-				"	if ( wparam = ID_FILE_SUSPEND ) || ( wparam = ID_TRAY_SUSPEND )",
-				"	{",
-				"		OnSuspend( !A_IsSuspended )",
-				"	}",
+				"\tif ( wparam = ID_FILE_SUSPEND ) || ( wparam = ID_TRAY_SUSPEND )",
+				"\t{",
+				"\t\tOnSuspend( !A_IsSuspended )",
+				"\t}",
 				"}",
 				"",
 				"OnSuspend( mode )",
 				"{",
-				"	scriptIcon := SelectIcon( mode )",
-				"	SetIcon( scriptIcon )",
+				"\tscriptIcon := SelectIcon( mode )",
+				"\tSetIcon( scriptIcon )",
 				"}",
 				"",
 				"SelectIcon( suspendMode )",
 				"{",
-				"	if ( suspendMode = SUSPEND_ON )",
-				"	{",
-				"		return suspendIcon",
-				"	}",
-				"	else if ( suspendMode = SUSPEND_OFF )",
-				"	{",
-				"		return defaultIcon",
-				"	}",
-				"	return \"\"",
+				"\tif ( suspendMode = SUSPEND_ON )",
+				"\t{",
+				"\t\treturn suspendIcon",
+				"\t}",
+				"\telse if ( suspendMode = SUSPEND_OFF )",
+				"\t{",
+				"\t\treturn defaultIcon",
+				"\t}",
+				"\treturn \"\"",
 				"}",
 				"",
 				"SetIcon( scriptIcon )",
 				"{",
-				"	if ( FileExist( scriptIcon ) )",
-				"	{",
-				"		TraySetIcon( scriptIcon,, FREEZE_ICON )",
-				"	}",
+				"\tif ( FileExist( scriptIcon ) )",
+				"\t{",
+				"\t\tTraySetIcon( scriptIcon,, FREEZE_ICON )",
+				"\t}",
 				"}",
 				"",
 				"SetIcon( defaultIcon )",
@@ -219,10 +216,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			try
 			{
-				using (StreamWriter writer = File.AppendText(outputFilePath))
-				{
-					writer.WriteLine(line);
-				}
+				using StreamWriter writer = File.AppendText(outputFilePath);
+				writer.WriteLine(line);
 			}
 			catch (Exception ex)
 			{

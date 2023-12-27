@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public class ShortcutScriptInput
+	public sealed class ShortcutScriptInput : IEquatable<ShortcutScriptInput>
 	{
 		public ShortcutScriptEntry[] Entries { get; set; } = Array.Empty<ShortcutScriptEntry>();
 		public string[] Macros { get; set; } = Array.Empty<string>();
@@ -25,14 +25,14 @@
 		}
 
 
-		public static bool operator ==(ShortcutScriptInput left, ShortcutScriptInput right)
+		public static bool operator ==(ShortcutScriptInput a, ShortcutScriptInput b)
 		{
-			return left.Entries.SequenceEqual(right.Entries) && left.Macros.SequenceEqual(right.Macros) && left.Metadata.Equals(right.Metadata) && left.Templates.SequenceEqual(right.Templates);
+			return a.Equals(b);
 		}
 
-		public static bool operator !=(ShortcutScriptInput left, ShortcutScriptInput right)
+		public static bool operator !=(ShortcutScriptInput a, ShortcutScriptInput b)
 		{
-			return !left.Entries.SequenceEqual(right.Entries) || !left.Macros.SequenceEqual(right.Macros) || !left.Metadata.Equals(right.Metadata) || !left.Templates.SequenceEqual(right.Templates);
+			return !a.Equals(b);
 		}
 
 		public override bool Equals(object? obj)
@@ -41,7 +41,16 @@
 			{
 				return false;
 			}
-			return this == (ShortcutScriptInput)obj;
+			return Equals( (ShortcutScriptInput)obj );
+		}
+
+		public bool Equals(ShortcutScriptInput? other)
+		{
+			if (other is null)
+			{
+				return false;
+			}
+			return Entries.SequenceEqual(other.Entries) && Macros.SequenceEqual(other.Macros) && Metadata.Equals(other.Metadata) && Templates.SequenceEqual(other.Templates);
 		}
 
 		public override int GetHashCode()

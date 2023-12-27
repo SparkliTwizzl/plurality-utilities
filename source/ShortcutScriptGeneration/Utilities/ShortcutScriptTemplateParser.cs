@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptTemplateParser : IShortcutScriptTemplateParser
 	{
-		private StringTokenParser TokenParser = new StringTokenParser();
+		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
 		public string[] ParseTemplatesFromData(string[] data, ref int i)
@@ -18,7 +18,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var taskMessage = "parsing templates region data";
 			Log.TaskStarted(taskMessage);
 			var templates = new List<string>();
-			var expectedTokens = new string[] { };
+			var expectedTokens = Array.Empty<string>();
 			for (; i < data.Length; ++i)
 			{
 				var token = TokenParser.ParseToken(data[i], expectedTokens);
@@ -60,9 +60,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private string ParseTemplateFromInputLine(string input)
+		private static string ParseTemplateFromInputLine(string input)
 		{
-			StringBuilder template = new StringBuilder();
+			var template = new StringBuilder();
 			input = input.Trim();
 			for (int i = 0; i < input.Length; ++i)
 			{

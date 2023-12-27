@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptEntryParser : IShortcutScriptEntryParser
 	{
-		private StringTokenParser TokenParser = new StringTokenParser();
+		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
 		public ShortcutScriptEntryParser() { }
@@ -93,7 +93,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private void ParseDecoration(string line, ref ShortcutScriptEntry entry)
+		private static void ParseDecoration(string line, ref ShortcutScriptEntry entry)
 		{
 			if (entry.Decoration != string.Empty)
 			{
@@ -107,18 +107,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new BlankInputFieldException(errorMessage);
 			}
-			entry.Decoration = line.Substring(1, line.Length - 1);
+			entry.Decoration = line[ 1 .. ];
 		}
 
-		private void ParseIdentity(string line, ref ShortcutScriptEntry entry)
+		private static void ParseIdentity(string line, ref ShortcutScriptEntry entry)
 		{
-			ShortcutScriptIdentity identity = new ShortcutScriptIdentity();
+			var identity = new ShortcutScriptIdentity();
 			ParseName(line, ref identity);
 			ParseTag(line, ref identity);
 			entry.Identities.Add(identity);
 		}
 
-		private ShortcutScriptEntryLineTypes ParseLine(string line, ref ShortcutScriptEntry entry)
+		private static ShortcutScriptEntryLineTypes ParseLine(string line, ref ShortcutScriptEntry entry)
 		{
 			line = line.TrimStart();
 			var firstChar = line[0];
@@ -159,7 +159,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 		}
 
-		private void ParseName(string line, ref ShortcutScriptIdentity identity)
+		private static void ParseName(string line, ref ShortcutScriptIdentity identity)
 		{
 			var fieldStart = line.IndexOf('#');
 			var fieldEnd = line.LastIndexOf('#');
@@ -169,7 +169,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new MissingInputFieldException(errorMessage);
 			}
-			var name = line.Substring(fieldStart + 1, fieldEnd - (fieldStart + 1));
+			var nameStart = fieldStart + 1;
+			var nameEnd = fieldEnd;
+			var name = line[ nameStart .. nameEnd ];
 			if (name.Length < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
@@ -185,7 +187,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.TaskStarted(taskMessage);
 
 			var entry = new ShortcutScriptEntry();
-			var errorMessage = string.Empty;
+			string? errorMessage;
 			for (; i < data.Length; ++i)
 			{
 				var line = data[i];
@@ -224,7 +226,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			throw new InputEntryNotClosedException(errorMessage);
 		}
 
-		private void ParsePronoun(string line, ref ShortcutScriptEntry entry)
+		private static void ParsePronoun(string line, ref ShortcutScriptEntry entry)
 		{
 			if (entry.Pronoun != string.Empty)
 			{
@@ -238,10 +240,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new BlankInputFieldException(errorMessage);
 			}
-			entry.Pronoun = line.Substring(1, line.Length - 1);
+			entry.Pronoun = line[ 1 .. ];
 		}
 
-		private void ParseTag(string line, ref ShortcutScriptIdentity identity)
+		private static void ParseTag(string line, ref ShortcutScriptIdentity identity)
 		{
 			var fieldStart = line.IndexOf('@');
 			if (fieldStart < 0)
@@ -257,7 +259,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new InvalidInputFieldException(errorMessage);
 			}
-			var tag = line.Substring(fieldStart + 1, line.Length - (fieldStart + 1));
+			var tagStart = fieldStart + 1;
+			var tag = line[ tagStart .. ];
 			if (tag.Length < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";

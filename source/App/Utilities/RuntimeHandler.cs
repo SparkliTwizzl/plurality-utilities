@@ -7,25 +7,9 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		private static string inputFilePath = string.Empty;
-		private static LogMode activeLogMode = LogMode.None;
-		private static string outputFilePath = string.Empty;
-
-		public static string InputFilePath
-		{
-			get => inputFilePath;
-			set => inputFilePath = value;
-		}
-		public static LogMode ActiveLogMode
-		{
-			get => activeLogMode;
-			set => activeLogMode = value;
-		}
-		public static string OutputFilePath
-		{
-			get => outputFilePath;
-			set => outputFilePath = value;
-		}
+		public static string InputFilePath { get; set; } = string.Empty;
+		public static LogMode ActiveLogMode { get; set; } = LogMode.None;
+		public static string OutputFilePath { get; set; } = string.Empty;
 
 
 		public static void Execute()
