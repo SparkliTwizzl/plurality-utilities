@@ -13,86 +13,81 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
-		public string[] ParseTemplatesFromData(string[] data, ref int i)
+		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
 			var taskMessage = "parsing templates region data";
-			Log.TaskStarted(taskMessage);
+			Log.TaskStarted( taskMessage );
 			var templates = new List<string>();
 			var expectedTokens = Array.Empty<string>();
-			for (; i < data.Length; ++i)
+			for ( ; i < data.Length ; ++i )
 			{
-				var token = TokenParser.ParseToken(data[i], expectedTokens);
+				var token = TokenParser.ParseToken( data[ i ], expectedTokens );
 				var isParsingFinished = false;
-				switch (token.Qualifier)
+				switch ( token.Qualifier )
 				{
 					case StringTokenQualifiers.BlankLine:
-						{
-							break;
-						}
+					{
+						break;
+					}
 
 					case StringTokenQualifiers.OpenBracket:
-						{
-							break;
-						}
+					{
+						break;
+					}
 
 					case StringTokenQualifiers.CloseBracket:
+					{
+						if ( TokenParser.IndentLevel < 1 )
 						{
-							if (TokenParser.IndentLevel < 1)
-							{
-								isParsingFinished = true;
-							}
-							break;
+							isParsingFinished = true;
 						}
+						break;
+					}
 
 					default:
-						{
-							templates.Add(ParseTemplateFromInputLine(token.Value));
-							break;
-						}
+					{
+						templates.Add( ParseTemplateFromInputLine( token.Value ) );
+						break;
+					}
 				}
-				if (isParsingFinished)
+				if ( isParsingFinished )
 				{
 					break;
 				}
 			}
-			Log.TaskFinished(taskMessage);
+			Log.TaskFinished( taskMessage );
 			return templates.ToArray();
 		}
 
 
-		private static string ParseTemplateFromInputLine(string input)
+		private static string ParseTemplateFromInputLine( string input )
 		{
 			var template = new StringBuilder();
 			input = input.Trim();
-			for (int i = 0; i < input.Length; ++i)
+			for ( var i = 0 ; i < input.Length ; ++i )
 			{
-				var c = input[i];
-				if (c == '\\')
+				var c = input[ i ];
+				if ( c == '\\' )
 				{
 					try
 					{
-						template.Append(input[i + 1]);
+						_ = template.Append( input[ i + 1 ] );
 						++i;
 						continue;
 					}
-					catch (Exception ex)
+					catch ( Exception ex )
 					{
 						var errorMessage = "a template contained a trailing escape character ('\\') with no following character to escape";
-						Log.Error(errorMessage);
-						throw new EscapeCharacterMismatchException(errorMessage, ex);
+						Log.Error( errorMessage );
+						throw new EscapeCharacterMismatchException( errorMessage, ex );
 					}
 				}
-				if (ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue(c, out var value))
-				{
-					template.Append($"`{value}`");
-				}
-				else
-				{
-					template.Append(c);
-				}
+				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )
+					? template.Append( $"`{value}`" )
+					: template.Append( c );
 			}
 			var result = template.ToString();
-			Log.Info($"parsed template: {result}");
+			Log.Info( $"parsed template: {result}" );
 			return result;
 		}
 	}

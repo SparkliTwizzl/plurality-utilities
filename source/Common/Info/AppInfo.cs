@@ -8,10 +8,11 @@ namespace Petrichor.Common.Info
 
 		public const string AppName = "Petrichor";
 		public static string AppNameAndVersion => $"{AppName} v{AppVersion}";
+		public static string AppVersion =>
 #if DEBUG
-		public static string AppVersion => developmentAppVersion;
+			developmentAppVersion;
 #else
-		public static string AppVersion => releaseAppVersion;
+			releaseAppVersion;
 #endif
 	}
 }

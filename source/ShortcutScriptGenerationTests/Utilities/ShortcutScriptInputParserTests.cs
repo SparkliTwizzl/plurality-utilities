@@ -1,14 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.TestShared.Utilities;
 using Petrichor.TestShared.Info;
-using Moq;
+using Petrichor.TestShared.Utilities;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
-	[ TestClass ]
+	[TestClass]
 	public class ShortcutScriptInputParserTests
 	{
 		public struct TestData
@@ -35,7 +35,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class ShortcutScriptEntryParserStub : IShortcutScriptEntryParser
 		{
-			public ShortcutScriptEntry[] ParseEntriesFromData(string[] data, ref int i)
+			public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
 			{
 				i += TestData.EntriesRegionLength;
 				return TestData.Entries;
@@ -44,7 +44,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class ShortcutScriptMetadataParserStub : IShortcutScriptMetadataParser
 		{
-			public ShortcutScriptMetadata ParseMetadataFromData(string[] data, ref int i)
+			public ShortcutScriptMetadata ParseMetadataFromData( string[] data, ref int i )
 			{
 				i += TestData.MetadataRegionLength;
 				return TestData.Metadata;
@@ -53,7 +53,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class ShortcutScriptTemplateParserStub : IShortcutScriptTemplateParser
 		{
-			public string[] ParseTemplatesFromData(string[] data, ref int i)
+			public string[] ParseTemplatesFromData( string[] data, ref int i )
 			{
 				i += TestData.TemplatesRegionLength;
 				return TestData.Templates;
@@ -68,25 +68,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public ShortcutScriptTemplateParserStub? templateParserStub;
 
 
-		[ TestInitialize ]
+		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
 
 			entryParserStub = new();
 			macroParserMock = new();
-			macroParserMock
-				.Setup(x => x.GenerateMacrosFromInput(It.IsAny<ShortcutScriptInput>()))
-				.Returns(TestData.Macros);
+			_ = macroParserMock
+				.Setup( x => x.GenerateMacrosFromInput( It.IsAny<ShortcutScriptInput>() ) )
+				.Returns( TestData.Macros );
 			metadataParserStub = new();
 			templateParserStub = new();
 
-			inputParser = new ShortcutScriptInputParser(metadataParserStub, entryParserStub, templateParserStub, macroParserMock.Object);
+			inputParser = new ShortcutScriptInputParser( metadataParserStub, entryParserStub, templateParserStub, macroParserMock.Object );
 		}
 
 
-		[ TestMethod ]
-		[ DataRow( "ShortcutScriptInputParser_Valid.txt" ) ]
+		[TestMethod]
+		[DataRow( "ShortcutScriptInputParser_Valid.txt" )]
 		public void ParseInputFileTest_Success( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
@@ -97,9 +97,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			Assert.AreEqual( expected, actual );
 		}
 
-		[ TestMethod ]
-		[ ExpectedException( typeof( FileNotFoundException) ) ]
-		[ DataRow( "nonexistent.txt" ) ]
+		[TestMethod]
+		[ExpectedException( typeof( FileNotFoundException ) )]
+		[DataRow( "nonexistent.txt" )]
 		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );

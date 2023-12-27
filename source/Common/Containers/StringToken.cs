@@ -14,15 +14,9 @@
 			Value = other.Value;
 		}
 
-		public StringToken( string rawToken )
-		{
-			SplitAndStoreRawToken( rawToken );
-		}
+		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken );
 
-		public StringToken( QualifiedStringToken qualifiedToken )
-		{
-			SplitAndStoreRawToken( qualifiedToken.Value );
-		}
+		public StringToken( QualifiedStringToken qualifiedToken ) => SplitAndStoreRawToken( qualifiedToken.Value );
 
 
 		private void SplitAndStoreRawToken( string rawToken )
@@ -37,7 +31,7 @@
 			var valueStartsAt = nameEndsAt + 1;
 			var valueLength = rawToken.Length - valueStartsAt;
 
-			Name = rawToken.Substring( 0, nameEndsAt ).Trim();
+			Name = rawToken[ 0..nameEndsAt ].Trim();
 			Value = rawToken.Substring( valueStartsAt, valueLength ).Trim();
 		}
 	}

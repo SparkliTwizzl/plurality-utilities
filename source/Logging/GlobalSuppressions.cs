@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0071:Simplify interpolation", Justification = "<Pending>", Scope = "member", Target = "~F:Petrichor.Logging.Log.defaultLogFileName")]
+[assembly: SuppressMessage( "Style", "IDE0071:Simplify interpolation", Justification = "<Pending>", Scope = "member", Target = "~F:Petrichor.Logging.Log.defaultLogFileName" )]

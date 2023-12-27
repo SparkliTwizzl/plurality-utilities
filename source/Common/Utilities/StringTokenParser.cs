@@ -15,7 +15,7 @@ namespace Petrichor.Common.Utilities
 
 		public QualifiedStringToken ParseToken( string token, string[] expectedValues )
 		{
-			var taskMessage = $"parsing token \"{ token }\"";
+			var taskMessage = $"parsing token \"{token}\"";
 			Log.TaskStarted( taskMessage );
 
 			var qualifiedToken = new QualifiedStringToken( token.Trim() );

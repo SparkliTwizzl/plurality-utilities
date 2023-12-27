@@ -7,7 +7,7 @@ using Petrichor.TestShared.Utilities;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
-	[ TestClass ]
+	[TestClass]
 	public class ShortcutScriptGeneratorTests
 	{
 		public struct TestData
@@ -114,7 +114,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public ShortcutScriptGenerator? scriptGenerator;
 
 
-		[TestInitialize ]
+		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
@@ -122,10 +122,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		[ TestMethod ]
+		[TestMethod]
 		public void GenerateScriptTest_Success()
 		{
-			var outputFile = $@"{ TestDirectories.TestOutputDirectory }\{ nameof( ShortcutScriptGenerator ) }_{ nameof( GenerateScriptTest_Success ) }.ahk";
+			var outputFile = $@"{TestDirectories.TestOutputDirectory}\{nameof( ShortcutScriptGenerator )}_{nameof( GenerateScriptTest_Success )}.ahk";
 			scriptGenerator!.GenerateScript( outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;

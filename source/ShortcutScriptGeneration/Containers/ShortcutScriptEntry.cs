@@ -16,15 +16,9 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptEntry a, ShortcutScriptEntry b )
-		{
-			return a.Equals( b );
-		}
+		public static bool operator ==( ShortcutScriptEntry a, ShortcutScriptEntry b ) => a.Equals( b );
 
-		public static bool operator !=( ShortcutScriptEntry a, ShortcutScriptEntry b )
-		{
-			return !a.Equals( b );
-		}
+		public static bool operator !=( ShortcutScriptEntry a, ShortcutScriptEntry b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -32,7 +26,7 @@
 			{
 				return false;
 			}
-			return Equals( (ShortcutScriptEntry)obj );
+			return Equals( ( ShortcutScriptEntry ) obj );
 		}
 
 		public bool Equals( ShortcutScriptEntry? other )
@@ -44,9 +38,6 @@
 			return Identities.SequenceEqual( other.Identities ) && Pronoun.Equals( other.Pronoun ) && Decoration.Equals( other.Decoration );
 		}
 
-		public override int GetHashCode()
-		{
-			return Identities.GetHashCode() ^ Pronoun.GetHashCode() ^ Decoration.GetHashCode();
-		}
+		public override int GetHashCode() => Identities.GetHashCode() ^ Pronoun.GetHashCode() ^ Decoration.GetHashCode();
 	}
 }

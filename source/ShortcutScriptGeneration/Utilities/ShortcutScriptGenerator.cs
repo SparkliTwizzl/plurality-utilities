@@ -1,8 +1,8 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.Common.Info;
+﻿using Petrichor.Common.Info;
 using Petrichor.Logging;
-using System.Text;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using System.Text;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -15,58 +15,54 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private ShortcutScriptInput Input { get; set; }
 
 
-		public ShortcutScriptGenerator(ShortcutScriptInput input)
-		{
-			Input = input;
-		}
+		public ShortcutScriptGenerator( ShortcutScriptInput input )
+			=> Input = input;
 
 
-		public void GenerateScript(string outputFile)
+		public void GenerateScript( string outputFile )
 		{
-			var outputDirectory = GetNormalizedOutputDirectory(outputFile);
-			var outputFileName = GetNormalizedOutputFileName(outputFile);
+			var outputDirectory = GetNormalizedOutputDirectory( outputFile );
+			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			outputFilePath = $"{outputDirectory}{outputFileName}";
 
 			var taskMessage = $"generating output file \"{outputFilePath}\"";
-			Log.TaskStarted(taskMessage);
+			Log.TaskStarted( taskMessage );
 
 			try
 			{
-				Directory.CreateDirectory(outputDirectory);
+				_ = Directory.CreateDirectory( outputDirectory );
 				WriteHeaderToFile();
 				WriteMacrosToFile();
 			}
-			catch (Exception ex)
+			catch ( Exception ex )
 			{
 				var errorMessage = $"failed to generate output file ({outputFilePath})";
-				Log.Error(errorMessage);
-				throw new ScriptGenerationException(errorMessage, ex);
+				Log.Error( errorMessage );
+				throw new ScriptGenerationException( errorMessage, ex );
 			}
-			Log.TaskFinished(taskMessage);
+			Log.TaskFinished( taskMessage );
 		}
 
-		private static string GetNormalizedOutputDirectory(string outputFile)
+		private static string GetNormalizedOutputDirectory( string outputFile )
 		{
-			var outputDirectory = Path.GetDirectoryName(outputFile);
-			if (outputDirectory is null || outputDirectory == string.Empty)
+			var outputDirectory = Path.GetDirectoryName( outputFile );
+			if ( outputDirectory is null || outputDirectory == string.Empty )
 			{
 				return ProjectDirectories.OutputDirectory + @"\";
 			}
 			return outputDirectory + @"\";
 		}
 
-		private static string GetNormalizedOutputFileName(string outputFile)
-		{
-			return Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
-		}
+		private static string GetNormalizedOutputFileName( string outputFile )
+			=> Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
 
 
 		private void WriteByteOrderMarkToFile()
 		{
 			var encoding = Encoding.UTF8;
-			using var stream = new FileStream(outputFilePath, FileMode.Create);
-			using var writer = new BinaryWriter(stream, encoding);
-			writer.Write(encoding.GetPreamble());
+			using var stream = new FileStream( outputFilePath, FileMode.Create );
+			using var writer = new BinaryWriter( stream, encoding );
+			writer.Write( encoding.GetPreamble() );
 		}
 
 		private void WriteConstantsToFile()
@@ -84,7 +80,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile(lines);
+			WriteLinesToFile( lines );
 		}
 
 		private void WriteControlShortcutsToFile()
@@ -98,17 +94,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteLineToFile( "#SuspendExempt true" );
 			if ( Input.Metadata.ReloadShortcut != string.Empty )
 			{
-				WriteLineToFile( $"{ Input.Metadata.ReloadShortcut }::Reload()" );
+				WriteLineToFile( $"{Input.Metadata.ReloadShortcut}::Reload()" );
 			}
 			if ( Input.Metadata.SuspendShortcut != string.Empty )
 			{
-				WriteLineToFile( $"{ Input.Metadata.SuspendShortcut }::Suspend( SUSPEND_TOGGLE )" );
+				WriteLineToFile( $"{Input.Metadata.SuspendShortcut}::Suspend( SUSPEND_TOGGLE )" );
 			}
 			WriteLineToFile( "#SuspendExempt false" );
 			WriteLineToFile();
 			WriteLineToFile();
 		}
-		
+
 		private void WriteControlStatementsToFile()
 		{
 			var lines = new string[]
@@ -117,7 +113,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"#SingleInstance Force",
 				"",
 			};
-			WriteLinesToFile(lines);
+			WriteLinesToFile( lines );
 		}
 
 		private void WriteGeneratedByMessageToFile()
@@ -129,13 +125,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile(lines);
+			WriteLinesToFile( lines );
 		}
 
 		private void WriteHeaderToFile()
 		{
 			var taskMessage = "writing header to output file";
-			Log.TaskStarted(taskMessage);
+			Log.TaskStarted( taskMessage );
 			WriteByteOrderMarkToFile();
 			WriteGeneratedByMessageToFile();
 			WriteControlStatementsToFile();
@@ -143,7 +139,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteConstantsToFile();
 			WriteIconHandlingToFile();
 			WriteControlShortcutsToFile();
-			Log.TaskFinished(taskMessage);
+			Log.TaskFinished( taskMessage );
 		}
 
 		private void WriteIconFilePathsToFile()
@@ -155,7 +151,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile(lines);
+			WriteLinesToFile( lines );
 		}
 
 		private void WriteIconHandlingToFile()
@@ -209,42 +205,42 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile(lines);
+			WriteLinesToFile( lines );
 		}
 
-		private void WriteLineToFile(string line = "")
+		private void WriteLineToFile( string line = "" )
 		{
 			try
 			{
-				using StreamWriter writer = File.AppendText(outputFilePath);
-				writer.WriteLine(line);
+				using var writer = File.AppendText( outputFilePath );
+				writer.WriteLine( line );
 			}
-			catch (Exception ex)
+			catch ( Exception ex )
 			{
 				var errorMessage = "failed to write line to output file";
-				Log.Error(errorMessage);
-				throw new FileLoadException(errorMessage, ex);
+				Log.Error( errorMessage );
+				throw new FileLoadException( errorMessage, ex );
 			}
 		}
 
-		private void WriteLinesToFile(string[] lines)
+		private void WriteLinesToFile( string[] lines )
 		{
 			var linesWritten = 0;
-			foreach (string line in lines)
+			foreach ( var line in lines )
 			{
-				WriteLineToFile(line);
+				WriteLineToFile( line );
 				++linesWritten;
 			}
-			Log.Info($"wrote {linesWritten} lines to output file");
+			Log.Info( $"wrote {linesWritten} lines to output file" );
 		}
 
 		private void WriteMacrosToFile()
 		{
 			var taskMessage = "writing macros to output file";
-			Log.TaskStarted(taskMessage);
+			Log.TaskStarted( taskMessage );
 			WriteLineToFile( "; macros generated from entries and templates" );
-			WriteLinesToFile(Input.Macros);
-			Log.TaskFinished(taskMessage);
+			WriteLinesToFile( Input.Macros );
+			Log.TaskFinished( taskMessage );
 		}
 	}
 }
