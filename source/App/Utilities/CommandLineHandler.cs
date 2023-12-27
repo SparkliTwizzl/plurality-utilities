@@ -51,7 +51,7 @@ namespace Petrichor.App.Utilities
 				{
 					case "consoleOnly":
 						{
-							Log.EnableForConsoleOnly( ProjectDirectories.LogDirectory );
+							Log.EnableForConsoleOnly();
 							break;
 						}
 
