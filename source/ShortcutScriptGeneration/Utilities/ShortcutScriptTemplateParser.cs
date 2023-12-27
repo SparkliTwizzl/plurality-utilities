@@ -18,7 +18,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var taskMessage = "parsing templates region data";
 			Log.TaskStarted(taskMessage);
 			var templates = new List<string>();
-			var expectedTokens = new string[] { };
+			var expectedTokens = Array.Empty<string>();
 			for (; i < data.Length; ++i)
 			{
 				var token = TokenParser.ParseToken(data[i], expectedTokens);
