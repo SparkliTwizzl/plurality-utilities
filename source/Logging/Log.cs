@@ -154,10 +154,8 @@ namespace Petrichor.Logging
 			}
 			if ( IsLoggingToFileEnabled )
 			{
-				using ( StreamWriter logFile = File.AppendText( logFilePath ) )
-				{
-					logFile.Write( message );
-				}
+				using var logFile = File.AppendText(logFilePath);
+				logFile.Write( message );
 			}
 		}
 

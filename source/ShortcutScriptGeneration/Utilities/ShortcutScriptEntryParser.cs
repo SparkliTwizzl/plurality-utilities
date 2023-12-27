@@ -112,7 +112,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private void ParseIdentity(string line, ref ShortcutScriptEntry entry)
 		{
-			ShortcutScriptIdentity identity = new ShortcutScriptIdentity();
+			var identity = new ShortcutScriptIdentity();
 			ParseName(line, ref identity);
 			ParseTag(line, ref identity);
 			entry.Identities.Add(identity);

@@ -43,7 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private string GenerateIdentityMacroFromTemplate(string template, ShortcutScriptIdentity identity, string pronoun, string decoration)
 		{
 			var macro = template;
-			Dictionary<string, string> fields = new Dictionary<string, string>()
+			var fields = new Dictionary<string, string>()
 			{
 				{ "name", identity.Name },
 				{ "tag", identity.Tag },

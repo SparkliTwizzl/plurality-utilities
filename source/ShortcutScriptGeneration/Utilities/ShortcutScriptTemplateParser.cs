@@ -62,7 +62,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private string ParseTemplateFromInputLine(string input)
 		{
-			StringBuilder template = new StringBuilder();
+			var template = new StringBuilder();
 			input = input.Trim();
 			for (int i = 0; i < input.Length; ++i)
 			{

@@ -64,13 +64,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private void WriteByteOrderMarkToFile()
 		{
 			var encoding = Encoding.UTF8;
-			using (FileStream stream = new FileStream(outputFilePath, FileMode.Create))
-			{
-				using (BinaryWriter writer = new BinaryWriter(stream, encoding))
-				{
-					writer.Write(encoding.GetPreamble());
-				}
-			}
+			using var stream = new FileStream(outputFilePath, FileMode.Create);
+			using var writer = new BinaryWriter(stream, encoding);
+			writer.Write(encoding.GetPreamble());
 		}
 
 		private void WriteConstantsToFile()
@@ -220,10 +216,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			try
 			{
-				using (StreamWriter writer = File.AppendText(outputFilePath))
-				{
-					writer.WriteLine(line);
-				}
+				using StreamWriter writer = File.AppendText(outputFilePath);
+				writer.WriteLine(line);
 			}
 			catch (Exception ex)
 			{
