@@ -107,7 +107,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new BlankInputFieldException(errorMessage);
 			}
-			entry.Decoration = line.Substring(1, line.Length - 1);
+			entry.Decoration = line[ 1 .. ];
 		}
 
 		private void ParseIdentity(string line, ref ShortcutScriptEntry entry)
@@ -169,7 +169,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new MissingInputFieldException(errorMessage);
 			}
-			var name = line.Substring(fieldStart + 1, fieldEnd - (fieldStart + 1));
+			var nameStart = fieldStart + 1;
+			var nameEnd = fieldEnd - 1;
+			var name = line[ nameStart .. nameEnd ];
 			if (name.Length < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
@@ -238,7 +240,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new BlankInputFieldException(errorMessage);
 			}
-			entry.Pronoun = line.Substring(1, line.Length - 1);
+			entry.Pronoun = line[ 1 .. ];
 		}
 
 		private void ParseTag(string line, ref ShortcutScriptIdentity identity)
@@ -257,7 +259,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error(errorMessage);
 				throw new InvalidInputFieldException(errorMessage);
 			}
-			var tag = line.Substring(fieldStart + 1, line.Length - (fieldStart + 1));
+			var tagStart = fieldStart + 1;
+			var tag = line[ tagStart .. ];
 			if (tag.Length < 1)
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";
