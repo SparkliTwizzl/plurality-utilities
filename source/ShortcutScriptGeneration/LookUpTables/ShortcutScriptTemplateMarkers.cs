@@ -2,7 +2,7 @@
 {
 	public static class ShortcutScriptTemplateMarkers
 	{
-		public static readonly Dictionary< char, string > LookUpTable = new Dictionary< char, string >()
+		public static Dictionary< char, string > LookUpTable => new()
 		{
 			{
 				'#',
