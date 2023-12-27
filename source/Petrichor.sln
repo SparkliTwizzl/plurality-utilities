@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33D2A88B-5941-4589-AC47-F665D813D3A0}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.runsettings = .runsettings
 		csharp.ruleset = csharp.ruleset
 		Directory.Build.props = Directory.Build.props
