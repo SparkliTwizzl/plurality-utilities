@@ -1,6 +1,5 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Exceptions
 {
-	[ Serializable ]
 	public class UnknownTokenException : Exception
 	{
 		public UnknownTokenException() : base() { }

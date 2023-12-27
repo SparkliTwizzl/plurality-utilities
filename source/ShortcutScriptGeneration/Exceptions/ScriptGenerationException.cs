@@ -1,6 +1,5 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Exceptions
 {
-	[ Serializable ]
 	public class ScriptGenerationException : Exception
 	{
 		public ScriptGenerationException() : base() { }
