@@ -50,9 +50,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ "pronoun", pronoun },
 				{ "decoration", decoration },
 			 };
-			foreach (var marker in ShortcutScriptTemplateMarkers.LookUpTable)
+			foreach (var marker in ShortcutScriptTemplateMarkers.LookUpTable.Select(marker => marker.Value))
 			{
-				macro = macro.Replace($"`{marker.Value}`", fields[marker.Value]);
+				macro = macro.Replace($"`{marker}`", fields[marker]);
 			}
 			return macro;
 		}
