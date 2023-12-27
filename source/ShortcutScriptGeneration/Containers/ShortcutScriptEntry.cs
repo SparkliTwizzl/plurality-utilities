@@ -16,6 +16,16 @@
 		}
 
 
+		public static bool operator ==( ShortcutScriptEntry left, ShortcutScriptEntry right )
+		{
+			return left.Identities.SequenceEqual( right.Identities ) && left.Pronoun.Equals( right.Pronoun ) && left.Decoration.Equals( right.Decoration );
+		}
+
+		public static bool operator !=( ShortcutScriptEntry left, ShortcutScriptEntry right )
+		{
+			return !left.Identities.SequenceEqual( right.Identities ) || !left.Pronoun.Equals( right.Pronoun ) || !left.Decoration.Equals( right.Decoration );
+		}
+
 		public override bool Equals( object? obj )
 		{
 			if ( obj == null || GetType() != obj.GetType() )
