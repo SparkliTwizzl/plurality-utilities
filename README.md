@@ -63,7 +63,7 @@ Insert comments with `#:`. Comments can be on the same line as data. Note that a
 
 ---
 
-#### 4.1.2 - Metadata
+#### 4.1.2 - Module options
 
 This region is optional. It allows you to set custom icons on the shortcut script if desired.
 
@@ -71,16 +71,16 @@ This region is optional. It allows you to set custom icons on the shortcut scrip
 
 If desired, you can specify filepaths to custom icons for the shortcut script to use.
 
-To set the default icon, add a token to the metadata region called `default-icon` and set its value to the path to the icon file you want to use.
+To set the default icon, add a token to the module options region called `default-icon` and set its value to the path to the icon file you want to use.
 
-If you want a different icon to be used when the script is suspended, add a token to the metadata region called `suspend-icon` and set its value to the path to the icon file you want to use.
+If you want a different icon to be used when the script is suspended, add a token to the module options region called `suspend-icon` and set its value to the path to the icon file you want to use.
 
 **IMPORTANT NOTE:** If you move an icon file and do not update its path in your input file and regenerate the script, the icon will not be found by AutoHotkey and will not be applied.
 
 Example:
 
 ```
-metadata:
+module-options:
 {
     default-icon: {path to default icon file}.ico
     suspend-icon: {path to suspend icon file}.ico
@@ -92,7 +92,7 @@ For simplicity, if an icon file will be in the same folder as the shortcut scrip
 Example:
 
 ```
-metadata:
+module-options:
 {
     default-icon: ./{default icon file name}.ico
     suspend-icon: ./{suspend icon file name}.ico
@@ -103,12 +103,12 @@ metadata:
 
 If desired, you can include a keyboard shortcut to reload the script.
 
-To include a reload shortcut, add a token to the metadata region called `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
+To include a reload shortcut, add a token to the module options region called `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
 
 Example:
 
 ```
-metadata:
+module-options:
 {
     reload-shortcut: #r ; Windows key + R
 }
@@ -118,12 +118,12 @@ metadata:
 
 If desired, you can include a keyboard shortcut to toggle suspending the script. Suspending the script will prevent macros from working until it is resumed.
 
-To include a suspend shortcut, add a token to the metadata region called `suspend-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
+To include a suspend shortcut, add a token to the module options region called `suspend-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
 
 Example:
 
 ```
-metadata:
+module-options:
 {
     suspend-shortcut: #s ; Windows key + S
 }

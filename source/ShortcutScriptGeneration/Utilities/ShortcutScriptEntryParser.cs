@@ -5,6 +5,7 @@ using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Enums;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -25,15 +26,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
 		{
-			var taskMessage = "parsing entries region data";
+			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.EntriesRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
 
 			var entries = new List<ShortcutScriptEntry>();
 			var expectedTokens = new string[]
 			{
-				"%",
-				"$",
-				"&",
+				decorationLineChar.ToString(),
+				identityLineChar.ToString(),
+				pronounLineChar.ToString(),
 			};
 
 			string? errorMessage;

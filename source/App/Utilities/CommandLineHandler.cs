@@ -15,7 +15,7 @@ namespace Petrichor.App.Utilities
 				RuntimeHandler.WaitForUserAndExit();
 			}
 
-			var inputFileOption = new Option<string>( name: "--inputFile", description: "Path to input file with entries and templates data." );
+			var inputFileOption = new Option<string>( name: "--inputFile", description: "Path to input file." );
 			var outputFileOption = new Option<string>( name: "--outputFile", description: "Path and filename to generate AutoHotkey script at." );
 			var logModeOption = new Option<string>( name: "--logMode", description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
 			var logFileOption = new Option<string>( name: "--logFile", description: "Path to generate log file at. If not provided, a default filepath will be used." );

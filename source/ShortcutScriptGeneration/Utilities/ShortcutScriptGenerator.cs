@@ -85,20 +85,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private void WriteControlShortcutsToFile()
 		{
-			if ( Input.Metadata.ReloadShortcut == string.Empty && Input.Metadata.SuspendShortcut == string.Empty )
+			if ( Input.ModuleOptions.ReloadShortcut == string.Empty && Input.ModuleOptions.SuspendShortcut == string.Empty )
 			{
 				return;
 			}
 
 			WriteLineToFile( "; script reload / suspend shortcut(s)" );
 			WriteLineToFile( "#SuspendExempt true" );
-			if ( Input.Metadata.ReloadShortcut != string.Empty )
+			if ( Input.ModuleOptions.ReloadShortcut != string.Empty )
 			{
-				WriteLineToFile( $"{Input.Metadata.ReloadShortcut}::Reload()" );
+				WriteLineToFile( $"{Input.ModuleOptions.ReloadShortcut}::Reload()" );
 			}
-			if ( Input.Metadata.SuspendShortcut != string.Empty )
+			if ( Input.ModuleOptions.SuspendShortcut != string.Empty )
 			{
-				WriteLineToFile( $"{Input.Metadata.SuspendShortcut}::Suspend( SUSPEND_TOGGLE )" );
+				WriteLineToFile( $"{Input.ModuleOptions.SuspendShortcut}::Suspend( SUSPEND_TOGGLE )" );
 			}
 			WriteLineToFile( "#SuspendExempt false" );
 			WriteLineToFile();
@@ -146,8 +146,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var lines = new string[]
 			{
-				$"defaultIcon := \"{ Input.Metadata.DefaultIconFilePath }\"",
-				$"suspendIcon := \"{ Input.Metadata.SuspendIconFilePath }\"",
+				$"defaultIcon := \"{ Input.ModuleOptions.DefaultIconFilePath }\"",
+				$"suspendIcon := \"{ Input.ModuleOptions.SuspendIconFilePath }\"",
 				"",
 				"",
 			};

@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ShortcutScriptMetadata : IEquatable<ShortcutScriptMetadata>
+	public sealed class ShortcutScriptModuleOptions : IEquatable<ShortcutScriptModuleOptions>
 	{
 		public string DefaultIconFilePath { get; set; } = string.Empty;
 		public string ReloadShortcut { get; set; } = string.Empty;
@@ -8,8 +8,8 @@
 		public string SuspendShortcut { get; set; } = string.Empty;
 
 
-		public ShortcutScriptMetadata() { }
-		public ShortcutScriptMetadata( string defaultIconPath, string suspendIconPath, string reloadShortcut, string suspendShortcut )
+		public ShortcutScriptModuleOptions() { }
+		public ShortcutScriptModuleOptions( string defaultIconPath, string suspendIconPath, string reloadShortcut, string suspendShortcut )
 		{
 			DefaultIconFilePath = defaultIconPath;
 			ReloadShortcut = reloadShortcut;
@@ -18,9 +18,9 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptMetadata a, ShortcutScriptMetadata b ) => a.Equals( b );
+		public static bool operator ==( ShortcutScriptModuleOptions a, ShortcutScriptModuleOptions b ) => a.Equals( b );
 
-		public static bool operator !=( ShortcutScriptMetadata a, ShortcutScriptMetadata b ) => !a.Equals( b );
+		public static bool operator !=( ShortcutScriptModuleOptions a, ShortcutScriptModuleOptions b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -28,10 +28,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ShortcutScriptMetadata ) obj );
+			return Equals( ( ShortcutScriptModuleOptions ) obj );
 		}
 
-		public bool Equals( ShortcutScriptMetadata? other )
+		public bool Equals( ShortcutScriptModuleOptions? other )
 		{
 			if ( other is null )
 			{

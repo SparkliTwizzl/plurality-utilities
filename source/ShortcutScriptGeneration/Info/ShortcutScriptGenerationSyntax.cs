@@ -9,8 +9,8 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string DefaultIconFilePathTokenName => "default-icon";
 		public static string EntriesRegionToken => $"{EntriesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntriesRegionTokenName => "entries";
-		public static string MetadataRegionToken => $"{MetadataRegionTokenName}{CommonSyntax.TokenValueDivider}";
-		public static string MetadataRegionTokenName => "metadata";
+		public static string ModuleOptionsRegionToken => $"{ModuleOptionsRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string ModuleOptionsRegionTokenName => "module-options";
 		public static string ReloadShortcutToken => $"{ReloadShortcutTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string ReloadShortcutTokenName => "reload-shortcut";
 		public static string SuspendIconFilePathToken => $"{SuspendIconFilePathTokenName}{CommonSyntax.TokenValueDivider}";

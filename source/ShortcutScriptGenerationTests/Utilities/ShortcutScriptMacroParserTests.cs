@@ -16,13 +16,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ShortcutScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
-			public static ShortcutScriptInput Input => new( Metadata, Entries, Templates );
+			public static ShortcutScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
 				"::@$&tag:: name pronoun decoration",
 			};
-			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static ShortcutScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string[] Templates => new[]
 			{
 				"::@`tag`:: `name`",
