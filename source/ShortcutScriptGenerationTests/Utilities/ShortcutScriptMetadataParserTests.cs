@@ -28,7 +28,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionDataWithUnknownToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\tunknown: token",
+				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string ReloadShortcut => "reloadshortcut";
@@ -36,12 +36,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] ValidRegionDataWithOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ CommonSyntax.LineCommentToken }: line comment",
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken }: { DefaultIconPath } { CommonSyntax.LineCommentToken }: inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken }: { SuspendIconPath }",
-				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken }: { ReloadShortcut }",
-				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken }: { SuspendShortcut }",
+				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } { DefaultIconPath } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } { SuspendIconPath }",
+				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { ReloadShortcut }",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken } { SuspendShortcut }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] ValidRegionDataWithoutOptionalTokens => new[]
@@ -82,11 +82,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( UnknownTokenException ) )]
-		public void ParseMetadataFromDataTest_ThrowsUnknownTokenException()
-			=> _ = metadataParser!.ParseMetadataFromData( TestData.RegionDataWithUnknownToken, ref i );
-
-		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
 		[DynamicData( nameof( ParseMetadataFromDataTest_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
 		public void ParseMetadataFromDataTest_ThrowsBracketMismatchException( string[] regionData )
@@ -100,5 +95,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				yield return new object[] { TestData.RegionDataWithDanglingOpenBracket };
 			}
 		}
+
+		[TestMethod]
+		[ExpectedException( typeof( UnknownTokenException ) )]
+		public void ParseMetadataFromDataTest_ThrowsUnknownTokenException()
+			=> _ = metadataParser!.ParseMetadataFromData( TestData.RegionDataWithUnknownToken, ref i );
 	}
 }

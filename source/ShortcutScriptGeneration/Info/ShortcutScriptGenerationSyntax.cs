@@ -1,16 +1,23 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.Info
+﻿using Petrichor.Common.Info;
+
+
+namespace Petrichor.ShortcutScriptGeneration.Info
 {
 	public struct ShortcutScriptGenerationSyntax
 	{
-		public const string DefaultIconFilePathToken = "default-icon";
-		public const string DeprecatedEntriesRegionToken = "entries:";
-		public const string DeprecatedMetadataRegionToken = "metadata:";
-		public const string DeprecatedTemplatesRegionToken = "templates:";
-		public const string EntriesRegionToken = "entries";
-		public const string MetadataRegionToken = "metadata";
-		public const string ReloadShortcutToken = "reload-shortcut";
-		public const string SuspendIconFilePathToken = "suspend-icon";
-		public const string SuspendShortcutToken = "suspend-shortcut";
-		public const string TemplatesRegionToken = "templates";
+		public static string DefaultIconFilePathToken => $"{DefaultIconFilePathTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string DefaultIconFilePathTokenName => "default-icon";
+		public static string EntriesRegionToken => $"{EntriesRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntriesRegionTokenName => "entries";
+		public static string MetadataRegionToken => $"{MetadataRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string MetadataRegionTokenName => "metadata";
+		public static string ReloadShortcutToken => $"{ReloadShortcutTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string ReloadShortcutTokenName => "reload-shortcut";
+		public static string SuspendIconFilePathToken => $"{SuspendIconFilePathTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string SuspendIconFilePathTokenName => "suspend-icon";
+		public static string SuspendShortcutToken => $"{SuspendShortcutTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string SuspendShortcutTokenName => "suspend-shortcut";
+		public static string TemplatesRegionToken => $"{TemplatesRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string TemplatesRegionTokenName => "templates";
 	}
 }

@@ -21,37 +21,31 @@ namespace Petrichor.Common.Utilities
 
 			var qualifiedToken = new QualifiedStringToken( token.Trim() );
 
-
-			switch ( qualifiedToken.Value )
+			if ( qualifiedToken.Value == string.Empty )
 			{
-				case "":
+				qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
+			}
+
+			else if ( qualifiedToken.Value == CommonSyntax.OpenBracketToken )
+			{
+				++IndentLevel;
+				qualifiedToken.Qualifier = StringTokenQualifiers.OpenBracket;
+			}
+
+			else if ( qualifiedToken.Value == CommonSyntax.CloseBracketToken )
+			{
+				--IndentLevel;
+				qualifiedToken.Qualifier = StringTokenQualifiers.CloseBracket;
+			}
+
+			else
+			{
+				if ( qualifiedToken.Value[ 0..CommonSyntax.LineCommentToken.Length ] == CommonSyntax.LineCommentToken )
 				{
 					qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
-					break;
 				}
-
-				case CommonSyntax.OpenBracketToken:
+				else
 				{
-					++IndentLevel;
-					qualifiedToken.Qualifier = StringTokenQualifiers.OpenBracket;
-					break;
-				}
-
-				case CommonSyntax.CloseBracketToken:
-				{
-					--IndentLevel;
-					qualifiedToken.Qualifier = StringTokenQualifiers.CloseBracket;
-					break;
-				}
-
-				default:
-				{
-					if ( qualifiedToken.Value[ 0..CommonSyntax.LineCommentToken.Length ] == CommonSyntax.LineCommentToken )
-					{
-						qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
-						break;
-					}
-
 					foreach ( var value in expectedValues )
 					{
 						if ( string.Compare( qualifiedToken.Value, value ) == 0 )
@@ -60,7 +54,6 @@ namespace Petrichor.Common.Utilities
 							break;
 						}
 					}
-					break;
 				}
 			}
 			Log.TaskFinished( taskMessage );

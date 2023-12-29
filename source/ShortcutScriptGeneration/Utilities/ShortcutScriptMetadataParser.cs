@@ -23,72 +23,62 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				var rawToken = data[ i ];
 				var token = new StringToken( rawToken );
-
 				var isParsingFinished = false;
-				string? errorMessage;
-				switch ( token.Name )
+
+				if ( token.Name == string.Empty || token.Name == CommonSyntax.LineCommentTokenName )
 				{
-					case "":
-					case CommonSyntax.LineCommentToken:
+					continue;
+				}
+
+				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				{
+					++IndentLevel;
+				}
+
+				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				{
+					--IndentLevel;
+
+					if ( IndentLevel < 0 )
 					{
-						break;
-					}
-
-					case CommonSyntax.OpenBracketToken:
-					{
-						++IndentLevel;
-						break;
-					}
-
-					case CommonSyntax.CloseBracketToken:
-					{
-						--IndentLevel;
-
-						if ( IndentLevel < 0 )
-						{
-							errorMessage = $"a mismatched closing bracket was found when parsing metadata region";
-							Log.Error( errorMessage );
-							throw new BracketMismatchException( errorMessage );
-						}
-
-						if ( IndentLevel == 0 )
-						{
-							isParsingFinished = true;
-						}
-						break;
-					}
-
-					case ShortcutScriptGenerationSyntax.DefaultIconFilePathToken:
-					{
-						Metadata.DefaultIconFilePath = token.Value;
-						break;
-					}
-
-					case ShortcutScriptGenerationSyntax.ReloadShortcutToken:
-					{
-						Metadata.ReloadShortcut = token.Value;
-						break;
-					}
-
-					case ShortcutScriptGenerationSyntax.SuspendIconFilePathToken:
-					{
-						Metadata.SuspendIconFilePath = token.Value;
-						break;
-					}
-
-					case ShortcutScriptGenerationSyntax.SuspendShortcutToken:
-					{
-						Metadata.SuspendShortcut = token.Value;
-						break;
-					}
-
-					default:
-					{
-						errorMessage = $"an unrecognized token (\"{rawToken.Trim()}\") was found when parsing metadata region";
+						var errorMessage = $"a mismatched closing bracket was found when parsing metadata region";
 						Log.Error( errorMessage );
-						throw new UnknownTokenException( errorMessage );
+						throw new BracketMismatchException( errorMessage );
+					}
+
+					if ( IndentLevel == 0 )
+					{
+						isParsingFinished = true;
 					}
 				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
+				{
+					Metadata.DefaultIconFilePath = token.Value;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
+				{
+					Metadata.ReloadShortcut = token.Value;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
+				{
+					Metadata.SuspendIconFilePath = token.Value;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
+				{
+					Metadata.SuspendShortcut = token.Value;
+				}
+
+				else
+				{
+					var errorMessage = $"an unrecognized token (\"{rawToken.Trim()}\") was found when parsing metadata region";
+					Log.Error( errorMessage );
+					throw new UnknownTokenException( errorMessage );
+				}
+
 				if ( isParsingFinished )
 				{
 					break;

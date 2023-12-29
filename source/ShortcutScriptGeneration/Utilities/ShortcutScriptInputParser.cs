@@ -42,9 +42,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var tokenParser = new StringTokenParser();
 			var expectedTokens = new string[]
 			{
-				ShortcutScriptGenerationSyntax.DeprecatedEntriesRegionToken,
-				ShortcutScriptGenerationSyntax.DeprecatedMetadataRegionToken,
-				ShortcutScriptGenerationSyntax.DeprecatedTemplatesRegionToken,
+				ShortcutScriptGenerationSyntax.EntriesRegionToken,
+				ShortcutScriptGenerationSyntax.MetadataRegionToken,
+				ShortcutScriptGenerationSyntax.TemplatesRegionToken,
 			};
 
 			for ( var i = 0 ; i < data.Length ; ++i )
@@ -56,28 +56,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					case StringTokenQualifiers.Recognized:
 					{
-						switch ( qualifiedToken.Value )
+						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
-							case ShortcutScriptGenerationSyntax.DeprecatedEntriesRegionToken:
-							{
-								++i;
-								input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
-								break;
-							}
+							++i;
+							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
+						}
 
-							case ShortcutScriptGenerationSyntax.DeprecatedMetadataRegionToken:
-							{
-								++i;
-								input.Metadata = MetadataParser.ParseMetadataFromData( data, ref i );
-								break;
-							}
+						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.MetadataRegionToken )
+						{
+							++i;
+							input.Metadata = MetadataParser.ParseMetadataFromData( data, ref i );
+						}
 
-							case ShortcutScriptGenerationSyntax.DeprecatedTemplatesRegionToken:
-							{
-								++i;
-								input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
-								break;
-							}
+						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
+						{
+							++i;
+							input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
 						}
 
 						if ( tokenParser.IndentLevel > 0 )
