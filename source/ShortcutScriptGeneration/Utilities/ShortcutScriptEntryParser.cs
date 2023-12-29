@@ -180,7 +180,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var nameStart = fieldStart + 1;
 			var nameEnd = fieldEnd;
 
-			var name = line[ nameStart..nameEnd ];
+			var name = line[ nameStart..nameEnd ].Trim();
 			if ( name.Length < 1 )
 			{
 				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
