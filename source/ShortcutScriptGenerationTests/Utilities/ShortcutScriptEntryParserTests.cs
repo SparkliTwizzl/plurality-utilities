@@ -37,7 +37,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				"\t\t&",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
@@ -46,7 +46,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% ## @tag",
+				"\t\t# @tag",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
@@ -54,7 +54,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				"\t\t$",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
@@ -63,7 +63,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				"{",
 				"\t{",
-				"\t\t% #name# @",
+				"\t\t#name @",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
@@ -71,37 +71,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_MissingIdentityField => new[]
+			public static string[] InputData_NoIdentityField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_MissingNameField => new[]
+			public static string[] InputData_NoNameField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% @tag",
+				"\t\t@tag",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_MissingTagField => new[]
+			public static string[] InputData_NoTagField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name#",
-				"\t}",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] InputData_TagFieldContainsSpaces => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t% #name# @t ag",
+				"\t\t#name",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
@@ -109,7 +101,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				"\t\t$pronoun",
 				"\t\t&decoration",
 				"\t\t&decoration",
@@ -120,7 +112,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				"\t\t$pronoun",
 				"\t\t$pronoun",
 				"\t}",
@@ -131,7 +123,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				"\ta",
 				"\t{",
-				"\t\t% #name# @tag",
+				"\t\t#name @tag",
 				"\t\t$pronoun",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
@@ -140,8 +132,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
-				"\t\ta",
-				"\t\t% #name# @tag",
+				"\t\tx",
+				"\t\t#name @tag",
 				"\t\t$pronoun",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
@@ -151,16 +143,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				"\t{",
-				$"\t\t% #name1# @tag1{ CommonSyntax.LineCommentToken } inline comment",
-				"\t\t% #name2# @tag2",
+				$"\t\t#name1 @tag1 { CommonSyntax.LineCommentToken } inline comment",
+				"\t\t#name2 @tag2",
 				"\t\t$pronoun1",
 				"\t\t&decoration1",
 				"\t}",
 				"\t",
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				"\t{",
-				"\t\t% #name3# @tag3",
-				"\t\t% #name4# @tag4",
+				"\t\t#name3 @tag3",
+				"\t\t#name4 @tag4",
 				"\t\t$pronoun3",
 				"\t\t&decoration3",
 				"\t}",
@@ -210,7 +202,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { TestData.InputData_BlankDecorationField };
-				yield return new object[] { TestData.InputData_BlankNameField };
 				yield return new object[] { TestData.InputData_BlankPronounField };
 				yield return new object[] { TestData.InputData_BlankTagField };
 			}
@@ -246,20 +237,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( InvalidInputFieldException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
-
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data
-		{
-			get
-			{
-				yield return new object[] { TestData.InputData_TagFieldContainsSpaces };
-			}
-		}
-
-		[TestMethod]
 		[ExpectedException( typeof( MissingInputFieldException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string[] data )
@@ -269,9 +246,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_MissingIdentityField };
-				yield return new object[] { TestData.InputData_MissingNameField };
-				yield return new object[] { TestData.InputData_MissingTagField };
+				yield return new object[] { TestData.InputData_NoIdentityField };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( InvalidInputFieldException ) )]
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_NoTagField };
 			}
 		}
 
@@ -285,6 +274,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
+				yield return new object[] { TestData.InputData_NoNameField };
 				yield return new object[] { TestData.InputData_UnexpectedCharBetweenEntries };
 				yield return new object[] { TestData.InputData_UnexpectedCharInEntry };
 			}

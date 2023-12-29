@@ -19,7 +19,7 @@ namespace Petrichor.Common.Utilities
 			var taskMessage = $"parsing token \"{token}\"";
 			Log.TaskStarted( taskMessage );
 
-			var qualifiedToken = new QualifiedStringToken( token.Trim() );
+			var qualifiedToken = new QualifiedStringToken( token );
 
 			if ( qualifiedToken.Value == string.Empty )
 			{
@@ -40,7 +40,7 @@ namespace Petrichor.Common.Utilities
 
 			else
 			{
-				if ( qualifiedToken.Value[ 0..CommonSyntax.LineCommentToken.Length ] == CommonSyntax.LineCommentToken )
+				if ( qualifiedToken.Value.IndexOf( CommonSyntax.LineCommentToken ) == 0 )
 				{
 					qualifiedToken.Qualifier = StringTokenQualifiers.BlankLine;
 				}

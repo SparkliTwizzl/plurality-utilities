@@ -1,4 +1,5 @@
 ﻿using Petrichor.Common.Enums;
+using Petrichor.Common.Info;
 
 
 namespace Petrichor.Common.Containers
@@ -17,6 +18,23 @@ namespace Petrichor.Common.Containers
 			Value = other.Value;
 		}
 
-		public QualifiedStringToken( string token ) => Value = token;
+		public QualifiedStringToken( string token ) => Value = TrimToken( token.Trim() );
+
+
+		private string TrimToken( string token )
+		{
+			if ( token.IndexOf( CommonSyntax.LineCommentToken ) == 0 )
+			{
+				return string.Empty;
+			}
+
+			else if ( token.Contains( CommonSyntax.LineCommentToken ) )
+			{
+				var commentStart = token.IndexOf( CommonSyntax.LineCommentToken );
+				return token[ 0..commentStart ].Trim();
+			}
+
+			return token.Trim();
+		}
 	}
 }

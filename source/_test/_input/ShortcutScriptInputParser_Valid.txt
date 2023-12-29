@@ -10,14 +10,14 @@ entries:
 {
 	#: line comment before entries in entries region
 	{
-		% #name# @tag #: inline comment in entries region body
+		#name @tag #: inline comment in entries region body
 		$pronoun
 		&decorator
 	}
 	
 	#: line comment between entries in entries region
 	{
-		% #name# @tag
+		#name @tag
 		$pronoun
 		&decorator
 	}

@@ -13,15 +13,15 @@ entries:
 {
 	#: line comment before entries in entries region
 	{
-		% #Sam# @sm #: inline comment in entries region body
-		% #Sammy# @smy
+		#Sam @sm #: inline comment in entries region body
+		#Sammy @smy
 		$they/them
 		&-> a person
 	}
 	
 	#: line comment between entries in entries region
 	{
-		% #ALEX# @AX
+		#ALEX @AX
 		$IT/ITS
 		&[A PERSON TOO]
 	}
