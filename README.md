@@ -53,15 +53,21 @@ In order to get a useful result from the tool, there are 3 main steps:
 
 Input files are made up of 3 regions: Metadata, entries, and templates.
 
+---
+
+#### 4.1.1 - Blank lines and comments
+
 Blank lines in input files are ignored, so use as many as you want.
+
+Insert comments with `#:`. Comments can be on the same line as data. Note that anything following the start of a comment will be treated as part of the comment and ignored.
 
 ---
 
-#### 4.1.1 - Metadata
+#### 4.1.2 - Metadata
 
 This region is optional. It allows you to set custom icons on the shortcut script if desired.
 
-##### 4.1.1.1 - Custom icons
+##### 4.1.2.1 - Custom icons
 
 If desired, you can specify filepaths to custom icons for the shortcut script to use.
 
@@ -93,7 +99,7 @@ metadata:
 }
 ```
 
-##### 4.1.1.2 - Keyboard shortcut to reload script
+##### 4.1.2.2 - Keyboard shortcut to reload script
 
 If desired, you can include a keyboard shortcut to reload the script.
 
@@ -108,7 +114,7 @@ metadata:
 }
 ```
 
-##### 4.1.1.3 - Keyboard shortcut to suspend script
+##### 4.1.2.3 - Keyboard shortcut to suspend script
 
 If desired, you can include a keyboard shortcut to toggle suspending the script. Suspending the script will prevent macros from working until it is resumed.
 
@@ -125,7 +131,7 @@ metadata:
 
 ---
 
-#### 4.1.2 - Entries are blocks of data which are made up of fields
+#### 4.1.3 - Entries are blocks of data which are made up of fields
 
 Each entry represents a person and must contain at least one identity (a name paired with a tag).
 
@@ -138,7 +144,7 @@ Example:
 }
 ```
 
-##### 4.1.2.1 - Between the braces, write the fields for the entry on separate lines
+##### 4.1.3.1 - Between the braces, write the fields for the entry on separate lines
 
 Whitespace at the start of lines for fields is ignored, so feel free to indent or not as you prefer to.
 
@@ -174,7 +180,7 @@ Example:
 }
 ```
 
-##### 4.1.2.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique
+##### 4.1.3.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique
 
 If you want to, for example, have the same set of names paired with a different pronoun and/or decoration, you can include multiple entries that are the same aside from small changes (see below).
 
@@ -212,11 +218,11 @@ entries:
 
 ---
 
-#### 4.1.3 - Templates are how the tool converts entries into AutoHotkey macros
+#### 4.1.4 - Templates are how the tool converts entries into AutoHotkey macros
 
 In order for Petrichor to know what format(s) you want the macros in your script to have, you need to provide templates for them.
 
-##### 4.1.3.1 - Templates must use the same basic structure in order for the generated script to work
+##### 4.1.4.1 - Templates must use the same basic structure in order for the generated script to work
 
 All templates have to start with 2 colons `::`, a string of text including an at sign `@` representing the tag, then 2 more colons `::`.
 
@@ -233,7 +239,7 @@ templates:
 }
 ```
 
-##### 4.1.3.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything
+##### 4.1.4.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -270,7 +276,7 @@ This produces this output file:
 ::smy::Sammy (they/them) | [-- a person]
 ```
 
-##### 4.1.3.3 - You can use each marker symbol in a template as many times as you want
+##### 4.1.4.3 - You can use each marker symbol in a template as many times as you want
 
 Example:
 
@@ -298,7 +304,7 @@ This produces this output file:
 ::smysmy::Sammy (they/them) | [Sammy is a person]
 ```
 
-##### 4.1.3.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced
+##### 4.1.4.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced
 
 Note that you can apply an escape character to a backslash in order to make it print literally.
 
@@ -328,7 +334,7 @@ This produces this output file:
 ::@smy::Sammy (they/them) \ [#a person]
 ```
 
-##### 4.1.3.5 - The templates region can have as many templates as you want
+##### 4.1.4.5 - The templates region can have as many templates as you want
 
 Although templates dont have to be unique, repeating a template will generate duplicate macros, which could break the generated script.
 

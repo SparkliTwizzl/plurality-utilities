@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptTemplateParser : IShortcutScriptTemplateParser
 	{
-		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
+		private StringTokenParser TokenParser { get; set; } = new();
 
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;
 
@@ -12,16 +13,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static string[] ValidTemplates => new[]
 			{
-				"{",
-				@"	::\@@:: #",
-				@"	::\@\$\&@:: # $ &",
-				"}",
+				CommonSyntax.OpenBracketToken,
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				string.Empty,
+				"\t::\\@@:: #",
+				$"\t::\\@\\$\\&@:: # $ & { CommonSyntax.LineCommentToken } inline comment",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] TemplateWithTrailingExcapeCharacter => new[]
 			{
-				"{",
-				@"	::\@@:: #\",
-				"}",
+				CommonSyntax.OpenBracketToken,
+				"\t::\\@@:: #\\",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] ParsedTemplates => new[]
 			{

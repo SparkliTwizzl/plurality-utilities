@@ -3,16 +3,13 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutScriptInputParser : IShortcutScriptInputParser
 	{
-		private const string entriesToken = "entries:";
-		private const string metadataToken = "metadata:";
-		private const string templatesToken = "templates:";
-
 		private IShortcutScriptEntryParser EntryParser { get; set; }
 		private IShortcutScriptMacroParser MacroParser { get; set; }
 		private IShortcutScriptMetadataParser MetadataParser { get; set; }
@@ -45,9 +42,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var tokenParser = new StringTokenParser();
 			var expectedTokens = new string[]
 			{
-				entriesToken,
-				metadataToken,
-				templatesToken,
+				ShortcutScriptGenerationSyntax.EntriesRegionToken,
+				ShortcutScriptGenerationSyntax.MetadataRegionToken,
+				ShortcutScriptGenerationSyntax.TemplatesRegionToken,
 			};
 
 			for ( var i = 0 ; i < data.Length ; ++i )
@@ -59,21 +56,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					case StringTokenQualifiers.Recognized:
 					{
-						if ( string.Compare( qualifiedToken.Value, entriesToken ) == 0 )
+						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
 							++i;
 							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
 						}
-						else if ( string.Compare( qualifiedToken.Value, metadataToken ) == 0 )
+
+						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.MetadataRegionToken )
 						{
 							++i;
 							input.Metadata = MetadataParser.ParseMetadataFromData( data, ref i );
 						}
-						else if ( string.Compare( qualifiedToken.Value, templatesToken ) == 0 )
+
+						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
 							++i;
 							input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
 						}
+
 						if ( tokenParser.IndentLevel > 0 )
 						{
 							errorMessage = $"input file contains invalid data: a region was not closed properly when parsing token \"{qualifiedToken.Value}\"";

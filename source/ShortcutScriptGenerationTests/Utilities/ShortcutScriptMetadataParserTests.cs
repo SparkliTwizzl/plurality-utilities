@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.TestShared.Utilities;
 
 
@@ -17,33 +19,35 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
 			public static string[] RegionDataWithDanglingCloseBracket => new[]
 			{
-				"}",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionDataWithDanglingOpenBracket => new[]
 			{
-				"{",
+				CommonSyntax.OpenBracketToken,
 			};
 			public static string[] RegionDataWithUnknownToken => new[]
 			{
-				"{",
-				"	unknown: token",
-				"}",
+				CommonSyntax.OpenBracketToken,
+				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string ReloadShortcut => "reloadshortcut";
 			public static string SuspendShortcut => "suspendshortcut";
 			public static string[] ValidRegionDataWithOptionalTokens => new[]
 			{
-				"{",
-				$"	default-icon: { DefaultIconPath }",
-				$"	suspend-icon: { SuspendIconPath }",
-				$"	reload-shortcut: { ReloadShortcut }",
-				$"	suspend-shortcut: { SuspendShortcut }",
-				"}",
+				CommonSyntax.OpenBracketToken,
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } { DefaultIconPath } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } { SuspendIconPath }",
+				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { ReloadShortcut }",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken } { SuspendShortcut }",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] ValidRegionDataWithoutOptionalTokens => new[]
 			{
-				"{",
-				"}",
+				CommonSyntax.OpenBracketToken,
+				CommonSyntax.CloseBracketToken,
 			};
 		}
 
@@ -78,11 +82,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( UnknownTokenException ) )]
-		public void ParseMetadataFromDataTest_ThrowsUnknownTokenException()
-			=> _ = metadataParser!.ParseMetadataFromData( TestData.RegionDataWithUnknownToken, ref i );
-
-		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
 		[DynamicData( nameof( ParseMetadataFromDataTest_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
 		public void ParseMetadataFromDataTest_ThrowsBracketMismatchException( string[] regionData )
@@ -96,5 +95,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				yield return new object[] { TestData.RegionDataWithDanglingOpenBracket };
 			}
 		}
+
+		[TestMethod]
+		[ExpectedException( typeof( UnknownTokenException ) )]
+		public void ParseMetadataFromDataTest_ThrowsUnknownTokenException()
+			=> _ = metadataParser!.ParseMetadataFromData( TestData.RegionDataWithUnknownToken, ref i );
 	}
 }

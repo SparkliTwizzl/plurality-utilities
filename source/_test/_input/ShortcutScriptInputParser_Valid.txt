@@ -1,18 +1,30 @@
-metadata:
+#: top-level line comment
+
+metadata: #: inline comment in region name
 {
-	default-icon: "./IconDefault.ico"
+	#: line comment in metadata region
+	default-icon: "./IconDefault.ico" #: inline comment in metadata region body
 }
 
 entries:
 {
+	#: line comment before entries in entries region
 	{
-		% #name# @tag
+		#name @tag #: inline comment in entries region body
+		$pronoun
+		&decorator
 	}
-	$pronoun
-	&decorator
+	
+	#: line comment between entries in entries region
+	{
+		#name @tag
+		$pronoun
+		&decorator
+	}
 }
 
 templates:
 {
-	::@::# $ &
+	#: line comment in templates region
+	::@::# $ & #: inline comment in templates region body
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;
@@ -32,108 +33,131 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 					"decoration3"
 				),
 			};
-			public const string InputData_BlankDecorationField =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		&|" +
-				"	}|" +
-				"}|";
-			public const string InputData_BlankNameField =
-				"{|" +
-				"	{|" +
-				"		% ## @tag|" +
-				"	}|" +
-				"}|";
-			public const string InputData_BlankPronounField =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$|" +
-				"	}|" +
-				"}|";
-			public const string InputData_BlankTagField =
-				"{|" +
-				"	{|" +
-				"		% #name# @|" +
-				"	}|" +
-				"}|";
-			public const string InputData_EntryNotClosed =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"}|";
-			public const string InputData_MissingIdentityField =
-				"{|" +
-				"	{|" +
-				"	}|" +
-				"}|";
-			public const string InputData_MissingNameField =
-				"{|" +
-				"	{|" +
-				"		% @tag|" +
-				"	}|" +
-				"}|";
-			public const string InputData_MissingTagField =
-				"{|" +
-				"	{|" +
-				"		% #name#|" +
-				"	}|" +
-				"}|";
-			public const string InputData_TagFieldContainsSpaces =
-				"{|" +
-				"	{|" +
-				"		% #name# @t ag|" +
-				"	}|" +
-				"}|";
-			public const string InputData_TooManyDecorationFields =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"		&decoration|" +
-				"		&decoration|" +
-				"	}|" +
-				"}|";
-			public const string InputData_TooManyPronounFields =
-				"{|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
-			public const string InputData_UnexpectedCharBetweenEntries =
-				"{|" +
-				"	a|" +
-				"	{|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
-			public const string InputData_UnexpectedCharInEntry =
-				"{|" +
-				"	{|" +
-				"		a|" +
-				"		% #name# @tag|" +
-				"		$pronoun|" +
-				"	}|" +
-				"}|";
-			public const string InputData_Valid =
-				"{|" +
-				"	{|" +
-				"		% #name1# @tag1|" +
-				"		% #name2# @tag2|" +
-				"		$pronoun1|" +
-				"		&decoration1|" +
-				"	}|" +
-				"	{|" +
-				"		% #name3# @tag3|" +
-				"		% #name4# @tag4|" +
-				"		$pronoun3|" +
-				"		&decoration3|" +
-				"	}|" +
-				"}|";
+			public static string[] InputData_BlankDecorationField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name @tag",
+				"\t\t&",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_BlankNameField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t# @tag",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_BlankPronounField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name @tag",
+				"\t\t$",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_BlankTagField => new[]
+			{
+				"{",
+				"\t{",
+				"\t\t#name @",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_EntryNotClosed => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name @tag",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_NoIdentityField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_NoNameField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t@tag",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_NoTagField => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_TooManyDecorationFields => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name @tag",
+				"\t\t$pronoun",
+				"\t\t&decoration",
+				"\t\t&decoration",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_TooManyPronounFields => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\t#name @tag",
+				"\t\t$pronoun",
+				"\t\t$pronoun",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_UnexpectedCharBetweenEntries => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\ta",
+				"\t{",
+				"\t\t#name @tag",
+				"\t\t$pronoun",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_UnexpectedCharInEntry => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t{",
+				"\t\tx",
+				"\t\t#name @tag",
+				"\t\t$pronoun",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] InputData_Valid => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				"\t{",
+				$"\t\t#name1 @tag1 { CommonSyntax.LineCommentToken } inline comment",
+				"\t\t#name2 @tag2",
+				"\t\t$pronoun1",
+				"\t\t&decoration1",
+				"\t}",
+				"\t",
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				"\t{",
+				"\t\t#name3 @tag3",
+				"\t\t#name4 @tag4",
+				"\t\t$pronoun3",
+				"\t\t&decoration3",
+				"\t}",
+				CommonSyntax.CloseBracketToken,
+			};
 		}
 
 
@@ -151,55 +175,109 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow( TestData.InputData_Valid )]
-		public void ParseEntriesFromDataTest_Success( string regionDataString )
+		[DynamicData( nameof( ParseEntriesFromDataTest_Success_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_Success( string[] data )
 		{
 			var expected = TestData.Entries;
-			var actual = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+			var actual = entryParser!.ParseEntriesFromData( data, ref i );
 			CollectionAssert.AreEqual( expected, actual );
+		}
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_Success_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_Valid };
+			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( BlankInputFieldException ) )]
-		[DataRow( TestData.InputData_BlankDecorationField )]
-		[DataRow( TestData.InputData_BlankNameField )]
-		[DataRow( TestData.InputData_BlankPronounField )]
-		[DataRow( TestData.InputData_BlankTagField )]
-		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_BlankDecorationField };
+				yield return new object[] { TestData.InputData_BlankPronounField };
+				yield return new object[] { TestData.InputData_BlankTagField };
+			}
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( DuplicateInputFieldException ) )]
-		[DataRow( TestData.InputData_TooManyDecorationFields )]
-		[DataRow( TestData.InputData_TooManyPronounFields )]
-		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_TooManyDecorationFields };
+				yield return new object[] { TestData.InputData_TooManyPronounFields };
+			}
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( InputEntryNotClosedException ) )]
-		[DataRow( TestData.InputData_EntryNotClosed )]
-		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
 
-		[TestMethod]
-		[ExpectedException( typeof( InvalidInputFieldException ) )]
-		[DataRow( TestData.InputData_TagFieldContainsSpaces )]
-		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_EntryNotClosed };
+			}
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( MissingInputFieldException ) )]
-		[DataRow( TestData.InputData_MissingIdentityField )]
-		[DataRow( TestData.InputData_MissingNameField )]
-		[DataRow( TestData.InputData_MissingTagField )]
-		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_NoIdentityField };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( InvalidInputFieldException ) )]
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_NoTagField };
+			}
+		}
 
 		[TestMethod]
 		[ExpectedException( typeof( UnexpectedCharacterException ) )]
-		[DataRow( TestData.InputData_UnexpectedCharBetweenEntries )]
-		[DataRow( TestData.InputData_UnexpectedCharInEntry )]
-		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string regionDataString )
-			=> _ = entryParser!.ParseEntriesFromData( TestUtilities.SplitRegionDataString( regionDataString ), ref i );
+		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data ), DynamicDataSourceType.Property )]
+		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string[] data )
+			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+
+		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.InputData_NoNameField };
+				yield return new object[] { TestData.InputData_UnexpectedCharBetweenEntries };
+				yield return new object[] { TestData.InputData_UnexpectedCharInEntry };
+			}
+		}
 	}
 }
