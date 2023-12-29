@@ -2,6 +2,7 @@
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public string[] ParseTemplatesFromData( string[] data, ref int i )
 		{
-			var taskMessage = "parsing templates region data";
+			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
 			var templates = new List<string>();
 			var expectedTokens = Array.Empty<string>();

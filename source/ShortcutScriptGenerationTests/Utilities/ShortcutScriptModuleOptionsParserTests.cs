@@ -9,14 +9,14 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptMetadataParserTests
+	public class ShortcutScriptModuleOptionsParserTests
 	{
 		public struct TestData
 		{
 			public static string DefaultIconPath => "path/to/defaulticon.ico";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";
-			public static ShortcutScriptMetadata MetadataWithOptionalData => new( DefaultIconPath, SuspendIconPath, ReloadShortcut, SuspendShortcut );
-			public static ShortcutScriptMetadata MetadataWithoutOptionalData => new();
+			public static ShortcutScriptModuleOptions ModuleOptionsWithOptionalData => new( DefaultIconPath, SuspendIconPath, ReloadShortcut, SuspendShortcut );
+			public static ShortcutScriptModuleOptions ModuleOptionsWithoutOptionalData => new();
 			public static string[] RegionDataWithDanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -53,7 +53,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		public int i;
-		public ShortcutScriptMetadataParser? metadataParser;
+		public ShortcutScriptModuleOptionsParser? moduleOptionsParser;
 
 
 		[TestInitialize]
@@ -61,33 +61,33 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 			i = 0;
-			metadataParser = new();
+			moduleOptionsParser = new();
 		}
 
 
 		[TestMethod]
-		public void ParseMetadataFromDataTest_Success_AllOptionalTokens()
+		public void ParseModuleOptionsFromDataTest_Success_AllOptionalTokens()
 		{
-			var expected = TestData.MetadataWithOptionalData;
-			var actual = metadataParser!.ParseMetadataFromData( TestData.ValidRegionDataWithOptionalTokens, ref i );
+			var expected = TestData.ModuleOptionsWithOptionalData;
+			var actual = moduleOptionsParser!.ParseModuleOptionsFromData( TestData.ValidRegionDataWithOptionalTokens, ref i );
 			Assert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
-		public void ParseMetadataFromDataTest_Success_NoOptionalTokens()
+		public void ParseModuleOptionsFromDataTest_Success_NoOptionalTokens()
 		{
-			var expected = TestData.MetadataWithoutOptionalData;
-			var actual = metadataParser!.ParseMetadataFromData( TestData.ValidRegionDataWithoutOptionalTokens, ref i );
+			var expected = TestData.ModuleOptionsWithoutOptionalData;
+			var actual = moduleOptionsParser!.ParseModuleOptionsFromData( TestData.ValidRegionDataWithoutOptionalTokens, ref i );
 			Assert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
-		[DynamicData( nameof( ParseMetadataFromDataTest_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void ParseMetadataFromDataTest_ThrowsBracketMismatchException( string[] regionData )
-			=> _ = metadataParser!.ParseMetadataFromData( regionData, ref i );
+		[DynamicData( nameof( ParseModuleOptionsFromDataTest_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void ParseModuleOptionsFromDataTest_ThrowsBracketMismatchException( string[] regionData )
+			=> _ = moduleOptionsParser!.ParseModuleOptionsFromData( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseMetadataFromDataTest_ThrowsBracketMismatchException_Data
+		public static IEnumerable<object[]> ParseModuleOptionsFromDataTest_ThrowsBracketMismatchException_Data
 		{
 			get
 			{
@@ -98,7 +98,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( UnknownTokenException ) )]
-		public void ParseMetadataFromDataTest_ThrowsUnknownTokenException()
-			=> _ = metadataParser!.ParseMetadataFromData( TestData.RegionDataWithUnknownToken, ref i );
+		public void ParseModuleOptionsFromDataTest_ThrowsUnknownTokenException()
+			=> _ = moduleOptionsParser!.ParseModuleOptionsFromData( TestData.RegionDataWithUnknownToken, ref i );
 	}
 }

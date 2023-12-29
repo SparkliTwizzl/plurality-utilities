@@ -12,15 +12,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private IShortcutScriptEntryParser EntryParser { get; set; }
 		private IShortcutScriptMacroParser MacroParser { get; set; }
-		private IShortcutScriptMetadataParser MetadataParser { get; set; }
+		private IShortcutScriptModuleOptionsParser ModuleOptionsParser { get; set; }
 		private IShortcutScriptTemplateParser TemplateParser { get; set; }
 
 
-		public ShortcutScriptInputParser( IShortcutScriptMetadataParser metadataParser, IShortcutScriptEntryParser entryParser, IShortcutScriptTemplateParser templateParser, IShortcutScriptMacroParser macroParser )
+		public ShortcutScriptInputParser( IShortcutScriptModuleOptionsParser moduleOptionsParser, IShortcutScriptEntryParser entryParser, IShortcutScriptTemplateParser templateParser, IShortcutScriptMacroParser macroParser )
 		{
 			EntryParser = entryParser;
 			MacroParser = macroParser;
-			MetadataParser = metadataParser;
+			ModuleOptionsParser = moduleOptionsParser;
 			TemplateParser = templateParser;
 		}
 
@@ -43,7 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var expectedTokens = new string[]
 			{
 				ShortcutScriptGenerationSyntax.EntriesRegionToken,
-				ShortcutScriptGenerationSyntax.MetadataRegionToken,
+				ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken,
 				ShortcutScriptGenerationSyntax.TemplatesRegionToken,
 			};
 
@@ -62,10 +62,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
 						}
 
-						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.MetadataRegionToken )
+						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
 						{
 							++i;
-							input.Metadata = MetadataParser.ParseMetadataFromData( data, ref i );
+							input.ModuleOptions = ModuleOptionsParser.ParseModuleOptionsFromData( data, ref i );
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )

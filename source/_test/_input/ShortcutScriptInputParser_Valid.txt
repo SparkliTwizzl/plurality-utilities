@@ -1,6 +1,6 @@
 #: top-level line comment
 
-metadata: #: inline comment in region name
+module-options: #: inline comment in region name
 {
 	#: line comment in metadata region
 	default-icon: "./IconDefault.ico" #: inline comment in metadata region body

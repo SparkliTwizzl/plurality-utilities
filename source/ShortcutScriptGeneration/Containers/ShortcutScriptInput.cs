@@ -4,23 +4,23 @@
 	{
 		public ShortcutScriptEntry[] Entries { get; set; } = Array.Empty<ShortcutScriptEntry>();
 		public string[] Macros { get; set; } = Array.Empty<string>();
-		public ShortcutScriptMetadata Metadata { get; set; } = new();
+		public ShortcutScriptModuleOptions ModuleOptions { get; set; } = new();
 		public string[] Templates { get; set; } = Array.Empty<string>();
 
 
 		public ShortcutScriptInput() { }
-		public ShortcutScriptInput( ShortcutScriptMetadata metadata, ShortcutScriptEntry[] entries, string[] templates )
+		public ShortcutScriptInput( ShortcutScriptModuleOptions moduleOptions, ShortcutScriptEntry[] entries, string[] templates )
 		{
 			Entries = entries;
 			Macros = Array.Empty<string>();
-			Metadata = metadata;
+			ModuleOptions = moduleOptions;
 			Templates = templates;
 		}
-		public ShortcutScriptInput( ShortcutScriptMetadata metadata, ShortcutScriptEntry[] entries, string[] templates, string[] macros )
+		public ShortcutScriptInput( ShortcutScriptModuleOptions moduleOptions, ShortcutScriptEntry[] entries, string[] templates, string[] macros )
 		{
 			Entries = entries;
 			Macros = macros;
-			Metadata = metadata;
+			ModuleOptions = moduleOptions;
 			Templates = templates;
 		}
 
@@ -44,9 +44,9 @@
 			{
 				return false;
 			}
-			return Entries.SequenceEqual( other.Entries ) && Macros.SequenceEqual( other.Macros ) && Metadata.Equals( other.Metadata ) && Templates.SequenceEqual( other.Templates );
+			return Entries.SequenceEqual( other.Entries ) && Macros.SequenceEqual( other.Macros ) && ModuleOptions.Equals( other.ModuleOptions ) && Templates.SequenceEqual( other.Templates );
 		}
 
-		public override int GetHashCode() => Entries.GetHashCode() ^ Macros.GetHashCode() ^ Metadata.GetHashCode() ^ Templates.GetHashCode();
+		public override int GetHashCode() => Entries.GetHashCode() ^ Macros.GetHashCode() ^ ModuleOptions.GetHashCode() ^ Templates.GetHashCode();
 	}
 }

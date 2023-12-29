@@ -18,13 +18,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				new ShortcutScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
 			public static int EntriesRegionLength => 15;
-			public static ShortcutScriptInput Input => new( Metadata, Entries, Templates, Macros );
+			public static ShortcutScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
 				"::tag::name pronoun decorator",
 			};
-			public static ShortcutScriptMetadata Metadata => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static int MetadataRegionLength => 3;
+			public static ShortcutScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static int ModuleOptionsRegionLength => 3;
 			public static string[] Templates => new[]
 			{
 				"::`tag`::`name` `pronoun` `decorator`",
@@ -42,12 +42,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class ShortcutScriptMetadataParserStub : IShortcutScriptMetadataParser
+		public class ShortcutScriptModuleOptionsParserStub : IShortcutScriptModuleOptionsParser
 		{
-			public ShortcutScriptMetadata ParseMetadataFromData( string[] data, ref int i )
+			public ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i )
 			{
-				i += TestData.MetadataRegionLength;
-				return TestData.Metadata;
+				i += TestData.ModuleOptionsRegionLength;
+				return TestData.ModuleOptions;
 			}
 		}
 
@@ -64,7 +64,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public ShortcutScriptEntryParserStub? entryParserStub;
 		public ShortcutScriptInputParser? inputParser;
 		public Mock<IShortcutScriptMacroParser>? macroParserMock;
-		public ShortcutScriptMetadataParserStub? metadataParserStub;
+		public ShortcutScriptModuleOptionsParserStub? moduleOptionsParserStub;
 		public ShortcutScriptTemplateParserStub? templateParserStub;
 
 
@@ -78,10 +78,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			_ = macroParserMock
 				.Setup( x => x.GenerateMacrosFromInput( It.IsAny<ShortcutScriptInput>() ) )
 				.Returns( TestData.Macros );
-			metadataParserStub = new();
+			moduleOptionsParserStub = new();
 			templateParserStub = new();
 
-			inputParser = new ShortcutScriptInputParser( metadataParserStub, entryParserStub, templateParserStub, macroParserMock.Object );
+			inputParser = new ShortcutScriptInputParser( moduleOptionsParserStub, entryParserStub, templateParserStub, macroParserMock.Object );
 		}
 
 
