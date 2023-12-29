@@ -25,7 +25,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				var token = new StringToken( rawToken );
 				var isParsingFinished = false;
 
-				if ( token.Name == string.Empty || token.Name == CommonSyntax.LineCommentTokenName )
+				if ( token.Name == string.Empty )
 				{
 					continue;
 				}

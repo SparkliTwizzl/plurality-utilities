@@ -1,4 +1,6 @@
-﻿namespace Petrichor.Common.Containers
+﻿using Petrichor.Common.Info;
+
+namespace Petrichor.Common.Containers
 {
 	public class StringToken
 	{
@@ -14,25 +16,32 @@
 			Value = other.Value;
 		}
 
-		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken );
+		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken.Trim() );
 
 		public StringToken( QualifiedStringToken qualifiedToken ) => SplitAndStoreRawToken( qualifiedToken.Value );
 
 
 		private void SplitAndStoreRawToken( string rawToken )
 		{
-			var nameEndsAt = rawToken.IndexOf( ':' );
-			if ( nameEndsAt < 0 )
+			var lineCommentTokenIndex = rawToken.IndexOf( CommonSyntax.LineCommentToken );
+			var doesTokenContainLineComment = lineCommentTokenIndex > -1;
+			if ( doesTokenContainLineComment )
 			{
-				Name = rawToken.Trim();
+				rawToken = rawToken[ ..lineCommentTokenIndex ];
+			}
+
+			var nameEndsAt = rawToken.IndexOf( ':' );
+
+			var doesTokenContainNoValue = nameEndsAt < 0;
+			if ( doesTokenContainNoValue )
+			{
+				Name = rawToken;
 				return;
 			}
 
-			var valueStartsAt = nameEndsAt + 1;
-			var valueLength = rawToken.Length - valueStartsAt;
-
 			Name = rawToken[ 0..nameEndsAt ].Trim();
-			Value = rawToken.Substring( valueStartsAt, valueLength ).Trim();
+			var valueStartsAt = nameEndsAt + 1;
+			Value = rawToken[ valueStartsAt.. ].Trim();
 		}
 	}
 }
