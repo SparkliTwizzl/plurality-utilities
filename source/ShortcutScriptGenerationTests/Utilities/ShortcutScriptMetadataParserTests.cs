@@ -36,9 +36,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] ValidRegionDataWithOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ CommonSyntax.LineCommentToken }: comment",
+				$"\t{ CommonSyntax.LineCommentToken }: line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken }: { DefaultIconPath }",
+				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken }: { DefaultIconPath } { CommonSyntax.LineCommentToken }: inline comment",
 				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken }: { SuspendIconPath }",
 				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken }: { ReloadShortcut }",
 				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken }: { SuspendShortcut }",

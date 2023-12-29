@@ -1,9 +1,9 @@
-#: top-level comment
+#: top-level line comment
 
-metadata:
+metadata: #: inline comment in region name
 {
-	#: comment in metadata region
-	default-icon: ../_input/IconDefault.ico
+	#: line comment in metadata region
+	default-icon: ../_input/IconDefault.ico #: inline comment in metadata region body
 	suspend-icon: ../_input/IconSuspend.ico
 	reload-shortcut: #r
 	suspend-shortcut: #s
@@ -11,15 +11,15 @@ metadata:
 
 entries:
 {
-	#: comment before entries in entries region
+	#: line comment before entries in entries region
 	{
-		% #Sam# @sm
+		% #Sam# @sm #: inline comment in entries region body
 		% #Sammy# @smy
 		$they/them
 		&-> a person
 	}
 	
-	#: comment between entries in entries region
+	#: line comment between entries in entries region
 	{
 		% #ALEX# @AX
 		$IT/ITS
@@ -29,8 +29,8 @@ entries:
 
 templates:
 {
-	#: comment in templates region
-	::\@@:: \##
+	#: line comment in templates region
+	::\@@:: \## #: inline comment in templates region body
 	::\@@-:: \## \$($)
 	::\@@/:: \## \&&
 	::\@@-/:: \## \$($) \&&

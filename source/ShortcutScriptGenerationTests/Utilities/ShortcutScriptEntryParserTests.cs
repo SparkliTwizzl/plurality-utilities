@@ -122,8 +122,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.CloseBracketToken;
 			public const string InputData_Valid =
 				CommonSyntax.OpenBracketToken + "|" +
+				"\t" + CommonSyntax.LineCommentToken + ": comment|" +
 				"\t{|" +
-				"\t\t% #name1# @tag1|" +
+				"\t\t% #name1# @tag1" + CommonSyntax.LineCommentToken + ": inline comment|" +
 				"\t\t% #name2# @tag2|" +
 				"\t\t$pronoun1|" +
 				"\t\t&decoration1|" +
