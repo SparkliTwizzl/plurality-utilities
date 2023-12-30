@@ -32,14 +32,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ScriptEntry[] Parse( string[] regionData )
 		{
-			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.EntriesRegionTokenName} region data";
-			Log.TaskStarted( taskMessage );
+			var taskMessage = $"Parse region: {ShortcutScriptGenerationSyntax.EntriesRegionTokenName}";
+			Log.TaskStart( taskMessage );
 			
 			string? errorMessage;
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				errorMessage = $"input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
+				errorMessage = $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
 				Log.Error( errorMessage );
 				throw new FileRegionException( errorMessage );
 			}
@@ -79,7 +79,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					case StringTokenQualifiers.Unknown:
 					{
-						errorMessage = $"parsing entries failed at token # {i} :: input file contains invalid data: a line started with a character ( \"{firstChar}\" ) that was not expected at this time";
+						errorMessage = $"Parsing entries failed at token # {i}: A line started with a character ( \"{firstChar}\" ) that was not expected";
 						Log.Error( errorMessage );
 						throw new UnexpectedCharacterException( errorMessage );
 					}
@@ -91,12 +91,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							++i;
 							var entry = ParseEntry( regionData, ref i );
 							entries.Add( entry );
-							Log.WriteWithTimestamp( "parsed entry: names/tags [" );
-							foreach ( var identity in entry.Identities )
-							{
-								Log.Write( $"{identity.Name}/{identity.Tag}, " );
-							}
-							Log.WriteLine( $"], pronoun [{entry.Pronoun}], decoration [{entry.Decoration}]" );
 						}
 						break;
 					}
@@ -109,7 +103,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 			if ( TokenParser.IndentLevel > 0 )
 			{
-				errorMessage = "input file contains invalid data: an entry was not closed";
+				errorMessage = "An entry was not closed";
 				Log.Error( errorMessage );
 				throw new InputEntryNotClosedException( errorMessage );
 			}
@@ -117,7 +111,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
-			Log.TaskFinished( taskMessage );
+			Log.Info($"Parsed {entries.Count} entries");
+			Log.TaskFinish( taskMessage );
 			return entries.ToArray();
 		}
 
@@ -163,13 +158,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			if ( entry.Decoration != string.Empty )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained more than one decoration field";
+				var errorMessage = "An entry contains more than one decoration field";
 				Log.Error( errorMessage );
 				throw new DuplicateInputFieldException( errorMessage );
 			}
 			if ( line.Length < 2 )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a blank decoration field";
+				var errorMessage = "An entry contains a blank decoration field";
 				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
@@ -191,7 +186,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var fieldEnd = line.IndexOf( '@' );
 			if ( fieldEnd <= fieldStart )
 			{
-				var errorMessage = "input file contains invalid data: an entry had an invalid name field";
+				var errorMessage = "An entry contains an invalid name field";
 				Log.Error( errorMessage );
 				throw new InvalidInputFieldException( errorMessage );
 			}
@@ -202,7 +197,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var name = line[ nameStart..nameEnd ].Trim();
 			if ( name.Length < 1 )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a blank name field";
+				var errorMessage = "An entry contains a blank name field";
 				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
@@ -212,9 +207,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private ScriptEntry ParseEntry( string[] data, ref int i )
 		{
-			var taskMessage = "parsing entry";
-			Log.TaskStarted( taskMessage );
-
 			var entry = new ScriptEntry();
 			string? errorMessage;
 			for ( ; i < data.Length ; ++i )
@@ -240,7 +232,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							throw new MissingInputFieldException( errorMessage );
 						}
 						--TokenParser.IndentLevel;
-						Log.TaskFinished( taskMessage );
 						return entry;
 					}
 
@@ -271,7 +262,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 			}
-			errorMessage = "input file contains invalid data: last entry was not closed";
+			errorMessage = "Last entry was not closed";
 			Log.Error( errorMessage );
 			throw new InputEntryNotClosedException( errorMessage );
 		}
@@ -280,13 +271,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			if ( entry.Pronoun != string.Empty )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained more than one pronoun field";
+				var errorMessage = "An entry contains more than one pronoun field";
 				Log.Error( errorMessage );
 				throw new DuplicateInputFieldException( errorMessage );
 			}
 			if ( line.Length < 2 )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a blank pronoun field";
+				var errorMessage = "An entry contains a blank pronoun field";
 				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}
@@ -298,7 +289,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var fieldStart = line.IndexOf( '@' );
 			if ( fieldStart < 0 )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained an identity field without a tag field";
+				var errorMessage = "An entry contains an identity field without a tag field";
 				Log.Error( errorMessage );
 				throw new MissingInputFieldException( errorMessage );
 			}
@@ -311,7 +302,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var tag = trimmedLine[ ..tagEnd ];
 			if ( tag.Length < 1 )
 			{
-				var errorMessage = "input file contains invalid data: an entry contained a blank tag field";
+				var errorMessage = "An entry contains a blank tag field";
 				Log.Error( errorMessage );
 				throw new BlankInputFieldException( errorMessage );
 			}

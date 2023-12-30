@@ -24,26 +24,26 @@ namespace Petrichor.Logging
 		public static void Disable()
 		{
 			ActiveMode = LogMode.None;
-			Console.WriteLine( "Logging is disabled." );
+			Console.WriteLine( "Logging is disabled" );
 		}
 
 		public static void EnableForConsoleOnly()
 		{
 			ActiveMode = LogMode.ConsoleOnly;
-			Console.WriteLine( "Console logging is enabled." );
+			Console.WriteLine( "Console logging is enabled" );
 		}
 
 		public static void EnableForFileOnly( string logDirectory )
 		{
 			ActiveMode = LogMode.FileOnly;
-			Console.WriteLine( "File logging is enabled." );
+			Console.WriteLine( "File logging is enabled" );
 			SetLogDirectory( logDirectory );
 		}
 
 		public static void EnableForAll( string logDirectory )
 		{
 			ActiveMode = LogMode.All;
-			Console.WriteLine( "Console and file logging are enabled." );
+			Console.WriteLine( "Console and file logging are enabled" );
 			SetLogDirectory( logDirectory );
 		}
 
@@ -51,22 +51,19 @@ namespace Petrichor.Logging
 		/// Write formatted details about an error to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Error( string message = "" )
-			=> WriteLineWithTimestamp( $"ERROR: {message}", ConsoleColor.White, ConsoleColor.Red );
+		public static void Error( string message = "" ) => WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleColor.White, ConsoleColor.Red );
 
 		/// <summary>
 		/// Write formatted important information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Important( string message = "" )
-			=> WriteLineWithTimestamp( $"{message}", ConsoleColor.Cyan );
+		public static void Important( string message = "" ) => WriteLineWithTimestamp( $"IMPORTANT : {message}", ConsoleColor.Cyan );
 
 		/// <summary>
 		/// Write formatted information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Info( string message = "" )
-			=> WriteLineWithTimestamp( $"{message}" );
+		public static void Info( string message = "" ) => WriteLineWithTimestamp( $"     INFO : {message}" );
 
 		/// <summary>
 		/// Set log file directory and/or name.
@@ -104,22 +101,19 @@ namespace Petrichor.Logging
 		/// Write formatted details about a task finishing to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskFinished( string message = "" )
-			=> WriteLineWithTimestamp( $"FINISHED: {message}", ConsoleColor.Green );
+		public static void TaskFinish( string message = "" ) => WriteLineWithTimestamp( $"   FINISH : {message}", ConsoleColor.Green );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskStarted( string message = "" )
-			=> WriteLineWithTimestamp( $"STARTED: {message}", ConsoleColor.Yellow );
+		public static void TaskStart( string message = "" ) => WriteLineWithTimestamp( $"    START : {message}", ConsoleColor.Yellow );
 
 		/// <summary>
 		/// Write formatted details about a warning starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Warning( string message = "" )
-			=> WriteLineWithTimestamp( $"WARNING: {message}", ConsoleColor.White, ConsoleColor.DarkYellow );
+		public static void Warning( string message = "" ) => WriteLineWithTimestamp( $"  WARNING : {message}", ConsoleColor.White, ConsoleColor.DarkYellow );
 
 		/// <summary>
 		/// Write text directly to log without timestamp.

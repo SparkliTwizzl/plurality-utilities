@@ -1,7 +1,6 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Enums;
 using Petrichor.Common.Info;
-using Petrichor.Logging;
 
 
 namespace Petrichor.Common.Utilities
@@ -16,9 +15,6 @@ namespace Petrichor.Common.Utilities
 
 		public QualifiedStringToken ParseToken( string token, string[] expectedValues )
 		{
-			var taskMessage = $"parsing token \"{token}\"";
-			Log.TaskStarted( taskMessage );
-
 			var qualifiedToken = new QualifiedStringToken( token );
 
 			if ( qualifiedToken.Value == string.Empty )
@@ -56,7 +52,6 @@ namespace Petrichor.Common.Utilities
 					}
 				}
 			}
-			Log.TaskFinished( taskMessage );
 			return qualifiedToken;
 		}
 	}
