@@ -8,21 +8,21 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptMacroParserTests
+	public class ShortcutScriptMacroGeneratorTests
 	{
 		public struct TestData
 		{
-			public static ShortcutScriptEntry[] Entries => new[]
+			public static ScriptEntry[] Entries => new[]
 			{
-				new ShortcutScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
-			public static ShortcutScriptInput Input => new( ModuleOptions, Entries, Templates );
+			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
 				"::@$&tag:: name pronoun decoration",
 			};
-			public static ShortcutScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string[] Templates => new[]
 			{
 				"::@`tag`:: `name`",
@@ -31,22 +31,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutScriptMacroParser? macroParser;
+		public ShortcutScriptMacroGenerator? macroGenerator;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			macroParser = new ShortcutScriptMacroParser();
+			macroGenerator = new ShortcutScriptMacroGenerator();
 		}
 
 
 		[TestMethod]
-		public void GenerateMacrosFromTemplatesTest_Success()
+		public void Generate_Test_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = macroParser!.GenerateMacrosFromInput( TestData.Input ).ToArray();
+			var actual = macroGenerator!.Generate( TestData.Input ).ToArray();
 
 			Log.Info( "expected:" );
 			foreach ( var line in expected )

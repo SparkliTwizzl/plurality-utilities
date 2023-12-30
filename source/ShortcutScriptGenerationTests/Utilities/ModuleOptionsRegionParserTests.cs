@@ -1,0 +1,112 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
+using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.TestShared.Utilities;
+
+
+namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
+{
+	[TestClass]
+	public class ModuleOptionsRegionParserTests
+	{
+		public struct TestData
+		{
+			public static string DefaultIconPath => "path/to/defaulticon.ico";
+			public static ScriptModuleOptions ModuleOptions_Valid_NoOptionalData => new();
+			public static ScriptModuleOptions ModuleOptions_Valid_OptionalData => new( DefaultIconPath, SuspendIconPath, ReloadShortcut, SuspendShortcut );
+			public static string[] RegionData_DanglingCloseBracket => new[]
+			{
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_DanglingOpenBracket => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+			};
+			public static string[] RegionData_UnknownToken => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_Valid_OptionalTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } { DefaultIconPath } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } { SuspendIconPath }",
+				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { ReloadShortcut }",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken } { SuspendShortcut }",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_Valid_NoOptionalTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string ReloadShortcut => "reloadshortcut";
+			public static string SuspendIconPath => "path/to/suspendicon.ico";
+			public static string SuspendShortcut => "suspendshortcut";
+		}
+
+
+		public int i;
+		public ModuleOptionsRegionParser? moduleOptionsRegionParser;
+
+
+		[TestInitialize]
+		public void Setup()
+		{
+			TestUtilities.InitializeLoggingForTests();
+			i = 0;
+			moduleOptionsRegionParser = new();
+		}
+
+
+		[TestMethod]
+		public void Parse_Test_Success_AllOptionalTokens()
+		{
+			var expected = TestData.ModuleOptions_Valid_OptionalData;
+			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_OptionalTokens, ref i );
+			Assert.AreEqual( expected, actual );
+		}
+
+		[TestMethod]
+		public void Parse_Test_Success_NoOptionalTokens()
+		{
+			var expected = TestData.ModuleOptions_Valid_NoOptionalData;
+			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
+			Assert.AreEqual( expected, actual );
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( BracketMismatchException ) )]
+		[DynamicData( nameof( Parse_Test_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsBracketMismatchException( string[] regionData )
+			=> _ = moduleOptionsRegionParser!.Parse( regionData, ref i );
+
+		public static IEnumerable<object[]> Parse_Test_ThrowsBracketMismatchException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
+				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( UnknownTokenException ) )]
+		public void Parse_Test_ThrowsUnknownTokenException()
+			=> _ = moduleOptionsRegionParser!.Parse( TestData.RegionData_UnknownToken, ref i );
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		public void Parse_Test_ThrowsFileRegionException()
+		{
+			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
+			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
+		}
+	}
+}

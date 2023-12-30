@@ -1,22 +1,22 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ShortcutScriptInput : IEquatable<ShortcutScriptInput>
+	public sealed class ScriptInput : IEquatable<ScriptInput>
 	{
-		public ShortcutScriptEntry[] Entries { get; set; } = Array.Empty<ShortcutScriptEntry>();
+		public ScriptEntry[] Entries { get; set; } = Array.Empty<ScriptEntry>();
 		public string[] Macros { get; set; } = Array.Empty<string>();
-		public ShortcutScriptModuleOptions ModuleOptions { get; set; } = new();
+		public ScriptModuleOptions ModuleOptions { get; set; } = new();
 		public string[] Templates { get; set; } = Array.Empty<string>();
 
 
-		public ShortcutScriptInput() { }
-		public ShortcutScriptInput( ShortcutScriptModuleOptions moduleOptions, ShortcutScriptEntry[] entries, string[] templates )
+		public ScriptInput() { }
+		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, string[] templates )
 		{
 			Entries = entries;
 			Macros = Array.Empty<string>();
 			ModuleOptions = moduleOptions;
 			Templates = templates;
 		}
-		public ShortcutScriptInput( ShortcutScriptModuleOptions moduleOptions, ShortcutScriptEntry[] entries, string[] templates, string[] macros )
+		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, string[] templates, string[] macros )
 		{
 			Entries = entries;
 			Macros = macros;
@@ -25,9 +25,9 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptInput a, ShortcutScriptInput b ) => a.Equals( b );
+		public static bool operator ==( ScriptInput a, ScriptInput b ) => a.Equals( b );
 
-		public static bool operator !=( ShortcutScriptInput a, ShortcutScriptInput b ) => !a.Equals( b );
+		public static bool operator !=( ScriptInput a, ScriptInput b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -35,10 +35,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ShortcutScriptInput ) obj );
+			return Equals( ( ScriptInput ) obj );
 		}
 
-		public bool Equals( ShortcutScriptInput? other )
+		public bool Equals( ScriptInput? other )
 		{
 			if ( other is null )
 			{
