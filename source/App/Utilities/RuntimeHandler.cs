@@ -34,8 +34,8 @@ namespace Petrichor.App.Utilities
 				var inputFileParser = new InputFileParser( moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
 				var input = inputFileParser.Parse( InputFilePath );
-				var scriptGenerator = new ShortcutScriptGenerator( input );
-				scriptGenerator.GenerateScript( OutputFilePath );
+				var scriptGenerator = new ScriptGenerator( input );
+				scriptGenerator.Generate( OutputFilePath );
 
 				var successMessage = "generated AutoHotkey shortcuts script successfully";
 				if ( Log.IsLoggingToConsoleDisabled )

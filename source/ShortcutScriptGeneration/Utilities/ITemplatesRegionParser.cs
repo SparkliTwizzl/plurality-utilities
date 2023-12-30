@@ -1,7 +1,10 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.Utilities
+﻿using Petrichor.Common.Utilities;
+
+
+namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface ITemplatesRegionParser
+	public interface ITemplatesRegionParser : IRegionParser<string[]>
 	{
-		string[] ParseTemplatesFromData( string[] data, ref int i );
+		new string[] Parse( string[] regionData, ref int i );
 	}
 }

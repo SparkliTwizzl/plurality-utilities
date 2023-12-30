@@ -9,7 +9,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public ShortcutScriptMacroGenerator() { }
 
 
-		public string[] Generate( ShortcutScriptInput input )
+		public string[] Generate( ScriptInput input )
 		{
 			var macros = new List<string>();
 			foreach ( var entry in input.Entries )
@@ -20,7 +20,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static List<string> GenerateMacrosFromEntries( string[] templates, ShortcutScriptEntry entry )
+		private static List<string> GenerateMacrosFromEntries( string[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var identity in entry.Identities )

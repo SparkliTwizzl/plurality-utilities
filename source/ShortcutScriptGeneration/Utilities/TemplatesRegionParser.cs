@@ -14,15 +14,28 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private StringTokenParser TokenParser { get; set; } = new();
 
 
-		public string[] ParseTemplatesFromData( string[] data, ref int i )
+		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public int MaxRegionsAllowed { get; private set; } = 1;
+		public int RegionsParsed { get; private set; } = 0;
+
+
+		public string[] Parse( string[] regionData, ref int i )
 		{
 			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
+			
+			if ( HasParsedMaxAllowedRegions )
+			{
+				var errorMessage = $"input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
+				Log.Error( errorMessage );
+				throw new FileRegionException( errorMessage );
+			}
+
 			var templates = new List<string>();
 			var expectedTokens = Array.Empty<string>();
-			for ( ; i < data.Length ; ++i )
+			for ( ; i < regionData.Length ; ++i )
 			{
-				var token = TokenParser.ParseToken( data[ i ], expectedTokens );
+				var token = TokenParser.ParseToken( regionData[ i ], expectedTokens );
 				var isParsingFinished = false;
 				switch ( token.Qualifier )
 				{
@@ -47,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					default:
 					{
-						templates.Add( ParseTemplateFromInputLine( token.Value ) );
+						templates.Add( ParseTemplateFromLine( token.Value ) );
 						break;
 					}
 				}
@@ -56,23 +69,27 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					break;
 				}
 			}
+
+			++RegionsParsed;
+			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
+
 			Log.TaskFinished( taskMessage );
 			return templates.ToArray();
 		}
 
 
-		private static string ParseTemplateFromInputLine( string input )
+		private static string ParseTemplateFromLine( string line )
 		{
 			var template = new StringBuilder();
-			input = input.Trim();
-			for ( var i = 0 ; i < input.Length ; ++i )
+			line = line.Trim();
+			for ( var i = 0 ; i < line.Length ; ++i )
 			{
-				var c = input[ i ];
+				var c = line[ i ];
 				if ( c == '\\' )
 				{
 					try
 					{
-						_ = template.Append( input[ i + 1 ] );
+						_ = template.Append( line[ i + 1 ] );
 						++i;
 						continue;
 					}

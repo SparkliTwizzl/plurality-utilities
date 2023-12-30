@@ -11,7 +11,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static string[] ValidTemplates => new[]
+			public static string[] RegionData_TrailingExcapeCharacter => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				"\t::\\@@:: #\\",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_Valid => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
@@ -20,13 +26,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\t::\\@\\$\\&@:: # $ & { CommonSyntax.LineCommentToken } inline comment",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] TemplateWithTrailingExcapeCharacter => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\t::\\@@:: #\\",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] ParsedTemplates => new[]
+			public static string[] Templates => new[]
 			{
 				"::@`tag`:: `name`",
 				"::@$&`tag`:: `name` `pronoun` `decoration`",
@@ -48,16 +48,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		public void ParseTemplatesFromFile_Test_Success()
+		public void Parse_Test_Success()
 		{
-			var expected = TestData.ParsedTemplates;
-			var actual = templatesRegionParser!.ParseTemplatesFromData( TestData.ValidTemplates, ref i );
+			var expected = TestData.Templates;
+			var actual = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
-		public void ParseTemplatesFromFile_Test_ThrowsEscapeCharacterMismatchException()
-			=> _ = templatesRegionParser!.ParseTemplatesFromData( TestData.TemplateWithTrailingExcapeCharacter, ref i );
+		public void Parse_Test_ThrowsEscapeCharacterMismatchException()
+			=> _ = templatesRegionParser!.Parse( TestData.RegionData_TrailingExcapeCharacter, ref i );
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		public void Parse_Test_ThrowsFileRegionException()
+		{
+			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
+			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
+		}
 	}
 }

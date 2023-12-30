@@ -8,7 +8,7 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class InputFileParser : IShortcutScriptInputParser
+	public class InputFileParser
 	{
 		private IEntriesRegionParser EntriesRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
@@ -25,7 +25,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		public ShortcutScriptInput Parse( string filePath )
+		public ScriptInput Parse( string filePath )
 		{
 			var taskMessage = $"parsing input file \"{filePath}\"";
 			Log.TaskStarted( taskMessage );
@@ -36,9 +36,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private ShortcutScriptInput ParseData( string[] data )
+		private ScriptInput ParseData( string[] data )
 		{
-			var input = new ShortcutScriptInput();
+			var input = new ScriptInput();
 			var tokenParser = new StringTokenParser();
 			var expectedTokens = new string[]
 			{
@@ -59,19 +59,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
 							++i;
-							input.Entries = EntriesRegionParser.ParseEntriesFromData( data, ref i );
+							input.Entries = EntriesRegionParser.Parse( data, ref i );
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
 						{
 							++i;
-							input.ModuleOptions = ModuleOptionsRegionParser.ParseModuleOptionsFromData( data, ref i );
+							input.ModuleOptions = ModuleOptionsRegionParser.Parse( data, ref i );
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
 							++i;
-							input.Templates = TemplatesRegionParser.ParseTemplatesFromData( data, ref i );
+							input.Templates = TemplatesRegionParser.Parse( data, ref i );
 						}
 
 						if ( tokenParser.IndentLevel > 0 )

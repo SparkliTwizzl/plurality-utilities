@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
@@ -13,17 +14,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static ShortcutScriptEntry[] Entries => new[]
+			public static ScriptEntry[] Entries => new[]
 			{
-				new ShortcutScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
+				new ScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
 			public static int EntriesRegionLength => 15;
-			public static ShortcutScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
+			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
 				"::tag::name pronoun decorator",
 			};
-			public static ShortcutScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static int ModuleOptionsRegionLength => 3;
 			public static string[] Templates => new[]
 			{
@@ -35,17 +36,31 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class EntriesRegionParserStub : IEntriesRegionParser
 		{
-			public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
+			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int RegionsParsed { get; private set; } = 0;
+
+			public ScriptEntry[] Parse( string[] regionData, ref int i )
 			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = true;
 				i += TestData.EntriesRegionLength;
 				return TestData.Entries;
 			}
+
+			ScriptEntry IRegionParser<ScriptEntry>.Parse( string[] regionData, ref int i ) => throw new NotImplementedException();
 		}
 
 		public class ModuleOptionsRegionParserStub : IModuleOptionsRegionParser
 		{
-			public ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i )
+			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int RegionsParsed { get; private set; } = 0;
+
+			public ScriptModuleOptions Parse( string[] regionData, ref int i )
 			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = true;
 				i += TestData.ModuleOptionsRegionLength;
 				return TestData.ModuleOptions;
 			}
@@ -53,8 +68,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class TemplatesRegionParserStub : ITemplatesRegionParser
 		{
-			public string[] ParseTemplatesFromData( string[] data, ref int i )
+			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int RegionsParsed { get; private set; } = 0;
+
+			public string[] Parse( string[] regionData, ref int i )
 			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = true;
 				i += TestData.TemplatesRegionLength;
 				return TestData.Templates;
 			}
@@ -76,7 +97,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			entriesRegionParserStub = new();
 			macroGeneratorMock = new();
 			_ = macroGeneratorMock
-				.Setup( x => x.Generate( It.IsAny<ShortcutScriptInput>() ) )
+				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
 			moduleOptionsRegionParserStub = new();
 			templatesRegionParserStub = new();

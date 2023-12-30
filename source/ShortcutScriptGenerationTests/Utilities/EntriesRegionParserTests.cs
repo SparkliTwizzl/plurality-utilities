@@ -12,9 +12,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static ShortcutScriptEntry[] Entries => new[]
+			public static ScriptEntry[] Entries => new[]
 			{
-				new ShortcutScriptEntry(
+				new ScriptEntry(
 					new List<ShortcutScriptIdentity>
 					{
 						new("name1", "tag1"),
@@ -33,7 +33,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 					"decoration3"
 				),
 			};
-			public static string[] InputData_BlankDecorationField => new[]
+			public static string[] RegionData_BlankDecorationField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -42,7 +42,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_BlankNameField => new[]
+			public static string[] RegionData_BlankNameField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -50,7 +50,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_BlankPronounField => new[]
+			public static string[] RegionData_BlankPronounField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -59,7 +59,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_BlankTagField => new[]
+			public static string[] RegionData_BlankTagField => new[]
 			{
 				"{",
 				"\t{",
@@ -67,21 +67,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_EntryNotClosed => new[]
+			public static string[] RegionData_EntryNotClosed => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
 				"\t\t#name @tag",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_NoIdentityField => new[]
+			public static string[] RegionData_NoIdentityField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_NoNameField => new[]
+			public static string[] RegionData_NoNameField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -89,7 +89,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_NoTagField => new[]
+			public static string[] RegionData_NoTagField => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -97,7 +97,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_TooManyDecorationFields => new[]
+			public static string[] RegionData_TooManyDecorationFields => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -108,7 +108,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_TooManyPronounFields => new[]
+			public static string[] RegionData_TooManyPronounFields => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -118,7 +118,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_UnexpectedCharBetweenEntries => new[]
+			public static string[] RegionData_UnexpectedCharBetweenEntries => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\ta",
@@ -128,7 +128,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_UnexpectedCharInEntry => new[]
+			public static string[] RegionData_UnexpectedCharInEntry => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				"\t{",
@@ -138,7 +138,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] InputData_Valid => new[]
+			public static string[] RegionData_Valid => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
@@ -175,109 +175,117 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		[DynamicData( nameof( ParseEntriesFromDataTest_Success_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_Success( string[] data )
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string[] regionData )
 		{
 			var expected = TestData.Entries;
-			var actual = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+			var actual = entriesRegionParser!.Parse( regionData, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_Success_Data
+		public static IEnumerable<object[]> Parse_Test_Success_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_Valid };
+				yield return new object[] { TestData.RegionData_Valid };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( BlankInputFieldException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsBlankInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsBlankInputFieldException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsBlankInputFieldException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_BlankDecorationField };
-				yield return new object[] { TestData.InputData_BlankPronounField };
-				yield return new object[] { TestData.InputData_BlankTagField };
+				yield return new object[] { TestData.RegionData_BlankDecorationField };
+				yield return new object[] { TestData.RegionData_BlankPronounField };
+				yield return new object[] { TestData.RegionData_BlankTagField };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( DuplicateInputFieldException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsDuplicateInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsDuplicateInputFieldException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsDuplicateInputFieldException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_TooManyDecorationFields };
-				yield return new object[] { TestData.InputData_TooManyPronounFields };
+				yield return new object[] { TestData.RegionData_TooManyDecorationFields };
+				yield return new object[] { TestData.RegionData_TooManyPronounFields };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( InputEntryNotClosedException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsInputEntryNotClosedException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsInputEntryNotClosedException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsInputEntryNotClosedException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_EntryNotClosed };
+				yield return new object[] { TestData.RegionData_EntryNotClosed };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( MissingInputFieldException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsMissingInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsMissingInputFieldException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsMissingInputFieldException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_NoIdentityField };
+				yield return new object[] { TestData.RegionData_NoIdentityField };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( InvalidInputFieldException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsInvalidInputFieldException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsInvalidInputFieldException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_NoTagField };
+				yield return new object[] { TestData.RegionData_NoTagField };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( UnexpectedCharacterException ) )]
-		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data ), DynamicDataSourceType.Property )]
-		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string[] data )
-			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
+		[DynamicData( nameof( Parse_Test_ThrowsUnexpectedCharacterException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_ThrowsUnexpectedCharacterException( string[] regionData )
+			=> _ = entriesRegionParser!.Parse( regionData, ref i );
 
-		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data
+		public static IEnumerable<object[]> Parse_Test_ThrowsUnexpectedCharacterException_Data
 		{
 			get
 			{
-				yield return new object[] { TestData.InputData_NoNameField };
-				yield return new object[] { TestData.InputData_UnexpectedCharBetweenEntries };
-				yield return new object[] { TestData.InputData_UnexpectedCharInEntry };
+				yield return new object[] { TestData.RegionData_NoNameField };
+				yield return new object[] { TestData.RegionData_UnexpectedCharBetweenEntries };
+				yield return new object[] { TestData.RegionData_UnexpectedCharInEntry };
 			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		public void Parse_Test_ThrowsFileRegionException()
+		{
+			_ = entriesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
+			_ = entriesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
 		}
 	}
 }

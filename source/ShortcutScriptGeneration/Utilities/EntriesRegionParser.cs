@@ -21,15 +21,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
+		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public int MaxRegionsAllowed { get; private set; } = 1;
+		public int RegionsParsed { get; private set; } = 0;
+
+
 		public EntriesRegionParser() { }
 
 
-		public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
+		public ScriptEntry[] Parse( string[] regionData, ref int i )
 		{
 			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.EntriesRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
+			
+			string? errorMessage;
 
-			var entries = new List<ShortcutScriptEntry>();
+			if ( HasParsedMaxAllowedRegions )
+			{
+				errorMessage = $"input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
+				Log.Error( errorMessage );
+				throw new FileRegionException( errorMessage );
+			}
+
+			var entries = new List<ScriptEntry>();
 			var expectedTokens = new string[]
 			{
 				decorationLineChar.ToString(),
@@ -37,11 +51,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				pronounLineChar.ToString(),
 			};
 
-			string? errorMessage;
-			for ( ; i < data.Length ; ++i )
+			for ( ; i < regionData.Length ; ++i )
 			{
 				var isParsingFinished = false;
-				var line = data[ i ].Trim();
+				var line = regionData[ i ].Trim();
 
 				var isLineBlank = line.Length < 1;
 				var isLineComment = line.IndexOf( CommonSyntax.LineCommentToken ) == 0;
@@ -75,7 +88,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						if ( TokenParser.IndentLevel > 1 )
 						{
 							++i;
-							var entry = ParseEntry( data, ref i );
+							var entry = ParseEntry( regionData, ref i );
 							entries.Add( entry );
 							Log.WriteWithTimestamp( "parsed entry: names/tags [" );
 							foreach ( var identity in entry.Identities )
@@ -98,6 +111,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				Log.Error( errorMessage );
 				throw new InputEntryNotClosedException( errorMessage );
 			}
+
+			++RegionsParsed;
+			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
 			Log.TaskFinished( taskMessage );
 			return entries.ToArray();
@@ -141,7 +157,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 		}
 
-		private static void ParseDecoration( string line, ref ShortcutScriptEntry entry )
+		private static void ParseDecoration( string line, ref ScriptEntry entry )
 		{
 			if ( entry.Decoration != string.Empty )
 			{
@@ -158,7 +174,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			entry.Decoration = line[ 1.. ];
 		}
 
-		private static void ParseIdentity( string line, ref ShortcutScriptEntry entry )
+		private static void ParseIdentity( string line, ref ScriptEntry entry )
 		{
 			var identity = new ShortcutScriptIdentity();
 			ParseName( line, ref identity );
@@ -192,12 +208,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			identity.Name = name;
 		}
 
-		private ShortcutScriptEntry ParseEntry( string[] data, ref int i )
+		private ScriptEntry ParseEntry( string[] data, ref int i )
 		{
 			var taskMessage = "parsing entry";
 			Log.TaskStarted( taskMessage );
 
-			var entry = new ShortcutScriptEntry();
+			var entry = new ScriptEntry();
 			string? errorMessage;
 			for ( ; i < data.Length ; ++i )
 			{
@@ -258,7 +274,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			throw new InputEntryNotClosedException( errorMessage );
 		}
 
-		private static void ParsePronoun( string line, ref ShortcutScriptEntry entry )
+		private static void ParsePronoun( string line, ref ScriptEntry entry )
 		{
 			if ( entry.Pronoun != string.Empty )
 			{
@@ -300,5 +316,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			identity.Tag = tag;
 		}
+
+		ScriptEntry IRegionParser<ScriptEntry>.Parse( string[] regionData, ref int i ) => throw new NotImplementedException();
 	}
 }

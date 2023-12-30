@@ -11,17 +11,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private ShortcutScriptModuleOptions ModuleOptions { get; set; } = new();
 
 
-		public ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i )
+		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public int MaxRegionsAllowed { get; private set; } = 1;
+		public int RegionsParsed { get; private set; } = 0;
+
+
+		public ScriptModuleOptions Parse( string[] regionData, ref int i )
 		{
 			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
 
-			for ( ; i < data.Length ; ++i )
+			if ( HasParsedMaxAllowedRegions )
 			{
-				var rawToken = data[ i ];
+				var errorMessage = $"input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
+				Log.Error( errorMessage );
+				throw new FileRegionException( errorMessage );
+			}
+
+			var moduleOptions = new ScriptModuleOptions();
+			for ( ; i < regionData.Length ; ++i )
+			{
+				var rawToken = regionData[ i ];
 				var token = new StringToken( rawToken );
 				var isParsingFinished = false;
 
@@ -54,22 +66,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
 				{
-					ModuleOptions.DefaultIconFilePath = token.Value;
+					moduleOptions.DefaultIconFilePath = token.Value;
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
 				{
-					ModuleOptions.ReloadShortcut = token.Value;
+					moduleOptions.ReloadShortcut = token.Value;
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
 				{
-					ModuleOptions.SuspendIconFilePath = token.Value;
+					moduleOptions.SuspendIconFilePath = token.Value;
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
 				{
-					ModuleOptions.SuspendShortcut = token.Value;
+					moduleOptions.SuspendShortcut = token.Value;
 				}
 
 				else
@@ -92,8 +104,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				throw new BracketMismatchException( errorMessage );
 			}
 
+			++RegionsParsed;
+			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
+
 			Log.TaskFinished( taskMessage );
-			return ModuleOptions;
+			return moduleOptions;
 		}
 	}
 }

@@ -1,14 +1,14 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ShortcutScriptEntry : IEquatable<ShortcutScriptEntry>
+	public sealed class ScriptEntry : IEquatable<ScriptEntry>
 	{
 		public List<ShortcutScriptIdentity> Identities { get; set; } = new List<ShortcutScriptIdentity>();
 		public string Pronoun { get; set; } = string.Empty;
 		public string Decoration { get; set; } = string.Empty;
 
 
-		public ShortcutScriptEntry() { }
-		public ShortcutScriptEntry( List<ShortcutScriptIdentity> identities, string pronoun, string decoration )
+		public ScriptEntry() { }
+		public ScriptEntry( List<ShortcutScriptIdentity> identities, string pronoun, string decoration )
 		{
 			Identities = identities;
 			Pronoun = pronoun;
@@ -16,9 +16,9 @@
 		}
 
 
-		public static bool operator ==( ShortcutScriptEntry a, ShortcutScriptEntry b ) => a.Equals( b );
+		public static bool operator ==( ScriptEntry a, ScriptEntry b ) => a.Equals( b );
 
-		public static bool operator !=( ShortcutScriptEntry a, ShortcutScriptEntry b ) => !a.Equals( b );
+		public static bool operator !=( ScriptEntry a, ScriptEntry b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -26,10 +26,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ShortcutScriptEntry ) obj );
+			return Equals( ( ScriptEntry ) obj );
 		}
 
-		public bool Equals( ShortcutScriptEntry? other )
+		public bool Equals( ScriptEntry? other )
 		{
 			if ( other is null )
 			{

@@ -1,10 +1,11 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.Common.Utilities;
+using Petrichor.ShortcutScriptGeneration.Containers;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface IModuleOptionsRegionParser
+	public interface IModuleOptionsRegionParser : IRegionParser<ScriptModuleOptions>
 	{
-		ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i );
+		new ScriptModuleOptions Parse( string[] regionData, ref int i );
 	}
 }

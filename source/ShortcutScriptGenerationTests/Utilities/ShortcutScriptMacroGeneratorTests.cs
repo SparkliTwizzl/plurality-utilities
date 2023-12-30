@@ -12,17 +12,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static ShortcutScriptEntry[] Entries => new[]
+			public static ScriptEntry[] Entries => new[]
 			{
-				new ShortcutScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
-			public static ShortcutScriptInput Input => new( ModuleOptions, Entries, Templates );
+			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
 				"::@tag:: name",
 				"::@$&tag:: name pronoun decoration",
 			};
-			public static ShortcutScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string[] Templates => new[]
 			{
 				"::@`tag`:: `name`",

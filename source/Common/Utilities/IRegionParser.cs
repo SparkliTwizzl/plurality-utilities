@@ -1,12 +1,12 @@
 ﻿namespace Petrichor.Common.Utilities
 {
-	public interface IRegionParser
+	public interface IRegionParser<out T>
 	{
 		bool HasParsedMaxAllowedRegions { get; }
 		int MaxRegionsAllowed { get; }
 		int RegionsParsed {  get; }
 
 		
-		T Parse<T>( string[] regionData, ref int i );
+		T Parse( string[] regionData, ref int i );
 	}
 }

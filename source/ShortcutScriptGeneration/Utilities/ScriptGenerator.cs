@@ -7,19 +7,19 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptGenerator : IShortcutScriptGenerator
+	public class ScriptGenerator : IShortcutScriptGenerator
 	{
 		private string outputFilePath = string.Empty;
 
 
-		private ShortcutScriptInput Input { get; set; }
+		private ScriptInput Input { get; set; }
 
 
-		public ShortcutScriptGenerator( ShortcutScriptInput input )
+		public ScriptGenerator( ScriptInput input )
 			=> Input = input;
 
 
-		public void GenerateScript( string outputFile )
+		public void Generate( string outputFile )
 		{
 			var outputDirectory = GetNormalizedOutputDirectory( outputFile );
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
@@ -43,6 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.TaskFinished( taskMessage );
 		}
 
+
 		private static string GetNormalizedOutputDirectory( string outputFile )
 		{
 			var outputDirectory = Path.GetDirectoryName( outputFile );
@@ -55,7 +56,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string GetNormalizedOutputFileName( string outputFile )
 			=> Path.GetFileNameWithoutExtension( outputFile ) + ".ahk";
-
 
 		private void WriteByteOrderMarkToFile()
 		{
@@ -168,7 +168,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"OnMessage( WM_COMMAND, OnSuspendMsg )",
 				"OnSuspendMsg( wparam, * )",
 				"{",
-				"\tif ( wparam = ID_FILE_SUSPEND ) || ( wparam = ID_TRAY_SUSPEND )",
+				"\tif ( wparam = ID_FILE_SUSPEND || wparam = ID_TRAY_SUSPEND )",
 				"\t{",
 				"\t\tOnSuspend( !A_IsSuspended )",
 				"\t}",
