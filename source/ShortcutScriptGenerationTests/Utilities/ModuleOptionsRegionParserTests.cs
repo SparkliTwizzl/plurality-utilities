@@ -14,8 +14,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public struct TestData
 		{
 			public static string DefaultIconPath => "path/to/defaulticon.ico";
+			public static string DefaultIconPathWithQuotes => $"\"{DefaultIconPath}\"";
 			public static ScriptModuleOptions ModuleOptions_Valid_NoOptionalData => new();
-			public static ScriptModuleOptions ModuleOptions_Valid_OptionalData => new( DefaultIconPath, SuspendIconPath, ReloadShortcut, SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions_Valid_OptionalData => new( DefaultIconPathWithQuotes, SuspendIconPathWithQuotes, ReloadShortcut, SuspendShortcut );
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -35,8 +36,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } { DefaultIconPath } { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } { SuspendIconPath }",
+				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } \"{ DefaultIconPath }\" { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } \"{ SuspendIconPath }\"",
 				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { ReloadShortcut }",
 				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken } { SuspendShortcut }",
 				CommonSyntax.CloseBracketToken,
@@ -48,6 +49,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static string ReloadShortcut => "reloadshortcut";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";
+			public static string SuspendIconPathWithQuotes => $"\"{SuspendIconPath}\"";
 			public static string SuspendShortcut => "suspendshortcut";
 		}
 
