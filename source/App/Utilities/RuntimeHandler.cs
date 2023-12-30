@@ -30,7 +30,7 @@ namespace Petrichor.App.Utilities
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
 				var entriesRegionParser = new EntriesRegionParser();
 				var templatesRegionParser = new TemplatesRegionParser();
-				var macroGenerator = new ShortcutScriptMacroGenerator();
+				var macroGenerator = new MacroGenerator();
 				var inputFileParser = new InputFileParser( moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
 				var input = inputFileParser.Parse( InputFilePath );

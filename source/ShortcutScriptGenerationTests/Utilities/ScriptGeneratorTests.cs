@@ -8,7 +8,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptGeneratorTests
+	public class ScriptGeneratorTests
 	{
 		public struct TestData
 		{
