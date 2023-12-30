@@ -61,6 +61,18 @@ Blank lines in input files are ignored, so use as many as you want.
 
 Insert comments with `#:`. Comments can be on the same line as data. Note that anything following the start of a comment will be treated as part of the comment and ignored.
 
+**Example:**
+
+```
+#: this is a comment. this line will be ignored.
+
+region:
+{
+    token: value. #: this is an inline comment. everything after "value." will be ignored.
+    token: #: value. this is an inline comment. everything after "token:" will be ignored.
+}
+```
+
 ---
 
 #### 4.1.2 - Module options
