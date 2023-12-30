@@ -4,9 +4,9 @@ using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptMacroGenerator : IMacroGenerator
+	public class MacroGenerator : IMacroGenerator
 	{
-		public ShortcutScriptMacroGenerator() { }
+		public MacroGenerator() { }
 
 
 		public string[] Generate( ScriptInput input )

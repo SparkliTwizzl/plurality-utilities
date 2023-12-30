@@ -1,5 +1,6 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Info;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -67,7 +68,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
 				{
-					moduleOptions.DefaultIconFilePath = token.Value;
+					moduleOptions.DefaultIconFilePath = token.Value.WrapInQuotes();
 					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName }" );
 				}
 
@@ -79,7 +80,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
 				{
-					moduleOptions.SuspendIconFilePath = token.Value;
+					moduleOptions.SuspendIconFilePath = token.Value.WrapInQuotes();
 					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName }" );
 				}
 

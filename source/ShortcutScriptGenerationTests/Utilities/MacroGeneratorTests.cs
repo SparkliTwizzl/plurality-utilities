@@ -7,7 +7,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptMacroGeneratorTests
+	public class MacroGeneratorTests
 	{
 		public struct TestData
 		{
@@ -30,14 +30,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutScriptMacroGenerator? macroGenerator;
+		public MacroGenerator? macroGenerator;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			macroGenerator = new ShortcutScriptMacroGenerator();
+			macroGenerator = new MacroGenerator();
 		}
 
 
