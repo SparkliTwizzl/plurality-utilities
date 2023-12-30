@@ -122,7 +122,7 @@ Example:
 ```
 module-options:
 {
-    reload-shortcut: #r ; Windows key + R
+    reload-shortcut: #r #: Windows key + R
 }
 ```
 
@@ -137,7 +137,7 @@ Example:
 ```
 module-options:
 {
-    suspend-shortcut: #s ; Windows key + S
+    suspend-shortcut: #s #: Windows key + S
 }
 ```
 
