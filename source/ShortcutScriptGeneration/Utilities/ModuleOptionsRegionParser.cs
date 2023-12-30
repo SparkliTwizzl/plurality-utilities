@@ -27,13 +27,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				var errorMessage = $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
-				Log.Error( errorMessage );
-				throw new FileRegionException( errorMessage );
+				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions" );
 			}
 
 			var moduleOptions = new ScriptModuleOptions();
-			for ( var i = 0; i < regionData.Length ; ++i )
+			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
 				var rawToken = regionData[ i ];
 				var token = new StringToken( rawToken );
@@ -55,9 +53,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						var errorMessage = $"A mismatched closing bracket was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region";
-						Log.Error( errorMessage );
-						throw new BracketMismatchException( errorMessage );
+						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
 					}
 
 					if ( IndentLevel == 0 )
@@ -69,32 +65,30 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
 				{
 					moduleOptions.DefaultIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName }" );
+					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName}" );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
 				{
 					moduleOptions.ReloadShortcut = token.Value;
-					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.ReloadShortcutTokenName }" );
+					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.ReloadShortcutTokenName}" );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
 				{
 					moduleOptions.SuspendIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName }" );
+					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName}" );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
 				{
 					moduleOptions.SuspendShortcut = token.Value;
-					Log.Info( $"Stored token { ShortcutScriptGenerationSyntax.SuspendShortcutTokenName }" );
+					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendShortcutTokenName}" );
 				}
 
 				else
 				{
-					var errorMessage = $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region";
-					Log.Error( errorMessage );
-					throw new UnknownTokenException( errorMessage );
+					throw new UnknownTokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
 				}
 
 				if ( isParsingFinished )
@@ -106,9 +100,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				var errorMessage = $"A mismatched curly brace was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region";
-				Log.Error( errorMessage );
-				throw new BracketMismatchException( errorMessage );
+				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
 			}
 
 			++RegionsParsed;

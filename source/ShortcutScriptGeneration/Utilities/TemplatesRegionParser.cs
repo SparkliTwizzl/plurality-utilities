@@ -27,9 +27,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			
 			if ( HasParsedMaxAllowedRegions )
 			{
-				var errorMessage = $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
-				Log.Error( errorMessage );
-				throw new FileRegionException( errorMessage );
+				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions" );
 			}
 
 			var templates = new List<string>();
@@ -96,11 +94,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						++i;
 						continue;
 					}
-					catch ( Exception ex )
+					catch ( Exception exception )
 					{
-						var errorMessage = "A template contained a trailing escape character ('\\') with no following character to escape";
-						Log.Error( errorMessage );
-						throw new EscapeCharacterMismatchException( errorMessage, ex );
+						throw new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception );
 					}
 				}
 				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )
