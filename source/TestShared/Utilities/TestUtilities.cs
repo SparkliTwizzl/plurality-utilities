@@ -12,20 +12,6 @@ namespace Petrichor.TestShared.Utilities
 			Log.SetLogFileName( DateTime.Now.ToString( "test_yyyy-MM-dd_hh-mm-ss.log" ) );
 		}
 
-		public static string LocateInputFile( string fileName )
-			=> $@"{TestDirectories.TestInputDirectory}\{fileName}";
-
-		public static string[] SplitRegionDataString( string regionDataString )
-		{
-			Log.Info( $"raw data: \"{regionDataString}\"" );
-			var tokens = regionDataString.Split( '|' );
-			Log.Info( "tokenized data:" );
-			foreach ( var token in tokens )
-			{
-				Log.Info( $"\t\"{token}\"" );
-			}
-			Log.Info();
-			return tokens;
-		}
+		public static string LocateInputFile( string fileName ) => $@"{TestDirectories.TestInputDirectory}\{fileName}";
 	}
 }

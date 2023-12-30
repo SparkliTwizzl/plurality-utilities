@@ -16,7 +16,7 @@ namespace Petrichor.App.Utilities
 
 		public static void WaitForUserAndExit()
 		{
-			Console.Write( "press any key to exit" );
+			Console.Write( "Press any key to exit..." );
 			_ = Console.ReadKey( true );
 			Environment.Exit( 0 );
 		}
@@ -26,7 +26,7 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				Log.Important( "generating AutoHotkey shortcuts script..." );
+				Log.Important( "Generating AutoHotkey shortcuts script..." );
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
 				var entriesRegionParser = new EntriesRegionParser();
 				var templatesRegionParser = new TemplatesRegionParser();
@@ -37,7 +37,7 @@ namespace Petrichor.App.Utilities
 				var scriptGenerator = new ScriptGenerator( input );
 				scriptGenerator.Generate( OutputFilePath );
 
-				var successMessage = "generated AutoHotkey shortcuts script successfully";
+				var successMessage = "Generated AutoHotkey shortcuts script successfully";
 				if ( Log.IsLoggingToConsoleDisabled )
 				{
 					Console.WriteLine( successMessage );
@@ -46,7 +46,7 @@ namespace Petrichor.App.Utilities
 			}
 			catch ( Exception ex )
 			{
-				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: {ex.Message}";
+				var errorMessage = $"Generating AutoHotkey shortcuts script failed with error: {ex.Message}";
 				if ( Log.IsLoggingToConsoleDisabled )
 				{
 					Console.WriteLine( errorMessage );

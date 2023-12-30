@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
@@ -47,19 +46,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.Macros;
 			var actual = macroGenerator!.Generate( TestData.Input ).ToArray();
-
-			Log.Info( "expected:" );
-			foreach ( var line in expected )
-			{
-				Log.Info( $"[{line}]" );
-			}
-			Log.WriteLine();
-			Log.Info( "actual:" );
-			foreach ( var line in actual )
-			{
-				Log.Info( $"[{line}]" );
-			}
-
 			CollectionAssert.AreEqual( expected, actual );
 		}
 	}

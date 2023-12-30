@@ -22,12 +22,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public string[] Parse( string[] regionData )
 		{
-			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName} region data";
-			Log.TaskStarted( taskMessage );
+			var taskMessage = $"Parse region: {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName}";
+			Log.TaskStart( taskMessage );
 			
 			if ( HasParsedMaxAllowedRegions )
 			{
-				var errorMessage = $"input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
+				var errorMessage = $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions";
 				Log.Error( errorMessage );
 				throw new FileRegionException( errorMessage );
 			}
@@ -75,7 +75,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
-			Log.TaskFinished( taskMessage );
+			Log.Info( $"Parsed {templates.Count} templates" );
+			Log.TaskFinish( taskMessage );
 			return templates.ToArray();
 		}
 
@@ -97,7 +98,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					catch ( Exception ex )
 					{
-						var errorMessage = "a template contained a trailing escape character ('\\') with no following character to escape";
+						var errorMessage = "A template contained a trailing escape character ('\\') with no following character to escape";
 						Log.Error( errorMessage );
 						throw new EscapeCharacterMismatchException( errorMessage, ex );
 					}
@@ -106,9 +107,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					? template.Append( $"`{value}`" )
 					: template.Append( c );
 			}
-			var result = template.ToString();
-			Log.Info( $"parsed template: {result}" );
-			return result;
+			return template.ToString();
 		}
 	}
 }

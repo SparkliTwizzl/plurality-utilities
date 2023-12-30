@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Petrichor.Common.Utilities;
-using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
@@ -111,10 +109,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DataRow( "ShortcutScriptInputParser_Valid.txt" )]
 		public void ParseFile_Test_Success( string fileName )
 		{
-			var filePath = TestUtilities.LocateInputFile( fileName );
-			var data = File.ReadAllText( filePath );
-			Log.Info( data );
 			var expected = TestData.Input;
+			var filePath = TestUtilities.LocateInputFile( fileName );
 			var actual = inputFileParser!.Parse( filePath );
 			Assert.AreEqual( expected, actual );
 		}

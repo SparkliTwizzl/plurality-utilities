@@ -12,12 +12,19 @@ namespace Petrichor.App
 			var startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			_ = await CommandLineHandler.ParseArguments( args );
+			var startMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}";
+			Console.WriteLine( startMessage );
 			Log.Important( AppInfo.AppNameAndVersion );
-			Log.Important( $"execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}" );
+			Log.Important( startMessage );
+
 			RuntimeHandler.Execute();
+
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
-			Log.Important( $"execution finished at {DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )} and took {executionTime} seconds" );
+			var finishMessage = $"Execution finished at {DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )} and took {executionTime} seconds";
+			Log.Important( finishMessage );
+			Console.WriteLine( finishMessage );
+			
 			RuntimeHandler.WaitForUserAndExit();
 		}
 	}
