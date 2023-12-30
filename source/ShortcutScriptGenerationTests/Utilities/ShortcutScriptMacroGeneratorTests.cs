@@ -8,7 +8,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptMacroParserTests
+	public class ShortcutScriptMacroGeneratorTests
 	{
 		public struct TestData
 		{
@@ -31,22 +31,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutScriptMacroParser? macroParser;
+		public ShortcutScriptMacroGenerator? macroGenerator;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			macroParser = new ShortcutScriptMacroParser();
+			macroGenerator = new ShortcutScriptMacroGenerator();
 		}
 
 
 		[TestMethod]
-		public void GenerateMacrosFromTemplatesTest_Success()
+		public void Generate_Test_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = macroParser!.GenerateMacrosFromInput( TestData.Input ).ToArray();
+			var actual = macroGenerator!.Generate( TestData.Input ).ToArray();
 
 			Log.Info( "expected:" );
 			foreach ( var line in expected )

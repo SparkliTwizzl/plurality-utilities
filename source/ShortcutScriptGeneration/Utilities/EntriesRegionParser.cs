@@ -10,7 +10,7 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptEntryParser : IShortcutScriptEntryParser
+	public class EntriesRegionParser : IEntriesRegionParser
 	{
 		private const char decorationLineChar = '&';
 		private const char entryEndLineChar = '}';
@@ -21,7 +21,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private StringTokenParser TokenParser { get; set; } = new StringTokenParser();
 
 
-		public ShortcutScriptEntryParser() { }
+		public EntriesRegionParser() { }
 
 
 		public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )

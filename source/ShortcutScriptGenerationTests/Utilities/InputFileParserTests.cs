@@ -9,7 +9,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptInputParserTests
+	public class InputFileParserTests
 	{
 		public struct TestData
 		{
@@ -33,7 +33,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public class ShortcutScriptEntryParserStub : IShortcutScriptEntryParser
+		public class EntriesRegionParserStub : IEntriesRegionParser
 		{
 			public ShortcutScriptEntry[] ParseEntriesFromData( string[] data, ref int i )
 			{
@@ -42,7 +42,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class ShortcutScriptModuleOptionsParserStub : IShortcutScriptModuleOptionsParser
+		public class ModuleOptionsRegionParserStub : IModuleOptionsRegionParser
 		{
 			public ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i )
 			{
@@ -51,7 +51,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class ShortcutScriptTemplateParserStub : IShortcutScriptTemplateParser
+		public class TemplatesRegionParserStub : ITemplatesRegionParser
 		{
 			public string[] ParseTemplatesFromData( string[] data, ref int i )
 			{
@@ -61,11 +61,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutScriptEntryParserStub? entryParserStub;
-		public ShortcutScriptInputParser? inputParser;
-		public Mock<IShortcutScriptMacroParser>? macroParserMock;
-		public ShortcutScriptModuleOptionsParserStub? moduleOptionsParserStub;
-		public ShortcutScriptTemplateParserStub? templateParserStub;
+		public EntriesRegionParserStub? entriesRegionParserStub;
+		public InputFileParser? inputFileParser;
+		public Mock<IMacroGenerator>? macroGeneratorMock;
+		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
+		public TemplatesRegionParserStub? templatesRegionParserStub;
 
 
 		[TestInitialize]
@@ -73,37 +73,37 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			entryParserStub = new();
-			macroParserMock = new();
-			_ = macroParserMock
-				.Setup( x => x.GenerateMacrosFromInput( It.IsAny<ShortcutScriptInput>() ) )
+			entriesRegionParserStub = new();
+			macroGeneratorMock = new();
+			_ = macroGeneratorMock
+				.Setup( x => x.Generate( It.IsAny<ShortcutScriptInput>() ) )
 				.Returns( TestData.Macros );
-			moduleOptionsParserStub = new();
-			templateParserStub = new();
+			moduleOptionsRegionParserStub = new();
+			templatesRegionParserStub = new();
 
-			inputParser = new ShortcutScriptInputParser( moduleOptionsParserStub, entryParserStub, templateParserStub, macroParserMock.Object );
+			inputFileParser = new InputFileParser( moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 
 		[TestMethod]
 		[DataRow( "ShortcutScriptInputParser_Valid.txt" )]
-		public void ParseInputFileTest_Success( string fileName )
+		public void ParseFile_Test_Success( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			var data = File.ReadAllText( filePath );
 			Log.Info( data );
 			var expected = TestData.Input;
-			var actual = inputParser!.ParseInputFile( filePath );
+			var actual = inputFileParser!.Parse( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
 		[DataRow( "nonexistent.txt" )]
-		public void ParseInputFileTest_ThrowsFileNotFoundException( string fileName )
+		public void ParseFile_Test_ThrowsFileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = inputParser!.ParseInputFile( filePath );
+			_ = inputFileParser!.Parse( filePath );
 		}
 	}
 }

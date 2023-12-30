@@ -1,8 +1,9 @@
 ﻿using Petrichor.ShortcutScriptGeneration.Containers;
 
+
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface IShortcutScriptModuleOptionsParser
+	public interface IModuleOptionsRegionParser
 	{
 		ShortcutScriptModuleOptions ParseModuleOptionsFromData( string[] data, ref int i );
 	}

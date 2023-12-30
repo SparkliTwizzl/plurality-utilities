@@ -8,35 +8,35 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptInputParser : IShortcutScriptInputParser
+	public class InputFileParser : IShortcutScriptInputParser
 	{
-		private IShortcutScriptEntryParser EntryParser { get; set; }
-		private IShortcutScriptMacroParser MacroParser { get; set; }
-		private IShortcutScriptModuleOptionsParser ModuleOptionsParser { get; set; }
-		private IShortcutScriptTemplateParser TemplateParser { get; set; }
+		private IEntriesRegionParser EntriesRegionParser { get; set; }
+		private IMacroGenerator MacroGenerator { get; set; }
+		private IModuleOptionsRegionParser ModuleOptionsRegionParser { get; set; }
+		private ITemplatesRegionParser TemplatesRegionParser { get; set; }
 
 
-		public ShortcutScriptInputParser( IShortcutScriptModuleOptionsParser moduleOptionsParser, IShortcutScriptEntryParser entryParser, IShortcutScriptTemplateParser templateParser, IShortcutScriptMacroParser macroParser )
+		public InputFileParser( IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
 		{
-			EntryParser = entryParser;
-			MacroParser = macroParser;
-			ModuleOptionsParser = moduleOptionsParser;
-			TemplateParser = templateParser;
+			EntriesRegionParser = entriesRegionParser;
+			MacroGenerator = macroGenerator;
+			ModuleOptionsRegionParser = moduleOptionsRegionParser;
+			TemplatesRegionParser = templatesRegionParser;
 		}
 
 
-		public ShortcutScriptInput ParseInputFile( string inputFilePath )
+		public ShortcutScriptInput Parse( string filePath )
 		{
-			var taskMessage = $"parsing input file \"{inputFilePath}\"";
+			var taskMessage = $"parsing input file \"{filePath}\"";
 			Log.TaskStarted( taskMessage );
-			var data = ReadDataFromFile( inputFilePath );
-			var input = ParseInputData( data );
+			var data = ReadFileData( filePath );
+			var input = ParseData( data );
 			Log.TaskFinished( taskMessage );
 			return input;
 		}
 
 
-		private ShortcutScriptInput ParseInputData( string[] data )
+		private ShortcutScriptInput ParseData( string[] data )
 		{
 			var input = new ShortcutScriptInput();
 			var tokenParser = new StringTokenParser();
@@ -59,19 +59,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
 							++i;
-							input.Entries = EntryParser.ParseEntriesFromData( data, ref i );
+							input.Entries = EntriesRegionParser.ParseEntriesFromData( data, ref i );
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
 						{
 							++i;
-							input.ModuleOptions = ModuleOptionsParser.ParseModuleOptionsFromData( data, ref i );
+							input.ModuleOptions = ModuleOptionsRegionParser.ParseModuleOptionsFromData( data, ref i );
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
 							++i;
-							input.Templates = TemplateParser.ParseTemplatesFromData( data, ref i );
+							input.Templates = TemplatesRegionParser.ParseTemplatesFromData( data, ref i );
 						}
 
 						if ( tokenParser.IndentLevel > 0 )
@@ -98,15 +98,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				}
 			}
 
-			input.Macros = MacroParser.GenerateMacrosFromInput( input );
+			input.Macros = MacroGenerator.Generate( input );
 			return input;
 		}
 
-		private static string[] ReadDataFromFile( string inputFilePath )
+		private static string[] ReadFileData( string filePath )
 		{
 			try
 			{
-				return File.ReadAllLines( inputFilePath );
+				return File.ReadAllLines( filePath );
 			}
 			catch ( Exception ex )
 			{

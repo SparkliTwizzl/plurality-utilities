@@ -8,7 +8,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutScriptEntryParserTests
+	public class EntriesRegionParserTests
 	{
 		public struct TestData
 		{
@@ -162,7 +162,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		public int i;
-		public ShortcutScriptEntryParser? entryParser;
+		public EntriesRegionParser? entriesRegionParser;
 
 
 		[TestInitialize]
@@ -170,7 +170,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 			i = 0;
-			entryParser = new ShortcutScriptEntryParser();
+			entriesRegionParser = new EntriesRegionParser();
 		}
 
 
@@ -179,7 +179,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ParseEntriesFromDataTest_Success( string[] data )
 		{
 			var expected = TestData.Entries;
-			var actual = entryParser!.ParseEntriesFromData( data, ref i );
+			var actual = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
@@ -195,7 +195,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( BlankInputFieldException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsBlankInputFieldException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsBlankInputFieldException_Data
 		{
@@ -211,7 +211,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( DuplicateInputFieldException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsDuplicateInputFieldException_Data
 		{
@@ -226,7 +226,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( InputEntryNotClosedException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInputEntryNotClosedException_Data
 		{
@@ -240,7 +240,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( MissingInputFieldException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsMissingInputFieldException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsMissingInputFieldException_Data
 		{
@@ -254,7 +254,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( InvalidInputFieldException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsInvalidInputFieldException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsInvalidInputFieldException_Data
 		{
@@ -268,7 +268,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( UnexpectedCharacterException ) )]
 		[DynamicData( nameof( ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data ), DynamicDataSourceType.Property )]
 		public void ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException( string[] data )
-			=> _ = entryParser!.ParseEntriesFromData( data, ref i );
+			=> _ = entriesRegionParser!.ParseEntriesFromData( data, ref i );
 
 		public static IEnumerable<object[]> ParseEntriesFromDataTest_ThrowsUnexpectedCharacterException_Data
 		{

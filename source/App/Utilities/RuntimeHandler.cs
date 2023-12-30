@@ -27,13 +27,13 @@ namespace Petrichor.App.Utilities
 			try
 			{
 				Log.Important( "generating AutoHotkey shortcuts script..." );
-				var moduleOptionsParser = new ShortcutScriptModuleOptionsParser();
-				var entryParser = new ShortcutScriptEntryParser();
-				var templateParser = new ShortcutScriptTemplateParser();
-				var macroParser = new ShortcutScriptMacroParser();
-				var inputParser = new ShortcutScriptInputParser( moduleOptionsParser, entryParser, templateParser, macroParser );
+				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
+				var entriesRegionParser = new EntriesRegionParser();
+				var templatesRegionParser = new TemplatesRegionParser();
+				var macroGenerator = new ShortcutScriptMacroGenerator();
+				var inputFileParser = new InputFileParser( moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
-				var input = inputParser.ParseInputFile( InputFilePath );
+				var input = inputFileParser.Parse( InputFilePath );
 				var scriptGenerator = new ShortcutScriptGenerator( input );
 				scriptGenerator.GenerateScript( OutputFilePath );
 

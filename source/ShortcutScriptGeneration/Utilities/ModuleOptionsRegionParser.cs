@@ -8,7 +8,7 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptModuleOptionsParser : IShortcutScriptModuleOptionsParser
+	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
 		private ShortcutScriptModuleOptions ModuleOptions { get; set; } = new();

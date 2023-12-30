@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutScriptTemplateParser : IShortcutScriptTemplateParser
+	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
 		private StringTokenParser TokenParser { get; set; } = new();
 
