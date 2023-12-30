@@ -37,31 +37,31 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public class EntriesRegionParserStub : IEntriesRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
 			public int RegionsParsed { get; private set; } = 0;
 
-			public ScriptEntry[] Parse( string[] regionData, ref int i )
+			public ScriptEntry[] Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
-				i += TestData.EntriesRegionLength;
+				LinesParsed = TestData.EntriesRegionLength;
 				return TestData.Entries;
 			}
-
-			ScriptEntry IRegionParser<ScriptEntry>.Parse( string[] regionData, ref int i ) => throw new NotImplementedException();
 		}
 
 		public class ModuleOptionsRegionParserStub : IModuleOptionsRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
 			public int RegionsParsed { get; private set; } = 0;
 
-			public ScriptModuleOptions Parse( string[] regionData, ref int i )
+			public ScriptModuleOptions Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
-				i += TestData.ModuleOptionsRegionLength;
+				LinesParsed = TestData.ModuleOptionsRegionLength;
 				return TestData.ModuleOptions;
 			}
 		}
@@ -69,14 +69,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public class TemplatesRegionParserStub : ITemplatesRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
 			public int RegionsParsed { get; private set; } = 0;
 
-			public string[] Parse( string[] regionData, ref int i )
+			public string[] Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
-				i += TestData.TemplatesRegionLength;
+				LinesParsed = TestData.TemplatesRegionLength;
 				return TestData.Templates;
 			}
 		}

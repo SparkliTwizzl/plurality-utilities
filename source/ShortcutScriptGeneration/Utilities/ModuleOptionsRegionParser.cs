@@ -14,11 +14,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public int LinesParsed { get; private set; } = 0;
 		public int MaxRegionsAllowed { get; private set; } = 1;
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public ScriptModuleOptions Parse( string[] regionData, ref int i )
+		public ScriptModuleOptions Parse( string[] regionData )
 		{
 			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
@@ -31,7 +32,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 
 			var moduleOptions = new ScriptModuleOptions();
-			for ( ; i < regionData.Length ; ++i )
+			for ( var i = 0; i < regionData.Length ; ++i )
 			{
 				var rawToken = regionData[ i ];
 				var token = new StringToken( rawToken );
@@ -93,6 +94,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				if ( isParsingFinished )
 				{
+					LinesParsed = i;
 					break;
 				}
 			}

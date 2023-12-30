@@ -52,7 +52,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public int i;
 		public ModuleOptionsRegionParser? moduleOptionsRegionParser;
 
 
@@ -60,7 +59,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			i = 0;
 			moduleOptionsRegionParser = new();
 		}
 
@@ -69,7 +67,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success_AllOptionalTokens()
 		{
 			var expected = TestData.ModuleOptions_Valid_OptionalData;
-			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_OptionalTokens, ref i );
+			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_OptionalTokens );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -77,7 +75,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success_NoOptionalTokens()
 		{
 			var expected = TestData.ModuleOptions_Valid_NoOptionalData;
-			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
+			var actual = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -85,7 +83,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( BracketMismatchException ) )]
 		[DynamicData( nameof( Parse_Test_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_ThrowsBracketMismatchException( string[] regionData )
-			=> _ = moduleOptionsRegionParser!.Parse( regionData, ref i );
+			=> _ = moduleOptionsRegionParser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_ThrowsBracketMismatchException_Data
 		{
@@ -99,14 +97,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( UnknownTokenException ) )]
 		public void Parse_Test_ThrowsUnknownTokenException()
-			=> _ = moduleOptionsRegionParser!.Parse( TestData.RegionData_UnknownToken, ref i );
+			=> _ = moduleOptionsRegionParser!.Parse( TestData.RegionData_UnknownToken );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_ThrowsFileRegionException()
 		{
-			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
-			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens, ref i );
+			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 		}
 	}
 }
