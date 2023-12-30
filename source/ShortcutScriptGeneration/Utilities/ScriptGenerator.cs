@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ScriptGenerator : IShortcutScriptGenerator
+	public class ScriptGenerator
 	{
 		private string outputFilePath = string.Empty;
 
