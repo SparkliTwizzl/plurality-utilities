@@ -1,5 +1,6 @@
 ﻿using Petrichor.Logging;
 using Petrichor.Logging.Enums;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Utilities;
 
 
@@ -44,14 +45,9 @@ namespace Petrichor.App.Utilities
 				}
 				Log.Important( successMessage );
 			}
-			catch ( Exception ex )
+			catch ( Exception exception )
 			{
-				var errorMessage = $"Generating AutoHotkey shortcuts script failed with error: {ex.Message}";
-				if ( Log.IsLoggingToConsoleDisabled )
-				{
-					Console.WriteLine( errorMessage );
-				}
-				Log.Error( errorMessage );
+				throw new ShortcutScriptGenerationException( "Generating AutoHotkey shortcuts script failed", exception );
 			}
 		}
 	}

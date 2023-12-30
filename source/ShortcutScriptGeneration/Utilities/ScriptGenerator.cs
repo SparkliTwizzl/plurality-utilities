@@ -34,11 +34,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				WriteHeaderToFile();
 				WriteMacrosToFile();
 			}
-			catch ( Exception ex )
+			catch ( Exception exception )
 			{
-				var errorMessage = $"Failed to generate output file ({outputFilePath})";
-				Log.Error( errorMessage );
-				throw new ScriptGenerationException( errorMessage, ex );
+				throw new ScriptGenerationException( $"Failed to generate output file \'{outputFilePath}\'", exception );
 			}
 			Log.TaskFinish( taskMessage );
 		}
@@ -220,11 +218,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				using var writer = File.AppendText( outputFilePath );
 				writer.WriteLine( line );
 			}
-			catch ( Exception ex )
+			catch ( Exception exception )
 			{
-				var errorMessage = "Failed to write line to output file";
-				Log.Error( errorMessage );
-				throw new FileLoadException( errorMessage, ex );
+				throw new FileLoadException( "Failed to write line to output file", exception );
 			}
 		}
 

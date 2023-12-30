@@ -51,7 +51,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				var rawToken = data[ i ];
 				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );
-				string? errorMessage;
 				switch ( qualifiedToken.Qualifier )
 				{
 					case StringTokenQualifiers.Recognized:
@@ -82,9 +81,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 						if ( tokenParser.IndentLevel > 0 )
 						{
-							errorMessage = $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"";
-							Log.Error( errorMessage );
-							throw new RegionNotClosedException( errorMessage );
+							throw new RegionNotClosedException( $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"" );
 						}
 						break;
 					}
@@ -97,9 +94,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					case StringTokenQualifiers.Unknown:
 					default:
 					{
-						errorMessage = $"An unknown token ( \"{qualifiedToken.Value}\" ) was read when a region name was expected";
-						Log.Error( errorMessage );
-						throw new UnknownTokenException( errorMessage );
+						throw new UnknownTokenException( $"An unknown token ( \"{qualifiedToken.Value}\" ) was read when a region name was expected" );
 					}
 				}
 			}
@@ -114,11 +109,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				return File.ReadAllLines( filePath );
 			}
-			catch ( Exception ex )
+			catch ( Exception exception )
 			{
-				var errorMessage = "Failed to read data from input file";
-				Log.Error( errorMessage );
-				throw new FileNotFoundException( errorMessage, ex );
+				throw new FileNotFoundException( "Failed to read data from input file", exception );
 			}
 		}
 	}
