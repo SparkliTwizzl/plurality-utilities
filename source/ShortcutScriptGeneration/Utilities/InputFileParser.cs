@@ -59,19 +59,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
 							++i;
-							input.Entries = EntriesRegionParser.Parse( data, ref i );
+							var dataTrimmedToEntries = data[ i.. ];
+							input.Entries = EntriesRegionParser.Parse( dataTrimmedToEntries );
+							i += EntriesRegionParser.LinesParsed;
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
 						{
 							++i;
-							input.ModuleOptions = ModuleOptionsRegionParser.Parse( data, ref i );
+							var dataTrimmedToModuleOptions = data[ i.. ];
+							input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToModuleOptions );
+							i += ModuleOptionsRegionParser.LinesParsed;
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
 							++i;
-							input.Templates = TemplatesRegionParser.Parse( data, ref i );
+							var dataTrimmedToTemplates = data[ i.. ];
+							input.Templates = TemplatesRegionParser.Parse( dataTrimmedToTemplates );
+							i += ModuleOptionsRegionParser.LinesParsed;
 						}
 
 						if ( tokenParser.IndentLevel > 0 )

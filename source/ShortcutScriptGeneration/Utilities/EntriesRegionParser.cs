@@ -22,6 +22,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public int LinesParsed { get; private set; } = 0;
 		public int MaxRegionsAllowed { get; private set; } = 1;
 		public int RegionsParsed { get; private set; } = 0;
 
@@ -29,7 +30,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public EntriesRegionParser() { }
 
 
-		public ScriptEntry[] Parse( string[] regionData, ref int i )
+		public ScriptEntry[] Parse( string[] regionData )
 		{
 			var taskMessage = $"parsing {ShortcutScriptGenerationSyntax.EntriesRegionTokenName} region data";
 			Log.TaskStarted( taskMessage );
@@ -51,7 +52,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				pronounLineChar.ToString(),
 			};
 
-			for ( ; i < regionData.Length ; ++i )
+			for ( var i = 0; i < regionData.Length ; ++i )
 			{
 				var isParsingFinished = false;
 				var line = regionData[ i ].Trim();
@@ -102,6 +103,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				}
 				if ( isParsingFinished )
 				{
+					LinesParsed = i;
 					break;
 				}
 			}
@@ -316,7 +318,5 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			identity.Tag = tag;
 		}
-
-		ScriptEntry IRegionParser<ScriptEntry>.Parse( string[] regionData, ref int i ) => throw new NotImplementedException();
 	}
 }

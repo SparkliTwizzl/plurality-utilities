@@ -34,7 +34,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public int i;
 		public TemplatesRegionParser? templatesRegionParser;
 
 
@@ -42,7 +41,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			i = 0;
 			templatesRegionParser = new TemplatesRegionParser();
 		}
 
@@ -51,21 +49,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success()
 		{
 			var expected = TestData.Templates;
-			var actual = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
+			var actual = templatesRegionParser!.Parse( TestData.RegionData_Valid );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
 		public void Parse_Test_ThrowsEscapeCharacterMismatchException()
-			=> _ = templatesRegionParser!.Parse( TestData.RegionData_TrailingExcapeCharacter, ref i );
+			=> _ = templatesRegionParser!.Parse( TestData.RegionData_TrailingExcapeCharacter );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_ThrowsFileRegionException()
 		{
-			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
-			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid, ref i );
+			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid );
+			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid );
 		}
 	}
 }
