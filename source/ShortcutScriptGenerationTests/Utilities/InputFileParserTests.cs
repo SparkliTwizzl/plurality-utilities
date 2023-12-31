@@ -56,7 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
-			public static string RegionIsValidMessage => MetadataRegionParser.RegionIsValidMessage;
+			public static string RegionIsValidMessage => Common.Utilities.MetadataRegionParser.RegionIsValidMessage;
 			public int RegionsParsed { get; private set; } = 0;
 
 			public string Parse( string[] regionData )
@@ -101,12 +101,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntriesRegionParserStub? entriesRegionParserStub; //TODO convert to auto-implemented property
-		public InputFileParser? inputFileParser; //TODO convert to auto-implemented property, rename to Parser
-		public Mock<IMacroGenerator>? macroGeneratorMock; //TODO convert to auto-implemented property
-		public MetadataRegionParserStub? metadataRegionParserStub; //TODO convert to auto-implemented property
-		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub; //TODO convert to auto-implemented property
-		public TemplatesRegionParserStub? templatesRegionParserStub; //TODO convert to auto-implemented property
+		public EntriesRegionParserStub EntriesRegionParser { get; set; } = new();
+		public InputFileParser? parser;
+		public Mock<IMacroGenerator> MacroGenerator { get; set; } = new();
+		public MetadataRegionParserStub MetadataRegionParser { get; set; } = new();
+		public ModuleOptionsRegionParserStub ModuleOptionsRegionParser { get; set; } = new();
+		public TemplatesRegionParserStub TemplatesRegionParser { get; set; } = new();
 
 
 		[TestInitialize]
@@ -114,16 +114,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			entriesRegionParserStub = new();
-			macroGeneratorMock = new();
-			_ = macroGeneratorMock
+			EntriesRegionParser = new();
+			MacroGenerator = new();
+			_ = MacroGenerator
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
-			metadataRegionParserStub = new();
-			moduleOptionsRegionParserStub = new();
-			templatesRegionParserStub = new();
+			MetadataRegionParser = new();
+			ModuleOptionsRegionParser = new();
+			TemplatesRegionParser = new();
 
-			inputFileParser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
+			parser = new InputFileParser( MetadataRegionParser, ModuleOptionsRegionParser, EntriesRegionParser, TemplatesRegionParser, MacroGenerator.Object );
 		}
 
 
@@ -133,7 +133,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.Input;
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			var actual = inputFileParser!.Parse( filePath );
+			var actual = parser!.Parse( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -149,7 +149,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( FileNotFoundException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
-			=> _ = inputFileParser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
 		{
@@ -163,7 +163,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( FileRegionException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_FileRegionException( string fileName )
-			=> _ = inputFileParser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
 		{

@@ -30,14 +30,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public MacroGenerator? macroGenerator; //TODO convert to auto-implemented property, rename to Generator
+		public MacroGenerator Generator { get; set; } = new();
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			macroGenerator = new MacroGenerator();
+			Generator = new();
 		}
 
 
@@ -45,7 +45,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = macroGenerator!.Generate( TestData.Input ).ToArray();
+			var actual = Generator.Generate( TestData.Input ).ToArray();
 			CollectionAssert.AreEqual( expected, actual );
 		}
 	}
