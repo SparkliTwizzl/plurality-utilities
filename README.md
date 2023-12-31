@@ -51,7 +51,7 @@ In order to get a useful result from the tool, there are 3 main steps:
 
 ### 4.1 - Input files
 
-Input files are made up of 3 regions: Metadata, entries, and templates.
+Input files are made up of data regions. Some are required and some are optional.
 
 ---
 
@@ -63,7 +63,7 @@ Insert comments with `#:`. Comments can be on the same line as data. Note that a
 
 **Example:**
 
-```
+```ptcr
 #: this is a comment. this line will be ignored.
 
 region:
@@ -75,11 +75,30 @@ region:
 
 ---
 
-#### 4.1.2 - Module options
+#### 4.1.2 - Metadata region
+
+This region is required, and it must be the first region in the file.
+
+##### 4.1.2.1 - Minimum version
+
+This token is required. It specifies the minimum Petrichor version required in order to parse the file.
+
+**Example:**
+
+```ptcr
+metadata:
+{
+    minimum-version: [version-number]
+}
+```
+
+---
+
+#### 4.1.3 - Module options region
 
 This region is optional. It allows you to set custom icons on the shortcut script if desired.
 
-##### 4.1.2.1 - Custom icons
+##### 4.1.3.1 - Custom icons
 
 If desired, you can specify filepaths to custom icons for the shortcut script to use.
 
@@ -89,9 +108,9 @@ If you want a different icon to be used when the script is suspended, add a toke
 
 **IMPORTANT NOTE:** If you move an icon file and do not update its path in your input file and regenerate the script, the icon will not be found by AutoHotkey and will not be applied.
 
-Example:
+**Example:**
 
-```
+```ptcr
 module-options:
 {
     default-icon: {path to default icon file}.ico
@@ -101,9 +120,9 @@ module-options:
 
 For simplicity, if an icon file will be in the same folder as the shortcut script, you can use a relative path (see 4.2.3 below for more on how relative paths work).
 
-Example:
+**Example:**
 
-```
+```ptcr
 module-options:
 {
     default-icon: ./{default icon file name}.ico
@@ -111,30 +130,30 @@ module-options:
 }
 ```
 
-##### 4.1.2.2 - Keyboard shortcut to reload script
+##### 4.1.3.2 - Keyboard shortcut to reload script
 
 If desired, you can include a keyboard shortcut to reload the script.
 
 To include a reload shortcut, add a token to the module options region called `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
 
-Example:
+**Example:**
 
-```
+```ptcr
 module-options:
 {
     reload-shortcut: #r #: Windows key + R
 }
 ```
 
-##### 4.1.2.3 - Keyboard shortcut to suspend script
+##### 4.1.3.3 - Keyboard shortcut to suspend script
 
 If desired, you can include a keyboard shortcut to toggle suspending the script. Suspending the script will prevent macros from working until it is resumed.
 
 To include a suspend shortcut, add a token to the module options region called `suspend-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
 
-Example:
+**Example:**
 
-```
+```ptcr
 module-options:
 {
     suspend-shortcut: #s #: Windows key + S
@@ -143,85 +162,82 @@ module-options:
 
 ---
 
-#### 4.1.3 - Entries are blocks of data which are made up of fields
+#### 4.1.4 - Entries region
 
-Each entry represents a person and must contain at least one identity (a name paired with a tag).
+This region is required, and it must come before the templates region.
+
+Entries are blocks of data which are made up of fields. Each entry represents a person and must contain at least one name/tag pair.
 
 To write an entry, start with an open curly brace `{` on one line and a close curly brace `}` on another, with nothing else on those lines.
 
-Example:
+**Example:**
 
-```
+```ptcr
 {
 }
 ```
 
-##### 4.1.3.1 - Between the braces, write the fields for the entry on separate lines
+##### 4.1.4.1 - Between the braces, write the fields for the entry on separate lines
 
 Whitespace at the start of lines for fields is ignored, so feel free to indent or not as you prefer to.
 
 Fields are identified by marker symbols:
 
-- `#name#`
-  - Name fields are a sub-field of identity fields (see below).
-  - Name fields must be surrounded on both sides by hash symbols `#`.
-  - Note that this means that name fields cannot contain hash symbols.
+- `#name`
+  - At least one name field is required. Name fields can contain almost anything (see note below).
+  - Note that names cannot contain the `@` symbol.
 - `@tag`
-  - Tag fields are a sub-field of identity fields (see below).
+  - Every name field must be paired with a tag field.
   - Tag fields cannot contain spaces.
 - `$pronoun`
   - Pronoun fields are optional.
   - Entries cannot have more than one pronoun field.
+  - If present, its value cannot be blank.
 - `&decoration`
   - Decoration fields are optional.
   - Entries cannot have more than one decoration field.
+  - If present, its value cannot be blank.
 
-Identity fields are a special case, as they consist of pairs of name and tag fields:
+**Example:**
 
-- `% #name# @tag`
-  - Every entry must contain at least one identity field.
-  - There is no upper limit to how many identity fields an entry can have.
-
-Example:
-
-```
+```ptcr
 {
-  % #Sam# @sm
+  #Sam @sm
   $they/them
   &-- a person
 }
 ```
 
-##### 4.1.3.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique
+##### 4.1.4.2 - There's no limit on how many entries an input file can have, and entries and fields dont have to be unique
 
 If you want to, for example, have the same set of names paired with a different pronoun and/or decoration, you can include multiple entries that are the same aside from small changes (see below).
 
 **IMPORTANT NOTE:** All tag fields *should* be unique in order for the generated script to work correctly, even though Petrichor wont take issue with it. If a tag field is repeated, only the first one in the script will work.
 
-Example:
+**Example:**
 
-```
+```ptcr
 entries:
 {
   {
-    % #Sam# @sm
-    % #Sammy# @smy
+    #Sam @sm
+    #Sammy @smy
   }
   {
-    % #Sam# @sm-t
-    % #Sammy# @smy-t
+    #Sam @sm-t
+    #Sammy @smy-t
     $they/them
     &-- a person
   }
   {
-    % #Sam# @sm-h
-    % #Sammy# @smy-h
+    #Sam @sm-h
+    #Sammy @smy-h
     $he/him
     &-- a person
   }
   {
-    % #Sam# @sm-s
-    % #Sammy# @smy-s
+    #Sam @sm-s
+    #Sammy @smy-s
     $she/her
     &-- a person
   }
@@ -230,11 +246,13 @@ entries:
 
 ---
 
-#### 4.1.4 - Templates are how the tool converts entries into AutoHotkey macros
+#### 4.1.5 - Templates region
 
-In order for Petrichor to know what format(s) you want the macros in your script to have, you need to provide templates for them.
+This region is required, and it must come after the entries region.
 
-##### 4.1.4.1 - Templates must use the same basic structure in order for the generated script to work
+Templates are how the tool converts entries into AutoHotkey macros. In order for Petrichor to know what format(s) you want the macros in your script to have, you need to provide templates for them.
+
+##### 4.1.5.1 - Templates must use the same basic structure in order for the generated script to work
 
 All templates have to start with 2 colons `::`, a string of text including an at sign `@` representing the tag, then 2 more colons `::`.
 
@@ -242,16 +260,16 @@ The tag string can be anything you want, as long as it contains at least one at 
 
 If this is not followed, the generated script wont work, even though Petrichor will run without errors.
 
-Example:
+**Example:**
 
-```
+```ptcr
 templates:
 {
   ::@:: ← the rest of the template must come after this
 }
 ```
 
-##### 4.1.4.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything
+##### 4.1.5.2 - Templates must contain marker symbols for the tool to replace in order for them to do anything
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -262,14 +280,14 @@ Below is a list of the marker symbols and the fields they will be replaced by wh
 - `$ → pronoun`
 - `& → decoration`
 
-Example:
+**Example:**
 
-```
+```ptcr
 entries:
 {
   {
-    % #Sam# @sm
-    % #Sammy# @smy
+    #Sam @sm
+    #Sammy @smy
     $they/them
     &-- a person
   }
@@ -279,25 +297,23 @@ templates:
 {
   ::@::# ($) | [&]
 }
-```
 
-This produces this output file:
+#: MACROS GENERATED FROM INPUT:
 
-```
 ::sm::Sam (they/them) | [-- a person]
 ::smy::Sammy (they/them) | [-- a person]
 ```
+****
+##### 4.1.5.3 - You can use each marker symbol in a template as many times as you want
 
-##### 4.1.4.3 - You can use each marker symbol in a template as many times as you want
+**Example:**
 
-Example:
-
-```
+```ptcr
 entries:
 {
   {
-    % #Sam# @sm
-    % #Sammy# @smy
+    #Sam @sm
+    #Sammy @smy
     $they/them
     & is a person
   }
@@ -307,27 +323,25 @@ templates:
 {
   ::@@::# ($) | [#&]
 }
-```
 
-This produces this output file:
+#: MACROS GENERATED FROM INPUT:
 
-```
 ::smsm::Sam (they/them) | [Sam is a person]
 ::smysmy::Sammy (they/them) | [Sammy is a person]
 ```
 
-##### 4.1.4.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced
+##### 4.1.5.4 - You can use a backslash `\`, aka an "escape character", to use marker symbols without them being replaced
 
 Note that you can apply an escape character to a backslash in order to make it print literally.
 
-Example:
+**Example:**
 
-```
+```ptcr
 entries:
 {
   {
-    % #Sam# @sm
-    % #Sammy# @smy
+    #Sam @sm
+    #Sammy @smy
     $they/them
     &a person
   }
@@ -337,41 +351,39 @@ templates:
 {
   ::\@@::# ($) \\ [\#&]
 }
-```
 
-This produces this output file:
+#: MACROS GENERATED FROM INPUT:
 
-```
 ::@sm::Sam (they/them) \ [#a person]
 ::@smy::Sammy (they/them) \ [#a person]
 ```
 
-##### 4.1.4.5 - The templates region can have as many templates as you want
+##### 4.1.5.5 - The templates region can have as many templates as you want
 
 Although templates dont have to be unique, repeating a template will generate duplicate macros, which could break the generated script.
 
-Example:
+**Example:**
 
-```
+```ptcr
 entries:
 {
   {
-    % #Sam# @sm
-    % #Sammy# @smy
+    #Sam @sm
+    #Sammy @smy
     $they/them
     &-- a person
   }
   {
-    % #Alex# @ax
+    #Alex @ax
     $it/its
     &[a person too]
   }
   {
-    % #Raven# @rvn
+    #Raven @rvn
     $thon/thons>they/them
   }
   {
-    % #Beck# @bk
+    #Beck @bk
   }
 }
 
@@ -381,11 +393,9 @@ templates:
   ::\@@-::# ($)
   ::<\@@>::# ($) | [&]
 }
-```
 
-This produces this output file:
+#: MACROS GENERATED FROM INPUT:
 
-```
 ::@sm::Sam
 ::@sm-::Sam (they/them)
 ::<@sm>::Sam (they/them) | [-- a person]
@@ -411,7 +421,7 @@ This produces this output file:
 
 It's easier to write a batch script (.bat file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
 
-Example:
+**Example:**
 
 ```
 {path to tool folder}\Petrichor\
@@ -433,7 +443,7 @@ To generate an AutoHotkey shortcut script, call Petrichor with the command argum
 
 Add the `--inputFile` option to the `generateAHKShortcutScript` command and pass the path to the input file after it. You must include the path and the file extension for the input file. Relative file paths can be used (see 4.2.3).
 
-Example:
+**Example:**
 
 ```
 {path to tool folder}\Petrichor\
