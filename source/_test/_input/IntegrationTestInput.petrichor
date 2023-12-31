@@ -1,14 +1,15 @@
 #: top-level line comment
 
-metadata:
+metadata: #: inline comment in region name
 {
-	minimum-version: 0.9
+	#: line comment in metadata region body
+	minimum-version: 0.9 #: inline comment in metadata region body
 }
 
-module-options: #: inline comment in region name
+module-options:
 {
-	#: line comment in metadata region
-	default-icon: ../_input/IconDefault.ico #: inline comment in metadata region body
+	#: line comment in module options region body
+	default-icon: ../_input/IconDefault.ico #: inline comment in module options region body
 	suspend-icon: "../_input/IconSuspend.ico"
 	reload-shortcut: #r
 	suspend-shortcut: #s
@@ -16,7 +17,7 @@ module-options: #: inline comment in region name
 
 entries:
 {
-	#: line comment before entries in entries region
+	#: line comment before entries in entries region body
 	{
 		#Sam @sm #: inline comment in entries region body
 		#Sammy @smy
@@ -24,7 +25,7 @@ entries:
 		&-> a person
 	}
 	
-	#: line comment between entries in entries region
+	#: line comment between entries in entries region body
 	{
 		#ALEX @AX
 		$IT/ITS
@@ -34,7 +35,7 @@ entries:
 
 templates:
 {
-	#: line comment in templates region
+	#: line comment in templates region body
 	::\@@:: \## #: inline comment in templates region body
 	::\@@-:: \## \$($)
 	::\@@/:: \## \&&

@@ -1,11 +1,11 @@
 #: top-level line comment
 
-metadata:
+metadata: #: inline comment in region name
 {
 	#: region body
 }
 
-module-options: #: inline comment in region name
+module-options:
 {
 	#: region body
 }
