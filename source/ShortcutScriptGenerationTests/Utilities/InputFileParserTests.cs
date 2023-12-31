@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Exceptions;
+using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
@@ -16,12 +18,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
-			public static int EntriesRegionLength => 15;
+			public static int EntriesRegionLength => 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
 				"::tag::name pronoun decorator",
 			};
+			public static int MetadataRegionLength => 3;
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static int ModuleOptionsRegionLength => 3;
 			public static string[] Templates => new[]
@@ -45,6 +48,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				HasParsedMaxAllowedRegions = true;
 				LinesParsed = TestData.EntriesRegionLength;
 				return TestData.Entries;
+			}
+		}
+
+		public class MetadataRegionParserStub : IMetadataRegionParser
+		{
+			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int LinesParsed { get; private set; } = 0;
+			public int MaxRegionsAllowed { get; private set; } = 1;
+			public static string RegionIsValidMessage => Common.Utilities.MetadataRegionParser.RegionIsValidMessage;
+			public int RegionsParsed { get; private set; } = 0;
+
+			public string Parse( string[] regionData )
+			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = true;
+				LinesParsed = TestData.MetadataRegionLength;
+				return RegionIsValidMessage;
 			}
 		}
 
@@ -81,11 +101,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntriesRegionParserStub? entriesRegionParserStub;
-		public InputFileParser? inputFileParser;
-		public Mock<IMacroGenerator>? macroGeneratorMock;
-		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
-		public TemplatesRegionParserStub? templatesRegionParserStub;
+		public EntriesRegionParserStub EntriesRegionParser { get; set; } = new();
+		public InputFileParser? parser;
+		public Mock<IMacroGenerator> MacroGenerator { get; set; } = new();
+		public MetadataRegionParserStub MetadataRegionParser { get; set; } = new();
+		public ModuleOptionsRegionParserStub ModuleOptionsRegionParser { get; set; } = new();
+		public TemplatesRegionParserStub TemplatesRegionParser { get; set; } = new();
 
 
 		[TestInitialize]
@@ -93,35 +114,63 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			entriesRegionParserStub = new();
-			macroGeneratorMock = new();
-			_ = macroGeneratorMock
+			EntriesRegionParser = new();
+			MacroGenerator = new();
+			_ = MacroGenerator
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
-			moduleOptionsRegionParserStub = new();
-			templatesRegionParserStub = new();
+			MetadataRegionParser = new();
+			ModuleOptionsRegionParser = new();
+			TemplatesRegionParser = new();
 
-			inputFileParser = new InputFileParser( moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
+			parser = new InputFileParser( MetadataRegionParser, ModuleOptionsRegionParser, EntriesRegionParser, TemplatesRegionParser, MacroGenerator.Object );
 		}
 
 
 		[TestMethod]
-		[DataRow( "ShortcutScriptInputParser_Valid.txt" )]
-		public void ParseFile_Test_Success( string fileName )
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string fileName )
 		{
 			var expected = TestData.Input;
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			var actual = inputFileParser!.Parse( filePath );
+			var actual = parser!.Parse( filePath );
 			Assert.AreEqual( expected, actual );
+		}
+
+		public static IEnumerable<object[]> Parse_Test_Success_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_Valid.petrichor" };
+			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
-		[DataRow( "nonexistent.txt" )]
-		public void ParseFile_Test_ThrowsFileNotFoundException( string fileName )
+		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
+			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
 		{
-			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = inputFileParser!.Parse( filePath );
+			get
+			{
+				yield return new object[] { "nonexistent.txt" };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_FileRegionException( string fileName )
+			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_NoMetadataRegion.petrichor" };
+			}
 		}
 	}
 }

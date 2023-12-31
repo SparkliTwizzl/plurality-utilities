@@ -111,14 +111,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ScriptGenerator? scriptGenerator;
+		public ScriptGenerator? generator;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			scriptGenerator = new ScriptGenerator( TestData.Input );
+			generator = new( TestData.Input );
 		}
 
 
@@ -126,7 +126,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var outputFile = $@"{TestDirectories.TestOutputDirectory}\{nameof( ScriptGenerator )}_{nameof( Generate_Test_Success )}.ahk";
-			scriptGenerator!.Generate( outputFile );
+			generator!.Generate( outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );

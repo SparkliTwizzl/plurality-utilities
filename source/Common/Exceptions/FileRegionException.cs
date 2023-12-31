@@ -1,4 +1,4 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.Exceptions
+﻿namespace Petrichor.Common.Exceptions
 {
 	public class FileRegionException : Exception
 	{

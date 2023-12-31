@@ -35,11 +35,12 @@ namespace Petrichor.Common.Containers
 			var doesTokenContainNoValue = nameEndsAt < 0;
 			if ( doesTokenContainNoValue )
 			{
-				Name = rawToken;
+				Name = rawToken.Trim();
 				return;
 			}
 
 			Name = rawToken[ 0..nameEndsAt ].Trim();
+
 			var valueStartsAt = nameEndsAt + 1;
 			Value = rawToken[ valueStartsAt.. ].Trim();
 		}

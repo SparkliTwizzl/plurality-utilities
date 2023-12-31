@@ -1,0 +1,43 @@
+#: top-level line comment
+
+metadata: #: inline comment in region name
+{
+	#: line comment in metadata region body
+	minimum-version: 0.9 #: inline comment in metadata region body
+}
+
+module-options:
+{
+	#: line comment in module options region body
+	default-icon: ../_input/IconDefault.ico #: inline comment in module options region body
+	suspend-icon: "../_input/IconSuspend.ico"
+	reload-shortcut: #r
+	suspend-shortcut: #s
+}
+
+entries:
+{
+	#: line comment before entries in entries region body
+	{
+		#Sam @sm #: inline comment in entries region body
+		#Sammy @smy
+		$they/them
+		&-> a person
+	}
+	
+	#: line comment between entries in entries region body
+	{
+		#ALEX @AX
+		$IT/ITS
+		&[A PERSON TOO]
+	}
+}
+
+templates:
+{
+	#: line comment in templates region body
+	::\@@:: \## #: inline comment in templates region body
+	::\@@-:: \## \$($)
+	::\@@/:: \## \&&
+	::\@@-/:: \## \$($) \&&
+}
