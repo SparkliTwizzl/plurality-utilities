@@ -2,6 +2,9 @@
 {
 	public static class AppVersion
 	{
+		private static string AnyVersion => "*";
+
+
 		public static string Current =>
 #if DEBUG
 			DevelopmentAppVersion;
@@ -26,12 +29,13 @@
 		public static string[] SupportedPatchVersions => new[]
 		{
 			Patch,
+			AnyVersion,
 		};
 		public static string[] SupportedPreviewVersions => new[]
 		{
 			Preview,
+			AnyVersion,
 		};
-		public static string VersionWildcard => "*";
 
 
 
@@ -47,13 +51,13 @@
 			var versionComponents = version.Split( '.' );
 			var major = versionComponents.Length > 0 ? versionComponents[ 0 ] : string.Empty;
 			var minor = versionComponents.Length > 1 ? versionComponents[ 1 ] : string.Empty;
-			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : string.Empty;
-			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : string.Empty;
+			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : AnyVersion;
+			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : AnyVersion;
 
-			var isMajorSupported = SupportedMajorVersions.Contains( major ) || SupportedMajorVersions.Contains( VersionWildcard );
-			var isMinorSupported = SupportedMinorVersions.Contains( minor ) || SupportedMinorVersions.Contains( VersionWildcard );
-			var isPatchSupported = SupportedPatchVersions.Contains( patch ) || SupportedPatchVersions.Contains( VersionWildcard );
-			var isPreviewSupported = SupportedPreviewVersions.Contains( preview ) || SupportedPreviewVersions.Contains( VersionWildcard );
+			var isMajorSupported = SupportedMajorVersions.Contains( major );
+			var isMinorSupported = SupportedMinorVersions.Contains( minor );
+			var isPatchSupported = SupportedPatchVersions.Contains( patch );
+			var isPreviewSupported = SupportedPreviewVersions.Contains( preview );
 			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
 		}
 	}

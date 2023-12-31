@@ -35,6 +35,18 @@ namespace Petrichor.Common.Utilities.Tests
 				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string[] RegionData_UnspecifiedPatchVersion => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnspecifiedPatch}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_UnspecifiedPatchAndPreviewVersion => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnspecifiedPatchAndPreview}",
+				CommonSyntax.CloseBracketToken,
+			};
 			public static string[] RegionData_UnsupportedMajorVersion => new[]
 			{
 				CommonSyntax.OpenBracketToken,
@@ -65,6 +77,8 @@ namespace Petrichor.Common.Utilities.Tests
 				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string VersionNumber_UnspecifiedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}";
+			public static string VersionNumber_UnspecifiedPatchAndPreview => $"{AppVersion.Major}.{AppVersion.Minor}";
 			public static string VersionNumber_UnsupportedMajor => $"void.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";
 			public static string VersionNumber_UnsupportedMinor => $"{AppVersion.Major}.void.{AppVersion.Patch}{AppVersion.Preview}";
 			public static string VersionNumber_UnsupportedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.void{AppVersion.Preview}";
@@ -84,11 +98,22 @@ namespace Petrichor.Common.Utilities.Tests
 
 
 		[TestMethod]
-		public void Parse_Test_Success()
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string[] regionData )
 		{
 			var expected = MetadataRegionParser.RegionIsValidMessage;
-			var actual = Parser.Parse( TestData.RegionData_Valid );
+			var actual = Parser.Parse( regionData );
 			Assert.AreEqual( expected, actual );
+		}
+
+		public static IEnumerable<object[]> Parse_Test_Success_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_Valid };
+				yield return new object[] { TestData.RegionData_UnspecifiedPatchVersion };
+				yield return new object[] { TestData.RegionData_UnspecifiedPatchAndPreviewVersion };
+			}
 		}
 
 		[TestMethod]
@@ -101,7 +126,7 @@ namespace Petrichor.Common.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		[DynamicData( nameof(Parse_Test_Throws_TokenException_Data), DynamicDataSourceType.Property )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
@@ -115,7 +140,7 @@ namespace Petrichor.Common.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( VersionNotFoundException ) )]
-		[DynamicData( nameof(Parse_Test_Throws_VersionNotFoundException_Data), DynamicDataSourceType.Property )]
+		[DynamicData( nameof( Parse_Test_Throws_VersionNotFoundException_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Throws_VersionNotFoundException( string[] regionData ) => _ = Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_VersionNotFoundException_Data
