@@ -1,0 +1,16 @@
+#: top-level line comment
+
+module-options: #: inline comment in region name
+{
+	#: region body
+}
+
+entries:
+{
+	#: region body
+}
+
+templates:
+{
+	#: region body
+}

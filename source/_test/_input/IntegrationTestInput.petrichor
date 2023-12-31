@@ -4,7 +4,7 @@ module-options: #: inline comment in region name
 {
 	#: line comment in metadata region
 	default-icon: ../_input/IconDefault.ico #: inline comment in metadata region body
-	suspend-icon: ../_input/IconSuspend.ico
+	suspend-icon: "../_input/IconSuspend.ico"
 	reload-shortcut: #r
 	suspend-shortcut: #s
 }

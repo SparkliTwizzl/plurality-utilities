@@ -16,7 +16,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
 			};
-			public static int EntriesRegionLength => 15;
+			public static int EntriesRegionLength => 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
@@ -106,13 +106,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		[DataRow( "ShortcutScriptInputParser_Valid.txt" )]
-		public void ParseFile_Test_Success( string fileName )
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string fileName )
 		{
 			var expected = TestData.Input;
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			var actual = inputFileParser!.Parse( filePath );
 			Assert.AreEqual( expected, actual );
+		}
+
+		public static IEnumerable<object[]> Parse_Test_Success_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_{nameof( Parse_Test_Success )}.petrichor" };
+			}
 		}
 
 		[TestMethod]
