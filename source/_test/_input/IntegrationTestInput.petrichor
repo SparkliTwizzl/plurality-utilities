@@ -1,5 +1,10 @@
 #: top-level line comment
 
+metadata:
+{
+	minimum-version: 0.9
+}
+
 module-options: #: inline comment in region name
 {
 	#: line comment in metadata region
