@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
@@ -140,17 +141,36 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileParser )}_{nameof( Parse_Test_Success )}.petrichor" };
+				yield return new object[] { $"{nameof( InputFileParser )}_Valid.petrichor" };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
-		[DataRow( "nonexistent.txt" )]
+		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
+			=> _ = inputFileParser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
 		{
-			var filePath = TestUtilities.LocateInputFile( fileName );
-			_ = inputFileParser!.Parse( filePath );
+			get
+			{
+				yield return new object[] { "nonexistent.txt" };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_FileRegionException( string fileName )
+			=> _ = inputFileParser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_NoMetadataRegion.petrichor" };
+			}
 		}
 	}
 }

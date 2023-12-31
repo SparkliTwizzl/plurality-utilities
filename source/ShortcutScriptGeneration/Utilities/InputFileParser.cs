@@ -96,6 +96,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						{
 							throw new RegionNotClosedException( $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"" );
 						}
+
+						if ( MetadataRegionParser.RegionsParsed == 0 )
+						{
+							throw new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" );
+						}
+
 						break;
 					}
 
