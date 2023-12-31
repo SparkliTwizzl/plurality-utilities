@@ -1,4 +1,6 @@
 ﻿using Petrichor.Common.Enums;
+using Petrichor.Common.Exceptions;
+using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -12,14 +14,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private IEntriesRegionParser EntriesRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
+		private IMetadataRegionParser MetadataRegionParser { get; set; }
 		private IModuleOptionsRegionParser ModuleOptionsRegionParser { get; set; }
 		private ITemplatesRegionParser TemplatesRegionParser { get; set; }
 
 
-		public InputFileParser( IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
+		public InputFileParser( IMetadataRegionParser metadataRegionParser, IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntriesRegionParser = entriesRegionParser;
 			MacroGenerator = macroGenerator;
+			MetadataRegionParser = metadataRegionParser;
 			ModuleOptionsRegionParser = moduleOptionsRegionParser;
 			TemplatesRegionParser = templatesRegionParser;
 		}
@@ -43,6 +47,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var expectedTokens = new string[]
 			{
 				ShortcutScriptGenerationSyntax.EntriesRegionToken,
+				CommonSyntax.MetadataRegionToken,
 				ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken,
 				ShortcutScriptGenerationSyntax.TemplatesRegionToken,
 			};
@@ -71,6 +76,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 							i += ModuleOptionsRegionParser.LinesParsed;
 						}
 
+						else if ( qualifiedToken.Value == CommonSyntax.MetadataRegionToken )
+						{
+							++i;
+							var dataTrimmedToMetadata = data[ i.. ];
+							_ = MetadataRegionParser.Parse( dataTrimmedToMetadata );
+							i += MetadataRegionParser.LinesParsed;
+						}
+
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
 							++i;
@@ -86,15 +99,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						break;
 					}
 
-					case StringTokenQualifiers.BlankLine:
-					{
-						break;
-					}
-
 					case StringTokenQualifiers.Unknown:
-					default:
 					{
-						throw new UnknownTokenException( $"An unknown token ( \"{qualifiedToken.Value}\" ) was read when a region name was expected" );
+						throw new TokenException( $"An unknown token ( \"{qualifiedToken.Value}\" ) was read when a region name was expected" );
 					}
 				}
 			}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.TestShared.Utilities;

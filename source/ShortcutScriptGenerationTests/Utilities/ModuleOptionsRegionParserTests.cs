@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.TestShared.Utilities;
 
@@ -97,8 +97,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( UnknownTokenException ) )]
-		public void Parse_Test_ThrowsUnknownTokenException()
+		[ExpectedException( typeof( TokenException ) )]
+		public void Parse_Test_ThrowsTokenException()
 			=> _ = moduleOptionsRegionParser!.Parse( TestData.RegionData_UnknownToken );
 
 		[TestMethod]

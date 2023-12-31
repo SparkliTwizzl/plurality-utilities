@@ -1,4 +1,5 @@
 ﻿using Petrichor.Common.Enums;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;

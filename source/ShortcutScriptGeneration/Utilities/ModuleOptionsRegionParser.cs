@@ -1,9 +1,9 @@
 ﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
 
 
@@ -88,7 +88,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					throw new UnknownTokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
+					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
 				}
 
 				if ( isParsingFinished )

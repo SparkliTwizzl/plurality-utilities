@@ -1,4 +1,5 @@
-﻿using Petrichor.Logging;
+﻿using Petrichor.Common.Utilities;
+using Petrichor.Logging;
 using Petrichor.Logging.Enums;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Utilities;
@@ -28,11 +29,12 @@ namespace Petrichor.App.Utilities
 			try
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
+				var metadataRegionParser = new MetadataRegionParser();
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
 				var entriesRegionParser = new EntriesRegionParser();
 				var templatesRegionParser = new TemplatesRegionParser();
 				var macroGenerator = new MacroGenerator();
-				var inputFileParser = new InputFileParser( moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
+				var inputFileParser = new InputFileParser( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
 				var input = inputFileParser.Parse( InputFilePath );
 				var scriptGenerator = new ScriptGenerator( input );

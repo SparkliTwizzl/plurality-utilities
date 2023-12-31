@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
@@ -49,6 +50,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
+		public class MetadataRegionParserStub : IMetadataRegionParser
+		{
+			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public int LinesParsed { get; private set; } = 0;
+			public int MaxRegionsAllowed { get; private set; } = 1;
+			public static string RegionIsValidMessage => MetadataRegionParser.RegionIsValidMessage;
+			public int RegionsParsed { get; private set; } = 0;
+
+			public string Parse( string[] regionData )
+			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = true;
+				LinesParsed = TestData.MetadataRegionLength;
+				return RegionIsValidMessage;
+			}
+		}
+
 		public class ModuleOptionsRegionParserStub : IModuleOptionsRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -85,6 +103,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public EntriesRegionParserStub? entriesRegionParserStub;
 		public InputFileParser? inputFileParser;
 		public Mock<IMacroGenerator>? macroGeneratorMock;
+		public MetadataRegionParserStub? metadataRegionParserStub;
 		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
 		public TemplatesRegionParserStub? templatesRegionParserStub;
 
@@ -99,10 +118,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			_ = macroGeneratorMock
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
+			metadataRegionParserStub = new();
 			moduleOptionsRegionParserStub = new();
 			templatesRegionParserStub = new();
 
-			inputFileParser = new InputFileParser( moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
+			inputFileParser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 
