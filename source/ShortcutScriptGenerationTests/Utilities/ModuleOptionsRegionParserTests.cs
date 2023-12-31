@@ -54,7 +54,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ModuleOptionsRegionParser? moduleOptionsRegionParser;
+		public ModuleOptionsRegionParser? moduleOptionsRegionParser; //TODO convert to auto-implemented property, rename to Parser
 
 
 		[TestInitialize]
@@ -83,11 +83,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
-		[DynamicData( nameof( Parse_Test_ThrowsBracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_ThrowsBracketMismatchException( string[] regionData )
+		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketMismatchException( string[] regionData )
 			=> _ = moduleOptionsRegionParser!.Parse( regionData );
 
-		public static IEnumerable<object[]> Parse_Test_ThrowsBracketMismatchException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
 		{
 			get
 			{
@@ -98,12 +98,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_ThrowsTokenException()
+		public void Parse_Test_Throws_TokenException()
 			=> _ = moduleOptionsRegionParser!.Parse( TestData.RegionData_UnknownToken );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
-		public void Parse_Test_ThrowsFileRegionException()
+		public void Parse_Test_Throws_FileRegionException()
 		{
 			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 			_ = moduleOptionsRegionParser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );

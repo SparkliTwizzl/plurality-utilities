@@ -100,12 +100,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntriesRegionParserStub? entriesRegionParserStub;
-		public InputFileParser? inputFileParser;
-		public Mock<IMacroGenerator>? macroGeneratorMock;
-		public MetadataRegionParserStub? metadataRegionParserStub;
-		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
-		public TemplatesRegionParserStub? templatesRegionParserStub;
+		public EntriesRegionParserStub? entriesRegionParserStub; //TODO convert to auto-implemented property
+		public InputFileParser? inputFileParser; //TODO convert to auto-implemented property, rename to Parser
+		public Mock<IMacroGenerator>? macroGeneratorMock; //TODO convert to auto-implemented property
+		public MetadataRegionParserStub? metadataRegionParserStub; //TODO convert to auto-implemented property
+		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub; //TODO convert to auto-implemented property
+		public TemplatesRegionParserStub? templatesRegionParserStub; //TODO convert to auto-implemented property
 
 
 		[TestInitialize]
@@ -147,7 +147,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
 		[DataRow( "nonexistent.txt" )]
-		public void ParseFile_Test_ThrowsFileNotFoundException( string fileName )
+		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
 		{
 			var filePath = TestUtilities.LocateInputFile( fileName );
 			_ = inputFileParser!.Parse( filePath );

@@ -111,7 +111,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ScriptGenerator? scriptGenerator;
+		public ScriptGenerator? scriptGenerator; //TODO convert to auto-implemented property, rename to Generator
 
 
 		[TestInitialize]

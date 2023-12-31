@@ -30,7 +30,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public MacroGenerator? macroGenerator;
+		public MacroGenerator? macroGenerator; //TODO convert to auto-implemented property, rename to Generator
 
 
 		[TestInitialize]

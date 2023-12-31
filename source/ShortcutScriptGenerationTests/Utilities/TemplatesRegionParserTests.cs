@@ -35,7 +35,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public TemplatesRegionParser? templatesRegionParser;
+		public TemplatesRegionParser? templatesRegionParser; //TODO convert to auto-implemented property, rename to Parser
 
 
 		[TestInitialize]
@@ -56,12 +56,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
-		public void Parse_Test_ThrowsEscapeCharacterMismatchException()
+		public void Parse_Test_Throws_EscapeCharacterMismatchException()
 			=> _ = templatesRegionParser!.Parse( TestData.RegionData_TrailingExcapeCharacter );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
-		public void Parse_Test_ThrowsFileRegionException()
+		public void Parse_Test_Throws_FileRegionException()
 		{
 			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid );
 			_ = templatesRegionParser!.Parse( TestData.RegionData_Valid );
