@@ -20,57 +20,55 @@ namespace Petrichor.Common.Utilities.Tests
 			};
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 			};
 			public static string[] RegionData_TooManyMinimumVersionTokens => new[]
 			{
 				$"{CommonSyntax.OpenBracketToken} {CommonSyntax.LineCommentToken} inline comment",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
+				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_UnsupportedMajorVersion_TooHigh => new[]
+			public static string[] RegionData_UnsupportedMajorVersion => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedMajor}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_UnsupportedMajorVersion_TooLow => new[]
+			public static string[] RegionData_UnsupportedMinorVersion => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedMinor}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_UnsupportedMinorVersion_TooHigh => new[]
+			public static string[] RegionData_UnsupportedPatchVersion => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedPatch}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_UnsupportedPatchVersion_TooHigh => new[]
+			public static string[] RegionData_UnsupportedPreviewVersion => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] RegionData_UnsupportedPreReleaseVersion_TooHigh => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedPreview}",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_Valid => new[]
 			{
 				$"{CommonSyntax.OpenBracketToken} {CommonSyntax.LineCommentToken} inline comment",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppInfo.AppVersion}",
+				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string VersionNumber_UnsupportedMajor => $"void.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedMinor => $"{AppVersion.Major}.void.{AppVersion.Patch}{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.void{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedPreview => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}.void";
 		}
 
 
@@ -110,6 +108,7 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			get
 			{
+				yield return new object[] { TestData.RegionData_BlankVersion };
 				yield return new object[] { TestData.RegionData_TooManyMinimumVersionTokens };
 			}
 		}
@@ -123,12 +122,10 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { TestData.RegionData_BlankVersion };
-				yield return new object[] { TestData.RegionData_UnsupportedMajorVersion_TooHigh };
-				yield return new object[] { TestData.RegionData_UnsupportedMajorVersion_TooLow };
-				yield return new object[] { TestData.RegionData_UnsupportedMinorVersion_TooHigh };
-				yield return new object[] { TestData.RegionData_UnsupportedPatchVersion_TooHigh };
-				yield return new object[] { TestData.RegionData_UnsupportedPreReleaseVersion_TooHigh };
+				yield return new object[] { TestData.RegionData_UnsupportedMajorVersion };
+				yield return new object[] { TestData.RegionData_UnsupportedMinorVersion };
+				yield return new object[] { TestData.RegionData_UnsupportedPatchVersion };
+				yield return new object[] { TestData.RegionData_UnsupportedPreviewVersion };
 			}
 		}
 

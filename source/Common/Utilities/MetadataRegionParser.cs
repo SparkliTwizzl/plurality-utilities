@@ -2,6 +2,7 @@
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.Logging;
+using System.Data;
 
 
 namespace Petrichor.Common.Utilities
@@ -100,6 +101,11 @@ namespace Petrichor.Common.Utilities
 			if ( string.IsNullOrEmpty( version ) )
 			{
 				throw new TokenException( $"{CommonSyntax.MinimumVersionTokenName} token cannot be blank" );
+			}
+
+			if ( !AppVersion.IsVersionSupported( version ) )
+			{
+				throw new VersionNotFoundException( $"Input file version ({version}) is not supported by this version of {AppInfo.AppName}" );
 			}
 		}
 	}
