@@ -88,9 +88,13 @@ This token is required. It specifies the minimum Petrichor version required in o
 ```ptcr
 metadata:
 {
-    minimum-version: [version-number]
+    minimum-version: major.minor.patch.preview
 }
 ```
+
+Major and minor version must be specified. If patch or patch and preview versions are blank, they are assumed to be any version.
+
+To explicitly mark a version as "any version", set it to `*`.
 
 ---
 
