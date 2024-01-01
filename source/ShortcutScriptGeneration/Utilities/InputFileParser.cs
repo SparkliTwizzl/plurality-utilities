@@ -11,9 +11,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputFileParser
 	{
-		private int IndentLevel { get; set; } = 0;
-
-
 		private IEntriesRegionParser EntriesRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
 		private IMetadataRegionParser MetadataRegionParser { get; set; }
@@ -51,17 +48,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
 				{
-					++IndentLevel;
+					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched open bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
 				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
 				{
-					--IndentLevel;
-
-					if ( IndentLevel < 0 )
-					{
-						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" ) );
-					}
+					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntriesRegionTokenName )
@@ -101,20 +93,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					ExceptionLogger.LogAndThrow( new TokenException( $"An unknown token ( \"{rawToken}\" ) was read when a region name was expected" ) );
 				}
 
-				if ( IndentLevel > 0 )
-				{
-					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" ) );
-				}
-
 				if ( MetadataRegionParser.RegionsParsed == 0 )
 				{
 					ExceptionLogger.LogAndThrow( new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" ) );
 				}
-			}
-
-			if ( IndentLevel != 0 )
-			{
-				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing input file \"{filePath}\"" ) );
 			}
 
 			input.Macros = MacroGenerator.Generate( input );
