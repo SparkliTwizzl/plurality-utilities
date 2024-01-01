@@ -79,7 +79,7 @@ namespace Petrichor.Common.Utilities
 
 				if ( isParsingFinished )
 				{
-					LinesParsed = i;
+					LinesParsed = i + 1;
 					break;
 				}
 			}

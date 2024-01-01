@@ -83,7 +83,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				if ( isParsingFinished )
 				{
-					LinesParsed = i;
+					LinesParsed = i + 1;
 					break;
 				}
 			}
