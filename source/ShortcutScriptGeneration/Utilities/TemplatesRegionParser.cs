@@ -12,6 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
+		private static string RegionName => ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName;
 		private StringTokenParser TokenParser { get; set; } = new();
 
 
@@ -23,17 +24,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public string[] Parse( string[] regionData )
 		{
-			var taskMessage = $"Parse region: {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName}";
+			var taskMessage = $"Parse region: {RegionName}";
 			Log.TaskStart( taskMessage );
-			
+
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions" );
+				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
 			}
 
 			var templates = new List<string>();
 			var expectedTokens = Array.Empty<string>();
-			for ( var i = 0; i < regionData.Length ; ++i )
+			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
 				var token = TokenParser.ParseToken( regionData[ i ], expectedTokens );
 				var isParsingFinished = false;

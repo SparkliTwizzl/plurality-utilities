@@ -12,6 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
+		private static string RegionName => ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -22,12 +23,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ScriptModuleOptions Parse( string[] regionData )
 		{
-			var taskMessage = $"Parse region: {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName}";
+			var taskMessage = $"Parse region: {RegionName}";
 			Log.TaskStart( taskMessage );
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions" );
+				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
 			}
 
 			var moduleOptions = new ScriptModuleOptions();
@@ -53,7 +54,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
+						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" );
 					}
 
 					if ( IndentLevel == 0 )
@@ -88,7 +89,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
+					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
 				}
 
 				if ( isParsingFinished )
@@ -100,7 +101,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} region" );
+				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" );
 			}
 
 			++RegionsParsed;
