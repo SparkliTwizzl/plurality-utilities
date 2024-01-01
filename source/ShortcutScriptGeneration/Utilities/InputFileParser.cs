@@ -60,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \" {filePath} \"" );
+						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" );
 					}
 				}
 
