@@ -19,7 +19,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				Entry,
 			};
 			public static ScriptEntry Entry => new(
-					new List<ShortcutScriptIdentity>
+					new List<ScriptIdentity>
 					{
 						new(EntryName, EntryTag),
 					},

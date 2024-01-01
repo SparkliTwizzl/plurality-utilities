@@ -109,7 +109,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return entry;
 		}
 
-		private ShortcutScriptIdentity ParseName( string token )
+		private ScriptIdentity ParseName( string token )
 		{
 			var components = token.Split( '@' );
 			if ( components.Length != 2 )
@@ -119,7 +119,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			var name = components[ 0 ].Trim();
 			var tag = components[ 1 ].Trim();
-			var identity = new ShortcutScriptIdentity( name, tag );
+			var identity = new ScriptIdentity( name, tag );
 			return identity;
 		}
 	}

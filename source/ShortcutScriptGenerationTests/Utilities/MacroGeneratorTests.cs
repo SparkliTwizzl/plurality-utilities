@@ -13,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new List<ShortcutScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ScriptEntry( new List<ScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
 			};
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]

@@ -14,7 +14,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public struct TestData
 		{
 			public static ScriptEntry Entry_AllOptionalData => new(
-					new List<ShortcutScriptIdentity>
+					new List<ScriptIdentity>
 					{
 						new(EntryNameValue, EntryTagValue),
 						new(EntryNameValue, EntryTagValue),
@@ -23,7 +23,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 					EntryDecorationValue
 				);
 			public static ScriptEntry Entry_NoOptionalData => new(
-					new List<ShortcutScriptIdentity>
+					new List<ScriptIdentity>
 					{
 						new( EntryNameValue, EntryTagValue ),
 					},

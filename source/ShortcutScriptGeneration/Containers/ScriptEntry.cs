@@ -2,13 +2,13 @@
 {
 	public sealed class ScriptEntry : IEquatable<ScriptEntry>
 	{
-		public List<ShortcutScriptIdentity> Identities { get; set; } = new List<ShortcutScriptIdentity>();
+		public List<ScriptIdentity> Identities { get; set; } = new List<ScriptIdentity>();
 		public string Pronoun { get; set; } = string.Empty;
 		public string Decoration { get; set; } = string.Empty;
 
 
 		public ScriptEntry() { }
-		public ScriptEntry( List<ShortcutScriptIdentity> identities, string pronoun, string decoration )
+		public ScriptEntry( List<ScriptIdentity> identities, string pronoun, string decoration )
 		{
 			Identities = identities;
 			Pronoun = pronoun;
