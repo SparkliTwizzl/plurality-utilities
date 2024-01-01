@@ -38,8 +38,8 @@ entries:
 templates:
 {
 	#: line comment in templates region body
-	::\@@:: \## #: inline comment in templates region body
-	::\@@-:: \## \$($)
-	::\@@/:: \## \&&
-	::\@@-/:: \## \$($) \&&
+	template: ::\@@:: \## #: inline comment in templates region body
+	template: ::\@@-:: \## \$($)
+	template: ::\@@/:: \## \&&
+	template: ::\@@-/:: \## \$($) \&&
 }

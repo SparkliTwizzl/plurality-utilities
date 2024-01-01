@@ -25,6 +25,8 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string SuspendIconFilePathTokenName => "suspend-icon";
 		public static string SuspendShortcutToken => $"{SuspendShortcutTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string SuspendShortcutTokenName => "suspend-shortcut";
+		public static string TemplateToken => $"{TemplateTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string TemplateTokenName => "template";
 		public static string TemplatesRegionToken => $"{TemplatesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string TemplatesRegionTokenName => "templates";
 	}
