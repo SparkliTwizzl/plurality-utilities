@@ -1,4 +1,4 @@
-﻿using Petrichor.Common.Enums;
+﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
@@ -11,6 +11,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputFileParser
 	{
+		private int IndentLevel { get; set; } = 0;
+
+
 		private IEntriesRegionParser EntriesRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
 		private IMetadataRegionParser MetadataRegionParser { get; set; }
@@ -32,95 +35,87 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var taskMessage = $"Parse input file \"{filePath}\"";
 			Log.TaskStart( taskMessage );
-			var data = ReadFileData( filePath );
-			var input = ParseData( data );
-			Log.TaskFinish( taskMessage );
-			return input;
-		}
 
-
-		private ScriptInput ParseData( string[] data )
-		{
+			var data = File.ReadAllLines( filePath );
 			var input = new ScriptInput();
-			var tokenParser = new StringTokenParser();
-			var expectedTokens = new string[]
-			{
-				ShortcutScriptGenerationSyntax.EntriesRegionToken,
-				CommonSyntax.MetadataRegionToken,
-				ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken,
-				ShortcutScriptGenerationSyntax.TemplatesRegionToken,
-			};
 
 			for ( var i = 0 ; i < data.Length ; ++i )
 			{
 				var rawToken = data[ i ];
-				var qualifiedToken = tokenParser.ParseToken( rawToken, expectedTokens );
-				switch ( qualifiedToken.Qualifier )
+				var token = new StringToken( rawToken );
+
+				if ( token.Name == string.Empty )
 				{
-					case StringTokenQualifiers.Recognized:
+					continue;
+				}
+
+				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				{
+					++IndentLevel;
+				}
+
+				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				{
+					--IndentLevel;
+
+					if ( IndentLevel < 0 )
 					{
-						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
-						{
-							var dataTrimmedToEntries = data[ ( i + 1 ).. ];
-							input.Entries = EntriesRegionParser.Parse( dataTrimmedToEntries );
-							i += EntriesRegionParser.LinesParsed;
-						}
-
-						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
-						{
-							var dataTrimmedToModuleOptions = data[ ( i + 1 ).. ];
-							input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToModuleOptions );
-							i += ModuleOptionsRegionParser.LinesParsed;
-						}
-
-						else if ( qualifiedToken.Value == CommonSyntax.MetadataRegionToken )
-						{
-							var dataTrimmedToMetadata = data[ ( i + 1 ).. ];
-							_ = MetadataRegionParser.Parse( dataTrimmedToMetadata );
-							i += MetadataRegionParser.LinesParsed;
-						}
-
-						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
-						{
-							var dataTrimmedToTemplates = data[ ( i + 1 ).. ];
-							input.Templates = TemplatesRegionParser.Parse( dataTrimmedToTemplates );
-							i += ModuleOptionsRegionParser.LinesParsed;
-						}
-
-						if ( tokenParser.IndentLevel > 0 )
-						{
-							throw new FileRegionException( $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"" );
-						}
-
-						if ( MetadataRegionParser.RegionsParsed == 0 )
-						{
-							throw new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" );
-						}
-
-						break;
+						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \" {filePath} \"" );
 					}
+				}
 
-					case StringTokenQualifiers.Unknown:
-					{
-						throw new TokenException( $"An unknown token ( \"{qualifiedToken.Value}\" ) was read when a region name was expected" );
-					}
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntriesRegionTokenName )
+				{
+					var dataTrimmedToEntries = data[ ( i + 1 ).. ];
+					input.Entries = EntriesRegionParser.Parse( dataTrimmedToEntries );
+					i += EntriesRegionParser.LinesParsed;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName )
+				{
+					var dataTrimmedToModuleOptions = data[ ( i + 1 ).. ];
+					input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToModuleOptions );
+					i += ModuleOptionsRegionParser.LinesParsed;
+				}
+
+				else if ( token.Name == CommonSyntax.MetadataRegionTokenName )
+				{
+					var dataTrimmedToMetadata = data[ ( i + 1 ).. ];
+					_ = MetadataRegionParser.Parse( dataTrimmedToMetadata );
+					i += MetadataRegionParser.LinesParsed;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.TemplatesRegionTokenName )
+				{
+					var dataTrimmedToTemplates = data[ ( i + 1 ).. ];
+					input.Templates = TemplatesRegionParser.Parse( dataTrimmedToTemplates );
+					i += ModuleOptionsRegionParser.LinesParsed;
+				}
+
+				else
+				{
+					throw new TokenException( $"An unknown token ( \"{rawToken}\" ) was read when a region name was expected" );
+				}
+
+				if ( IndentLevel > 0 )
+				{
+					throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" );
+				}
+
+				if ( MetadataRegionParser.RegionsParsed == 0 )
+				{
+					throw new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" );
 				}
 			}
 
-			input.Macros = MacroGenerator.Generate( input );
-			return input;
-		}
+			if ( IndentLevel != 0 )
+			{
+				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing input file \"{filePath}\"" );
+			}
 
-		private static string[] ReadFileData( string filePath )
-		{
-			try
-			{
-				return File.ReadAllLines( filePath );
-			}
-			catch ( Exception exception )
-			{
-				throw new FileNotFoundException( "Failed to read data from input file", exception );
-			}
+			input.Macros = MacroGenerator.Generate( input );
+			Log.TaskFinish( taskMessage );
+			return input;
 		}
 	}
 }
