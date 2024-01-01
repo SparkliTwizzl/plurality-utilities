@@ -12,7 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
-		private static string RegionName => ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName;
+		private static string RegionName => ShortcutScriptGenerationSyntax.TemplatesRegionTokenName;
 		private StringTokenParser TokenParser { get; set; } = new();
 
 
