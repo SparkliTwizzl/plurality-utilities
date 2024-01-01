@@ -16,25 +16,28 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptEntry Entry_AllOptionalData => new(
 					new List<ShortcutScriptIdentity>
 					{
-						new(EntryName, EntryTag),
-						new(EntryName, EntryTag),
+						new(EntryNameValue, EntryTagValue),
+						new(EntryNameValue, EntryTagValue),
 					},
-					EntryPronoun,
-					EntryDecoration
+					EntryPronounValue,
+					EntryDecorationValue
 				);
 			public static ScriptEntry Entry_NoOptionalData => new(
 					new List<ShortcutScriptIdentity>
 					{
-						new(EntryName, EntryTag),
+						new( EntryNameValue, EntryTagValue ),
 					},
-					EntryPronoun,
-					EntryDecoration
+					string.Empty,
+					string.Empty
 				);
-			public static string EntryDecoration => "decoration";
-			public static string EntryName => "name";
-			public static string EntryNameTokenValue => $"{EntryName} @{EntryTag}";
-			public static string EntryPronoun => "pronoun";
-			public static string EntryTag => "tag";
+			public static string EntryDecorationValue => "decoration";
+			public static string EntryDecorationToken => $"{ShortcutScriptGenerationSyntax.EntryDecorationToken} {EntryDecorationValue}";
+			public static string EntryNameValue => "name";
+			public static string EntryNameToken => $"{ShortcutScriptGenerationSyntax.EntryNameToken} {EntryNameTokenValue}";
+			public static string EntryNameTokenValue => $"{EntryNameValue} @{EntryTagValue}";
+			public static string EntryPronounValue => "pronoun";
+			public static string EntryPronounToken => $"{ShortcutScriptGenerationSyntax.EntryPronounToken} {EntryPronounValue}";
+			public static string EntryTagValue => "tag";
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -52,41 +55,46 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_Valid_AllOptionalTokens => new[]
 			{
 				$"{ CommonSyntax.OpenBracketToken }",
+				string.Empty,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue } { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
-				$"\t{EntryPronoun}",
-				$"\t{EntryDecoration}",
+				$"\t{ EntryNameToken } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ EntryNameToken }",
+				$"\t{ EntryPronounToken }",
+				$"\t{ EntryDecorationToken }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_Valid_NoOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
+				$"\t{ EntryNameToken }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_NoTagInNameToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryName }",
-				$"\t{EntryPronoun}",
-				$"\t{EntryDecoration}",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameValue }",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_NameTokenContainsTagStartSymbol => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameValue }@text @{ EntryTagValue }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_TooManyPronounTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
-				$"\t{EntryPronoun}",
-				$"\t{EntryPronoun}",
+				$"\t{EntryNameToken}",
+				$"\t{EntryPronounToken}",
+				$"\t{EntryPronounToken}",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_TooManyDecorationTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
-				$"\t{EntryDecoration}",
-				$"\t{EntryDecoration}",
+				$"\t{EntryNameToken}",
+				$"\t{EntryDecorationToken}",
+				$"\t{EntryDecorationToken}",
 				CommonSyntax.CloseBracketToken,
 			};
 		}
@@ -103,19 +111,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		public void Parse_Test_Success_AllOptionalTokens()
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string[] regionData, ScriptEntry expected )
 		{
-			var expected = TestData.Entry_AllOptionalData;
-			var actual = parser!.Parse( TestData.RegionData_Valid_AllOptionalTokens );
+			var actual = parser!.Parse( regionData );
 			Assert.AreEqual( expected, actual );
 		}
 
-		[TestMethod]
-		public void Parse_Test_Success_NoOptionalTokens()
+		public static IEnumerable<object[]> Parse_Test_Success_Data
 		{
-			var expected = TestData.Entry_NoOptionalData;
-			var actual = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
-			Assert.AreEqual( expected, actual );
+			get
+			{
+				yield return new object[] { TestData.RegionData_Valid_AllOptionalTokens, TestData.Entry_AllOptionalData };
+				yield return new object[] { TestData.RegionData_Valid_NoOptionalTokens, TestData.Entry_NoOptionalData };
+			}
 		}
 
 		[TestMethod]
@@ -130,14 +139,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
 				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
 			}
-		}
-
-		[TestMethod]
-		[ExpectedException( typeof( FileRegionException ) )]
-		public void Parse_Test_Throws_FileRegionException()
-		{
-			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
-			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 		}
 
 		[TestMethod]

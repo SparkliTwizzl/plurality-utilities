@@ -1,4 +1,8 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Exceptions;
+using Petrichor.Common.Info;
+using Petrichor.Logging;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Info;
 
 
@@ -18,178 +22,105 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ScriptEntry Parse( string[] regionData )
 		{
-			return new ScriptEntry();
+			var taskMessage = $"Parse region: {RegionName}";
+			Log.TaskStart( taskMessage );
+
+			if ( HasParsedMaxAllowedRegions )
+			{
+				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
+			}
+
+			var entry = new ScriptEntry();
+			for ( var i = 0 ; i < regionData.Length ; ++i )
+			{
+				var isParsingFinished = false;
+				var rawToken = regionData[ i ];
+				var token = new StringToken( rawToken );
+
+				if ( token.Name == string.Empty )
+				{
+					continue;
+				}
+
+				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				{
+					++IndentLevel;
+				}
+
+				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				{
+					--IndentLevel;
+
+					if ( IndentLevel < 0 )
+					{
+						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" );
+					}
+
+					if ( IndentLevel == 0 )
+					{
+						isParsingFinished = true;
+					}
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryDecorationTokenName )
+				{
+					if ( entry.Decoration != string.Empty )
+					{
+						throw new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryDecorationTokenName} token" );
+					}
+					entry.Decoration = token.Value;
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryNameTokenName )
+				{
+					entry.Identities.Add( ParseName( token.Value ) );
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryPronounTokenName )
+				{
+					if ( entry.Pronoun != string.Empty )
+					{
+						throw new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryPronounTokenName} token" );
+					}
+					entry.Pronoun = token.Value;
+				}
+
+				else
+				{
+					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
+				}
+
+				if ( isParsingFinished )
+				{
+					LinesParsed = i;
+					break;
+				}
+			}
+
+			if ( IndentLevel != 0 )
+			{
+				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" );
+			}
+
+			++RegionsParsed;
+			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
+
+			Log.TaskFinish( taskMessage );
+			return entry;
 		}
 
+		private ShortcutScriptIdentity ParseName( string token )
+		{
+			var components = token.Split( '@' );
+			if ( components.Length != 2 )
+			{
+				throw new TokenException( $"An invalid {ShortcutScriptGenerationSyntax.EntryNameTokenName} token was parsed" );
+			}
 
-		//private static ShortcutScriptEntryLineTypes IdentifyLineType( string line )
-		//{
-		//	var firstChar = line[ 0 ];
-		//	switch ( firstChar )
-		//	{
-		//		case decorationLineChar:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.Decoration;
-		//		}
-
-		//		case entryStartLineChar:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.EntryStart;
-		//		}
-
-		//		case entryEndLineChar:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.EntryEnd;
-		//		}
-
-		//		case identityLineChar:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.Identity;
-		//		}
-
-		//		case pronounLineChar:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.Pronoun;
-		//		}
-
-		//		default:
-		//		{
-		//			return ShortcutScriptEntryLineTypes.Unknown;
-		//		}
-		//	}
-		//}
-
-		//private static void ParseDecoration( string line, ref ScriptEntry entry )
-		//{
-		//	if ( entry.Decoration != string.Empty )
-		//	{
-		//		throw new DuplicateInputFieldException( "An entry contains more than one decoration field" );
-		//	}
-		//	if ( line.Length < 2 )
-		//	{
-		//		throw new BlankInputFieldException( "An entry contains a blank decoration field" );
-		//	}
-		//	entry.Decoration = line[ 1.. ];
-		//}
-
-		//private static void ParseIdentity( string line, ref ScriptEntry entry )
-		//{
-		//	var identity = new ShortcutScriptIdentity();
-		//	ParseName( line, ref identity );
-		//	ParseTag( line, ref identity );
-		//	entry.Identities.Add( identity );
-		//}
-
-		//private static void ParseName( string line, ref ShortcutScriptIdentity identity )
-		//{
-		//	var fieldStart = 0;
-
-		//	var fieldEnd = line.IndexOf( '@' );
-		//	if ( fieldEnd <= fieldStart )
-		//	{
-		//		throw new InvalidInputFieldException( "An entry contains an invalid name field" );
-		//	}
-
-		//	var nameStart = fieldStart + 1;
-		//	var nameEnd = fieldEnd;
-
-		//	var name = line[ nameStart..nameEnd ].Trim();
-		//	if ( name.Length < 1 )
-		//	{
-		//		throw new BlankInputFieldException( "An entry contains a blank name field" );
-		//	}
-
-		//	identity.Name = name;
-		//}
-
-		//private static ScriptEntry ParseEntry( string[] data, ref int i )
-		//{
-		//	var entry = new ScriptEntry();
-		//	for ( ; i < data.Length ; ++i )
-		//	{
-		//		var line = data[ i ].Trim();
-
-		//		var isLineBlank = line == string.Empty;
-		//		var isLineComment = line.IndexOf( CommonSyntax.LineCommentToken ) == 0;
-		//		if ( isLineBlank || isLineComment )
-		//		{
-		//			break;
-		//		}
-
-		//		var lineType = IdentifyLineType( line );
-		//		switch ( lineType )
-		//		{
-		//			case ShortcutScriptEntryLineTypes.EntryEnd:
-		//			{
-		//				if ( entry.Identities.Count < 1 )
-		//				{
-		//					throw new MissingInputFieldException( $"parsing entries failed at token #{i} :: input file contains invalid data: an entry did not contain any identity fields" );
-		//				}
-		//				--TokenParser.IndentLevel;
-		//				return entry;
-		//			}
-
-		//			case ShortcutScriptEntryLineTypes.Identity:
-		//			{
-		//				ParseIdentity( line, ref entry );
-		//				break;
-		//			}
-
-		//			case ShortcutScriptEntryLineTypes.Pronoun:
-		//			{
-		//				ParsePronoun( line, ref entry );
-		//				break;
-		//			}
-
-		//			case ShortcutScriptEntryLineTypes.Decoration:
-		//			{
-		//				ParseDecoration( line, ref entry );
-		//				break;
-		//			}
-
-		//			case ShortcutScriptEntryLineTypes.Unknown:
-		//			{
-		//				var unexpectedChar = line[ 0 ];
-		//				throw new UnexpectedCharacterException( $"parsing entries failed at token #{i} :: input file contains invalid data: a line started with a character ( \"{unexpectedChar}\" ) that was not expected at this time" );
-		//			}
-		//		}
-		//	}
-		//	throw new InputEntryNotClosedException( "Last entry was not closed" );
-		//}
-
-		//private static void ParsePronoun( string line, ref ScriptEntry entry )
-		//{
-		//	if ( entry.Pronoun != string.Empty )
-		//	{
-		//		throw new DuplicateInputFieldException( "An entry contains more than one pronoun field" );
-		//	}
-		//	if ( line.Length < 2 )
-		//	{
-		//		throw new BlankInputFieldException( "An entry contains a blank pronoun field" );
-		//	}
-		//	entry.Pronoun = line[ 1.. ];
-		//}
-
-		//private static void ParseTag( string line, ref ShortcutScriptIdentity identity )
-		//{
-		//	var fieldStart = line.IndexOf( '@' );
-		//	if ( fieldStart < 0 )
-		//	{
-		//		throw new MissingInputFieldException( "An entry contains an identity field without a tag field" );
-		//	}
-
-		//	var tagStart = fieldStart + 1;
-		//	var trimmedLine = line[ tagStart.. ];
-
-		//	var firstSpace = trimmedLine.IndexOf( ' ' );
-		//	var tagEnd = firstSpace > -1 ? firstSpace : trimmedLine.Length;
-		//	var tag = trimmedLine[ ..tagEnd ];
-		//	if ( tag.Length < 1 )
-		//	{
-		//		throw new BlankInputFieldException( "An entry contains a blank tag field" );
-		//	}
-
-		//	identity.Tag = tag;
-		//}
+			var name = components[ 0 ].Trim();
+			var tag = components[ 1 ].Trim();
+			var identity = new ShortcutScriptIdentity( name, tag );
+			return identity;
+		}
 	}
 }
