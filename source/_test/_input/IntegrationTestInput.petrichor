@@ -18,26 +18,24 @@ module-options:
 entries:
 {
 	#: line comment before entries in entries region body
+	entry: #: inline comment in entries region body
 	{
-		#Sam @sm #: inline comment in entries region body
-		#Sammy @smy
-		$they/them
-		&-> a person
+		#: line comment in entry region body
+		name: Sam @sm #: inline comment in entry region body
+		name: Sammy @smy
+		pronoun: they/them
+		decoration: -> a person
 	}
 	
-	#: line comment between entries in entries region body
+	entry:
 	{
-		#ALEX @AX
-		$IT/ITS
-		&[A PERSON TOO]
+		name: ALEX @AX
 	}
 }
 
 templates:
 {
 	#: line comment in templates region body
-	::\@@:: \## #: inline comment in templates region body
-	::\@@-:: \## \$($)
-	::\@@/:: \## \&&
-	::\@@-/:: \## \$($) \&&
+	template: ::\@@:: \## #: inline comment in templates region body
+	template: ::\@=@:: \## \$$ \&&
 }

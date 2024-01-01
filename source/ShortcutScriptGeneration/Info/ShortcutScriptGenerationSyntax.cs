@@ -9,6 +9,14 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string DefaultIconFilePathTokenName => "default-icon";
 		public static string EntriesRegionToken => $"{EntriesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntriesRegionTokenName => "entries";
+		public static string EntryDecorationToken => $"{EntryDecorationTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryDecorationTokenName => "decoration";
+		public static string EntryNameToken => $"{EntryNameTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryNameTokenName => "name";
+		public static string EntryPronounToken => $"{EntryPronounTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryPronounTokenName => "pronoun";
+		public static string EntryRegionToken => $"{EntryRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryRegionTokenName => "entry";
 		public static string ModuleOptionsRegionToken => $"{ModuleOptionsRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string ModuleOptionsRegionTokenName => "module-options";
 		public static string ReloadShortcutToken => $"{ReloadShortcutTokenName}{CommonSyntax.TokenValueDivider}";
@@ -17,6 +25,8 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string SuspendIconFilePathTokenName => "suspend-icon";
 		public static string SuspendShortcutToken => $"{SuspendShortcutTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string SuspendShortcutTokenName => "suspend-shortcut";
+		public static string TemplateToken => $"{TemplateTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string TemplateTokenName => "template";
 		public static string TemplatesRegionToken => $"{TemplatesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string TemplatesRegionTokenName => "templates";
 	}

@@ -86,14 +86,14 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 
-		public MetadataRegionParser Parser { get; set; } = new();
+		public MetadataRegionParser? parser;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			Parser = new();
+			parser = new();
 		}
 
 
@@ -101,9 +101,13 @@ namespace Petrichor.Common.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Success( string[] regionData )
 		{
-			var expected = MetadataRegionParser.RegionIsValidMessage;
-			var actual = Parser.Parse( regionData );
-			Assert.AreEqual( expected, actual );
+			var expectedResult = MetadataRegionParser.RegionIsValidMessage;
+			var actualResult = parser!.Parse( regionData );
+			Assert.AreEqual( expectedResult, actualResult );
+
+			var expectedLinesParsed = regionData.Length;
+			var actualLinesParsed = parser.LinesParsed;
+			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
 		}
 
 		public static IEnumerable<object[]> Parse_Test_Success_Data
@@ -117,17 +121,31 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 		[TestMethod]
+		[ExpectedException( typeof( BracketMismatchException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
+				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
+			}
+		}
+
+		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_Throws_FileRegionException()
 		{
-			_ = Parser.Parse( TestData.RegionData_Valid );
-			_ = Parser.Parse( TestData.RegionData_Valid );
+			_ = parser!.Parse( TestData.RegionData_Valid );
+			_ = parser!.Parse( TestData.RegionData_Valid );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = Parser.Parse( regionData );
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
 		{
@@ -141,7 +159,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( VersionNotFoundException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_VersionNotFoundException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_VersionNotFoundException( string[] regionData ) => _ = Parser.Parse( regionData );
+		public void Parse_Test_Throws_VersionNotFoundException( string[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_VersionNotFoundException_Data
 		{
@@ -151,20 +169,6 @@ namespace Petrichor.Common.Utilities.Tests
 				yield return new object[] { TestData.RegionData_UnsupportedMinorVersion };
 				yield return new object[] { TestData.RegionData_UnsupportedPatchVersion };
 				yield return new object[] { TestData.RegionData_UnsupportedPreviewVersion };
-			}
-		}
-
-		[TestMethod]
-		[ExpectedException( typeof( BracketMismatchException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = Parser.Parse( regionData );
-
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
-		{
-			get
-			{
-				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
-				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
 			}
 		}
 	}

@@ -18,8 +18,6 @@ namespace Petrichor.Common.Containers
 
 		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken.Trim() );
 
-		public StringToken( QualifiedStringToken qualifiedToken ) => SplitAndStoreRawToken( qualifiedToken.Value );
-
 
 		private void SplitAndStoreRawToken( string rawToken )
 		{

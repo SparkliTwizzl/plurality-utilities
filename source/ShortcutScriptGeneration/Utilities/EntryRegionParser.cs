@@ -9,19 +9,19 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
+	public class EntryRegionParser : IEntryRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName;
+		private static string RegionName => ShortcutScriptGenerationSyntax.EntryRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
-		public int MaxRegionsAllowed { get; private set; } = 1;
+		public int MaxRegionsAllowed { get; private set; } = int.MaxValue;
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public ScriptModuleOptions Parse( string[] regionData )
+		public ScriptEntry Parse( string[] regionData )
 		{
 			var taskMessage = $"Parse region: {RegionName}";
 			Log.TaskStart( taskMessage );
@@ -31,12 +31,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
-			var moduleOptions = new ScriptModuleOptions();
+			var entry = new ScriptEntry();
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
+				var isParsingFinished = false;
 				var rawToken = regionData[ i ];
 				var token = new StringToken( rawToken );
-				var isParsingFinished = false;
 
 				if ( token.Name == string.Empty )
 				{
@@ -63,28 +63,27 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryDecorationTokenName )
 				{
-					moduleOptions.DefaultIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName}" );
+					if ( entry.Decoration != string.Empty )
+					{
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryDecorationTokenName} token" ) );
+					}
+					entry.Decoration = token.Value;
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryNameTokenName )
 				{
-					moduleOptions.ReloadShortcut = token.Value;
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.ReloadShortcutTokenName}" );
+					entry.Identities.Add( ParseName( token.Value ) );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryPronounTokenName )
 				{
-					moduleOptions.SuspendIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName}" );
-				}
-
-				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
-				{
-					moduleOptions.SuspendShortcut = token.Value;
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendShortcutTokenName}" );
+					if ( entry.Pronoun != string.Empty )
+					{
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryPronounTokenName} token" ) );
+					}
+					entry.Pronoun = token.Value;
 				}
 
 				else
@@ -108,7 +107,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
 			Log.TaskFinish( taskMessage );
-			return moduleOptions;
+			return entry;
+		}
+
+		private static ScriptIdentity ParseName( string token )
+		{
+			var components = token.Split( '@' );
+			if ( components.Length != 2 )
+			{
+				ExceptionLogger.LogAndThrow( new TokenException( $"An invalid {ShortcutScriptGenerationSyntax.EntryNameTokenName} token was parsed" ) );
+			}
+
+			var name = components[ 0 ].Trim();
+			var tag = components[ 1 ].Trim();
+			var identity = new ScriptIdentity( name, tag );
+			return identity;
 		}
 	}
 }

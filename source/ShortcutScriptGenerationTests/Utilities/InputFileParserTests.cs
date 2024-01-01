@@ -90,23 +90,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
 			public int RegionsParsed { get; private set; } = 0;
+			public int TemplatesParsed { get; private set; } = 0;
 
 			public string[] Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
 				LinesParsed = TestData.TemplatesRegionLength;
+				TemplatesParsed = 1;
 				return TestData.Templates;
 			}
 		}
 
 
-		public EntriesRegionParserStub EntriesRegionParser { get; set; } = new();
+		public EntriesRegionParserStub? entriesRegionParserStub;
 		public InputFileParser? parser;
-		public Mock<IMacroGenerator> MacroGenerator { get; set; } = new();
-		public MetadataRegionParserStub MetadataRegionParser { get; set; } = new();
-		public ModuleOptionsRegionParserStub ModuleOptionsRegionParser { get; set; } = new();
-		public TemplatesRegionParserStub TemplatesRegionParser { get; set; } = new();
+		public Mock<IMacroGenerator>? macroGeneratorMock;
+		public MetadataRegionParserStub? metadataRegionParserStub;
+		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
+		public TemplatesRegionParserStub? templatesRegionParserStub;
 
 
 		[TestInitialize]
@@ -114,16 +116,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			EntriesRegionParser = new();
-			MacroGenerator = new();
-			_ = MacroGenerator
+			entriesRegionParserStub = new();
+			macroGeneratorMock = new();
+			_ = macroGeneratorMock
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
-			MetadataRegionParser = new();
-			ModuleOptionsRegionParser = new();
-			TemplatesRegionParser = new();
+			metadataRegionParserStub = new();
+			moduleOptionsRegionParserStub = new();
+			templatesRegionParserStub = new();
 
-			parser = new InputFileParser( MetadataRegionParser, ModuleOptionsRegionParser, EntriesRegionParser, TemplatesRegionParser, MacroGenerator.Object );
+			parser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 
@@ -146,10 +148,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
+		[ExpectedException( typeof( BracketMismatchException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_BracketMismatcheRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_DanglingCloseBracket.petrichor" };
+				yield return new object[] { $"{nameof( InputFileParser )}_DanglingOpenBracket.petrichor" };
+			}
+		}
+
+		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
-			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		public void ParseFile_Test_Throws_FileNotFoundException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
 		{
@@ -162,14 +177,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileRegionException( string fileName )
-			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		public void ParseFile_Test_Throws_FileRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
 		{
 			get
 			{
 				yield return new object[] { $"{nameof( InputFileParser )}_NoMetadataRegion.petrichor" };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_TokenException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_UnknownToken.petrichor" };
 			}
 		}
 	}

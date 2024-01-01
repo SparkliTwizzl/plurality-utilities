@@ -1,5 +1,6 @@
-﻿using Petrichor.Common.Enums;
+﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
+using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -12,69 +13,87 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
-		private StringTokenParser TokenParser { get; set; } = new();
+		private int IndentLevel { get; set; } = 0;
+		private static string RegionName => ShortcutScriptGenerationSyntax.TemplatesRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
 		public int MaxRegionsAllowed { get; private set; } = 1;
 		public int RegionsParsed { get; private set; } = 0;
+		public int TemplatesParsed { get; private set; } = 0;
 
 
 		public string[] Parse( string[] regionData )
 		{
-			var taskMessage = $"Parse region: {ShortcutScriptGenerationSyntax.TemplatesRegionTokenName}";
+			var taskMessage = $"Parse region: {RegionName}";
 			Log.TaskStart( taskMessage );
-			
+
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName} regions" );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
 			var templates = new List<string>();
-			var expectedTokens = Array.Empty<string>();
-			for ( var i = 0; i < regionData.Length ; ++i )
+			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
-				var token = TokenParser.ParseToken( regionData[ i ], expectedTokens );
+				var rawToken = regionData[ i ];
+				var token = new StringToken( rawToken );
 				var isParsingFinished = false;
-				switch ( token.Qualifier )
+
+				if ( token.Name == string.Empty )
 				{
-					case StringTokenQualifiers.BlankLine:
+					continue;
+				}
+
+				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				{
+					++IndentLevel;
+				}
+
+				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				{
+					--IndentLevel;
+
+					if ( IndentLevel < 0 )
 					{
-						break;
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
 					}
 
-					case StringTokenQualifiers.OpenBracket:
+					if ( IndentLevel == 0 )
 					{
-						break;
-					}
-
-					case StringTokenQualifiers.CloseBracket:
-					{
-						if ( TokenParser.IndentLevel < 1 )
-						{
-							isParsingFinished = true;
-						}
-						break;
-					}
-
-					default:
-					{
-						templates.Add( ParseTemplateFromLine( token.Value ) );
-						break;
+						isParsingFinished = true;
 					}
 				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.TemplateTokenName )
+				{
+					templates.Add( ParseTemplateFromLine( token.Value ) );
+					continue;
+				}
+
+				else
+				{
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
+				}
+
 				if ( isParsingFinished )
 				{
-					LinesParsed = i;
+					LinesParsed = i + 1;
 					break;
 				}
+			}
+
+			if ( IndentLevel != 0 )
+			{
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
-			Log.Info( $"Parsed {templates.Count} templates" );
+			TemplatesParsed = templates.Count;
+			Log.Info( $"Parsed {TemplatesParsed} templates" );
 			Log.TaskFinish( taskMessage );
 			return templates.ToArray();
 		}
@@ -97,7 +116,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					catch ( Exception exception )
 					{
-						throw new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception ) );
 					}
 				}
 				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )
