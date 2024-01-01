@@ -31,7 +31,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_Valid_OptionalTokens => new[]
+			public static string[] RegionData_Valid_AllOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
@@ -69,7 +69,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success_AllOptionalTokens()
 		{
 			var expected = TestData.ModuleOptions_Valid_OptionalData;
-			var actual = parser!.Parse( TestData.RegionData_Valid_OptionalTokens );
+			var actual = parser!.Parse( TestData.RegionData_Valid_AllOptionalTokens );
 			Assert.AreEqual( expected, actual );
 		}
 
