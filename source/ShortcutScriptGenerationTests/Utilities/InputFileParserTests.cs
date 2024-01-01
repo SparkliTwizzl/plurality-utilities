@@ -146,10 +146,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
+		[ExpectedException( typeof( BracketMismatchException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_BracketMismatcheRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_DanglingCloseBracket.petrichor" };
+				yield return new object[] { $"{nameof( InputFileParser )}_DanglingOpenBracket.petrichor" };
+			}
+		}
+
+		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileNotFoundException( string fileName )
-			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		public void ParseFile_Test_Throws_FileNotFoundException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
 		{
@@ -162,14 +175,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileRegionException( string fileName )
-			=> _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		public void ParseFile_Test_Throws_FileRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
 		{
 			get
 			{
 				yield return new object[] { $"{nameof( InputFileParser )}_NoMetadataRegion.petrichor" };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_TokenException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { $"{nameof( InputFileParser )}_UnknownToken.petrichor" };
 			}
 		}
 	}

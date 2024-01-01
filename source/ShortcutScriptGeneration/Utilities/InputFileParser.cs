@@ -4,7 +4,6 @@ using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
 
 
@@ -62,39 +61,35 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					{
 						if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.EntriesRegionToken )
 						{
-							++i;
-							var dataTrimmedToEntries = data[ i.. ];
+							var dataTrimmedToEntries = data[ ( i + 1 ).. ];
 							input.Entries = EntriesRegionParser.Parse( dataTrimmedToEntries );
 							i += EntriesRegionParser.LinesParsed;
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.ModuleOptionsRegionToken )
 						{
-							++i;
-							var dataTrimmedToModuleOptions = data[ i.. ];
+							var dataTrimmedToModuleOptions = data[ ( i + 1 ).. ];
 							input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToModuleOptions );
 							i += ModuleOptionsRegionParser.LinesParsed;
 						}
 
 						else if ( qualifiedToken.Value == CommonSyntax.MetadataRegionToken )
 						{
-							++i;
-							var dataTrimmedToMetadata = data[ i.. ];
+							var dataTrimmedToMetadata = data[ ( i + 1 ).. ];
 							_ = MetadataRegionParser.Parse( dataTrimmedToMetadata );
 							i += MetadataRegionParser.LinesParsed;
 						}
 
 						else if ( qualifiedToken.Value == ShortcutScriptGenerationSyntax.TemplatesRegionToken )
 						{
-							++i;
-							var dataTrimmedToTemplates = data[ i.. ];
+							var dataTrimmedToTemplates = data[ ( i + 1 ).. ];
 							input.Templates = TemplatesRegionParser.Parse( dataTrimmedToTemplates );
 							i += ModuleOptionsRegionParser.LinesParsed;
 						}
 
 						if ( tokenParser.IndentLevel > 0 )
 						{
-							throw new RegionNotClosedException( $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"" );
+							throw new FileRegionException( $"A region was not closed properly when parsing token \"{qualifiedToken.Value}\"" );
 						}
 
 						if ( MetadataRegionParser.RegionsParsed == 0 )

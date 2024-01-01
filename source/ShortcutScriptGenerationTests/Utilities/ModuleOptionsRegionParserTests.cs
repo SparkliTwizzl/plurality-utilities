@@ -84,8 +84,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData )
-			=> _ = Parser.Parse( regionData );
+		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
 		{
@@ -98,8 +97,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException()
-			=> _ = Parser.Parse( TestData.RegionData_UnknownToken );
+		public void Parse_Test_Throws_TokenException() => _ = Parser.Parse( TestData.RegionData_UnknownToken );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]

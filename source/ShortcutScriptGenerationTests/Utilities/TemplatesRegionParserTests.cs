@@ -56,8 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
-		public void Parse_Test_Throws_EscapeCharacterMismatchException()
-			=> _ = Parser.Parse( TestData.RegionData_TrailingExcapeCharacter );
+		public void Parse_Test_Throws_EscapeCharacterMismatchException() => _ = Parser.Parse( TestData.RegionData_TrailingExcapeCharacter );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
