@@ -16,7 +16,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string DefaultIconPath => "path/to/defaulticon.ico";
 			public static string DefaultIconPathWithQuotes => $"\"{DefaultIconPath}\"";
 			public static ScriptModuleOptions ModuleOptions_Valid_NoOptionalData => new();
-			public static ScriptModuleOptions ModuleOptions_Valid_OptionalData => new( DefaultIconPathWithQuotes, SuspendIconPathWithQuotes, ReloadShortcut, SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions_Valid_AllOptionalData => new( DefaultIconPathWithQuotes, SuspendIconPathWithQuotes, ReloadShortcut, SuspendShortcut );
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -66,19 +66,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		public void Parse_Test_Success_AllOptionalTokens()
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string[] regionData, ScriptModuleOptions expected )
 		{
-			var expected = TestData.ModuleOptions_Valid_OptionalData;
-			var actual = parser!.Parse( TestData.RegionData_Valid_AllOptionalTokens );
+			var actual = parser!.Parse( regionData );
 			Assert.AreEqual( expected, actual );
 		}
 
-		[TestMethod]
-		public void Parse_Test_Success_NoOptionalTokens()
+		public static IEnumerable<object[]> Parse_Test_Success_Data
 		{
-			var expected = TestData.ModuleOptions_Valid_NoOptionalData;
-			var actual = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
-			Assert.AreEqual( expected, actual );
+			get
+			{
+				yield return new object[] { TestData.RegionData_Valid_AllOptionalTokens, TestData.ModuleOptions_Valid_AllOptionalData };
+				yield return new object[] { TestData.RegionData_Valid_NoOptionalTokens, TestData.ModuleOptions_Valid_NoOptionalData };
+			}
 		}
 
 		[TestMethod]
