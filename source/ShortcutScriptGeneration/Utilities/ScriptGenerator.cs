@@ -1,4 +1,5 @@
 ﻿using Petrichor.Common.Info;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -36,7 +37,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 			catch ( Exception exception )
 			{
-				throw new ScriptGenerationException( $"Failed to generate output file \'{outputFilePath}\'", exception );
+				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \'{outputFilePath}\'", exception ) );
 			}
 			Log.TaskFinish( taskMessage );
 		}
@@ -61,7 +62,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			using var stream = new FileStream( outputFilePath, FileMode.Create );
 			using var writer = new BinaryWriter( stream, encoding );
 			writer.Write( encoding.GetPreamble() );
-			Log.Info("Wrote byte order mark to output file");
+			Log.Info( "Wrote byte order mark to output file" );
 		}
 
 		private void WriteConstantsToFile()
@@ -105,7 +106,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			lines.Add( "#SuspendExempt false" );
 			lines.Add( "" );
 			lines.Add( "" );
-			WriteLinesToFile( lines.ToArray(), "(Script reload/suspend shortcuts)");
+			WriteLinesToFile( lines.ToArray(), "(Script reload/suspend shortcuts)" );
 		}
 
 		private void WriteControlStatementsToFile()
@@ -220,7 +221,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 			catch ( Exception exception )
 			{
-				throw new FileLoadException( "Failed to write line to output file", exception );
+				ExceptionLogger.LogAndThrow( new FileLoadException( "Failed to write line to output file", exception ) );
 			}
 		}
 

@@ -28,7 +28,7 @@ namespace Petrichor.Common.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
 			for ( var i = 0 ; i < regionData.Length ; ++i )
@@ -53,7 +53,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched close bracket was found when parsing region: {RegionName}" );
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched close bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -66,7 +66,7 @@ namespace Petrichor.Common.Utilities
 				{
 					if ( HasParsedMinimumVersionToken )
 					{
-						throw new TokenException( $"{RegionName} region cannot contain more than 1 {CommonSyntax.MinimumVersionTokenName} token" );
+						ExceptionLogger.LogAndThrow( new TokenException( $"{RegionName} region cannot contain more than 1 {CommonSyntax.MinimumVersionTokenName} token" ) );
 					}
 					RejectUnsupportedVersions( token.Value );
 					HasParsedMinimumVersionToken = true;
@@ -74,7 +74,7 @@ namespace Petrichor.Common.Utilities
 
 				else
 				{
-					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
 				}
 
 				if ( isParsingFinished )
@@ -86,7 +86,7 @@ namespace Petrichor.Common.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched open bracket was found when parsing region: {RegionName}" );
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched open bracket was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;
@@ -101,12 +101,12 @@ namespace Petrichor.Common.Utilities
 		{
 			if ( string.IsNullOrEmpty( version ) )
 			{
-				throw new TokenException( $"{CommonSyntax.MinimumVersionTokenName} token cannot be blank" );
+				ExceptionLogger.LogAndThrow( new TokenException( $"{CommonSyntax.MinimumVersionTokenName} token cannot be blank" ) );
 			}
 
 			if ( !AppVersion.IsVersionSupported( version ) )
 			{
-				throw new VersionNotFoundException( $"Input file version ({version}) is not supported by this version of {AppInfo.AppName}" );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Input file version ({version}) is not supported by this version of {AppInfo.AppName}" ) );
 			}
 		}
 	}

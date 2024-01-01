@@ -50,7 +50,7 @@ namespace Petrichor.App.Utilities
 			}
 			catch ( Exception exception )
 			{
-				throw new ShortcutScriptGenerationException( "Generating AutoHotkey shortcuts script failed", exception );
+				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
 			}
 		}
 	}

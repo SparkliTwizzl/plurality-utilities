@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Info;
@@ -31,7 +32,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
 			var entries = new List<ScriptEntry>();
@@ -57,7 +58,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched close bracket was found when parsing region: {RegionName}" );
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched close bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -68,15 +69,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryRegionTokenName )
 				{
-					var regionDataTrimmedToEntry = regionData[ ( i + 1 ).. ];
-					var entry = EntryParser.Parse( regionDataTrimmedToEntry );
+					var dataTrimmedToRegion = regionData[ ( i + 1 ).. ];
+					var entry = EntryParser.Parse( dataTrimmedToRegion );
 					entries.Add( entry );
+					LinesParsed += EntryParser.LinesParsed;
 					i += EntryParser.LinesParsed;
 				}
 
 				else
 				{
-					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
 				}
 
 				if ( isParsingFinished )
@@ -88,7 +90,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched open bracket was found when parsing region: {RegionName}" );
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched open bracket was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;

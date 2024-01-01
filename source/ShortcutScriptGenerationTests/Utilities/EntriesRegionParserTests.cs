@@ -15,23 +15,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				Entry,
-				Entry,
+				new ScriptEntry(),
+				new ScriptEntry(),
 			};
-			public static ScriptEntry Entry => new(
-					new List<ScriptIdentity>
-					{
-						new(EntryName, EntryTag),
-					},
-					EntryPronoun,
-					EntryDecoration
-				);
-			public static string EntryDecoration => "decoration";
-			public static int EntryLength => 5;
-			public static string EntryName => "name";
-			public static string EntryNameTokenValue => $"{EntryName} @{EntryTag}";
-			public static string EntryPronoun => "pronoun";
-			public static string EntryTag => "tag";
+			public static int EntryRegionLength => 3;
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -50,19 +37,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptGenerationSyntax.EntryRegionToken }",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryRegionToken } { CommonSyntax.LineCommentToken } inline comment",
 				$"\t{ CommonSyntax.OpenBracketToken }",
-				$"\t\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue } { CommonSyntax.LineCommentToken } inline comment",
-				$"\t\t{EntryPronoun}",
-				$"\t\t{EntryDecoration}",
+				$"\t\t{ CommonSyntax.LineCommentToken } entry region body",
 				$"\t{ CommonSyntax.CloseBracketToken }",
 				"\t",
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				$"\t{ ShortcutScriptGenerationSyntax.EntryRegionToken }",
 				$"\t{ CommonSyntax.OpenBracketToken }",
-				$"\t\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
-				$"\t\t{EntryPronoun}",
-				$"\t\t{EntryDecoration}",
+				$"\t\t{ CommonSyntax.LineCommentToken } entry region body",
 				$"\t{ CommonSyntax.CloseBracketToken }",
 				CommonSyntax.CloseBracketToken,
 			};
@@ -80,8 +63,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public ScriptEntry Parse( string[] regionData )
 			{
 				++RegionsParsed;
-				LinesParsed = TestData.EntryLength;
-				return TestData.Entry;
+				LinesParsed = TestData.EntryRegionLength;
+				return new ScriptEntry();
 			}
 		}
 

@@ -28,7 +28,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
 			var moduleOptions = new ScriptModuleOptions();
@@ -54,7 +54,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" );
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -89,7 +89,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
 				}
 
 				if ( isParsingFinished )
@@ -101,7 +101,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" );
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;

@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
@@ -30,7 +31,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				throw new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
 			}
 
 			var templates = new List<string>();
@@ -56,7 +57,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" );
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -73,7 +74,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					throw new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
 				}
 
 				if ( isParsingFinished )
@@ -85,7 +86,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" );
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;
@@ -115,7 +116,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					catch ( Exception exception )
 					{
-						throw new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception ) );
 					}
 				}
 				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )

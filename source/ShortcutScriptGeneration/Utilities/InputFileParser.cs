@@ -60,57 +60,61 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" );
+						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" ) );
 					}
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntriesRegionTokenName )
 				{
-					var dataTrimmedToEntries = data[ ( i + 1 ).. ];
-					input.Entries = EntriesRegionParser.Parse( dataTrimmedToEntries );
+					++i;
+					var dataTrimmedToRegion = data[ i.. ];
+					input.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
 					i += EntriesRegionParser.LinesParsed;
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName )
 				{
-					var dataTrimmedToModuleOptions = data[ ( i + 1 ).. ];
-					input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToModuleOptions );
+					++i;
+					var dataTrimmedToRegion = data[ i.. ];
+					input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
 					i += ModuleOptionsRegionParser.LinesParsed;
 				}
 
 				else if ( token.Name == CommonSyntax.MetadataRegionTokenName )
 				{
-					var dataTrimmedToMetadata = data[ ( i + 1 ).. ];
-					_ = MetadataRegionParser.Parse( dataTrimmedToMetadata );
+					++i;
+					var dataTrimmedToRegion = data[ i.. ];
+					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
 					i += MetadataRegionParser.LinesParsed;
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.TemplatesRegionTokenName )
 				{
-					var dataTrimmedToTemplates = data[ ( i + 1 ).. ];
-					input.Templates = TemplatesRegionParser.Parse( dataTrimmedToTemplates );
+					++i;
+					var dataTrimmedToRegion = data[ i.. ];
+					input.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
 					i += ModuleOptionsRegionParser.LinesParsed;
 				}
 
 				else
 				{
-					throw new TokenException( $"An unknown token ( \"{rawToken}\" ) was read when a region name was expected" );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unknown token ( \"{rawToken}\" ) was read when a region name was expected" ) );
 				}
 
 				if ( IndentLevel > 0 )
 				{
-					throw new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" );
+					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
 				if ( MetadataRegionParser.RegionsParsed == 0 )
 				{
-					throw new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" );
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" ) );
 				}
 			}
 
 			if ( IndentLevel != 0 )
 			{
-				throw new BracketMismatchException( $"A mismatched curly brace was found when parsing input file \"{filePath}\"" );
+				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing input file \"{filePath}\"" ) );
 			}
 
 			input.Macros = MacroGenerator.Generate( input );

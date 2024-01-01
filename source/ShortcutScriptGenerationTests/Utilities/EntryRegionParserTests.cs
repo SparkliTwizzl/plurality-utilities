@@ -54,10 +54,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static string[] RegionData_Valid_AllOptionalTokens => new[]
 			{
-				$"{ CommonSyntax.OpenBracketToken }",
+				$"{ CommonSyntax.OpenBracketToken } { CommonSyntax.LineCommentToken } inline comment",
 				string.Empty,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ EntryNameToken } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ EntryNameToken }",
 				$"\t{ EntryNameToken }",
 				$"\t{ EntryPronounToken }",
 				$"\t{ EntryDecorationToken }",
