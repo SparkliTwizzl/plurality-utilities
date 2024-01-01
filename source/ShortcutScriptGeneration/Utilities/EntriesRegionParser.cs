@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class EntriesRegionParser : IEntriesRegionParser
 	{
-		private IEntryParser EntryParser { get; set; }
+		private IEntryRegionParser EntryParser { get; set; }
 		private int IndentLevel { get; set; } = 0;
 		private static string RegionName => ShortcutScriptGenerationSyntax.EntriesRegionTokenName;
 
@@ -21,7 +21,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public EntriesRegionParser( IEntryParser entryParser ) => EntryParser = entryParser;
+		public EntriesRegionParser( IEntryRegionParser entryParser ) => EntryParser = entryParser;
 
 
 		public ScriptEntry[] Parse( string[] regionData )

@@ -6,7 +6,7 @@ using Petrichor.ShortcutScriptGeneration.Containers;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class EntryParserTests
+	public class EntryRegionParserTests
 	{
 		public struct TestData
 		{

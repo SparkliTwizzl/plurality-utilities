@@ -4,7 +4,7 @@ using Petrichor.ShortcutScriptGeneration.Containers;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface IEntryParser : IRegionParser<ScriptEntry>
+	public interface IEntryRegionParser : IRegionParser<ScriptEntry>
 	{
 		new ScriptEntry Parse( string[] regionData );
 	}

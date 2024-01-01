@@ -70,7 +70,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 
-		public class EntryParserStub : IEntryParser
+		public class EntryParserStub : IEntryRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
@@ -86,7 +86,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntryParserStub EntryParser { get; set; } = new();
+		public EntryParserStub EntryRegionParser { get; set; } = new();
 		public EntriesRegionParser? parser;
 
 
@@ -94,8 +94,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			EntryParser = new();
-			parser = new( EntryParser );
+			EntryRegionParser = new();
+			parser = new( EntryRegionParser );
 		}
 
 
@@ -131,15 +131,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
-
-		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_Throws_FileRegionException()
 		{
 			_ = parser!.Parse( TestData.RegionData_Valid );
 			_ = parser!.Parse( TestData.RegionData_Valid );
 		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenException ) )]
+		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
 	}
 }

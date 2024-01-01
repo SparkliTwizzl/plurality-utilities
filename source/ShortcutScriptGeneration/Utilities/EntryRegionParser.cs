@@ -4,7 +4,7 @@ using Petrichor.ShortcutScriptGeneration.Info;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class EntryParser : IEntryParser
+	public class EntryRegionParser : IEntryRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
 		private static string RegionName => ShortcutScriptGenerationSyntax.EntryRegionTokenName;
