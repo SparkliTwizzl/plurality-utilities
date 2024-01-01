@@ -54,14 +54,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ModuleOptionsRegionParser Parser { get; set; } = new();
+		public ModuleOptionsRegionParser? parser;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			Parser = new();
+			parser = new();
 		}
 
 
@@ -69,7 +69,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success_AllOptionalTokens()
 		{
 			var expected = TestData.ModuleOptions_Valid_OptionalData;
-			var actual = Parser.Parse( TestData.RegionData_Valid_OptionalTokens );
+			var actual = parser!.Parse( TestData.RegionData_Valid_OptionalTokens );
 			Assert.AreEqual( expected, actual );
 		}
 
@@ -77,14 +77,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Parse_Test_Success_NoOptionalTokens()
 		{
 			var expected = TestData.ModuleOptions_Valid_NoOptionalData;
-			var actual = Parser.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			var actual = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 			Assert.AreEqual( expected, actual );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketMismatchException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = Parser.Parse( regionData );
+		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
 		{
@@ -99,12 +99,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_Throws_FileRegionException()
 		{
-			_ = Parser.Parse( TestData.RegionData_Valid_NoOptionalTokens );
-			_ = Parser.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = Parser.Parse( TestData.RegionData_UnknownToken );
+		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
 	}
 }

@@ -103,12 +103,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntriesRegionParserStub EntriesRegionParser { get; set; } = new();
+		public EntriesRegionParserStub? entriesRegionParserStub;
 		public InputFileParser? parser;
-		public Mock<IMacroGenerator> MacroGenerator { get; set; } = new();
-		public MetadataRegionParserStub MetadataRegionParser { get; set; } = new();
-		public ModuleOptionsRegionParserStub ModuleOptionsRegionParser { get; set; } = new();
-		public TemplatesRegionParserStub TemplatesRegionParser { get; set; } = new();
+		public Mock<IMacroGenerator>? macroGeneratorMock;
+		public MetadataRegionParserStub? metadataRegionParserStub;
+		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
+		public TemplatesRegionParserStub? templatesRegionParserStub;
 
 
 		[TestInitialize]
@@ -116,16 +116,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			EntriesRegionParser = new();
-			MacroGenerator = new();
-			_ = MacroGenerator
+			entriesRegionParserStub = new();
+			macroGeneratorMock = new();
+			_ = macroGeneratorMock
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
-			MetadataRegionParser = new();
-			ModuleOptionsRegionParser = new();
-			TemplatesRegionParser = new();
+			metadataRegionParserStub = new();
+			moduleOptionsRegionParserStub = new();
+			templatesRegionParserStub = new();
 
-			parser = new InputFileParser( MetadataRegionParser, ModuleOptionsRegionParser, EntriesRegionParser, TemplatesRegionParser, MacroGenerator.Object );
+			parser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 

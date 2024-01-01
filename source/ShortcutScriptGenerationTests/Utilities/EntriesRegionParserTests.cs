@@ -86,7 +86,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntryParserStub EntryRegionParser { get; set; } = new();
+		public EntryParserStub? entryRegionParserStub;
 		public EntriesRegionParser? parser;
 
 
@@ -94,8 +94,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			EntryRegionParser = new();
-			parser = new( EntryRegionParser );
+			entryRegionParserStub = new();
+			parser = new( entryRegionParserStub );
 		}
 
 

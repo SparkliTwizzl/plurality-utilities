@@ -30,14 +30,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public MacroGenerator Generator { get; set; } = new();
+		public MacroGenerator? generator;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			Generator = new();
+			generator = new();
 		}
 
 
@@ -45,7 +45,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = Generator.Generate( TestData.Input ).ToArray();
+			var actual = generator!.Generate( TestData.Input ).ToArray();
 			CollectionAssert.AreEqual( expected, actual );
 		}
 	}
