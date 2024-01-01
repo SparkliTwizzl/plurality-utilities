@@ -1,4 +1,5 @@
 ﻿using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Info;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -6,6 +7,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class EntryParser : IEntryParser
 	{
 		private int IndentLevel { get; set; } = 0;
+		private static string RegionName => ShortcutScriptGenerationSyntax.EntryRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;

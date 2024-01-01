@@ -66,7 +66,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryTokenName )
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryRegionTokenName )
 				{
 					var regionDataTrimmedToEntry = regionData[ ( i + 1 ).. ];
 					var entry = EntryParser.Parse( regionDataTrimmedToEntry );

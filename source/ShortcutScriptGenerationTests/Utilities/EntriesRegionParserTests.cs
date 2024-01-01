@@ -50,7 +50,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptGenerationSyntax.EntryToken }",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryRegionToken }",
 				$"\t{ CommonSyntax.OpenBracketToken }",
 				$"\t\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue } { CommonSyntax.LineCommentToken } inline comment",
 				$"\t\t{EntryPronoun}",
@@ -58,7 +58,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\t{ CommonSyntax.CloseBracketToken }",
 				"\t",
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptGenerationSyntax.EntryToken }",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryRegionToken }",
 				$"\t{ CommonSyntax.OpenBracketToken }",
 				$"\t\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
 				$"\t\t{EntryPronoun}",

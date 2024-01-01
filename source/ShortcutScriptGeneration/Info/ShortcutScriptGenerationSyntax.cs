@@ -13,10 +13,10 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string EntryDecorationTokenName => "decoration";
 		public static string EntryNameToken => $"{EntryNameTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntryNameTokenName => "name";
-		public static string EntryToken => $"{EntryTokenName}{CommonSyntax.TokenValueDivider}";
-		public static string EntryTokenName => "entry";
 		public static string EntryPronounToken => $"{EntryPronounTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntryPronounTokenName => "pronoun";
+		public static string EntryRegionToken => $"{EntryRegionTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryRegionTokenName => "entry";
 		public static string ModuleOptionsRegionToken => $"{ModuleOptionsRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string ModuleOptionsRegionTokenName => "module-options";
 		public static string ReloadShortcutToken => $"{ReloadShortcutTokenName}{CommonSyntax.TokenValueDivider}";
