@@ -62,11 +62,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		[TestMethod]
-		public void Parse_Test_Success()
+		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Success( string[] regionData )
 		{
-			var expected = TestData.Templates;
-			var actual = parser!.Parse( TestData.RegionData_Valid );
-			CollectionAssert.AreEqual( expected, actual );
+			var expectedResult = TestData.Templates;
+			var actualResult = parser!.Parse( regionData );
+			CollectionAssert.AreEqual( expectedResult, actualResult );
+
+			var expectedLinesParsed = regionData.Length;
+			var actualLinesParsed = parser.LinesParsed;
+			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
+		}
+
+		public static IEnumerable<object[]> Parse_Test_Success_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_Valid };
+			}
 		}
 
 		[TestMethod]

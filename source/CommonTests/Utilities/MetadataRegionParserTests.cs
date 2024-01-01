@@ -101,9 +101,13 @@ namespace Petrichor.Common.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Success( string[] regionData )
 		{
-			var expected = MetadataRegionParser.RegionIsValidMessage;
-			var actual = parser!.Parse( regionData );
-			Assert.AreEqual( expected, actual );
+			var expectedResult = MetadataRegionParser.RegionIsValidMessage;
+			var actualResult = parser!.Parse( regionData );
+			Assert.AreEqual( expectedResult, actualResult );
+
+			var expectedLinesParsed = regionData.Length;
+			var actualLinesParsed = parser.LinesParsed;
+			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
 		}
 
 		public static IEnumerable<object[]> Parse_Test_Success_Data
