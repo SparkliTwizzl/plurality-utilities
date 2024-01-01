@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.TestShared.Utilities;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
@@ -10,127 +13,147 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static ScriptEntry Entry => new(
+			public static ScriptEntry Entry_AllOptionalData => new(
 					new List<ShortcutScriptIdentity>
 					{
-						new("name1", "tag1"),
-						new("name2", "tag2"),
+						new(EntryName, EntryTag),
+						new(EntryName, EntryTag),
 					},
-					"pronoun",
-					"decoration"
+					EntryPronoun,
+					EntryDecoration
 				);
-			public static string[] RegionData_BlankDecorationField => new[]
+			public static ScriptEntry Entry_NoOptionalData => new(
+					new List<ShortcutScriptIdentity>
+					{
+						new(EntryName, EntryTag),
+					},
+					EntryPronoun,
+					EntryDecoration
+				);
+			public static string EntryDecoration => "decoration";
+			public static string EntryName => "name";
+			public static string EntryNameTokenValue => $"{EntryName} @{EntryTag}";
+			public static string EntryPronoun => "pronoun";
+			public static string EntryTag => "tag";
+			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name @tag",
-				"\t\t&",
-				"\t}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_BlankNameField => new[]
+			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t# @tag",
-				"\t}",
-				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_BlankPronounField => new[]
+			public static string[] RegionData_UnknownToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name @tag",
-				"\t\t$",
-				"\t}",
+				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_BlankTagField => new[]
+			public static string[] RegionData_Valid_AllOptionalTokens => new[]
 			{
-				"{",
-				"\t{",
-				"\t\t#name @",
-				"\t}",
+				$"{ CommonSyntax.OpenBracketToken }",
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
+				$"\t{EntryPronoun}",
+				$"\t{EntryDecoration}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_EntryNotClosed => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name @tag",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] RegionData_NoIdentityField => new[]
+			public static string[] RegionData_Valid_NoOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t}",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_NoNameField => new[]
+			public static string[] RegionData_NoTagInNameToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t@tag",
-				"\t}",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryName }",
+				$"\t{EntryPronoun}",
+				$"\t{EntryDecoration}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_NoTagField => new[]
+			public static string[] RegionData_TooManyPronounTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name",
-				"\t}",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
+				$"\t{EntryPronoun}",
+				$"\t{EntryPronoun}",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_TooManyDecorationFields => new[]
+			public static string[] RegionData_TooManyDecorationTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name @tag",
-				"\t\t$pronoun",
-				"\t\t&decoration",
-				"\t\t&decoration",
-				"\t}",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] RegionData_TooManyPronounFields => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\t#name @tag",
-				"\t\t$pronoun",
-				"\t\t$pronoun",
-				"\t}",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] RegionData_UnexpectedCharBetweenEntries => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\ta",
-				"\t{",
-				"\t\t#name @tag",
-				"\t\t$pronoun",
-				"\t}",
-				CommonSyntax.CloseBracketToken,
-			};
-			public static string[] RegionData_UnexpectedCharInEntry => new[]
-			{
-				CommonSyntax.OpenBracketToken,
-				"\t{",
-				"\t\tx",
-				"\t\t#name @tag",
-				"\t\t$pronoun",
-				"\t}",
+				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameTokenValue }",
+				$"\t{EntryDecoration}",
+				$"\t{EntryDecoration}",
 				CommonSyntax.CloseBracketToken,
 			};
 		}
 
 
-		[TestMethod]
-		public void Parse_Test_Success()
+		EntryRegionParser? parser;
+
+		[TestInitialize]
+		public void Setup()
 		{
-			Assert.Fail();
+			TestUtilities.InitializeLoggingForTests();
+			parser = new();
+		}
+
+
+		[TestMethod]
+		public void Parse_Test_Success_AllOptionalTokens()
+		{
+			var expected = TestData.Entry_AllOptionalData;
+			var actual = parser!.Parse( TestData.RegionData_Valid_AllOptionalTokens );
+			Assert.AreEqual( expected, actual );
+		}
+
+		[TestMethod]
+		public void Parse_Test_Success_NoOptionalTokens()
+		{
+			var expected = TestData.Entry_NoOptionalData;
+			var actual = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			Assert.AreEqual( expected, actual );
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( BracketMismatchException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
+				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		public void Parse_Test_Throws_FileRegionException()
+		{
+			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+			_ = parser!.Parse( TestData.RegionData_Valid_NoOptionalTokens );
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_TooManyDecorationTokens };
+				yield return new object[] { TestData.RegionData_NoTagInNameToken };
+				yield return new object[] { TestData.RegionData_TooManyPronounTokens };
+				yield return new object[] { TestData.RegionData_UnknownToken };
+			}
 		}
 	}
 }
