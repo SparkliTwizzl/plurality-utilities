@@ -31,7 +31,8 @@ namespace Petrichor.App.Utilities
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
 				var metadataRegionParser = new MetadataRegionParser();
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
-				var entriesRegionParser = new EntriesRegionParser();
+				var entryParser = new EntryParser();
+				var entriesRegionParser = new EntriesRegionParser( entryParser );
 				var templatesRegionParser = new TemplatesRegionParser();
 				var macroGenerator = new MacroGenerator();
 				var inputFileParser = new InputFileParser( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
