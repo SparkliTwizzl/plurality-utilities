@@ -96,15 +96,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = Parser.Parse( TestData.RegionData_UnknownToken );
-
-		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_Throws_FileRegionException()
 		{
 			_ = Parser.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 			_ = Parser.Parse( TestData.RegionData_Valid_NoOptionalTokens );
 		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenException ) )]
+		public void Parse_Test_Throws_TokenException() => _ = Parser.Parse( TestData.RegionData_UnknownToken );
 	}
 }

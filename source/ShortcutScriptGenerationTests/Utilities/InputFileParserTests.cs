@@ -90,12 +90,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed { get; private set; } = 1;
 			public int RegionsParsed { get; private set; } = 0;
+			public int TemplatesParsed { get; private set; } = 0;
 
 			public string[] Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
 				LinesParsed = TestData.TemplatesRegionLength;
+				TemplatesParsed = 1;
 				return TestData.Templates;
 			}
 		}
