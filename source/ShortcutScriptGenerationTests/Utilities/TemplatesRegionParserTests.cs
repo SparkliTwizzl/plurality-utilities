@@ -72,8 +72,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string Template => $"::{ TemplateFindString }::{ TemplateReplaceString }";
-			public static string TemplateFindString => $"@{ ShortcutScriptGenerationSyntax.TemplateFindTagString }";
-			public static string TemplateReplaceString => $"\\{ ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }{ ShortcutScriptGenerationSyntax.TemplateFindNameString }\\{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } { ShortcutScriptGenerationSyntax.TemplateFindPronounString } { ShortcutScriptGenerationSyntax.TemplateFindDecorationString } `";
+			public static string TemplateFindString
+				=> $"{ ShortcutScriptGenerationSyntax.TemplateFindTagString }{ ShortcutScriptGenerationSyntax.TemplateFindLastTagString }";
+			public static string TemplateReplaceString
+				=> $"\\{ ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }{ ShortcutScriptGenerationSyntax.TemplateFindIDString }\\{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } { ShortcutScriptGenerationSyntax.TemplateFindNameString } { ShortcutScriptGenerationSyntax.TemplateFindLastNameString } { ShortcutScriptGenerationSyntax.TemplateFindPronounString } { ShortcutScriptGenerationSyntax.TemplateFindColorString } { ShortcutScriptGenerationSyntax.TemplateFindDecorationString } `";
 			public static string[] Templates => new[]
 			{
 				Template,
