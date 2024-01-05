@@ -17,6 +17,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string DefaultIconPathWithQuotes => $"\"{DefaultIconPath}\"";
 			public static ScriptModuleOptions ModuleOptions_Valid_NoOptionalData => new();
 			public static ScriptModuleOptions ModuleOptions_Valid_AllOptionalData => new( DefaultIconPathWithQuotes, SuspendIconPathWithQuotes, ReloadShortcut, SuspendShortcut );
+			public static ScriptModuleOptions ModuleOptions_AllReplaceStrings => new( string.Empty, string.Empty, Shortcut_AllReplaceStrings, string.Empty );
+			public static string[] RegionData_AllFindStrings => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { Shortcut_AllFindStrings }",
+				CommonSyntax.CloseBracketToken,
+			};
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -24,6 +33,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
 				CommonSyntax.OpenBracketToken,
+			};
+			public static string[] RegionData_UnknownFindString => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { Shortcut_UnknownFindString }",
+				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_UnknownToken => new[]
 			{
@@ -48,6 +63,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string ReloadShortcut => "reloadshortcut";
+			public static string Shortcut_AllFindStrings
+				=> "[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [left-shift] [lshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [newline] [nl] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn]";
+			public static string Shortcut_AllReplaceStrings
+				=> "# # ! <! <! >@ >@ ^ ^ <^ <^ >^ >^ + <+ <+ >+ >+ <+ <+ & <^>! <^>! * * ~ ~ $ \n` \n` `` CapsLock CapsLock Enter Backspace Backspace Insert Insert Delete Delete Home End PageUp PageUp PageDown PageDown";
+			public static string Shortcut_UnknownFindString => "[unknown]";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";
 			public static string SuspendIconPathWithQuotes => $"\"{SuspendIconPath}\"";
 			public static string SuspendShortcut => "suspendshortcut";
@@ -71,7 +91,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var actualResult = parser!.Parse( regionData );
 			Assert.AreEqual( expectedResult, actualResult );
-			
+
 			var expectedHasParsedMaxAllowedRegions = true;
 			var actualHasParsedMaxAllowedRegions = parser.HasParsedMaxAllowedRegions;
 			Assert.AreEqual( expectedHasParsedMaxAllowedRegions, actualHasParsedMaxAllowedRegions );
@@ -91,6 +111,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				yield return new object[] { TestData.RegionData_Valid_AllOptionalTokens, TestData.ModuleOptions_Valid_AllOptionalData };
 				yield return new object[] { TestData.RegionData_Valid_NoOptionalTokens, TestData.ModuleOptions_Valid_NoOptionalData };
+				yield return new object[] { TestData.RegionData_AllFindStrings, TestData.ModuleOptions_AllReplaceStrings };
 			}
 		}
 
@@ -118,6 +139,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_UnknownFindString };
+				yield return new object[] { TestData.RegionData_UnknownToken };
+			}
+		}
 	}
 }
