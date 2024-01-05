@@ -52,7 +52,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-
 		public class EntryParserStub : IEntryRegionParser
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -113,10 +112,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
+		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = parser!.Parse( regionData );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
 			get
 			{

@@ -17,7 +17,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_DanglingExcapeCharacter => new[]
+			public static string[] RegionData_DanglingEscapeCharacter => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::[tag]:: [name]\\",
@@ -124,10 +124,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
+		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = parser!.Parse( regionData );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
 			get
 			{
@@ -138,7 +138,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( EscapeCharacterException ) )]
-		public void Parse_Test_Throws_EscapeCharacterMismatchException() => _ = parser!.Parse( TestData.RegionData_DanglingExcapeCharacter );
+		public void Parse_Test_Throws_EscapeCharacterException() => _ = parser!.Parse( TestData.RegionData_DanglingEscapeCharacter );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
@@ -150,6 +150,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_DanglingFindStringCloseChar };
+				yield return new object[] { TestData.RegionData_DanglingFindStringOpenChar };
+				yield return new object[] { TestData.RegionData_MismatchedFindStringCloseChar };
+				yield return new object[] { TestData.RegionData_MismatchedFindStringOpenChar };
+				yield return new object[] { TestData.RegionData_UnknownFindStringValue };
+				yield return new object[] { TestData.RegionData_UnknownToken };
+			}
+		}
 	}
 }

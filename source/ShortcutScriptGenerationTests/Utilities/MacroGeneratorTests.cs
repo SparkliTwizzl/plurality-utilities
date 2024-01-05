@@ -23,7 +23,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::@TAG:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}NAME{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} PRONOUN DECORATION `",
+				$"::@{EntryTag}:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{EntryName}{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {EntryPronoun} {EntryDecoration} `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
