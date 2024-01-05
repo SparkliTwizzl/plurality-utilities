@@ -19,7 +19,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
-		public int MaxRegionsAllowed { get; private set; } = 1;
+		public int MaxRegionsAllowed => 1;
 		public int RegionsParsed { get; private set; } = 0;
 		public int TemplatesParsed { get; private set; } = 0;
 
