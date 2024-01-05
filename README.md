@@ -222,22 +222,35 @@ Each entry is an `entry` region which defines a set of values to create shortcut
 
 Entry regions are made up several token types. There are different restrictions and requirements for each type.
 
-- `name` : Min 0. This token defines a name/tag pair.
+- `decoration` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+- `color` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+- `id` : Min 1, max 1. This token defines a value to associated with all `name` tokens that are present.
+- `name` : Min 1. This token defines a name/tag pair.
     - This token type's value is structured as `[name] @[tag]`, where the `[name]` portion can be any non-blank string that does not contain an `@` character, and the `[tag]` portion can be any string that does not contain whitespace.
+- `last-name` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+    - This token type's value structure is identical to that of `name` tags.
 - `pronoun` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
-- `decoration` : Min 0, max 1.  This token defines a value to associate with all `name` tokens that are present.
 
 **NOTE:** All token values *should* be unique, even though Petrichor wont take issue with it. If a value is repeated, the AutoHotkey script generated from the input data will misbehave in unpredictable ways.
 
 **Example:**
 
 ```ptcr
-entry:
+entry: #: all optional tokens present
 {
+    id: 1234
     name: Sam @sm
     name: Sammy @smy
+    last-name: Smith @s
     pronoun: they/them
+    color: #89abcd
     decoration: -- a person
+}
+
+entry: #: only required tokens present
+{
+    id: 4321
+    name: ALEX @AX
 }
 ```
 
@@ -284,8 +297,12 @@ If no marker strings are present, a template will be inserted into the output fi
 
 Available marker strings are:
 
+- `[color]`
 - `[decoration]`
+- `[id]`
 - `[name]`
+- `[last-name]`
+- `[last-tag]`
 - `[pronoun]`
 - `[tag]`
 
@@ -300,22 +317,25 @@ entries:
 {
     entry:
     {
+        id: 1234
         name: Sam @sm
         name: Sammy @smy
+        last-name: Smith @s
         pronoun: they/them
+        color: #89abcd
         decoration: -- a person
     }
 }
 
 templates:
 {
-    template:  [tag] :: [name] ([pronoun]) | {[decoration]}
+    template:  [tag][last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
 }
 
 #: MACROS GENERATED FROM INPUT:
 
-::sm::Sam (they/them) | {-- a person}
-::smy::Sammy (they/them) | {-- a person}
+::sms::1234 - Sam Smith (they/them) | {-- a person} | #89abcd
+::smys::1234 - Sammy Smith (they/them) | {-- a person} | #89abcd
 ```
 
 You can use each marker string in a template as many times as you want
@@ -327,16 +347,19 @@ entries:
 {
     entry:
     {
+        id: 1234
         name: Sam @sm
         name: Sammy @smy
+        last-name: Smith @s
         pronoun: they/them
-        decoration: is a person
+        color: #89abcd
+        decoration: -- a person
     }
 }
 
 templates:
 {
-    template: [tag][tag] :: [name] ([pronoun]) | {[name] [decoration]}
+    template: [tag][tag] :: [name] | {[name] [decoration]}
 }
 
 #: MACROS GENERATED FROM INPUT:
@@ -356,22 +379,25 @@ entries:
 {
     entry:
     {
+        id: 1234
         name: Sam @sm
         name: Sammy @smy
+        last-name: Smith @s
         pronoun: they/them
-        decoration: a person
+        color: #89abcd
+        decoration: -- a person
     }
 }
 
 templates:
 {
-    template: [tag] :: [name] ([name]) \\ \[[decoration]\]
+    template: [tag] :: [name] \\ \[[decoration]\]
 }
 
 #: MACROS GENERATED FROM INPUT:
 
-::sm::Sam (they/them) \ [a person]
-::smy::Sammy (they/them) \ [a person]
+::sm::Sam \ [a person]
+::smy::Sammy \ [a person]
 ```
 
 ---

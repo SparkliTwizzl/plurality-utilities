@@ -14,18 +14,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ScriptEntry(),
 			};
 			public static string[] Templates => new[]
 			{
-				"::@`tag`:: `name`",
-				"::@$&`tag`:: `name` `pronoun` `decoration`",
+				"template",
 			};
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
-				"::@tag:: name",
-				"::@$&tag:: name pronoun decoration",
+				"macro",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( $"\"{TestAssets.DefaultIconFilePath}\"", $"\"{TestAssets.SuspendIconFilePath}\"", TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string[] GeneratedOutputFileContents => new[]
@@ -105,8 +103,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				"",
 				"",
 				"; macros generated from entries and templates",
-				"::@tag:: name",
-				"::@$&tag:: name pronoun decoration",
+				"macro",
 			};
 		}
 

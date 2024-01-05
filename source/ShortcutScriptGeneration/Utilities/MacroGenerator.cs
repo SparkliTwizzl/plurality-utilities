@@ -21,32 +21,39 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private static List<string> GenerateMacrosFromEntries( string[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
-			foreach ( var identity in entry.Identities )
+			foreach ( var identity in entry.Identities.ToList())
 			{
-				macros.AddRange( GenerateMacrosFromIdentities( templates, identity, entry.Pronoun, entry.Decoration ) );
+				var batch = new ScriptEntry( entry );
+				batch.Identities.Clear();
+				batch.Identities.Add( identity );
+				macros.AddRange( GenerateMacrosFromIdentity( templates, batch ) );
 			}
 			return macros;
 		}
 
-		private static List<string> GenerateMacrosFromIdentities( string[] templates, ScriptIdentity identity, string pronoun, string decoration )
+		private static List<string> GenerateMacrosFromIdentity( string[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var template in templates )
 			{
-				macros.Add( GenerateMacroFromIdentity( template, identity, pronoun, decoration ) );
+				macros.Add( GenerateMacroFromTemplate( template, entry ) );
 			}
 			return macros;
 		}
 
-		private static string GenerateMacroFromIdentity( string template, ScriptIdentity identity, string pronoun, string decoration )
+		private static string GenerateMacroFromTemplate( string template, ScriptEntry entry )
 		{
 			var macro = template;
 			var fields = new Dictionary<string, string>()
 			{
-				{ ShortcutScriptGenerationSyntax.TemplateFindDecorationString, decoration },
-				{ ShortcutScriptGenerationSyntax.TemplateFindNameString, identity.Name },
-				{ ShortcutScriptGenerationSyntax.TemplateFindPronounString, pronoun },
-				{ ShortcutScriptGenerationSyntax.TemplateFindTagString, identity.Tag },
+				{ ShortcutScriptGenerationSyntax.TemplateFindColorString, entry.Color },
+				{ ShortcutScriptGenerationSyntax.TemplateFindDecorationString, entry.Decoration },
+				{ ShortcutScriptGenerationSyntax.TemplateFindIDString, entry.ID },
+				{ ShortcutScriptGenerationSyntax.TemplateFindNameString, entry.Identities[ 0 ].Name },
+				{ ShortcutScriptGenerationSyntax.TemplateFindLastNameString, entry.LastIdentity.Name },
+				{ ShortcutScriptGenerationSyntax.TemplateFindLastTagString, entry.LastIdentity.Tag },
+				{ ShortcutScriptGenerationSyntax.TemplateFindPronounString, entry.Pronoun },
+				{ ShortcutScriptGenerationSyntax.TemplateFindTagString, entry.Identities[ 0 ].Tag },
 			 };
 			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
