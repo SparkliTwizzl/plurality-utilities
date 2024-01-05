@@ -5,6 +5,7 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -71,7 +72,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
 				{
-					moduleOptions.ReloadShortcut = token.Value;
+					moduleOptions.ReloadShortcut = ReplaceFieldsInShortcut( token.Value );
 					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.ReloadShortcutTokenName}" );
 				}
 
@@ -83,7 +84,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
 				{
-					moduleOptions.SuspendShortcut = token.Value;
+					moduleOptions.SuspendShortcut = ReplaceFieldsInShortcut( token.Value );
 					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendShortcutTokenName}" );
 				}
 
@@ -109,6 +110,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			Log.TaskFinish( taskMessage );
 			return moduleOptions;
+		}
+
+		private static string ReplaceFieldsInShortcut( string shortcut )
+		{
+			foreach ( var keyValuePair in ScriptHotstringKeys.LookUpTable )
+			{
+				var find = keyValuePair.Key;
+				var replace = keyValuePair.Value;
+				shortcut = shortcut.Replace( find, replace );
+			}
+
+			shortcut = shortcut.Replace( "\\[", "[" )
+				.Replace( "\\]", "]" );
+
+			return shortcut;
 		}
 	}
 }

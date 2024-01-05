@@ -22,8 +22,6 @@
 			{ "[lshift]", "<+" },
 			{ "[right-shift]", ">+" },
 			{ "[rshift]", ">+" },
-			{ "[left-shift]", "<+" },
-			{ "[lshift]", "<+" },
 			{ "[and]", "&" },
 			{ "[alt-graph]", "<^>!" },
 			{ "[altgr]", "<^>!" },
