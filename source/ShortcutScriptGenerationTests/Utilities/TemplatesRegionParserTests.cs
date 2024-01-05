@@ -24,7 +24,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_TrailingExcapeCharacter => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::\\@@:: #\\",
+				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::[tag]:: [name]\\",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_UnknownToken => new[]
@@ -38,14 +38,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } ::\\@@:: # { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } ::\\@\\$\\&@:: # $ &",
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { Template_Valid } { CommonSyntax.LineCommentToken } inline comment",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string Template_Valid => "::@[tag]:: \\[[name]\\] [pronoun] [decoration] `";
 			public static string[] Templates => new[]
 			{
-				"::@`tag`:: `name`",
-				"::@$&`tag`:: `name` `pronoun` `decoration`",
+				Template_Valid,
 			};
 		}
 

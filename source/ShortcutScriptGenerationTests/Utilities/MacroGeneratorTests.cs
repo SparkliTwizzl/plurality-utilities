@@ -13,19 +13,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new List<ScriptIdentity>(){ new( "name", "tag" ) }, "pronoun", "decoration" ),
+				new ScriptEntry( new List<ScriptIdentity>(){ new( EntryName, EntryTag ) }, EntryPronoun, EntryDecoration ),
 			};
+			public static string EntryDecoration => "DECORATION";
+			public static string EntryName => "NAME";
+			public static string EntryPronoun => "PRONOUN";
+			public static string EntryTag => "TAG";
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				"::@tag:: name",
-				"::@$&tag:: name pronoun decoration",
+				"::@TAG:: [NAME] PRONOUN DECORATION ",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static string Template => "::@[tag]:: \\[[name]\\] [pronoun] [decoration] `";
 			public static string[] Templates => new[]
 			{
-				"::@`tag`:: `name`",
-				"::@$&`tag`:: `name` `pronoun` `decoration`",
+				Template,
 			};
 		}
 
