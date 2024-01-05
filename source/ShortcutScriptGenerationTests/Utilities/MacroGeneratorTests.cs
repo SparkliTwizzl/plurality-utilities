@@ -23,7 +23,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::@TAG:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}NAME{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} PRONOUN DECORATION ",
+				$"::@TAG:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}NAME{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} PRONOUN DECORATION `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
@@ -49,7 +49,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Macros;
-			var actual = generator!.Generate( TestData.Input ).ToArray();
+			var actual = generator!.Generate( TestData.Input );
 			CollectionAssert.AreEqual( expected, actual );
 		}
 	}

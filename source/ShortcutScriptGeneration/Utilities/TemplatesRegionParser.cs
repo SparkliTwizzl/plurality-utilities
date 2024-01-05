@@ -5,7 +5,6 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using System.Text;
 
 
@@ -119,9 +118,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						ExceptionLogger.LogAndThrow( new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception ) );
 					}
 				}
-				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )
-					? template.Append( $"`{value}`" )
-					: template.Append( c );
+				//_ = ScriptTemplateFindStrings.LookUpTable.TryGetValue( c, out var value )
+				//	? template.Append( $"`{value}`" )
+				//	: template.Append( c );
 			}
 			return template.ToString();
 		}
