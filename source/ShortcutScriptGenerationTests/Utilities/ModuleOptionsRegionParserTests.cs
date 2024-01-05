@@ -58,9 +58,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static string ReloadShortcut => "reloadshortcut";
 			public static string Shortcut_AllFindStrings
-				=> "[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [newline] [nl] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] \\[del\\]";
+				=> "[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] \\[del\\]";
 			public static string Shortcut_AllReplaceStrings
-				=> "# # ! <! <! >@ >@ ^ ^ <^ <^ >^ >^ + <+ <+ >+ >+ & <^>! <^>! * * ~ ~ $ \n` \n` `` CapsLock CapsLock Enter Backspace Backspace Insert Insert Delete Delete Home End PageUp PageUp PageDown PageDown [unknown] [del]";
+				=> "# # ! <! <! >@ >@ ^ ^ <^ <^ >^ >^ + <+ <+ >+ >+ & <^>! <^>! * * ~ ~ $ Tab CapsLock CapsLock Enter Backspace Backspace Insert Insert Delete Delete Home End PageUp PageUp PageDown PageDown [unknown] [del]";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";
 			public static string SuspendIconPathWithQuotes => $"\"{SuspendIconPath}\"";
 			public static string SuspendShortcut => "suspendshortcut";

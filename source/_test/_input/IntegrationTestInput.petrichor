@@ -11,7 +11,7 @@ module-options:
 	#: line comment in module options region body
 	default-icon: ../_input/IconDefault.ico #: inline comment in module options region body
 	suspend-icon: "../_input/IconSuspend.ico"
-	reload-shortcut: [win]r
+	reload-shortcut: [tab] [and] r
 	suspend-shortcut: [win]s
 }
 
