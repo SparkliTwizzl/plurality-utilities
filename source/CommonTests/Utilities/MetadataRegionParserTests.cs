@@ -129,7 +129,7 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( BracketMismatchException ) )]
+		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
 

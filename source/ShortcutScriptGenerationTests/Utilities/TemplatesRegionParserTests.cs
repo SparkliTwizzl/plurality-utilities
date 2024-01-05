@@ -123,7 +123,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( BracketMismatchException ) )]
+		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
 
@@ -137,7 +137,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
+		[ExpectedException( typeof( EscapeCharacterException ) )]
 		public void Parse_Test_Throws_EscapeCharacterMismatchException() => _ = parser!.Parse( TestData.RegionData_DanglingExcapeCharacter );
 
 		[TestMethod]

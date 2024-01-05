@@ -48,12 +48,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
 				{
-					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched open bracket was found when parsing input file \"{filePath}\"" ) );
+					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched open bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
 				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
 				{
-					ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
+					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntriesRegionTokenName )
