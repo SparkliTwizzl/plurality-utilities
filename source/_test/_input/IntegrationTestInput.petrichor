@@ -36,5 +36,5 @@ entries:
 templates:
 {
 	#: line comment in templates region body
-	template: ::@[tag]:: \[[name]\] [pronoun] [decoration] ` #: inline comment in templates region body
+	template: @[tag] :: ` \[[name]\] [pronoun] [decoration] ` #: inline comment in templates region body
 }

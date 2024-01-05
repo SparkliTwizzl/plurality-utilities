@@ -20,7 +20,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_DanglingEscapeCharacter => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::[tag]:: [name]\\",
+				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t{ShortcutScriptGenerationSyntax.TemplateFindTagString} :: \\",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingFindStringCloseChar => new[]
@@ -68,10 +68,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { Template } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString } { CommonSyntax.LineCommentToken } inline comment",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
+			public static string Template => $"::{ TemplateFindString }::{ TemplateReplaceString }";
+			public static string TemplateFindString => $"@{ ShortcutScriptGenerationSyntax.TemplateFindTagString }";
+			public static string TemplateReplaceString => $"\\{ ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }{ ShortcutScriptGenerationSyntax.TemplateFindNameString }\\{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } { ShortcutScriptGenerationSyntax.TemplateFindPronounString } { ShortcutScriptGenerationSyntax.TemplateFindDecorationString } `";
 			public static string[] Templates => new[]
 			{
 				Template,
