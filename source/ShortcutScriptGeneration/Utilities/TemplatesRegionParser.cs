@@ -5,6 +5,7 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using System.Text;
 
 
@@ -98,6 +99,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
+		private static int GetIndexOfNextFindStringCloseChar( string input )
+		{
+			var nextCloseCharIndex = input.IndexOf( ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
+			if ( nextCloseCharIndex < 0 )
+			{
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}')" ) );
+			}
+
+			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
+			if ( isCloseCharEscaped )
+			{
+				var substring = input[ ( nextCloseCharIndex + 1 ).. ];
+				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring );
+			}
+
+			return nextCloseCharIndex;
+		}
+
+		private static int GetLengthOfFindString( string input ) => GetIndexOfNextFindStringCloseChar( input );
+
 		private static string ParseTemplateFromLine( string line )
 		{
 			var template = new StringBuilder();
@@ -113,9 +134,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				else if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
 				{
 					var substring = line[ i.. ];
-					var lengthOfFindString = GetLengthOfFindString( substring );
-					_ = template.Append( line[ i..( i + lengthOfFindString + 1 ) ] );
-					i += lengthOfFindString;
+					var findString = ValidateAndExtractFindString( substring );
+					_ = template.Append( findString );
+					var charsToSkip = findString.Length - 1;
+					i += charsToSkip;
 				}
 
 				else if ( c == '\\' )
@@ -140,28 +162,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return template.ToString();
 		}
 
-		private static int GetLengthOfFindString( string input )
+		private static string ValidateAndExtractFindString( string input )
 		{
-			var nextCloseCharIndex = GetIndexOfNextFindStringCloseChar( input );
-			return nextCloseCharIndex;
-		}
-
-		private static int GetIndexOfNextFindStringCloseChar( string input )
-		{
-			var nextCloseCharIndex = input.IndexOf( ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
-			if ( nextCloseCharIndex < 0 )
+			var lengthOfFindString = GetLengthOfFindString( input );
+			var findString = input[ ..( lengthOfFindString + 1 ) ];
+			if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findString ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}')" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained an unknown find-string \"{findString}\"" ) );
 			}
-
-			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
-			if ( isCloseCharEscaped )
-			{
-				var substring = input[ ( nextCloseCharIndex + 1 ).. ];
-				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring );
-			}
-
-			return nextCloseCharIndex;
+			return findString;
 		}
 	}
 }
