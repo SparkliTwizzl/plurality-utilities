@@ -255,6 +255,8 @@ Templates are defined by tokens with the name `template` and a valid AutoHotkey 
 
 All templates must start with a `find` text string, then `::`, then a `replace` text string.
 
+**NOTE:** You cannot use `::` in a `find` string due to the way AutoHotkey hotstrings work.
+
 These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the `find` and/or `replace` strings.
 
 Use [marker strings](#4.1.6.1.1---template-marker-strings) to define how templates should be applied to entries.
