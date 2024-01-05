@@ -66,9 +66,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_Valid => new[]
 			{
 				CommonSyntax.OpenBracketToken,
+				string.Empty,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
 				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString } { CommonSyntax.LineCommentToken } inline comment",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				string.Empty,
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string Template => $"::{ TemplateFindString }::{ TemplateReplaceString }";
@@ -78,6 +98,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				=> $"\\{ ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }{ ShortcutScriptGenerationSyntax.TemplateFindIDString }\\{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } { ShortcutScriptGenerationSyntax.TemplateFindNameString } { ShortcutScriptGenerationSyntax.TemplateFindLastNameString } { ShortcutScriptGenerationSyntax.TemplateFindPronounString } { ShortcutScriptGenerationSyntax.TemplateFindColorString } { ShortcutScriptGenerationSyntax.TemplateFindDecorationString } `";
 			public static string[] Templates => new[]
 			{
+				Template,
+				Template,
+				Template,
+				Template,
+				Template,
+				Template,
+				Template,
+				Template,
+				Template,
 				Template,
 			};
 		}

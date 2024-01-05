@@ -10,8 +10,6 @@ namespace Petrichor.App
 		static async Task Main( string[] args )
 		{
 			var startTime = DateTime.Now;
-			AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
-
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			_ = await CommandLineHandler.ParseArguments( args );
 			var startMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}";
@@ -19,7 +17,14 @@ namespace Petrichor.App
 			Log.Important( AppInfo.AppNameAndVersion );
 			Log.Important( startMessage );
 
-			RuntimeHandler.Execute();
+			try
+			{
+				RuntimeHandler.Execute();
+			}
+			catch ( Exception exception )
+			{
+				Log.Error( $"Error occurred during execution: {exception.Message}" );
+			}
 
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
@@ -28,14 +33,6 @@ namespace Petrichor.App
 			Console.WriteLine( finishMessage );
 
 			RuntimeHandler.WaitForUserAndExit();
-		}
-
-		static void UnhandledExceptionHandler( object sender, UnhandledExceptionEventArgs e )
-		{
-			Exception exception = ( Exception ) e.ExceptionObject;
-			var errorMessage = $"Execution failed with error: {exception.Message}";
-			Log.Error( errorMessage );
-			Console.WriteLine( errorMessage );
 		}
 	}
 }

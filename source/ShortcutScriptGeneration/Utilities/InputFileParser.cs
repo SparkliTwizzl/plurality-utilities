@@ -85,7 +85,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
 					input.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
-					i += ModuleOptionsRegionParser.LinesParsed;
+					i += TemplatesRegionParser.LinesParsed;
 				}
 
 				else
