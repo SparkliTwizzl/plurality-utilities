@@ -63,6 +63,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryColorTokenName )
+				{
+					if ( entry.Color != string.Empty )
+					{
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryColorTokenName} token" ) );
+					}
+					entry.Color = token.Value;
+				}
+
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryDecorationTokenName )
 				{
 					if ( entry.Decoration != string.Empty )
@@ -71,10 +80,28 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					entry.Decoration = token.Value;
 				}
+				
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryIDTokenName )
+				{
+					if ( entry.ID != string.Empty )
+					{
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryIDTokenName} token" ) );
+					}
+					entry.ID = token.Value;
+				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryNameTokenName )
 				{
 					entry.Identities.Add( ParseName( token.Value ) );
+				}
+
+				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryLastNameTokenName )
+				{
+					if ( entry.LastIdentity != ScriptIdentity.Empty )
+					{
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryLastNameTokenName} token" ) );
+					}
+					entry.LastIdentity = ParseName( token.Value );
 				}
 
 				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryPronounTokenName )
@@ -101,6 +128,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			if ( IndentLevel != 0 )
 			{
 				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
+			}
+
+			var entryHasRequiredValues = entry.ID != string.Empty && entry.Identities.Count > 0;
+			if ( !entryHasRequiredValues )
+			{
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"An {ShortcutScriptGenerationSyntax.EntryRegionTokenName} region did not contain all required fields" ) );
 			}
 
 			++RegionsParsed;

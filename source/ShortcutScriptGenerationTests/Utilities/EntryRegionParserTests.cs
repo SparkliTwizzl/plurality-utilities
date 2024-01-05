@@ -78,6 +78,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\t{ EntryNameToken }",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string[] RegionData_NoIDToken => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{EntryNameToken}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_NoNameTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{EntryIDToken}",
+				CommonSyntax.CloseBracketToken,
+			};
 			public static string[] RegionData_NoTagInNameToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
@@ -183,6 +195,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
 				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
+			}
+		}
+		
+		[TestMethod]
+		[ExpectedException( typeof( FileRegionException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_FileRegionException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_NoIDToken };
+				yield return new object[] { TestData.RegionData_NoNameTokens };
 			}
 		}
 
