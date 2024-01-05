@@ -121,11 +121,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string ParseTemplateFromLine( string line )
 		{
-			var template = new StringBuilder();
-			line = line.Trim();
-			for ( var i = 0 ; i < line.Length ; ++i )
+			// required to convert simplified Petrichor template syntax into AutoHotkey hotstring syntax
+			var components = line.Split( "::" );
+			var trimmedAndGarnishedLine = "::" + components[ 0 ].Trim() + "::";
+			if ( components.Length > 1 )
 			{
-				var c = line[ i ];
+				trimmedAndGarnishedLine += components[ 1 ].Trim();
+			}
+
+			var template = new StringBuilder();
+			for ( var i = 0 ; i < trimmedAndGarnishedLine.Length ; ++i )
+			{
+				var c = trimmedAndGarnishedLine[ i ];
 				if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar )
 				{
 					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}')" ) );
@@ -133,7 +140,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
 				{
-					var substring = line[ i.. ];
+					var substring = trimmedAndGarnishedLine[ i.. ];
 					var findString = ValidateAndExtractFindString( substring );
 					_ = template.Append( findString );
 					var charsToSkip = findString.Length - 1;
@@ -144,7 +151,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					try
 					{
-						_ = template.Append( line[ i..( i + 2 ) ] );
+						_ = template.Append( trimmedAndGarnishedLine[ i..( i + 2 ) ] );
 						++i;
 						continue;
 					}
