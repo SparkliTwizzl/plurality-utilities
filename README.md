@@ -257,7 +257,7 @@ All templates must start with `::`, a `find` text string including an at sign `@
 
 After the second `::`, write a `replace` text string which will be filled in in place of the `find` string when the output script is run.
 
-Use [marker symbols](#4.1.6.1.1---template-marker-symbols) to define how templates should be applied to entries.
+Use [marker strings](#4.1.6.1.1---template-marker-strings) to define how templates should be applied to entries.
 
 If this is not followed, the generated script wont work correctly, even though Petrichor will run without errors.
 
@@ -270,18 +270,18 @@ templates:
 }
 ```
 
-##### 4.1.6.1.1 - Template marker symbols
+##### 4.1.6.1.1 - Template marker strings
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
-If no marker symbols are present, a template will be inserted into the output file with no changes once for every `name` token present in the input file. This technically will not break the script, but it is not recommended.
+If no marker strings are present, a template will be inserted into the output file with no changes for every `name` token present in the input file. This technically will not break the script, but it is not recommended.
 
-Available marker symbols, and the fields they represent, are:
+Available marker strings are:
 
-- `#` → `name`
-- `@` → `tag`
-- `$` → `pronoun`
-- `&` → `decoration`
+- `[decoration]`
+- `[name]`
+- `[pronoun]`
+- `[tag]`
 
 **Example:**
 
@@ -299,16 +299,16 @@ entries:
 
 templates:
 {
-    template: ::@::# ($) | [&]
+    template: ::[tag]::[name] ([pronoun]) | {[decoration]}
 }
 
 #: MACROS GENERATED FROM INPUT:
 
-::sm::Sam (they/them) | [-- a person]
-::smy::Sammy (they/them) | [-- a person]
+::sm::Sam (they/them) | {-- a person}
+::smy::Sammy (they/them) | {-- a person}
 ```
 
-You can use each marker symbol in a template as many times as you want
+You can use each marker string in a template as many times as you want
 
 **Example:**
 
@@ -326,13 +326,40 @@ entries:
 
 templates:
 {
-    template: ::@@::# ($) | [# &]
+    template: ::[tag][tag]::[name] ([pronoun]) | {[name] [decoration]}
 }
 
 #: MACROS GENERATED FROM INPUT:
 
 ::smsm::Sam (they/them) | [Sam is a person]
 ::smysmy::Sammy (they/them) | [Sammy is a person]
+```
+
+You can insert a backtick `` ` `` at the end of a template to preserve trailing whitespace. If you do not do this, trailing whitespace will be trimmed off.
+
+**Example:**
+
+```ptcr
+entries:
+{
+    entry:
+    {
+        name: Sam @sm
+        name: Sammy @smy
+        pronoun: they/them
+        decoration: -- a person
+    }
+}
+
+templates:
+{
+    template: ::[tag]::[name] ([pronoun]) | {[decoration]} `
+}
+
+#: MACROS GENERATED FROM INPUT:
+
+::sm::Sam (they/them) | {-- a person} `
+::smy::Sammy (they/them) | {-- a person} `
 ```
 
 ##### 4.1.6.1.2 - Escape characters
@@ -355,13 +382,13 @@ entries:
 
 templates:
 {
-    template: ::\@@::# ($) \\ [\#&]
+    template: ::[tag]::[name] ([name]) \\ \[[decoration]\]
 }
 
 #: MACROS GENERATED FROM INPUT:
 
-::@sm::Sam (they/them) \ [#a person]
-::@smy::Sammy (they/them) \ [#a person]
+::sm::Sam (they/them) \ [a person]
+::smy::Sammy (they/them) \ [a person]
 ```
 
 ---
