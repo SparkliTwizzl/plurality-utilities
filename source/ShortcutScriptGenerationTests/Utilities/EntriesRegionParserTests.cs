@@ -89,10 +89,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			var expectedResult = TestData.Entries;
 			var actualResult = parser!.Parse( regionData );
 			CollectionAssert.AreEqual( expectedResult, actualResult );
+			
+			var expectedHasParsedMaxAllowedRegions = true;
+			var actualHasParsedMaxAllowedRegions = parser.HasParsedMaxAllowedRegions;
+			Assert.AreEqual( expectedHasParsedMaxAllowedRegions, actualHasParsedMaxAllowedRegions );
 
 			var expectedLinesParsed = regionData.Length;
 			var actualLinesParsed = parser.LinesParsed;
 			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
+
+			var expectedRegionsParsed = 1;
+			var actualRegionsParsed = parser.RegionsParsed;
+			Assert.AreEqual( expectedRegionsParsed, actualRegionsParsed );
 		}
 
 		public static IEnumerable<object[]> Parse_Test_Success_Data
