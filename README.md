@@ -196,7 +196,7 @@ module-options:
 
 If desired, you can include keyboard shortcuts to reload and/or suspend the script.
 
-To include a shortcut to reload the script, add a token to the module options region with the name `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation.
+To include a shortcut to reload the script, add a token to the module options region with the name `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation. To make this easier, some [find and replace strings](#41421---shortcut-find-and-replace-strings) are supported by Petrichor.
 
 To include a shortcut to suspend the script, do the same with a token named `suspend-shortcut`.
 
@@ -207,6 +207,48 @@ module-options:
 {
     reload-shortcut: #r #: Windows key + R
     suspend-shortcut: #s #: Windows key + S
+}
+```
+
+##### 4.1.4.2.1 - Shortcut find-and-replace strings
+
+The following strings are supported:
+
+- `[windows]` / `[win]` → Windows key
+- `[alt]` → either Alt key
+- `[left-alt]` / `[lalt]` → left Alt key
+- `[right-alt]` / `[ralt]` → right Alt key
+- `[control]` / `[ctrl]` → either Control key
+- `[left-control]` / `[lctrl]` → left Control key
+- `[right-control]` / `[rctrl]` → right Control key
+- `[shift]` → either Shift key
+- `[left-shift]` / `[lshift]` → left Shift key
+- `[right-shift]` / `[rshift]` → right Shift key
+- `[and]` → `&`
+- `[alt-graph]` / `[altgr]` → AltGr (AltGraph) key
+- `[wildcard]` / `[wild]` → `*`
+- `[passthrough]` / `[tilde]` → `~`
+- `[send]` → `$`
+- `[tab]` → Tab key
+- `[caps-lock]` / `[caps]` → CapsLock key
+- `[enter]` → Enter key
+- `[backspace]` / `[bksp]` → Backspace key
+- `[insert]` / `[ins]` → Insert key
+- `[delete]` / `[del]` → Delete key
+- `[home]` → Home key
+- `[end]` → End key
+- `[page-up]` / `[pgup]` → PageUp key
+- `[page-down]` / `[pgdn]` → PageDown key
+- `\[` → `[`
+- `\]` → `]`
+
+**Example:**
+
+```ptcr
+module-options:
+{
+    reload-shortcut: [win]r #: Windows key + R
+    suspend-shortcut: \[win\]s #: [win]s
 }
 ```
 

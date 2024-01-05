@@ -1,0 +1,51 @@
+﻿namespace Petrichor.ShortcutScriptGeneration.LookUpTables
+{
+	public static class ScriptHotstringKeys
+	{
+		public static Dictionary<string, string> LookUpTable => new()
+		{
+			{ "[windows]", "#" },
+			{ "[win]", "#" },
+			{ "[alt]", "!" },
+			{ "[left-alt]", "<!" },
+			{ "[lalt]", "<!" },
+			{ "[right-alt]", ">@" },
+			{ "[ralt]", ">@" },
+			{ "[control]", "^" },
+			{ "[ctrl]", "^" },
+			{ "[left-control]", "<^" },
+			{ "[lctrl]", "<^" },
+			{ "[right-control]", ">^" },
+			{ "[rctrl]", ">^" },
+			{ "[shift]", "+" },
+			{ "[left-shift]", "<+" },
+			{ "[lshift]", "<+" },
+			{ "[right-shift]", ">+" },
+			{ "[rshift]", ">+" },
+			{ "[and]", "&" },
+			{ "[alt-graph]", "<^>!" },
+			{ "[altgr]", "<^>!" },
+			{ "[wildcard]", "*" },
+			{ "[wild]", "*" },
+			{ "[passthrough]", "~" },
+			{ "[tilde]", "~" },
+			{ "[send]", "$" },
+			{ "[tab]", "Tab" },
+			{ "[caps-lock]", "CapsLock" },
+			{ "[caps]", "CapsLock" },
+			{ "[enter]", "Enter" },
+			{ "[backspace]", "Backspace" },
+			{ "[bksp]", "Backspace" },
+			{ "[insert]", "Insert" },
+			{ "[ins]", "Insert" },
+			{ "[delete]", "Delete" },
+			{ "[del]", "Delete" },
+			{ "[home]", "Home" },
+			{ "[end]", "End" },
+			{ "[page-up]", "PageUp" },
+			{ "[pgup]", "PageUp" },
+			{ "[page-down]", "PageDown" },
+			{ "[pgdn]", "PageDown" },
+		};
+	}
+}
