@@ -34,10 +34,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::@{EntryTag}:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{EntryName}{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {EntryPronoun} {EntryDecoration} `",
+				$"::{EntryTag}{EntryLastTag}:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{EntryID}{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {EntryName} {EntryLastName} {EntryPronoun} {EntryColor} {EntryDecoration} `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => $"::{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
+			public static string Template => $"::{ShortcutScriptGenerationSyntax.TemplateFindTagString}{ShortcutScriptGenerationSyntax.TemplateFindLastTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindIDString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindNameString} {ShortcutScriptGenerationSyntax.TemplateFindLastNameString} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindColorString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
 			public static string[] Templates => new[]
 			{
 				Template,

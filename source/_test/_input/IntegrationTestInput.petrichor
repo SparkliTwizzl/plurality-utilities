@@ -40,5 +40,5 @@ entries:
 templates:
 {
 	#: line comment in templates region body
-	template: [tag][last-tag] :: ` \[[id]\] [name] [last-name] [pronoun] [decoration] ` #: inline comment in templates region body
+	template: [tag][last-tag] :: ` \[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
 }

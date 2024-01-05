@@ -11,6 +11,15 @@
 
 
 		public ScriptEntry() { }
+		public ScriptEntry( ScriptEntry other )
+		{
+			Color = other.Color;
+			Decoration = other.Decoration;
+			ID = other.ID;
+			Identities = other.Identities;
+			LastIdentity = other.LastIdentity;
+			Pronoun = other.Pronoun;
+		}
 		public ScriptEntry( string id, List<ScriptIdentity> identities )
 		{
 			ID = id;
