@@ -19,4 +19,8 @@
 		<OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)csharp.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
 </Project>

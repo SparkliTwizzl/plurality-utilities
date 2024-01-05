@@ -1,5 +1,7 @@
-﻿using Petrichor.Logging.Enums;
+﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.Logging.Enums;
+using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Utilities;
 
 
@@ -7,37 +9,18 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		private static string inputFilePath = string.Empty;
-		private static LogMode activeLogMode = LogMode.None;
-		private static string outputFilePath = string.Empty;
-
-		public static string InputFilePath
-		{
-			get => inputFilePath;
-			set => inputFilePath = value;
-		}
-		public static LogMode ActiveLogMode
-		{
-			get => activeLogMode;
-			set => activeLogMode = value;
-		}
-		public static string OutputFilePath
-		{
-			get => outputFilePath;
-			set => outputFilePath = value;
-		}
+		public static string InputFilePath { get; set; } = string.Empty;
+		public static LogMode ActiveLogMode { get; set; } = LogMode.None;
+		public static string OutputFilePath { get; set; } = string.Empty;
 
 
-		public static void Execute()
-		{
-			CreateAutoHotkeyScript();
-		}
+		public static void Execute() => CreateAutoHotkeyScript();
 
 		public static void WaitForUserAndExit()
 		{
-			Console.Write("press any key to exit");
-			Console.ReadKey(true);
-			Environment.Exit(0);
+			Console.Write( "Press any key to exit..." );
+			_ = Console.ReadKey( true );
+			Environment.Exit( 0 );
 		}
 
 
@@ -45,32 +28,29 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				Log.Important("generating AutoHotkey shortcuts script...");
-				var metadataParser = new ShortcutScriptMetadataParser();
-				var entryParser = new ShortcutScriptEntryParser();
-				var templateParser = new ShortcutScriptTemplateParser();
-				var macroParser = new ShortcutScriptMacroParser();
-				var inputParser = new ShortcutScriptInputParser(metadataParser, entryParser, templateParser, macroParser);
+				Log.Important( "Generating AutoHotkey shortcuts script..." );
+				var metadataRegionParser = new MetadataRegionParser();
+				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
+				var entryRegionParser = new EntryRegionParser();
+				var entriesRegionParser = new EntriesRegionParser( entryRegionParser );
+				var templatesRegionParser = new TemplatesRegionParser();
+				var macroGenerator = new MacroGenerator();
+				var inputFileParser = new InputFileParser( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
-				var input = inputParser.ParseInputFile(InputFilePath);
-				var scriptGenerator = new ShortcutScriptGenerator( input );
-				scriptGenerator.GenerateScript(OutputFilePath);
+				var input = inputFileParser.Parse( InputFilePath );
+				var scriptGenerator = new ScriptGenerator( input );
+				scriptGenerator.Generate( OutputFilePath );
 
-				var successMessage = "generated AutoHotkey shortcuts script successfully";
+				var successMessage = "Generated AutoHotkey shortcuts script successfully";
 				if ( Log.IsLoggingToConsoleDisabled )
 				{
-					Console.WriteLine(successMessage);
+					Console.WriteLine( successMessage );
 				}
-				Log.Important(successMessage);
+				Log.Important( successMessage );
 			}
-			catch (Exception ex)
+			catch ( Exception exception )
 			{
-				var errorMessage = $"generating AutoHotkey shortcuts script failed with error: { ex.Message }";
-				if ( Log.IsLoggingToConsoleDisabled )
-				{
-					Console.WriteLine(errorMessage);
-				}
-				Log.Error(errorMessage);
+				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
 			}
 		}
 	}

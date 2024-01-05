@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33D2A88B-5941-4589-AC47-F665D813D3A0}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.runsettings = .runsettings
+		csharp.ruleset = csharp.ruleset
 		Directory.Build.props = Directory.Build.props
 		ShortcutScriptGeneration\ShortcutScriptGeneration.csproj = ShortcutScriptGeneration\ShortcutScriptGeneration.csproj
 	EndProjectSection
@@ -21,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortcutScriptGeneration", "ShortcutScriptGeneration\ShortcutScriptGeneration.csproj", "{122EA3DE-7130-4F18-9A21-58AEF9C1AC8F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortcutScriptGenerationTests", "ShortcutScriptGenerationTests\ShortcutScriptGenerationTests.csproj", "{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonTests", "CommonTests\CommonTests.csproj", "{EEC2D2AB-4EA9-4A19-A687-7FF3F22A7F1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +56,10 @@ Global
 		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDCDA99D-9C96-4CF3-9C89-9D1E07150EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC2D2AB-4EA9-4A19-A687-7FF3F22A7F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC2D2AB-4EA9-4A19-A687-7FF3F22A7F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC2D2AB-4EA9-4A19-A687-7FF3F22A7F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC2D2AB-4EA9-4A19-A687-7FF3F22A7F1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

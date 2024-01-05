@@ -1,0 +1,11 @@
+#: top-level line comment
+
+metadata: #: inline comment in region name
+{
+	#: region body
+}
+
+unknown:
+{
+	#: region body
+}
