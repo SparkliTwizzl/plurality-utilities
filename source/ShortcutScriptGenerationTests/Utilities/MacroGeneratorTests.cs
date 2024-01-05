@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
 
@@ -22,10 +23,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				"::@TAG:: [NAME] PRONOUN DECORATION ",
+				$"::@TAG:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}NAME{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} PRONOUN DECORATION ",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => "::@[tag]:: \\[[name]\\] [pronoun] [decoration] `";
+			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
 			public static string[] Templates => new[]
 			{
 				Template,

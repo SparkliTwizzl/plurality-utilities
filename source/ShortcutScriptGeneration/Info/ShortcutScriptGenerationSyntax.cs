@@ -15,6 +15,8 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string EntryNameTokenName => "name";
 		public static string EntryPronounToken => $"{EntryPronounTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntryPronounTokenName => "pronoun";
+		public static string EntryTagToken => $"{EntryTagTokenName}{CommonSyntax.TokenValueDivider}";
+		public static string EntryTagTokenName => "tag";
 		public static string EntryRegionToken => $"{EntryRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string EntryRegionTokenName => "entry";
 		public static string ModuleOptionsRegionToken => $"{ModuleOptionsRegionTokenName}{CommonSyntax.TokenValueDivider}";
@@ -27,6 +29,12 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string SuspendShortcutTokenName => "suspend-shortcut";
 		public static string TemplateToken => $"{TemplateTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string TemplateTokenName => "template";
+		public static string TemplateFindDecorationString => $"{TemplateFindStringOpenChar}{EntryDecorationTokenName}{TemplateFindStringCloseChar}";
+		public static string TemplateFindNameString => $"{TemplateFindStringOpenChar}{EntryNameTokenName}{TemplateFindStringCloseChar}";
+		public static string TemplateFindPronounString => $"{TemplateFindStringOpenChar}{EntryPronounTokenName}{TemplateFindStringCloseChar}";
+		public static char TemplateFindStringCloseChar => ']';
+		public static char TemplateFindStringOpenChar => '[';
+		public static string TemplateFindTagString => $"{TemplateFindStringOpenChar}{EntryTagTokenName}{TemplateFindStringCloseChar}";
 		public static string TemplatesRegionToken => $"{TemplatesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string TemplatesRegionTokenName => "templates";
 	}

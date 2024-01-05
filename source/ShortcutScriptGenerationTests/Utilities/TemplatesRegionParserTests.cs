@@ -38,13 +38,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { Template_Valid } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { Template } { CommonSyntax.LineCommentToken } inline comment",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string Template_Valid => "::@[tag]:: \\[[name]\\] [pronoun] [decoration] `";
+			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
 			public static string[] Templates => new[]
 			{
-				Template_Valid,
+				Template,
 			};
 		}
 
