@@ -39,6 +39,43 @@ entries:
 
 templates:
 {
+	
 	#: line comment in templates region body
-	template: [tag][last-tag] :: ` \[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
+	
+	template: --[tag][last-tag] :: ` \[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
+	
+	template: [tag] :: [name]
+	
+	template: [tag][last-tag] :: [name] [last-name]
+	
+	template: `[tag] :: `[name]
+	
+	template: ~[tag] :: ~[name]
+	
+	template: ![tag] :: ![name]
+	
+	template: @[tag] :: @[name]
+	
+	template: #[tag] :: #[name]
+	
+	template: $[tag] :: $[name]
+	
+	template: %[tag] :: ^[name]
+	
+	template: &[tag] :: &[name]
+	
+	template: *[tag] :: *[name]
+	
+	template: ([tag] :: ([name]
+	
+	template: )[tag] :: )[name]
+	
+	template: -[tag] :: -[name]
+	
+	template: _[tag] :: _[name]
+	
+	template: =[tag] :: =[name]
+	
+	template: +[tag] :: +[name]
+	
 }
