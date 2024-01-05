@@ -253,9 +253,9 @@ Templates define the structure of AutoHotkey macros to create from entries. Ther
 
 Templates are defined by tokens with the name `template` and a valid AutoHotkey hotstring. Consult AutoHotkey documentation if you do not know how to write one. A basic overview is provided here.
 
-All templates must start with `::`, a `find` text string including an at sign `@` representing the tag, then `::`. The `find` string must contain at least one at sign `@` and cannot contain whitespace. Additional text in the `find` string is optional.
+All templates must start with a `find` text string, then `::`, then a `replace` text string.
 
-After the second `::`, write a `replace` text string which will be filled in in place of the `find` string when the output script is run.
+These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the `find` and/or `replace` strings.
 
 Use [marker strings](#4.1.6.1.1---template-marker-strings) to define how templates should be applied to entries.
 
@@ -266,8 +266,12 @@ If this is not followed, the generated script wont work correctly, even though P
 ```ptcr
 templates:
 {
-    template: ::[find string]::[replace string]
+    template: [find string] :: ` [replace string] `
 }
+
+#: MACROS GENERATED FROM INPUT:
+
+::[find string]::` [replace string] `
 ```
 
 ##### 4.1.6.1.1 - Template marker strings
@@ -282,6 +286,10 @@ Available marker strings are:
 - `[name]`
 - `[pronoun]`
 - `[tag]`
+
+**NOTE:** Only these supported marker strings can be used. Unknown marker strings will be rejected.
+
+**NOTE:** By default, you cannot use the `[` or `]` symbols in a template string. Use [escape characters](#41612---escape-characters) to circumvent this.
 
 **Example:**
 
@@ -299,7 +307,7 @@ entries:
 
 templates:
 {
-    template: ::[tag]::[name] ([pronoun]) | {[decoration]}
+    template:  [tag] :: [name] ([pronoun]) | {[decoration]}
 }
 
 #: MACROS GENERATED FROM INPUT:
@@ -326,40 +334,13 @@ entries:
 
 templates:
 {
-    template: ::[tag][tag]::[name] ([pronoun]) | {[name] [decoration]}
+    template: [tag][tag] :: [name] ([pronoun]) | {[name] [decoration]}
 }
 
 #: MACROS GENERATED FROM INPUT:
 
 ::smsm::Sam (they/them) | [Sam is a person]
 ::smysmy::Sammy (they/them) | [Sammy is a person]
-```
-
-You can insert a backtick `` ` `` at the end of a template to preserve trailing whitespace. If you do not do this, trailing whitespace will be trimmed off.
-
-**Example:**
-
-```ptcr
-entries:
-{
-    entry:
-    {
-        name: Sam @sm
-        name: Sammy @smy
-        pronoun: they/them
-        decoration: -- a person
-    }
-}
-
-templates:
-{
-    template: ::[tag]::[name] ([pronoun]) | {[decoration]} `
-}
-
-#: MACROS GENERATED FROM INPUT:
-
-::sm::Sam (they/them) | {-- a person} `
-::smy::Sammy (they/them) | {-- a person} `
 ```
 
 ##### 4.1.6.1.2 - Escape characters
@@ -382,7 +363,7 @@ entries:
 
 templates:
 {
-    template: ::[tag]::[name] ([name]) \\ \[[decoration]\]
+    template: [tag] :: [name] ([name]) \\ \[[decoration]\]
 }
 
 #: MACROS GENERATED FROM INPUT:
