@@ -14,30 +14,35 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public struct TestData
 		{
 			public static ScriptEntry Entry_AllOptionalData => new(
+					EntryIDValue,
 					new List<ScriptIdentity>
 					{
 						new(EntryNameValue, EntryTagValue),
 						new(EntryNameValue, EntryTagValue),
 					},
+					new ScriptIdentity( EntryLastNameValue, EntryLastTagValue ),
 					EntryPronounValue,
+					EntryColorValue,
 					EntryDecorationValue
 				);
-			public static ScriptEntry Entry_NoOptionalData => new(
-					new List<ScriptIdentity>
-					{
-						new( EntryNameValue, EntryTagValue ),
-					},
-					string.Empty,
-					string.Empty
-				);
-			public static string EntryDecorationValue => "decoration";
+			public static ScriptEntry Entry_NoOptionalData => new( EntryIDValue, new List<ScriptIdentity> { new( EntryNameValue, EntryTagValue ) } );
+			public static string EntryColorValue => "COLOR";
+			public static string EntryColorToken => $"{ShortcutScriptGenerationSyntax.EntryColorToken} {EntryColorValue}";
+			public static string EntryDecorationValue => "DECORATION";
 			public static string EntryDecorationToken => $"{ShortcutScriptGenerationSyntax.EntryDecorationToken} {EntryDecorationValue}";
-			public static string EntryNameValue => "name";
+			public static string EntryIDValue => "ID";
+			public static string EntryIDToken => $"{ShortcutScriptGenerationSyntax.EntryIDToken} {EntryIDValue}";
+			public static string EntryLastNameValue => "LAST_NAME";
+			public static string EntryLastNameToken => $"{ShortcutScriptGenerationSyntax.EntryLastNameToken} {EntryLastNameTokenValue}";
+			public static string EntryLastNameTokenValue => $"{EntryLastNameValue} @{EntryLastTagValue}";
+			public static string EntryLastTagValue => "LAST_TAG";
+			public static string EntryLastTagToken => $"{ShortcutScriptGenerationSyntax.EntryLastTagToken} {EntryLastTagValue}";
+			public static string EntryNameValue => "NAME";
 			public static string EntryNameToken => $"{ShortcutScriptGenerationSyntax.EntryNameToken} {EntryNameTokenValue}";
 			public static string EntryNameTokenValue => $"{EntryNameValue} @{EntryTagValue}";
-			public static string EntryPronounValue => "pronoun";
+			public static string EntryPronounValue => "PRONOUN";
 			public static string EntryPronounToken => $"{ShortcutScriptGenerationSyntax.EntryPronounToken} {EntryPronounValue}";
-			public static string EntryTagValue => "tag";
+			public static string EntryTagValue => "TAG";
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
 				CommonSyntax.CloseBracketToken,
@@ -57,15 +62,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"{ CommonSyntax.OpenBracketToken } { CommonSyntax.LineCommentToken } inline comment",
 				string.Empty,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				$"\t{ EntryIDToken }",
 				$"\t{ EntryNameToken }",
 				$"\t{ EntryNameToken }",
+				$"\t{ EntryLastNameToken }",
 				$"\t{ EntryPronounToken }",
+				$"\t{ EntryColorToken }",
 				$"\t{ EntryDecorationToken }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_Valid_NoOptionalTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
+				$"\t{ EntryIDToken }",
 				$"\t{ EntryNameToken }",
 				CommonSyntax.CloseBracketToken,
 			};
@@ -81,12 +90,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameValue }@text @{ EntryTagValue }",
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string[] RegionData_TooManyPronounTokens => new[]
+			public static string[] RegionData_TooManyColorTokens => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 				$"\t{EntryNameToken}",
-				$"\t{EntryPronounToken}",
-				$"\t{EntryPronounToken}",
+				$"\t{EntryColorToken}",
+				$"\t{EntryColorToken}",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_TooManyDecorationTokens => new[]
@@ -95,6 +104,30 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"\t{EntryNameToken}",
 				$"\t{EntryDecorationToken}",
 				$"\t{EntryDecorationToken}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_TooManyIDTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{EntryNameToken}",
+				$"\t{EntryIDToken}",
+				$"\t{EntryIDToken}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_TooManyLastNameTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{EntryNameToken}",
+				$"\t{EntryLastNameToken}",
+				$"\t{EntryLastNameToken}",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_TooManyPronounTokens => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{EntryNameToken}",
+				$"\t{EntryPronounToken}",
+				$"\t{EntryPronounToken}",
 				CommonSyntax.CloseBracketToken,
 			};
 		}

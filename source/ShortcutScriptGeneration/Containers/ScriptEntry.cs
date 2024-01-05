@@ -2,17 +2,28 @@
 {
 	public sealed class ScriptEntry : IEquatable<ScriptEntry>
 	{
-		public List<ScriptIdentity> Identities { get; set; } = new List<ScriptIdentity>();
-		public string Pronoun { get; set; } = string.Empty;
+		public string Color { get; set; } = string.Empty;
 		public string Decoration { get; set; } = string.Empty;
+		public string ID { get; set; } = string.Empty;
+		public List<ScriptIdentity> Identities { get; set; } = new();
+		public ScriptIdentity LastIdentity { get; set; } = new();
+		public string Pronoun { get; set; } = string.Empty;
 
 
 		public ScriptEntry() { }
-		public ScriptEntry( List<ScriptIdentity> identities, string pronoun, string decoration )
+		public ScriptEntry( string id, List<ScriptIdentity> identities )
 		{
+			ID = id;
 			Identities = identities;
-			Pronoun = pronoun;
+		}
+		public ScriptEntry( string id, List<ScriptIdentity> identities, ScriptIdentity lastIdentity, string pronoun, string color, string decoration )
+		{
+			Color = color;
 			Decoration = decoration;
+			ID = id;
+			Identities = identities;
+			LastIdentity = lastIdentity;
+			Pronoun = pronoun;
 		}
 
 
@@ -35,9 +46,9 @@
 			{
 				return false;
 			}
-			return Identities.SequenceEqual( other.Identities ) && Pronoun.Equals( other.Pronoun ) && Decoration.Equals( other.Decoration );
+			return Color.Equals( other.Color ) && Decoration.Equals( other.Decoration ) && ID.Equals( other.ID ) && Identities.SequenceEqual( other.Identities ) && LastIdentity.Equals( other.LastIdentity ) && Pronoun.Equals( other.Pronoun );
 		}
 
-		public override int GetHashCode() => Identities.GetHashCode() ^ Pronoun.GetHashCode() ^ Decoration.GetHashCode();
+		public override int GetHashCode() => Color.GetHashCode() ^ Decoration.GetHashCode() ^ ID.GetHashCode() ^ Identities.GetHashCode() ^ LastIdentity.GetHashCode() ^ Pronoun.GetHashCode();
 	}
 }

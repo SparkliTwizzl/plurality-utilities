@@ -16,7 +16,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new() { new( "name", "tag" ) }, "pronoun", "decorator" ),
+				new ScriptEntry(),
 			};
 			public static int EntriesRegionLength => 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );

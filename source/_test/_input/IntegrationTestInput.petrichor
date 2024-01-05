@@ -21,14 +21,18 @@ entries:
 	entry: #: inline comment in entries region body
 	{
 		#: line comment in entry region body
-		name: Sam @sm #: inline comment in entry region body
+		id: 1234 #: inline comment in entry region body
+		last-name: Smith @s
+		name: Sam @sm
 		name: Sammy @smy
 		pronoun: they/them
+		color: black
 		decoration: -> a person
 	}
 	
 	entry:
 	{
+		id: 4321
 		name: ALEX @AX
 	}
 }
@@ -36,5 +40,5 @@ entries:
 templates:
 {
 	#: line comment in templates region body
-	template: @[tag] :: ` \[[name]\] [pronoun] [decoration] ` #: inline comment in templates region body
+	template: [tag][last-tag] :: ` \[[id]\] [name] [last-name] [pronoun] [decoration] ` #: inline comment in templates region body
 }

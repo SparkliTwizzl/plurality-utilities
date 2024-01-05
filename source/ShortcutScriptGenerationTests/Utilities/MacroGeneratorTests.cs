@@ -14,10 +14,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new List<ScriptIdentity>(){ new( EntryName, EntryTag ) }, EntryPronoun, EntryDecoration ),
+				new ScriptEntry(
+					EntryID,
+					new List<ScriptIdentity>(){ new( EntryName, EntryTag ) },
+					new ScriptIdentity( EntryLastName, EntryLastTag ),
+					EntryPronoun,
+					EntryColor,
+					EntryDecoration
+				),
 			};
+			public static string EntryID => "ID";
+			public static string EntryColor => "COLOR";
 			public static string EntryDecoration => "DECORATION";
 			public static string EntryName => "NAME";
+			public static string EntryLastName => "LAST_NAME";
+			public static string EntryLastTag => "LAST_TAG";
 			public static string EntryPronoun => "PRONOUN";
 			public static string EntryTag => "TAG";
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
@@ -26,7 +37,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				$"::@{EntryTag}:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{EntryName}{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {EntryPronoun} {EntryDecoration} `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
+			public static string Template => $"::{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
 			public static string[] Templates => new[]
 			{
 				Template,
