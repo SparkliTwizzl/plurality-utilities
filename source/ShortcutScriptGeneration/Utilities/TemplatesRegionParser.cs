@@ -105,24 +105,63 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			for ( var i = 0 ; i < line.Length ; ++i )
 			{
 				var c = line[ i ];
-				if ( c == '\\' )
+				if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar )
+				{
+					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}')" ) );
+				}
+
+				else if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
+				{
+					var substring = line[ i.. ];
+					var lengthOfFindString = GetLengthOfFindString( substring );
+					_ = template.Append( line[ i..( i + lengthOfFindString + 1 ) ] );
+					i += lengthOfFindString;
+				}
+
+				else if ( c == '\\' )
 				{
 					try
 					{
-						_ = template.Append( line[ i + 1 ] );
+						_ = template.Append( line[ i..( i + 2 ) ] );
 						++i;
 						continue;
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterException( "A template contained a trailing escape character ('\\') with no following character to escape", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( "A template contained a dangling escape character ('\\') with no following character to escape", exception ) );
 					}
 				}
-				//_ = ScriptTemplateFindStrings.LookUpTable.TryGetValue( c, out var value )
-				//	? template.Append( $"`{value}`" )
-				//	: template.Append( c );
+
+				else
+				{
+					_ = template.Append( c );
+				}
 			}
 			return template.ToString();
+		}
+
+		private static int GetLengthOfFindString( string input )
+		{
+			var nextCloseCharIndex = GetIndexOfNextFindStringCloseChar( input );
+			return nextCloseCharIndex;
+		}
+
+		private static int GetIndexOfNextFindStringCloseChar( string input )
+		{
+			var nextCloseCharIndex = input.IndexOf( ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
+			if ( nextCloseCharIndex < 0 )
+			{
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}')" ) );
+			}
+
+			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
+			if ( isCloseCharEscaped )
+			{
+				var substring = input[ ( nextCloseCharIndex + 1 ).. ];
+				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring );
+			}
+
+			return nextCloseCharIndex;
 		}
 	}
 }

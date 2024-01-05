@@ -51,8 +51,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
 				macro = macro.Replace( $"{findString}", fields[ findString ] )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}", ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}", ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
+					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}",
+						ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar.ToString() )
+					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}",
+						ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar.ToString() );
 			}
 			return macro;
 		}

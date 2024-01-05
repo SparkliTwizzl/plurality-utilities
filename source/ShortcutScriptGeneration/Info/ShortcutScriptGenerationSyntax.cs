@@ -32,8 +32,8 @@ namespace Petrichor.ShortcutScriptGeneration.Info
 		public static string TemplateFindDecorationString => $"{TemplateFindStringOpenChar}{EntryDecorationTokenName}{TemplateFindStringCloseChar}";
 		public static string TemplateFindNameString => $"{TemplateFindStringOpenChar}{EntryNameTokenName}{TemplateFindStringCloseChar}";
 		public static string TemplateFindPronounString => $"{TemplateFindStringOpenChar}{EntryPronounTokenName}{TemplateFindStringCloseChar}";
-		public static string TemplateFindStringCloseChar => "]";
-		public static string TemplateFindStringOpenChar => "[";
+		public static char TemplateFindStringCloseChar => ']';
+		public static char TemplateFindStringOpenChar => '[';
 		public static string TemplateFindTagString => $"{TemplateFindStringOpenChar}{EntryTagTokenName}{TemplateFindStringCloseChar}";
 		public static string TemplatesRegionToken => $"{TemplatesRegionTokenName}{CommonSyntax.TokenValueDivider}";
 		public static string TemplatesRegionTokenName => "templates";
