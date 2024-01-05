@@ -15,7 +15,7 @@
 		public static string DevelopmentAppVersionSuffix => "-dev";
 		public static string Major => "0";
 		public static string Minor => "9";
-		public static string Patch => "0";
+		public static string Patch => "1";
 		public static string Preview => "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
 		public static string[] SupportedMajorVersions => new[]
