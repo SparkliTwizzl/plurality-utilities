@@ -1,4 +1,5 @@
 ﻿using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
 
@@ -6,9 +7,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class MacroGenerator : IMacroGenerator
 	{
-		public MacroGenerator() { }
-
-
 		public string[] Generate( ScriptInput input )
 		{
 			var macros = new List<string>();
@@ -45,14 +43,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macro = template;
 			var fields = new Dictionary<string, string>()
 			{
-				{ "name", identity.Name },
-				{ "tag", identity.Tag },
-				{ "pronoun", pronoun },
-				{ "decoration", decoration },
+				{ ShortcutScriptGenerationSyntax.TemplateFindDecorationString, decoration },
+				{ ShortcutScriptGenerationSyntax.TemplateFindNameString, identity.Name },
+				{ ShortcutScriptGenerationSyntax.TemplateFindPronounString, pronoun },
+				{ ShortcutScriptGenerationSyntax.TemplateFindTagString, identity.Tag },
 			 };
-			foreach ( var marker in ShortcutScriptTemplateMarkers.LookUpTable.Select( marker => marker.Value ) )
+			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
-				macro = macro.Replace( $"`{marker}`", fields[ marker ] );
+				macro = macro.Replace( $"{findString}", fields[ findString ] )
+					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}",
+						ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar.ToString() )
+					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}",
+						ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar.ToString() );
 			}
 			return macro;
 		}

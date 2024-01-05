@@ -16,20 +16,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
-				new ScriptEntry( new() { new("name", "tag") }, "pronoun", "decorator" ),
+				new ScriptEntry( new() { new( "name", "tag" ) }, "pronoun", "decorator" ),
 			};
 			public static int EntriesRegionLength => 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
-				"::tag::name pronoun decorator",
+				"macro",
 			};
 			public static int MetadataRegionLength => 3;
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static int ModuleOptionsRegionLength => 3;
 			public static string[] Templates => new[]
 			{
-				"::`tag`::`name` `pronoun` `decorator`",
+				"template",
 			};
 			public static int TemplatesRegionLength => 3;
 		}
@@ -148,11 +148,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( BracketMismatchException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_BracketMismatcheRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		[ExpectedException( typeof( BracketException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
+		public void ParseFile_Test_Throws_BracketException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
 			get
 			{

@@ -53,7 +53,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched close bracket was found when parsing region: {RegionName}" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -86,7 +86,7 @@ namespace Petrichor.Common.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched open bracket was found when parsing region: {RegionName}" ) );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched open bracket was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;

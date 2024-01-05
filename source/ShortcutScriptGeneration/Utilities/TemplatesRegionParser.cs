@@ -57,7 +57,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -86,7 +86,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketMismatchException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
 			}
 
 			++RegionsParsed;
@@ -99,6 +99,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
+		private static int GetIndexOfNextFindStringCloseChar( string input )
+		{
+			var nextCloseCharIndex = input.IndexOf( ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
+			if ( nextCloseCharIndex < 0 )
+			{
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}')" ) );
+			}
+
+			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
+			if ( isCloseCharEscaped )
+			{
+				var substring = input[ ( nextCloseCharIndex + 1 ).. ];
+				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring );
+			}
+
+			return nextCloseCharIndex;
+		}
+
+		private static int GetLengthOfFindString( string input ) => GetIndexOfNextFindStringCloseChar( input );
+
 		private static string ParseTemplateFromLine( string line )
 		{
 			var template = new StringBuilder();
@@ -106,24 +126,51 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			for ( var i = 0 ; i < line.Length ; ++i )
 			{
 				var c = line[ i ];
-				if ( c == '\\' )
+				if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar )
+				{
+					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}')" ) );
+				}
+
+				else if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
+				{
+					var substring = line[ i.. ];
+					var findString = ValidateAndExtractFindString( substring );
+					_ = template.Append( findString );
+					var charsToSkip = findString.Length - 1;
+					i += charsToSkip;
+				}
+
+				else if ( c == '\\' )
 				{
 					try
 					{
-						_ = template.Append( line[ i + 1 ] );
+						_ = template.Append( line[ i..( i + 2 ) ] );
 						++i;
 						continue;
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterMismatchException( "A template contained a trailing escape character ('\\') with no following character to escape", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( "A template contained a dangling escape character ('\\') with no following character to escape", exception ) );
 					}
 				}
-				_ = ShortcutScriptTemplateMarkers.LookUpTable.TryGetValue( c, out var value )
-					? template.Append( $"`{value}`" )
-					: template.Append( c );
+
+				else
+				{
+					_ = template.Append( c );
+				}
 			}
 			return template.ToString();
+		}
+
+		private static string ValidateAndExtractFindString( string input )
+		{
+			var lengthOfFindString = GetLengthOfFindString( input );
+			var findString = input[ ..( lengthOfFindString + 1 ) ];
+			if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findString ) )
+			{
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained an unknown find-string \"{findString}\"" ) );
+			}
+			return findString;
 		}
 	}
 }

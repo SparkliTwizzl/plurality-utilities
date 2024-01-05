@@ -17,14 +17,44 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string[] RegionData_DanglingEscapeCharacter => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::[tag]:: [name]\\",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_DanglingFindStringCloseChar => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar }",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_DanglingFindStringOpenChar => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }",
+				CommonSyntax.CloseBracketToken,
+			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
 				CommonSyntax.OpenBracketToken,
 			};
-			public static string[] RegionData_TrailingExcapeCharacter => new[]
+			public static string[] RegionData_MismatchedFindStringCloseChar => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t::\\@@:: #\\",
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } find{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } string",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_MismatchedFindStringOpenChar => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }find string",
+				CommonSyntax.CloseBracketToken,
+			};
+			public static string[] RegionData_UnknownFindStringValue => new[]
+			{
+				CommonSyntax.OpenBracketToken,
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }unknown{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_UnknownToken => new[]
@@ -38,14 +68,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } ::\\@@:: # { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } ::\\@\\$\\&@:: # $ &",
+				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { Template } { CommonSyntax.LineCommentToken } inline comment",
 				CommonSyntax.CloseBracketToken,
 			};
+			public static string Template => $"::@{ShortcutScriptGenerationSyntax.TemplateFindTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindNameString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
 			public static string[] Templates => new[]
 			{
-				"::@`tag`:: `name`",
-				"::@$&`tag`:: `name` `pronoun` `decoration`",
+				Template,
 			};
 		}
 
@@ -94,11 +123,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( BracketMismatchException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketMismatchException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketMismatchException( string[] regionData ) => _ = parser!.Parse( regionData );
+		[ExpectedException( typeof( BracketException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = parser!.Parse( regionData );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketMismatchException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
 			get
 			{
@@ -108,8 +137,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( EscapeCharacterMismatchException ) )]
-		public void Parse_Test_Throws_EscapeCharacterMismatchException() => _ = parser!.Parse( TestData.RegionData_TrailingExcapeCharacter );
+		[ExpectedException( typeof( EscapeCharacterException ) )]
+		public void Parse_Test_Throws_EscapeCharacterException() => _ = parser!.Parse( TestData.RegionData_DanglingEscapeCharacter );
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
@@ -121,6 +150,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		public void Parse_Test_Throws_TokenException() => _ = parser!.Parse( TestData.RegionData_UnknownToken );
+		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_DanglingFindStringCloseChar };
+				yield return new object[] { TestData.RegionData_DanglingFindStringOpenChar };
+				yield return new object[] { TestData.RegionData_MismatchedFindStringCloseChar };
+				yield return new object[] { TestData.RegionData_MismatchedFindStringOpenChar };
+				yield return new object[] { TestData.RegionData_UnknownFindStringValue };
+				yield return new object[] { TestData.RegionData_UnknownToken };
+			}
+		}
 	}
 }
