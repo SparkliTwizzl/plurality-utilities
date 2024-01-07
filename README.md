@@ -1,5 +1,6 @@
 <div align="center"><image width="200" src="./logo.png"></div>
 <h1 align="center">Petrichor</h1>
+<h2 align="center">(/ˈpɛtrɪˌkɔːr/; the smell of rain)</h2>
 <h3 align="center">Version 0.9.1</h3>
 
 ---
