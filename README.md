@@ -5,7 +5,7 @@
 
 ---
 
-[Source code and releases](https://github.com/SparkliTwizzl/plurality-utilities)
+[Source code and releases](https://github.com/SparkliTwizzl/petrichor)
 
 ---
 
