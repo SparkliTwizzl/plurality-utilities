@@ -1,4 +1,4 @@
-<div align="center"><image width="200" src="./logo.png"></div>
+<div align="center"><image width="200" src="./branding/logo.png"></div>
 <h1 align="center">Petrichor</h1>
 <h3 align="center">Version 0.10</h3>
 <h4 align="center">/ˈpɛtrɪˌkɔːr/ (noun) The scent of damp earth, particularly after rain.</h4>
