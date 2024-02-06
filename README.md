@@ -665,7 +665,7 @@ Either double-click the .ahk file or right click on it and click "run script" in
 
 ## 5.3 - Methods to run the script automatically
 
-If you get sick of it, there are a few options.
+If you get sick of launching a script manually, there are a few options.
 
 ### 5.3.1 - Windows Startup shortcut
 
