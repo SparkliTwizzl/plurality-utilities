@@ -256,8 +256,8 @@ Each entry is an `entry` region which defines a set of values to create shortcut
 
 Entry regions are made up several token types. There are different restrictions and requirements for each type.
 
-- `decoration` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
 - `color` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+- `decoration` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
 - `id` : Min 1, max 1. This token defines a value to associated with all `name` tokens that are present.
 - `name` : Min 1. This token defines a name/tag pair.
     - This token type's value is structured as `[name] @[tag]`, where the `[name]` portion can be any non-blank string that does not contain an `@` character, and the `[tag]` portion can be any string that does not contain whitespace.
