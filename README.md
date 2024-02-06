@@ -440,7 +440,7 @@ templates:
 
 Call the executable (`.exe` file) via command line to run it
 
-It may be easier to write a batch script (.bat file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
+It may be easier to write a batch script (`.bat` file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
 
 **Example:**
 
@@ -589,7 +589,7 @@ On Windows, backslashes `\` and forward slashes `/` both work the same way. Use 
 
 ### 4.2.4 - Running Petrichor via batch script (`.bat` file)
 
-If you're going to run the tool with the same arguments every time, it's much simpler to write a simple .bat file to run the tool for you.
+If you're going to run the tool with the same arguments every time, it's much simpler to write a simple `.bat` file to run the tool for you.
 
 1. Make a new text file, name it whatever you want, and change its extension to `.bat`.
     -  You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
@@ -598,7 +598,7 @@ If you're going to run the tool with the same arguments every time, it's much si
     - **NOTE:** [Relative paths](#4.2.2---relative-file-paths) are relative to the batch script by default. If relative paths are used in Petrichor commands, they must be relative to Petrichor.exe instead.
 4. Save the batch file.
 
-Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the .bat file was made correctly, it will run Petrichor with all the arguments you set.
+Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set.
 
 **Example:**
 
@@ -626,7 +626,7 @@ Optionally, you can make a batch script wait for Petrichor to finish running and
 3. Add a new line to the batch script, and enter `start [path/script.ahk]`.
 4. Save the batch file.
 
-Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the .bat file was made correctly, it will run Petrichor with all the arguments you set, wait until it closes, then launch the output script.
+Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set, wait until it closes, then launch the output script.
 
 **NOTE:** If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
 
