@@ -673,7 +673,7 @@ This is the simplest method. It's not totally reliable, but it works most of the
 
 Here's how to do it:
 
-1. Right-click the script.
+1. Right-click the script in File Explorer.
 2. Click `Create shortcut` in the dropdown menu.
 3. Press `Win+R` to open the Windows Run dialog.
 4. Type `shell:startup` into the dialog, then click OK.
