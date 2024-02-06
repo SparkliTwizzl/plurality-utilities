@@ -61,7 +61,7 @@ Token names are always in `lower-kebab-case`.
 
 **Example (both tokens are identical to Petrichor):**
 
-```ptcr
+```petrichor
 token-name:Token value.
  token-name : Token value. 
 ```
@@ -72,7 +72,7 @@ Related tokens can be grouped into a data region, or simply a region. These cons
 
 **Example:**
 
-```ptcr
+```petrichor
 region-name:
 {
     token-1-in-region-body: Value.
@@ -84,7 +84,7 @@ Regions can be contained within another region.
 
 **Example:**
 
-```ptcr
+```petrichor
 parent-region:
 {
     token-a: Value.
@@ -106,7 +106,7 @@ Blank lines are ignored.
 
 **Example:**
 
-```ptcr
+```petrichor
 #: this is a comment. this line will be ignored. the following line is blank, and will also be ignored.
 
 region:
@@ -128,7 +128,7 @@ This token is required. It specifies the minimum Petrichor version required in o
 
 **Example:**
 
-```ptcr
+```petrichor
 metadata:
 {
     minimum-version: major.minor.patch.preview
@@ -139,7 +139,7 @@ Major and minor version must be specified. If patch or patch and preview version
 
 **Example:**
 
-```ptcr
+```petrichor
 minimum-version: 1.2.3.pre-4 #: Major version 1, minor version 2, patch version 3, preview version pre-4
 minimum-version: 1.2.3 #: Major version 1, minor version 2, patch version 3, any preview version
 minimum-version: 1.2 #: Major version 1, minor version 2, any patch or preview version
@@ -164,7 +164,7 @@ Available tokens are:
 
 **Example:**
 
-```ptcr
+```petrichor
 module-options:
 {
     default-icon: {path to default icon file}.ico
@@ -176,7 +176,7 @@ For simplicity, if an icon file will be in the same folder as the shortcut scrip
 
 **Example:**
 
-```ptcr
+```petrichor
 module-options:
 {
     default-icon: ./{default icon file name}.ico
@@ -194,7 +194,7 @@ To include a shortcut to suspend the script, do the same with a token named `sus
 
 **Example:**
 
-```ptcr
+```petrichor
 module-options:
 {
     reload-shortcut: #r #: Windows key + R
@@ -236,7 +236,7 @@ The following strings are supported:
 
 **Example:**
 
-```ptcr
+```petrichor
 module-options:
 {
     reload-shortcut: [win]r #: Windows key + R
@@ -269,7 +269,7 @@ Entry regions are made up several token types. There are different restrictions 
 
 **Example:**
 
-```ptcr
+```petrichor
 entry: #: all optional tokens present
 {
     id: 1234
@@ -312,7 +312,7 @@ If this is not followed, the generated script wont work correctly, even though P
 
 **Example:**
 
-```ptcr
+```petrichor
 templates:
 {
     template: [find string] :: ` [replace string] `
@@ -346,7 +346,7 @@ Available marker strings are:
 
 **Example:**
 
-```ptcr
+```petrichor
 entries:
 {
     entry:
@@ -376,7 +376,7 @@ You can use each marker string in a template as many times as you want
 
 **Example:**
 
-```ptcr
+```petrichor
 entries:
 {
     entry:
@@ -408,7 +408,7 @@ Backslash `\` is treated as an "escape character" in templates. It is used to di
 
 **Example:**
 
-```ptcr
+```petrichor
 entries:
 {
     entry:
