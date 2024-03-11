@@ -1,11 +1,11 @@
-#: top-level line comment
+// top-level line comment
 
-metadata: #: inline comment in region name
+metadata: // inline comment in region name
 {
-	#: region body
+	// region body
 }
 
 unknown:
 {
-	#: region body
+	// region body
 }

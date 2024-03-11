@@ -10,8 +10,8 @@
 		public const string FindTokenCloseCharStandin = "&clsqb";
 		public const char FindTokenOpenChar = '[';
 		public const string FindTokenOpenCharStandin = "&opsqb";
-		public static string LineCommentToken => $"{ LineCommentTokenName }{ TokenValueDivider }";
-		public const string LineCommentTokenName = "#";
+		public static string LineCommentToken => $"{ LineCommentTokenName }";
+		public const string LineCommentTokenName = "//";
 		public static string MetadataRegionToken => $"{ MetadataRegionTokenName }{ TokenValueDivider }";
 		public const string MetadataRegionTokenName = "metadata";
 		public static string MinimumVersionToken => $"{ MinimumVersionTokenName }{ TokenValueDivider }";

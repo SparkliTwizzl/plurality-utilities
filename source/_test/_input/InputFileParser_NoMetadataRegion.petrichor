@@ -1,16 +1,16 @@
-#: top-level line comment
+// top-level line comment
 
 module-options:
 {
-	#: region body
+	// region body
 }
 
 entries:
 {
-	#: region body
+	// region body
 }
 
 templates:
 {
-	#: region body
+	// region body
 }
