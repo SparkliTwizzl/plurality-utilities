@@ -1,10 +1,9 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -12,7 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class EntryRegionParser : IEntryRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptSyntax.EntryRegionTokenName;
+		private static string RegionName => TokenNames.EntryRegion;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -43,18 +42,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					continue;
 				}
 
-				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionOpen )
 				{
 					++IndentLevel;
 				}
 
-				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionClose )
 				{
 					--IndentLevel;
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: { RegionName }" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -63,59 +62,59 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryColorTokenName )
+				else if ( token.Name == TokenNames.EntryColor )
 				{
 					if ( entry.Color != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryColorTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 { Tokens.EntryColor } token" ) );
 					}
 					entry.Color = token.Value;
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryDecorationTokenName )
+				else if ( token.Name == TokenNames.EntryDecoration )
 				{
 					if ( entry.Decoration != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryDecorationTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 { Tokens.EntryDecoration } token" ) );
 					}
 					entry.Decoration = token.Value;
 				}
 				
-				else if ( token.Name == ShortcutScriptSyntax.EntryIDTokenName )
+				else if ( token.Name == TokenNames.EntryID )
 				{
 					if ( entry.ID != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryIDTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 { Tokens.EntryID } token" ) );
 					}
 					entry.ID = token.Value;
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryNameTokenName )
+				else if ( token.Name == TokenNames.EntryName )
 				{
 					entry.Identities.Add( ParseName( token.Value ) );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryLastNameTokenName )
+				else if ( token.Name == TokenNames.EntryLastName )
 				{
 					if ( entry.LastIdentity != ScriptIdentity.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryLastNameTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 { Tokens.EntryLastName } token" ) );
 					}
 					entry.LastIdentity = ParseName( token.Value );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryPronounTokenName )
+				else if ( token.Name == TokenNames.EntryPronoun )
 				{
 					if ( entry.Pronoun != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryPronounTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 { Tokens.EntryPronoun } token" ) );
 					}
 					entry.Pronoun = token.Value;
 				}
 
 				else
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found when parsing region: { RegionName }" ) );
 				}
 
 				if ( isParsingFinished )
@@ -133,7 +132,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var entryHasRequiredValues = entry.ID != string.Empty && entry.Identities.Count > 0;
 			if ( !entryHasRequiredValues )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"An {ShortcutScriptSyntax.EntryRegionTokenName} region did not contain all required fields" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"An { Tokens.EntryRegion } region did not contain all required fields" ) );
 			}
 
 			++RegionsParsed;
@@ -148,7 +147,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var components = token.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"An invalid {ShortcutScriptSyntax.EntryNameTokenName} token was parsed" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"An invalid { Tokens.EntryName } token was parsed" ) );
 			}
 
 			var name = components[ 0 ].Trim();

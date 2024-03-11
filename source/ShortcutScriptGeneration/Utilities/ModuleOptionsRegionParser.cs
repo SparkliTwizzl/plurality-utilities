@@ -1,10 +1,8 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
 
@@ -13,7 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptSyntax.ModuleOptionsRegionTokenName;
+		private static string RegionName => Syntax.Tokens.ModuleOptionsRegion;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -44,12 +42,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					continue;
 				}
 
-				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionOpen )
 				{
 					++IndentLevel;
 				}
 
-				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionClose )
 				{
 					--IndentLevel;
 
@@ -64,33 +62,33 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.DefaultIconFilePathTokenName )
+				else if ( token.Name == Syntax.TokenNames.DefaultIconFilePath )
 				{
 					moduleOptions.DefaultIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptSyntax.DefaultIconFilePathTokenName}" );
+					Log.Info( $"Stored token { Syntax.TokenNames.DefaultIconFilePath }" );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.ReloadShortcutTokenName )
+				else if ( token.Name == Syntax.TokenNames.ReloadShortcut )
 				{
 					moduleOptions.ReloadShortcut = ReplaceFieldsInShortcut( token.Value );
-					Log.Info( $"Stored token {ShortcutScriptSyntax.ReloadShortcutTokenName}" );
+					Log.Info( $"Stored token { Syntax.TokenNames.ReloadShortcut }" );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.SuspendIconFilePathTokenName )
+				else if ( token.Name == Syntax.TokenNames.SuspendIconFilePath )
 				{
 					moduleOptions.SuspendIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptSyntax.SuspendIconFilePathTokenName}" );
+					Log.Info( $"Stored token { Syntax.TokenNames.SuspendIconFilePath }" );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.SuspendShortcutTokenName )
+				else if ( token.Name == Syntax.TokenNames.SuspendShortcut )
 				{
 					moduleOptions.SuspendShortcut = ReplaceFieldsInShortcut( token.Value );
-					Log.Info( $"Stored token {ShortcutScriptSyntax.SuspendShortcutTokenName}" );
+					Log.Info( $"Stored token { Syntax.TokenNames.SuspendShortcut }" );
 				}
 
 				else
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found when parsing region: { RegionName }" ) );
 				}
 
 				if ( isParsingFinished )
@@ -121,8 +119,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				shortcut = shortcut.Replace( find, replace );
 			}
 
-			shortcut = shortcut.Replace( "\\[", "[" )
-				.Replace( "\\]", "]" );
+			shortcut = shortcut.Replace( $"{ Common.Syntax.OperatorChars.Escape }[", "[" )
+				.Replace( $"{ Common.Syntax.OperatorChars.Escape }]", "]" );
 
 			return shortcut;
 		}

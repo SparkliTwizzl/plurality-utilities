@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 using Petrichor.TestShared.Utilities;
 
 
@@ -15,75 +14,75 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingEscapeCharacter => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"{ ShortcutScriptSyntax.TemplateToken } \t{ ShortcutScriptSyntax.TemplateFindTagString } :: { CommonSyntax.EscapeChar }",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"{ Tokens.Template } \t{ TemplateFindStrings.Tag } :: { Common.Syntax.OperatorChars.Escape }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingFindStringCloseChar => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenCloseChar }",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Tokens.Template } { Common.Syntax.OperatorChars.TokenNameClose }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingFindStringOpenChar => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Tokens.Template } { Common.Syntax.OperatorChars.TokenNameOpen }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
-				CommonSyntax.OpenBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
 			};
 			public static string[] RegionData_MismatchedFindStringCloseChar => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } find{ CommonSyntax.FindTokenCloseChar } string",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Tokens.Template } find{ Common.Syntax.OperatorChars.TokenNameClose } string",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_MismatchedFindStringOpenChar => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }find string",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Tokens.Template } { Common.Syntax.OperatorChars.TokenNameOpen }find string",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnknownFindStringValue => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }unknown{ CommonSyntax.FindTokenCloseChar }",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Tokens.Template } { Common.Syntax.OperatorChars.TokenNameOpen }unknown{ Common.Syntax.OperatorChars.TokenNameClose }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnknownToken => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\tunknown{ Common.Syntax.OperatorChars.TokenValueDivider } token",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_Valid => new[]
 			{
-				CommonSyntax.OpenBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
 				string.Empty,
-				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				$"\t{ Common.Syntax.TokenNames.LineComment } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { RawFindString } :: { RawReplaceString } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ Tokens.Template } { RawFindString } :: { RawReplaceString } { Common.Syntax.TokenNames.LineComment } inline comment",
 				string.Empty,
-				$"\t{ ShortcutScriptSyntax.TemplateToken } { RawFindString } :: { RawReplaceString }",
+				$"\t{ Tokens.Template } { RawFindString } :: { RawReplaceString }",
 				string.Empty,
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string Template => $"::{ ParsedFindString }::{ ParsedReplaceString }";
 			public static string ParsedFindString
-				=> $"{CommonSyntax.EscapeCharStandin }{CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }";
+				=> $"{ Common.Syntax.OperatorChars.EscapeStandin }{ Common.Syntax.OperatorChars.TokenNameOpenStandin }{ TemplateFindStrings.Tag }{ TemplateFindStrings.LastTag }";
 			public static string RawFindString
-				=> $"{CommonSyntax.EscapeChar }{CommonSyntax.EscapeChar }{CommonSyntax.EscapeChar }{CommonSyntax.FindTokenOpenChar }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }";
+				=> $"{ Common.Syntax.OperatorChars.Escape }{ Common.Syntax.OperatorChars.Escape }{ Common.Syntax.OperatorChars.Escape }{ Common.Syntax.OperatorChars.TokenNameOpen }{ TemplateFindStrings.Tag }{ TemplateFindStrings.LastTag }";
 			public static string ParsedReplaceString
-				=> $"{ CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.FindTokenCloseCharStandin } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
+				=> $"{ Common.Syntax.OperatorChars.TokenNameOpenStandin }{ TemplateFindStrings.ID }{ Common.Syntax.OperatorChars.TokenNameCloseStandin } { TemplateFindStrings.Name } { TemplateFindStrings.LastName } { TemplateFindStrings.Pronoun } { TemplateFindStrings.Color } { TemplateFindStrings.Decoration } `";
 			public static string RawReplaceString
-				=> $"{ CommonSyntax.EscapeChar }{ CommonSyntax.FindTokenOpenChar }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.EscapeChar }{ CommonSyntax.FindTokenCloseChar } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
+				=> $"{ Common.Syntax.OperatorChars.Escape }{ Common.Syntax.OperatorChars.TokenNameOpen }{ TemplateFindStrings.ID }{ Common.Syntax.OperatorChars.Escape }{ Common.Syntax.OperatorChars.TokenNameClose } { TemplateFindStrings.Name } { TemplateFindStrings.LastName } { TemplateFindStrings.Pronoun } { TemplateFindStrings.Color } { TemplateFindStrings.Decoration } `";
 			public static string[] Templates => new[]
 			{
 				Template,

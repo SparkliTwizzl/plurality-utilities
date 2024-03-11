@@ -1,4 +1,4 @@
-﻿using Petrichor.Common.Info;
+﻿using Petrichor.Common.Syntax;
 
 namespace Petrichor.Common.Containers
 {
@@ -21,7 +21,7 @@ namespace Petrichor.Common.Containers
 
 		private void SplitAndStoreRawToken( string rawToken )
 		{
-			var lineCommentTokenIndex = rawToken.IndexOf( CommonSyntax.LineCommentToken );
+			var lineCommentTokenIndex = rawToken.IndexOf( TokenNames.LineComment );
 			var doesTokenContainLineComment = lineCommentTokenIndex > -1;
 			if ( doesTokenContainLineComment )
 			{

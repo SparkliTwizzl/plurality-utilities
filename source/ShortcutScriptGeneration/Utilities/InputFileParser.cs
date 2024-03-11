@@ -1,10 +1,9 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -46,17 +45,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					continue;
 				}
 
-				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionOpen )
 				{
 					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched open bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
-				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				else if ( token.Name == Common.Syntax.Tokens.RegionClose )
 				{
 					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntriesRegionTokenName )
+				else if ( token.Name == TokenNames.EntriesRegion )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -64,7 +63,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += EntriesRegionParser.LinesParsed;
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.ModuleOptionsRegionTokenName )
+				else if ( token.Name == TokenNames.ModuleOptionsRegion )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -72,7 +71,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += ModuleOptionsRegionParser.LinesParsed;
 				}
 
-				else if ( token.Name == CommonSyntax.MetadataRegionTokenName )
+				else if ( token.Name == Common.Syntax.TokenNames.MetadataRegion )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -80,7 +79,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += MetadataRegionParser.LinesParsed;
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.TemplatesRegionTokenName )
+				else if ( token.Name == TokenNames.TemplatesRegion )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -90,12 +89,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unknown token ( \"{rawToken}\" ) was read when a region name was expected" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unknown token ( \"{ rawToken }\" ) was read when a region name was expected" ) );
 				}
 
 				if ( MetadataRegionParser.RegionsParsed == 0 )
 				{
-					ExceptionLogger.LogAndThrow( new FileRegionException( $"First region in input file must be a {CommonSyntax.MetadataRegionTokenName} region" ) );
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"First region in input file must be a { Common.Syntax.TokenNames.MetadataRegion } region" ) );
 				}
 			}
 

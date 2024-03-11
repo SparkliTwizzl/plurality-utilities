@@ -1,7 +1,7 @@
-﻿using Petrichor.Common.Info;
+﻿using Petrichor.Common.Syntax;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -47,22 +47,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macro = template;
 			var fields = new Dictionary<string, string>()
 			{
-				{ ShortcutScriptSyntax.TemplateFindColorString, entry.Color },
-				{ ShortcutScriptSyntax.TemplateFindDecorationString, entry.Decoration },
-				{ ShortcutScriptSyntax.TemplateFindIDString, entry.ID },
-				{ ShortcutScriptSyntax.TemplateFindNameString, entry.Identities[ 0 ].Name },
-				{ ShortcutScriptSyntax.TemplateFindLastNameString, entry.LastIdentity.Name },
-				{ ShortcutScriptSyntax.TemplateFindLastTagString, entry.LastIdentity.Tag },
-				{ ShortcutScriptSyntax.TemplateFindPronounString, entry.Pronoun },
-				{ ShortcutScriptSyntax.TemplateFindTagString, entry.Identities[ 0 ].Tag },
+				{ TemplateFindStrings.Color, entry.Color },
+				{ TemplateFindStrings.Decoration, entry.Decoration },
+				{ TemplateFindStrings.ID, entry.ID },
+				{ TemplateFindStrings.Name, entry.Identities[ 0 ].Name },
+				{ TemplateFindStrings.LastName, entry.LastIdentity.Name },
+				{ TemplateFindStrings.LastTag, entry.LastIdentity.Tag },
+				{ TemplateFindStrings.Pronoun, entry.Pronoun },
+				{ TemplateFindStrings.Tag, entry.Identities[ 0 ].Tag },
 			 };
 			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
 				macro = macro
 					.Replace( $"{ findString }", fields[ findString ] )
-					.Replace( CommonSyntax.EscapeCharStandin, CommonSyntax.EscapeChar.ToString() )
-					.Replace( CommonSyntax.FindTokenOpenCharStandin, CommonSyntax.FindTokenOpenChar.ToString() )
-					.Replace( CommonSyntax.FindTokenCloseCharStandin, CommonSyntax.FindTokenCloseChar.ToString() );
+					.Replace( OperatorChars.EscapeStandin, OperatorChars.Escape.ToString() )
+					.Replace( OperatorChars.TokenNameOpenStandin, OperatorChars.TokenNameOpen.ToString() )
+					.Replace( OperatorChars.TokenNameCloseStandin, OperatorChars.TokenNameClose.ToString() );
 			}
 			return macro;
 		}

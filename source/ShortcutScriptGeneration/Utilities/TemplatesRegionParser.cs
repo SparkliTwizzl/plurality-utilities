@@ -1,11 +1,10 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
-using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 using System.Text;
 
 
@@ -14,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptSyntax.TemplatesRegionTokenName;
+		private static string RegionName => TokenNames.TemplatesRegion;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -26,12 +25,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public string[] Parse( string[] regionData )
 		{
-			var taskMessage = $"Parse region: {RegionName}";
+			var taskMessage = $"Parse region: { RegionName }";
 			Log.TaskStart( taskMessage );
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } { RegionName } regions" ) );
 			}
 
 			var templates = new List<string>();
@@ -46,18 +45,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					continue;
 				}
 
-				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				else if ( token.Name == Common.Syntax.TokenNames.RegionOpen )
 				{
 					++IndentLevel;
 				}
 
-				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				else if ( token.Name == Common.Syntax.TokenNames.RegionClose )
 				{
 					--IndentLevel;
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: {RegionName}" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: { RegionName }" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -66,7 +65,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.TemplateTokenName )
+				else if ( token.Name == TokenNames.Template )
 				{
 					templates.Add( ParseTemplateFromLine( token.Value ) );
 					continue;
@@ -74,7 +73,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found when parsing region: { RegionName }" ) );
 				}
 
 				if ( isParsingFinished )
@@ -86,14 +85,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found when parsing region: {RegionName}" ) );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found when parsing region: { RegionName }" ) );
 			}
 
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 
 			TemplatesParsed = templates.Count;
-			Log.Info( $"Parsed {TemplatesParsed} templates" );
+			Log.Info( $"Parsed { TemplatesParsed } templates" );
 			Log.TaskFinish( taskMessage );
 			return templates.ToArray();
 		}
@@ -109,10 +108,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static int GetIndexOfNextFindStringCloseChar( string input )
 		{
-			var nextCloseCharIndex = input.IndexOf( CommonSyntax.FindTokenCloseChar );
+			var nextCloseCharIndex = input.IndexOf( Common.Syntax.OperatorChars.TokenNameClose );
 			if ( nextCloseCharIndex < 0 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{CommonSyntax.FindTokenOpenChar}')" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ Common.Syntax.OperatorChars.TokenNameOpen }')" ) );
 			}
 
 			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
@@ -136,12 +135,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			for ( var i = 0 ; i < sanitizedHotstring.Length ; ++i )
 			{
 				var c = sanitizedHotstring[ i ];
-				if ( c == CommonSyntax.FindTokenCloseChar )
+				if ( c == Common.Syntax.OperatorChars.TokenNameClose )
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{CommonSyntax.FindTokenCloseChar}')" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ Common.Syntax.OperatorChars.TokenNameClose}')" ) );
 				}
 
-				else if ( c == CommonSyntax.FindTokenOpenChar )
+				else if ( c == Common.Syntax.OperatorChars.TokenNameOpen )
 				{
 					var substring = sanitizedHotstring[ i.. ];
 					var findString = ValidateAndExtractFindString( substring );
@@ -150,7 +149,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += charsToSkip;
 				}
 
-				else if ( c == CommonSyntax.EscapeChar )
+				else if ( c == Common.Syntax.OperatorChars.Escape )
 				{
 					try
 					{
@@ -160,7 +159,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{ CommonSyntax.EscapeChar }') with no following character to escape", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{ Common.Syntax.OperatorChars.Escape }') with no following character to escape", exception ) );
 					}
 				}
 
@@ -174,9 +173,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string SanitizeHotstring( string rawHotstring )
 			=> rawHotstring
-				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.EscapeChar}", CommonSyntax.EscapeCharStandin )
-				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.FindTokenOpenChar}", CommonSyntax.FindTokenOpenCharStandin )
-				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.FindTokenCloseChar}", CommonSyntax.FindTokenCloseCharStandin );
+				.Replace( $"{ Common.Syntax.OperatorChars.Escape}{ Common.Syntax.OperatorChars.Escape}", Common.Syntax.OperatorChars.EscapeStandin )
+				.Replace( $"{ Common.Syntax.OperatorChars.Escape}{ Common.Syntax.OperatorChars.TokenNameOpen}", Common.Syntax.OperatorChars.TokenNameOpenStandin )
+				.Replace( $"{ Common.Syntax.OperatorChars.Escape}{ Common.Syntax.OperatorChars.TokenNameClose}", Common.Syntax.OperatorChars.TokenNameCloseStandin );
 
 		private static string ValidateAndExtractFindString( string input )
 		{

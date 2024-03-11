@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
+using Petrichor.Common.Syntax;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.TestShared.Utilities;
 
 
@@ -21,33 +20,33 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static int EntryRegionLength => 3;
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
-				CommonSyntax.OpenBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
 			};
 			public static string[] RegionData_UnknownToken => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\tunknown{ Common.Syntax.OperatorChars.TokenValueDivider } token",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_Valid => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptSyntax.EntryRegionToken } { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ CommonSyntax.OpenBracketToken }",
-				$"\t\t{ CommonSyntax.LineCommentToken } entry region body",
-				$"\t{ CommonSyntax.CloseBracketToken }",
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Common.Syntax.Tokens.LineComment } line comment",
+				$"\t{ Syntax.Tokens.EntryRegion } { Common.Syntax.Tokens.LineComment } inline comment",
+				$"\t{ Common.Syntax.Tokens.RegionOpen }",
+				$"\t\t{ Common.Syntax.Tokens.LineComment } entry region body",
+				$"\t{ Common.Syntax.Tokens.RegionClose }",
 				"\t",
-				$"\t{ CommonSyntax.LineCommentToken } line comment",
-				$"\t{ ShortcutScriptSyntax.EntryRegionToken }",
-				$"\t{ CommonSyntax.OpenBracketToken }",
-				$"\t\t{ CommonSyntax.LineCommentToken } entry region body",
-				$"\t{ CommonSyntax.CloseBracketToken }",
-				CommonSyntax.CloseBracketToken,
+				$"\t{ Common.Syntax.Tokens.LineComment } line comment",
+				$"\t{ Syntax.Tokens.EntryRegion }",
+				$"\t{ Common.Syntax.Tokens.RegionOpen }",
+				$"\t\t{ Common.Syntax.Tokens.LineComment } entry region body",
+				$"\t{ Common.Syntax.Tokens.RegionClose }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 		}
 
