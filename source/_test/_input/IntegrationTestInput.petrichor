@@ -3,7 +3,7 @@
 metadata: #: inline comment in region name
 {
 	#: line comment in metadata region body
-	minimum-version: 0.9 #: inline comment in metadata region body
+	minimum-version: 0.10 #: inline comment in metadata region body
 }
 
 module-options:
@@ -22,9 +22,9 @@ entries:
 	{
 		#: line comment in entry region body
 		id: 1234 #: inline comment in entry region body
-		last-name: Smith @s
 		name: Sam @sm
 		name: Sammy @smy
+		last-name: Smith @s
 		pronoun: they/them
 		color: black
 		decoration: -> a person
@@ -42,7 +42,7 @@ templates:
 	
 	#: line comment in templates region body
 	
-	template: --[tag][last-tag] :: ` \[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
+	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
 	
 	template: [tag] :: [name]
 	

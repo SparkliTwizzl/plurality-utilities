@@ -13,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private IEntryRegionParser EntryParser { get; set; }
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptGenerationSyntax.EntriesRegionTokenName;
+		private static string RegionName => ShortcutScriptSyntax.EntriesRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -67,7 +67,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryRegionTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryRegionTokenName )
 				{
 					var dataTrimmedToRegion = regionData[ ( i + 1 ).. ];
 					var entry = EntryParser.Parse( dataTrimmedToRegion );

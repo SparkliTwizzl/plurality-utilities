@@ -14,7 +14,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class TemplatesRegionParser : ITemplatesRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptGenerationSyntax.TemplatesRegionTokenName;
+		private static string RegionName => ShortcutScriptSyntax.TemplatesRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -66,7 +66,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.TemplateTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.TemplateTokenName )
 				{
 					templates.Add( ParseTemplateFromLine( token.Value ) );
 					continue;
@@ -99,12 +99,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
+		private static string ConvertPetrichorTemplateToAHK( string line )
+		{
+			var components = line.Split( "::" );
+			var findString = $"::{ components[ 0 ].Trim() }::";
+			var replaceString = components.Length > 1 ? components[ 1 ].Trim() : "";
+			return $"{ findString }{ replaceString }";
+		}
+
 		private static int GetIndexOfNextFindStringCloseChar( string input )
 		{
-			var nextCloseCharIndex = input.IndexOf( ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar );
+			var nextCloseCharIndex = input.IndexOf( CommonSyntax.FindTokenCloseChar );
 			if ( nextCloseCharIndex < 0 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}')" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ('{CommonSyntax.FindTokenOpenChar}')" ) );
 			}
 
 			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
@@ -121,43 +129,38 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string ParseTemplateFromLine( string line )
 		{
-			// required to convert simplified Petrichor template syntax into AutoHotkey hotstring syntax
-			var components = line.Split( "::" );
-			var trimmedAndGarnishedLine = "::" + components[ 0 ].Trim() + "::";
-			if ( components.Length > 1 )
-			{
-				trimmedAndGarnishedLine += components[ 1 ].Trim();
-			}
+			var rawHotstring = ConvertPetrichorTemplateToAHK( line );
+			var sanitizedHotstring = SanitizeHotstring( rawHotstring );
 
 			var template = new StringBuilder();
-			for ( var i = 0 ; i < trimmedAndGarnishedLine.Length ; ++i )
+			for ( var i = 0 ; i < sanitizedHotstring.Length ; ++i )
 			{
-				var c = trimmedAndGarnishedLine[ i ];
-				if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar )
+				var c = sanitizedHotstring[ i ];
+				if ( c == CommonSyntax.FindTokenCloseChar )
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}')" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{CommonSyntax.FindTokenCloseChar}')" ) );
 				}
 
-				else if ( c == ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar )
+				else if ( c == CommonSyntax.FindTokenOpenChar )
 				{
-					var substring = trimmedAndGarnishedLine[ i.. ];
+					var substring = sanitizedHotstring[ i.. ];
 					var findString = ValidateAndExtractFindString( substring );
 					_ = template.Append( findString );
 					var charsToSkip = findString.Length - 1;
 					i += charsToSkip;
 				}
 
-				else if ( c == '\\' )
+				else if ( c == CommonSyntax.EscapeChar )
 				{
 					try
 					{
-						_ = template.Append( trimmedAndGarnishedLine[ i..( i + 2 ) ] );
+						_ = template.Append( sanitizedHotstring[ i..( i + 2 ) ] );
 						++i;
 						continue;
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterException( "A template contained a dangling escape character ('\\') with no following character to escape", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{ CommonSyntax.EscapeChar }') with no following character to escape", exception ) );
 					}
 				}
 
@@ -169,13 +172,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return template.ToString();
 		}
 
+		private static string SanitizeHotstring( string rawHotstring )
+			=> rawHotstring
+				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.EscapeChar}", CommonSyntax.EscapeCharStandin )
+				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.FindTokenOpenChar}", CommonSyntax.FindTokenOpenCharStandin )
+				.Replace( $"{CommonSyntax.EscapeChar}{CommonSyntax.FindTokenCloseChar}", CommonSyntax.FindTokenCloseCharStandin );
+
 		private static string ValidateAndExtractFindString( string input )
 		{
 			var lengthOfFindString = GetLengthOfFindString( input );
 			var findString = input[ ..( lengthOfFindString + 1 ) ];
 			if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findString ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained an unknown find-string \"{findString}\"" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained an unknown find-string \"{ findString }\"" ) );
 			}
 			return findString;
 		}

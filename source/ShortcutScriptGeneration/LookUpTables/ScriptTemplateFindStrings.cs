@@ -7,14 +7,14 @@ namespace Petrichor.ShortcutScriptGeneration.LookUpTables
 	{
 		public static string[] LookUpTable => new[]
 		{
-			ShortcutScriptGenerationSyntax.TemplateFindColorString,
-			ShortcutScriptGenerationSyntax.TemplateFindDecorationString,
-			ShortcutScriptGenerationSyntax.TemplateFindIDString,
-			ShortcutScriptGenerationSyntax.TemplateFindNameString,
-			ShortcutScriptGenerationSyntax.TemplateFindLastNameString,
-			ShortcutScriptGenerationSyntax.TemplateFindLastTagString,
-			ShortcutScriptGenerationSyntax.TemplateFindPronounString,
-			ShortcutScriptGenerationSyntax.TemplateFindTagString,
+			ShortcutScriptSyntax.TemplateFindColorString,
+			ShortcutScriptSyntax.TemplateFindDecorationString,
+			ShortcutScriptSyntax.TemplateFindIDString,
+			ShortcutScriptSyntax.TemplateFindNameString,
+			ShortcutScriptSyntax.TemplateFindLastNameString,
+			ShortcutScriptSyntax.TemplateFindLastTagString,
+			ShortcutScriptSyntax.TemplateFindPronounString,
+			ShortcutScriptSyntax.TemplateFindTagString,
 		};
 	}
 }

@@ -27,21 +27,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				);
 			public static ScriptEntry Entry_NoOptionalData => new( EntryIDValue, new List<ScriptIdentity> { new( EntryNameValue, EntryTagValue ) } );
 			public static string EntryColorValue => "COLOR";
-			public static string EntryColorToken => $"{ShortcutScriptGenerationSyntax.EntryColorToken} {EntryColorValue}";
+			public static string EntryColorToken => $"{ShortcutScriptSyntax.EntryColorToken} {EntryColorValue}";
 			public static string EntryDecorationValue => "DECORATION";
-			public static string EntryDecorationToken => $"{ShortcutScriptGenerationSyntax.EntryDecorationToken} {EntryDecorationValue}";
+			public static string EntryDecorationToken => $"{ShortcutScriptSyntax.EntryDecorationToken} {EntryDecorationValue}";
 			public static string EntryIDValue => "ID";
-			public static string EntryIDToken => $"{ShortcutScriptGenerationSyntax.EntryIDToken} {EntryIDValue}";
+			public static string EntryIDToken => $"{ShortcutScriptSyntax.EntryIDToken} {EntryIDValue}";
 			public static string EntryLastNameValue => "LAST_NAME";
-			public static string EntryLastNameToken => $"{ShortcutScriptGenerationSyntax.EntryLastNameToken} {EntryLastNameTokenValue}";
+			public static string EntryLastNameToken => $"{ShortcutScriptSyntax.EntryLastNameToken} {EntryLastNameTokenValue}";
 			public static string EntryLastNameTokenValue => $"{EntryLastNameValue} @{EntryLastTagValue}";
 			public static string EntryLastTagValue => "LAST_TAG";
-			public static string EntryLastTagToken => $"{ShortcutScriptGenerationSyntax.EntryLastTagToken} {EntryLastTagValue}";
+			public static string EntryLastTagToken => $"{ShortcutScriptSyntax.EntryLastTagToken} {EntryLastTagValue}";
 			public static string EntryNameValue => "NAME";
-			public static string EntryNameToken => $"{ShortcutScriptGenerationSyntax.EntryNameToken} {EntryNameTokenValue}";
+			public static string EntryNameToken => $"{ShortcutScriptSyntax.EntryNameToken} {EntryNameTokenValue}";
 			public static string EntryNameTokenValue => $"{EntryNameValue} @{EntryTagValue}";
 			public static string EntryPronounValue => "PRONOUN";
-			public static string EntryPronounToken => $"{ShortcutScriptGenerationSyntax.EntryPronounToken} {EntryPronounValue}";
+			public static string EntryPronounToken => $"{ShortcutScriptSyntax.EntryPronounToken} {EntryPronounValue}";
 			public static string EntryTagValue => "TAG";
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
@@ -93,13 +93,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_NoTagInNameToken => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameValue }",
+				$"\t{ ShortcutScriptSyntax.EntryNameToken } { EntryNameValue }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_NameTokenContainsTagStartSymbol => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.EntryNameToken } { EntryNameValue }@text @{ EntryTagValue }",
+				$"\t{ ShortcutScriptSyntax.EntryNameToken } { EntryNameValue }@text @{ EntryTagValue }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_TooManyColorTokens => new[]

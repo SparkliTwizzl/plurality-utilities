@@ -23,7 +23,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { Shortcut_AllFindStrings }",
+				$"\t{ ShortcutScriptSyntax.ReloadShortcutToken } { Shortcut_AllFindStrings }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingCloseBracket => new[]
@@ -45,10 +45,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				CommonSyntax.OpenBracketToken,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.DefaultIconFilePathToken } \"{ DefaultIconPath }\" { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptGenerationSyntax.SuspendIconFilePathToken } \"{ SuspendIconPath }\"",
-				$"\t{ ShortcutScriptGenerationSyntax.ReloadShortcutToken } { ReloadShortcut }",
-				$"\t{ ShortcutScriptGenerationSyntax.SuspendShortcutToken } { SuspendShortcut }",
+				$"\t{ ShortcutScriptSyntax.DefaultIconFilePathToken } \"{ DefaultIconPath }\" { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptSyntax.SuspendIconFilePathToken } \"{ SuspendIconPath }\"",
+				$"\t{ ShortcutScriptSyntax.ReloadShortcutToken } { ReloadShortcut }",
+				$"\t{ ShortcutScriptSyntax.SuspendShortcutToken } { SuspendShortcut }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_Valid_NoOptionalTokens => new[]
@@ -58,7 +58,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static string ReloadShortcut => "reloadshortcut";
 			public static string Shortcut_AllFindStrings
-				=> "[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] \\[del\\]";
+				=> $"[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] { CommonSyntax.EscapeChar }[del{ CommonSyntax.EscapeChar }]";
 			public static string Shortcut_AllReplaceStrings
 				=> "# # ! <! <! >@ >@ ^ ^ <^ <^ >^ >^ + <+ <+ >+ >+ & <^>! <^>! * * ~ ~ $ Tab CapsLock CapsLock Enter Backspace Backspace Insert Insert Delete Delete Home End PageUp PageUp PageDown PageDown [unknown] [del]";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";

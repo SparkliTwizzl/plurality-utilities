@@ -20,19 +20,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_DanglingEscapeCharacter => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"{ ShortcutScriptGenerationSyntax.TemplateToken } \t{ShortcutScriptGenerationSyntax.TemplateFindTagString} :: \\",
+				$"{ ShortcutScriptSyntax.TemplateToken } \t{ ShortcutScriptSyntax.TemplateFindTagString } :: { CommonSyntax.EscapeChar }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingFindStringCloseChar => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar }",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenCloseChar }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingFindStringOpenChar => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
@@ -42,19 +42,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string[] RegionData_MismatchedFindStringCloseChar => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } find{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } string",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } find{ CommonSyntax.FindTokenCloseChar } string",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_MismatchedFindStringOpenChar => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }find string",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }find string",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_UnknownFindStringValue => new[]
 			{
 				CommonSyntax.OpenBracketToken,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }unknown{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar }",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { CommonSyntax.FindTokenOpenChar }unknown{ CommonSyntax.FindTokenCloseChar }",
 				CommonSyntax.CloseBracketToken,
 			};
 			public static string[] RegionData_UnknownToken => new[]
@@ -69,43 +69,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				string.Empty,
 				$"\t{ CommonSyntax.LineCommentToken } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString } { CommonSyntax.LineCommentToken } inline comment",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { RawFindString } :: { RawReplaceString } { CommonSyntax.LineCommentToken } inline comment",
 				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
-				string.Empty,
-				$"\t{ ShortcutScriptGenerationSyntax.TemplateToken } { TemplateFindString } :: { TemplateReplaceString }",
+				$"\t{ ShortcutScriptSyntax.TemplateToken } { RawFindString } :: { RawReplaceString }",
 				string.Empty,
 				CommonSyntax.CloseBracketToken,
 			};
-			public static string Template => $"::{ TemplateFindString }::{ TemplateReplaceString }";
-			public static string TemplateFindString
-				=> $"{ ShortcutScriptGenerationSyntax.TemplateFindTagString }{ ShortcutScriptGenerationSyntax.TemplateFindLastTagString }";
-			public static string TemplateReplaceString
-				=> $"\\{ ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar }{ ShortcutScriptGenerationSyntax.TemplateFindIDString }\\{ ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar } { ShortcutScriptGenerationSyntax.TemplateFindNameString } { ShortcutScriptGenerationSyntax.TemplateFindLastNameString } { ShortcutScriptGenerationSyntax.TemplateFindPronounString } { ShortcutScriptGenerationSyntax.TemplateFindColorString } { ShortcutScriptGenerationSyntax.TemplateFindDecorationString } `";
+			public static string Template => $"::{ ParsedFindString }::{ ParsedReplaceString }";
+			public static string ParsedFindString
+				=> $"{CommonSyntax.EscapeCharStandin }{CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }";
+			public static string RawFindString
+				=> $"{CommonSyntax.EscapeChar }{CommonSyntax.EscapeChar }{CommonSyntax.EscapeChar }{CommonSyntax.FindTokenOpenChar }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }";
+			public static string ParsedReplaceString
+				=> $"{ CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.FindTokenCloseCharStandin } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
+			public static string RawReplaceString
+				=> $"{ CommonSyntax.EscapeChar }{ CommonSyntax.FindTokenOpenChar }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.EscapeChar }{ CommonSyntax.FindTokenCloseChar } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
 			public static string[] Templates => new[]
 			{
-				Template,
-				Template,
-				Template,
-				Template,
-				Template,
-				Template,
-				Template,
-				Template,
 				Template,
 				Template,
 			};
