@@ -1,4 +1,5 @@
-﻿using Petrichor.Common.Info;
+﻿using Petrichor.App.Syntax;
+using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.CommandLine;
 
@@ -11,26 +12,34 @@ namespace Petrichor.App.Utilities
 		{
 			if ( arguments.Length < 1 )
 			{
-				Console.WriteLine( "Run with --help to see usage." );
+				Console.WriteLine( $"Run with { AppCommands.DefaultCommandOptionHelp } to see usage." );
 				RuntimeHandler.WaitForUserAndExit();
 			}
 
-			var inputFileOption = new Option<string>( name: "--inputFile", description: "Path to input file." );
-			var outputFileOption = new Option<string>( name: "--outputFile", description: "Path and filename to generate AutoHotkey script at." );
-			var logModeOption = new Option<string>( name: "--logMode", description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
-			var logFileOption = new Option<string>( name: "--logFile", description: "Path to generate log file at. If not provided, a default filepath will be used." );
+			var inputFileOption = new Option<string>(
+				name: AppCommands.ShortcutScriptOptionInputFile,
+				description: "Path to input file." );
+			var outputFileOption = new Option<string>(
+				name: AppCommands.ShortcutScriptOptionOutputFile,
+				description: "Path and filename to generate AutoHotkey script at." );
+			var logModeOption = new Option<string>(
+				name: AppCommands.ShortcutScriptOptionLogMode,
+				description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
+			var logFileOption = new Option<string>(
+				name: AppCommands.ShortcutScriptOptionLogFile,
+				description: "Path to generate log file at. If not provided, a default filepath will be used." );
 
 			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
-			var generateAHKScriptCommand = new Command( "generateAHKShortcutScript", "Parse input files and generate an AutoHotkey script." )
+			var shortcutScriptCommand = new Command( AppCommands.ShortcutScriptCommand, "Parse input files and generate an AutoHotkey script." )
 			{
 				inputFileOption,
 				outputFileOption,
 				logModeOption,
 				logFileOption,
 			};
-			rootCommand.AddCommand( generateAHKScriptCommand );
+			rootCommand.AddCommand( shortcutScriptCommand );
 
-			generateAHKScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
+			shortcutScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
 					{
 						RuntimeHandler.InputFilePath = inputFilePath;
 						RuntimeHandler.OutputFilePath = outputFilePath;
@@ -48,19 +57,19 @@ namespace Petrichor.App.Utilities
 			{
 				switch ( logModeArgument )
 				{
-					case "consoleOnly":
+					case AppCommands.LogModeArgumentConsoleOnly:
 					{
 						Log.EnableForConsoleOnly();
 						break;
 					}
 
-					case "fileOnly":
+					case AppCommands.LogModeArgumentFileOnly:
 					{
 						Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
 						break;
 					}
 
-					case "all":
+					case AppCommands.LogModeArgumentAll:
 					{
 						Log.EnableForAll( ProjectDirectories.LogDirectory );
 						break;
@@ -77,6 +86,6 @@ namespace Petrichor.App.Utilities
 				{
 					Log.SetLogFile( logFileArgument );
 				}
-			} );
+			});
 	}
 }
