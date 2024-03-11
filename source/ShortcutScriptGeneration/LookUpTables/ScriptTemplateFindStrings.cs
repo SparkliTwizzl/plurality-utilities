@@ -1,4 +1,4 @@
-﻿using Petrichor.ShortcutScriptGeneration.Info;
+﻿using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.LookUpTables
@@ -7,14 +7,14 @@ namespace Petrichor.ShortcutScriptGeneration.LookUpTables
 	{
 		public static string[] LookUpTable => new[]
 		{
-			ShortcutScriptSyntax.TemplateFindColorString,
-			ShortcutScriptSyntax.TemplateFindDecorationString,
-			ShortcutScriptSyntax.TemplateFindIDString,
-			ShortcutScriptSyntax.TemplateFindNameString,
-			ShortcutScriptSyntax.TemplateFindLastNameString,
-			ShortcutScriptSyntax.TemplateFindLastTagString,
-			ShortcutScriptSyntax.TemplateFindPronounString,
-			ShortcutScriptSyntax.TemplateFindTagString,
+			TemplateFindStrings.Color,
+			TemplateFindStrings.Decoration,
+			TemplateFindStrings.ID,
+			TemplateFindStrings.Name,
+			TemplateFindStrings.LastName,
+			TemplateFindStrings.LastTag,
+			TemplateFindStrings.Pronoun,
+			TemplateFindStrings.Tag,
 		};
 	}
 }

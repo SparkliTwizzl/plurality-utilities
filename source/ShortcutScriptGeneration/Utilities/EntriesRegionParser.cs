@@ -1,10 +1,9 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -13,7 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private IEntryRegionParser EntryParser { get; set; }
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptSyntax.EntriesRegionTokenName;
+		private static string RegionName => TokenNames.EntriesRegion;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -32,7 +31,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than {MaxRegionsAllowed} {RegionName} regions" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } { RegionName } regions" ) );
 			}
 
 			var entries = new List<ScriptEntry>();
@@ -47,18 +46,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					continue;
 				}
 
-				else if ( token.Name == CommonSyntax.OpenBracketTokenName )
+				else if ( token.Name == Common.Syntax.TokenNames.RegionOpen )
 				{
 					++IndentLevel;
 				}
 
-				else if ( token.Name == CommonSyntax.CloseBracketTokenName )
+				else if ( token.Name == Common.Syntax.TokenNames.RegionClose )
 				{
 					--IndentLevel;
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing region: {RegionName}" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing region: { RegionName }" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -67,7 +66,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptSyntax.EntryRegionTokenName )
+				else if ( token.Name == TokenNames.EntryRegion )
 				{
 					var dataTrimmedToRegion = regionData[ ( i + 1 ).. ];
 					var entry = EntryParser.Parse( dataTrimmedToRegion );
@@ -78,7 +77,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				else
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{rawToken.Trim()}\") was found when parsing region: {RegionName}" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found when parsing region: { RegionName }" ) );
 				}
 
 				if ( isParsingFinished )

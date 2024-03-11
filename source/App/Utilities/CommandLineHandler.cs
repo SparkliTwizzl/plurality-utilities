@@ -12,25 +12,25 @@ namespace Petrichor.App.Utilities
 		{
 			if ( arguments.Length < 1 )
 			{
-				Console.WriteLine( $"Run with { AppCommands.DefaultCommandOptionHelp } to see usage." );
+				Console.WriteLine( $"Run with { CommandOptions.DefaultCommandOptionHelp } to see usage." );
 				RuntimeHandler.WaitForUserAndExit();
 			}
 
 			var inputFileOption = new Option<string>(
-				name: AppCommands.ShortcutScriptOptionInputFile,
+				name: CommandOptions.ShortcutScriptOptionInputFile,
 				description: "Path to input file." );
 			var outputFileOption = new Option<string>(
-				name: AppCommands.ShortcutScriptOptionOutputFile,
+				name: CommandOptions.ShortcutScriptOptionOutputFile,
 				description: "Path and filename to generate AutoHotkey script at." );
 			var logModeOption = new Option<string>(
-				name: AppCommands.ShortcutScriptOptionLogMode,
+				name: CommandOptions.ShortcutScriptOptionLogMode,
 				description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
 			var logFileOption = new Option<string>(
-				name: AppCommands.ShortcutScriptOptionLogFile,
+				name: CommandOptions.ShortcutScriptOptionLogFile,
 				description: "Path to generate log file at. If not provided, a default filepath will be used." );
 
 			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
-			var shortcutScriptCommand = new Command( AppCommands.ShortcutScriptCommand, "Parse input files and generate an AutoHotkey script." )
+			var shortcutScriptCommand = new Command( Commands.ShortcutScript, "Parse input files and generate an AutoHotkey script." )
 			{
 				inputFileOption,
 				outputFileOption,
@@ -57,19 +57,19 @@ namespace Petrichor.App.Utilities
 			{
 				switch ( logModeArgument )
 				{
-					case AppCommands.LogModeArgumentConsoleOnly:
+					case CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly:
 					{
 						Log.EnableForConsoleOnly();
 						break;
 					}
 
-					case AppCommands.LogModeArgumentFileOnly:
+					case CommandOptions.ShortcutScriptLogModeArgumentFileOnly:
 					{
 						Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
 						break;
 					}
 
-					case AppCommands.LogModeArgumentAll:
+					case CommandOptions.ShortcutScriptLogModeArgumentAll:
 					{
 						Log.EnableForAll( ProjectDirectories.LogDirectory );
 						break;

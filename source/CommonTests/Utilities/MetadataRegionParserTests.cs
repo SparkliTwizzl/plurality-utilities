@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
+using Petrichor.Common.Syntax;
 using Petrichor.TestShared.Utilities;
 using System.Data;
 
@@ -14,75 +15,75 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			public static string[] RegionData_BlankVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
-				CommonSyntax.CloseBracketToken,
+				$"\t{ Tokens.MinimumVersion } { AppVersion.Current }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { AppVersion.Current }",
 			};
 			public static string[] RegionData_TooManyMinimumVersionTokens => new[]
 			{
-				$"{CommonSyntax.OpenBracketToken} {CommonSyntax.LineCommentToken} inline comment",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
-				CommonSyntax.CloseBracketToken,
+				$"{ Tokens.RegionOpen } { Tokens.LineComment } inline comment",
+				$"\t{ Tokens.MinimumVersion } { AppVersion.Current }",
+				$"\t{ Tokens.MinimumVersion } { AppVersion.Current }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnspecifiedPatchVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnspecifiedPatch}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnspecifiedPatch }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnspecifiedPatchAndPreviewVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnspecifiedPatchAndPreview}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnspecifiedPatchAndPreview }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnsupportedMajorVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedMajor}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnsupportedMajor }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnsupportedMinorVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedMinor}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnsupportedMinor }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnsupportedPatchVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedPatch}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnsupportedPatch }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_UnsupportedPreviewVersion => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{CommonSyntax.MinimumVersionToken} {VersionNumber_UnsupportedPreview}",
-				CommonSyntax.CloseBracketToken,
+				Tokens.RegionOpen,
+				$"\t{ Tokens.MinimumVersion } { VersionNumber_UnsupportedPreview }",
+				Tokens.RegionClose,
 			};
 			public static string[] RegionData_Valid => new[]
 			{
-				$"{CommonSyntax.OpenBracketToken} {CommonSyntax.LineCommentToken} inline comment",
-				$"\t{CommonSyntax.MinimumVersionToken} {AppVersion.Current}",
-				CommonSyntax.CloseBracketToken,
+				$"{ Tokens.RegionOpen } { Tokens.LineComment } inline comment",
+				$"\t{ Tokens.MinimumVersion } { AppVersion.Current }",
+				Tokens.RegionClose,
 			};
-			public static string VersionNumber_UnspecifiedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}";
-			public static string VersionNumber_UnspecifiedPatchAndPreview => $"{AppVersion.Major}.{AppVersion.Minor}";
-			public static string VersionNumber_UnsupportedMajor => $"void.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";
-			public static string VersionNumber_UnsupportedMinor => $"{AppVersion.Major}.void.{AppVersion.Patch}{AppVersion.Preview}";
-			public static string VersionNumber_UnsupportedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.void{AppVersion.Preview}";
-			public static string VersionNumber_UnsupportedPreview => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}.void";
+			public static string VersionNumber_UnspecifiedPatch => $"{ AppVersion.Major }.{ AppVersion.Minor }.{ AppVersion.Patch }";
+			public static string VersionNumber_UnspecifiedPatchAndPreview => $"{ AppVersion.Major }.{ AppVersion.Minor }";
+			public static string VersionNumber_UnsupportedMajor => $"void.{ AppVersion.Minor }.{ AppVersion.Patch }{ AppVersion.Preview }";
+			public static string VersionNumber_UnsupportedMinor => $"{ AppVersion.Major }.void.{ AppVersion.Patch }{ AppVersion.Preview }";
+			public static string VersionNumber_UnsupportedPatch => $"{ AppVersion.Major }.{ AppVersion.Minor }.void{ AppVersion.Preview }";
+			public static string VersionNumber_UnsupportedPreview => $"{ AppVersion.Major }.{ AppVersion.Minor }.{ AppVersion.Patch }.void";
 		}
 
 

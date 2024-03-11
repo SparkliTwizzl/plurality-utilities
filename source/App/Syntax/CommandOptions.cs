@@ -1,14 +1,11 @@
 ﻿namespace Petrichor.App.Syntax
 {
-	public static class AppCommands
+	public struct CommandOptions
 	{
 		public const string DefaultCommandOptionHelp = "--help";
-
-		public const string LogModeArgumentAll = "all";
-		public const string LogModeArgumentConsoleOnly = "consoleOnly";
-		public const string LogModeArgumentFileOnly = "fileOnly";
-
-		public const string ShortcutScriptCommand = "generateAHKShortcutScript";
+		public const string ShortcutScriptLogModeArgumentAll = "all";
+		public const string ShortcutScriptLogModeArgumentConsoleOnly = "consoleOnly";
+		public const string ShortcutScriptLogModeArgumentFileOnly = "fileOnly";
 		public const string ShortcutScriptOptionInputFile = "--inputFile";
 		public const string ShortcutScriptOptionLogFile = "--logFile";
 		public const string ShortcutScriptOptionLogMode = "--logMode";

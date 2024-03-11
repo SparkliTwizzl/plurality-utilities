@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Petrichor.Common.Exceptions;
-using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 using Petrichor.TestShared.Utilities;
 
 
@@ -20,45 +19,45 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptModuleOptions ModuleOptions_AllReplaceStrings => new( string.Empty, string.Empty, Shortcut_AllReplaceStrings, string.Empty );
 			public static string[] RegionData_AllFindStrings => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Common.Syntax.Tokens.LineComment } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptSyntax.ReloadShortcutToken } { Shortcut_AllFindStrings }",
-				CommonSyntax.CloseBracketToken,
+				$"\t{ Syntax.Tokens.ReloadShortcut } { Shortcut_AllFindStrings }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingCloseBracket => new[]
 			{
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_DanglingOpenBracket => new[]
 			{
-				CommonSyntax.OpenBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
 			};
 			public static string[] RegionData_UnknownToken => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\tunknown{ CommonSyntax.TokenValueDivider } token",
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				$"\tunknown{ Common.Syntax.OperatorChars.TokenValueDivider } token",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_Valid_AllOptionalTokens => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				$"\t{ CommonSyntax.LineCommentToken } line comment",
+				Common.Syntax.Tokens.RegionOpen,
+				$"\t{ Common.Syntax.Tokens.LineComment } line comment",
 				string.Empty,
-				$"\t{ ShortcutScriptSyntax.DefaultIconFilePathToken } \"{ DefaultIconPath }\" { CommonSyntax.LineCommentToken } inline comment",
-				$"\t{ ShortcutScriptSyntax.SuspendIconFilePathToken } \"{ SuspendIconPath }\"",
-				$"\t{ ShortcutScriptSyntax.ReloadShortcutToken } { ReloadShortcut }",
-				$"\t{ ShortcutScriptSyntax.SuspendShortcutToken } { SuspendShortcut }",
-				CommonSyntax.CloseBracketToken,
+				$"\t{ Tokens.DefaultIconFilePath } \"{ DefaultIconPath }\" { Common.Syntax.Tokens.LineComment } inline comment",
+				$"\t{ Tokens.SuspendIconFilePath } \"{ SuspendIconPath }\"",
+				$"\t{ Tokens.ReloadShortcut } { ReloadShortcut }",
+				$"\t{ Tokens.SuspendShortcut } { SuspendShortcut }",
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string[] RegionData_Valid_NoOptionalTokens => new[]
 			{
-				CommonSyntax.OpenBracketToken,
-				CommonSyntax.CloseBracketToken,
+				Common.Syntax.Tokens.RegionOpen,
+				Common.Syntax.Tokens.RegionClose,
 			};
 			public static string ReloadShortcut => "reloadshortcut";
 			public static string Shortcut_AllFindStrings
-				=> $"[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] { CommonSyntax.EscapeChar }[del{ CommonSyntax.EscapeChar }]";
+				=> $"[windows] [win] [alt] [left-alt] [lalt] [right-alt] [ralt] [control] [ctrl] [left-control] [lctrl] [right-control] [rctrl] [shift] [left-shift] [lshift] [right-shift] [rshift] [and] [alt-graph] [altgr] [wildcard] [wild] [passthrough] [tilde] [send] [tab] [caps-lock] [caps] [enter] [backspace] [bksp] [insert] [ins] [delete] [del] [home] [end] [page-up] [pgup] [page-down] [pgdn] [unknown] { Common.Syntax.OperatorChars.Escape }[del{ Common.Syntax.OperatorChars.Escape }]";
 			public static string Shortcut_AllReplaceStrings
 				=> "# # ! <! <! >@ >@ ^ ^ <^ <^ >^ >^ + <+ <+ >+ >+ & <^>! <^>! * * ~ ~ $ Tab CapsLock CapsLock Enter Backspace Backspace Insert Insert Delete Delete Home End PageUp PageUp PageDown PageDown [unknown] [del]";
 			public static string SuspendIconPath => "path/to/suspendicon.ico";

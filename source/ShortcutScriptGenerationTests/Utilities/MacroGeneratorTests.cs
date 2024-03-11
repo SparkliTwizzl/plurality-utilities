@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 using Petrichor.TestShared.Info;
 using Petrichor.TestShared.Utilities;
 
@@ -35,10 +34,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::{ CommonSyntax.EscapeChar }{ EntryTag }{ EntryLastTag }:: { CommonSyntax.FindTokenOpenChar }{ EntryID }{ CommonSyntax.FindTokenCloseChar } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } `",
+				$"::{ Common.Syntax.OperatorChars.Escape }{ EntryTag }{ EntryLastTag }:: { Common.Syntax.OperatorChars.TokenNameOpen }{ EntryID }{ Common.Syntax.OperatorChars.TokenNameClose } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => $"::{ CommonSyntax.EscapeCharStandin }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }:: { CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.FindTokenCloseCharStandin } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
+			public static string Template => $"::{ Common.Syntax.OperatorChars.EscapeStandin }{ TemplateFindStrings.Tag }{ TemplateFindStrings.LastTag }:: { Common.Syntax.OperatorChars.TokenNameOpenStandin }{ TemplateFindStrings.ID }{ Common.Syntax.OperatorChars.TokenNameCloseStandin } { TemplateFindStrings.Name } { TemplateFindStrings.LastName } { TemplateFindStrings.Pronoun } { TemplateFindStrings.Color } { TemplateFindStrings.Decoration } `";
 			public static string[] Templates => new[]
 			{
 				Template,
