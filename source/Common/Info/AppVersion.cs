@@ -25,7 +25,6 @@
 		public static string[] SupportedMinorVersions => new[]
 		{
 			Minor,
-			"9",
 		};
 		public static string[] SupportedPatchVersions => new[]
 		{
