@@ -13,7 +13,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName;
+		private static string RegionName => ShortcutScriptSyntax.ModuleOptionsRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -64,28 +64,28 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.DefaultIconFilePathTokenName )
 				{
 					moduleOptions.DefaultIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.DefaultIconFilePathTokenName}" );
+					Log.Info( $"Stored token {ShortcutScriptSyntax.DefaultIconFilePathTokenName}" );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.ReloadShortcutTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.ReloadShortcutTokenName )
 				{
 					moduleOptions.ReloadShortcut = ReplaceFieldsInShortcut( token.Value );
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.ReloadShortcutTokenName}" );
+					Log.Info( $"Stored token {ShortcutScriptSyntax.ReloadShortcutTokenName}" );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.SuspendIconFilePathTokenName )
 				{
 					moduleOptions.SuspendIconFilePath = token.Value.WrapInQuotes();
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendIconFilePathTokenName}" );
+					Log.Info( $"Stored token {ShortcutScriptSyntax.SuspendIconFilePathTokenName}" );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.SuspendShortcutTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.SuspendShortcutTokenName )
 				{
 					moduleOptions.SuspendShortcut = ReplaceFieldsInShortcut( token.Value );
-					Log.Info( $"Stored token {ShortcutScriptGenerationSyntax.SuspendShortcutTokenName}" );
+					Log.Info( $"Stored token {ShortcutScriptSyntax.SuspendShortcutTokenName}" );
 				}
 
 				else

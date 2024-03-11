@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Info;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.TestShared.Info;
@@ -34,10 +35,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::{EntryTag}{EntryLastTag}:: {ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{EntryID}{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {EntryName} {EntryLastName} {EntryPronoun} {EntryColor} {EntryDecoration} `",
+				$"::{ CommonSyntax.EscapeChar }{ EntryTag }{ EntryLastTag }:: { CommonSyntax.FindTokenOpenChar }{ EntryID }{ CommonSyntax.FindTokenCloseChar } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => $"::{ShortcutScriptGenerationSyntax.TemplateFindTagString}{ShortcutScriptGenerationSyntax.TemplateFindLastTagString}:: \\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}{ShortcutScriptGenerationSyntax.TemplateFindIDString}\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar} {ShortcutScriptGenerationSyntax.TemplateFindNameString} {ShortcutScriptGenerationSyntax.TemplateFindLastNameString} {ShortcutScriptGenerationSyntax.TemplateFindPronounString} {ShortcutScriptGenerationSyntax.TemplateFindColorString} {ShortcutScriptGenerationSyntax.TemplateFindDecorationString} `";
+			public static string Template => $"::{ CommonSyntax.EscapeCharStandin }{ ShortcutScriptSyntax.TemplateFindTagString }{ ShortcutScriptSyntax.TemplateFindLastTagString }:: { CommonSyntax.FindTokenOpenCharStandin }{ ShortcutScriptSyntax.TemplateFindIDString }{ CommonSyntax.FindTokenCloseCharStandin } { ShortcutScriptSyntax.TemplateFindNameString } { ShortcutScriptSyntax.TemplateFindLastNameString } { ShortcutScriptSyntax.TemplateFindPronounString } { ShortcutScriptSyntax.TemplateFindColorString } { ShortcutScriptSyntax.TemplateFindDecorationString } `";
 			public static string[] Templates => new[]
 			{
 				Template,

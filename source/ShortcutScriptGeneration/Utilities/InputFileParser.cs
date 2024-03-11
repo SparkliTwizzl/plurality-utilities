@@ -56,7 +56,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntriesRegionTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntriesRegionTokenName )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -64,7 +64,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += EntriesRegionParser.LinesParsed;
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.ModuleOptionsRegionTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.ModuleOptionsRegionTokenName )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];
@@ -80,7 +80,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					i += MetadataRegionParser.LinesParsed;
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.TemplatesRegionTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.TemplatesRegionTokenName )
 				{
 					++i;
 					var dataTrimmedToRegion = data[ i.. ];

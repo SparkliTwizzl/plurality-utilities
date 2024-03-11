@@ -12,7 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class EntryRegionParser : IEntryRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => ShortcutScriptGenerationSyntax.EntryRegionTokenName;
+		private static string RegionName => ShortcutScriptSyntax.EntryRegionTokenName;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -63,52 +63,52 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryColorTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryColorTokenName )
 				{
 					if ( entry.Color != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryColorTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryColorTokenName} token" ) );
 					}
 					entry.Color = token.Value;
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryDecorationTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryDecorationTokenName )
 				{
 					if ( entry.Decoration != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryDecorationTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryDecorationTokenName} token" ) );
 					}
 					entry.Decoration = token.Value;
 				}
 				
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryIDTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryIDTokenName )
 				{
 					if ( entry.ID != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryIDTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryIDTokenName} token" ) );
 					}
 					entry.ID = token.Value;
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryNameTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryNameTokenName )
 				{
 					entry.Identities.Add( ParseName( token.Value ) );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryLastNameTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryLastNameTokenName )
 				{
 					if ( entry.LastIdentity != ScriptIdentity.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryLastNameTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryLastNameTokenName} token" ) );
 					}
 					entry.LastIdentity = ParseName( token.Value );
 				}
 
-				else if ( token.Name == ShortcutScriptGenerationSyntax.EntryPronounTokenName )
+				else if ( token.Name == ShortcutScriptSyntax.EntryPronounTokenName )
 				{
 					if ( entry.Pronoun != string.Empty )
 					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptGenerationSyntax.EntryPronounTokenName} token" ) );
+						ExceptionLogger.LogAndThrow( new TokenException( $"Entries cannot contain more than 1 {ShortcutScriptSyntax.EntryPronounTokenName} token" ) );
 					}
 					entry.Pronoun = token.Value;
 				}
@@ -133,7 +133,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var entryHasRequiredValues = entry.ID != string.Empty && entry.Identities.Count > 0;
 			if ( !entryHasRequiredValues )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"An {ShortcutScriptGenerationSyntax.EntryRegionTokenName} region did not contain all required fields" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"An {ShortcutScriptSyntax.EntryRegionTokenName} region did not contain all required fields" ) );
 			}
 
 			++RegionsParsed;
@@ -148,7 +148,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var components = token.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"An invalid {ShortcutScriptGenerationSyntax.EntryNameTokenName} token was parsed" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"An invalid {ShortcutScriptSyntax.EntryNameTokenName} token was parsed" ) );
 			}
 
 			var name = components[ 0 ].Trim();

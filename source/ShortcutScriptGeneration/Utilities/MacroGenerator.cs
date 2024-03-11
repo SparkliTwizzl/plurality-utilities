@@ -1,4 +1,5 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.Common.Info;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Info;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 
@@ -46,22 +47,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macro = template;
 			var fields = new Dictionary<string, string>()
 			{
-				{ ShortcutScriptGenerationSyntax.TemplateFindColorString, entry.Color },
-				{ ShortcutScriptGenerationSyntax.TemplateFindDecorationString, entry.Decoration },
-				{ ShortcutScriptGenerationSyntax.TemplateFindIDString, entry.ID },
-				{ ShortcutScriptGenerationSyntax.TemplateFindNameString, entry.Identities[ 0 ].Name },
-				{ ShortcutScriptGenerationSyntax.TemplateFindLastNameString, entry.LastIdentity.Name },
-				{ ShortcutScriptGenerationSyntax.TemplateFindLastTagString, entry.LastIdentity.Tag },
-				{ ShortcutScriptGenerationSyntax.TemplateFindPronounString, entry.Pronoun },
-				{ ShortcutScriptGenerationSyntax.TemplateFindTagString, entry.Identities[ 0 ].Tag },
+				{ ShortcutScriptSyntax.TemplateFindColorString, entry.Color },
+				{ ShortcutScriptSyntax.TemplateFindDecorationString, entry.Decoration },
+				{ ShortcutScriptSyntax.TemplateFindIDString, entry.ID },
+				{ ShortcutScriptSyntax.TemplateFindNameString, entry.Identities[ 0 ].Name },
+				{ ShortcutScriptSyntax.TemplateFindLastNameString, entry.LastIdentity.Name },
+				{ ShortcutScriptSyntax.TemplateFindLastTagString, entry.LastIdentity.Tag },
+				{ ShortcutScriptSyntax.TemplateFindPronounString, entry.Pronoun },
+				{ ShortcutScriptSyntax.TemplateFindTagString, entry.Identities[ 0 ].Tag },
 			 };
 			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
-				macro = macro.Replace( $"{findString}", fields[ findString ] )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}",
-						ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar.ToString() )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}",
-						ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar.ToString() );
+				macro = macro
+					.Replace( $"{ findString }", fields[ findString ] )
+					.Replace( CommonSyntax.EscapeCharStandin, CommonSyntax.EscapeChar.ToString() )
+					.Replace( CommonSyntax.FindTokenOpenCharStandin, CommonSyntax.FindTokenOpenChar.ToString() )
+					.Replace( CommonSyntax.FindTokenCloseCharStandin, CommonSyntax.FindTokenCloseChar.ToString() );
 			}
 			return macro;
 		}
