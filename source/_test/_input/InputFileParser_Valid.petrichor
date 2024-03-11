@@ -1,21 +1,21 @@
-#: top-level line comment
+// top-level line comment
 
-metadata: #: inline comment in region name
+metadata: // inline comment in region name
 {
-	#: region body
+	// region body
 }
 
 module-options:
 {
-	#: region body
+	// region body
 }
 
 entries:
 {
-	#: region body
+	// region body
 }
 
 templates:
 {
-	#: region body
+	// region body
 }
