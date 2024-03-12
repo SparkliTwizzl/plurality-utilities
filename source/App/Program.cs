@@ -9,6 +9,7 @@ namespace Petrichor.App
 	{
 		static async Task Main( string[] args )
 		{
+			Console.Title = AppInfo.AppName;
 			var startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			_ = await CommandLineHandler.ParseArguments( args );
