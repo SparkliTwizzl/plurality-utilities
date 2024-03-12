@@ -2,6 +2,6 @@
 {
 	public struct Commands
 	{
-		public const string ShortcutScript = "generateAHKShortcutScript";
+		public const string ShortcutScript = "generateTextShortcutScript";
 	}
 }

@@ -30,7 +30,7 @@ namespace Petrichor.App.Utilities
 				description: "Path to generate log file at. If not provided, a default filepath will be used." );
 
 			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
-			var shortcutScriptCommand = new Command( Commands.ShortcutScript, "Parse input files and generate an AutoHotkey script." )
+			var shortcutScriptCommand = new Command( Commands.ShortcutScript, "Parse input file and generate a text find-and-replace shortcut script." )
 			{
 				inputFileOption,
 				outputFileOption,
