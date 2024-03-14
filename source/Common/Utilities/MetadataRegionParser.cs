@@ -17,7 +17,7 @@ namespace Petrichor.Common.Utilities
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
-		public int MaxRegionsAllowed => 1;
+		public static int MaxRegionsAllowed => 1;
 		public static string RegionIsValidMessage => $"Region data is valid for this version of { AppInfo.AppName }";
 		public int RegionsParsed { get; private set; } = 0;
 

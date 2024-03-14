@@ -1,11 +1,17 @@
-﻿using Petrichor.Common.Utilities;
-using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.ShortcutScriptGeneration.Containers;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface IEntriesRegionParser : IRegionParser<ScriptEntry[]>
+	public interface IEntriesRegionParser
 	{
-		new ScriptEntry[] Parse( string[] regionData );
+		bool HasParsedMaxAllowedRegions { get; }
+		int LinesParsed { get; }
+		int MaxRegionsAllowed { get; }
+		static string RegionName { get; } = string.Empty;
+		int RegionsParsed { get; }
+
+
+		ScriptEntry[] Parse( string[] regionData );
 	}
 }

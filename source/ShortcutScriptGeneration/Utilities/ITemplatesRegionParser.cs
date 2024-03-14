@@ -1,13 +1,15 @@
-﻿using Petrichor.Common.Utilities;
-
-
-namespace Petrichor.ShortcutScriptGeneration.Utilities
+﻿namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface ITemplatesRegionParser : IRegionParser<string[]>
+	public interface ITemplatesRegionParser
 	{
+		bool HasParsedMaxAllowedRegions { get; }
+		int LinesParsed { get; }
+		int MaxRegionsAllowed { get; }
+		static string RegionName { get; } = string.Empty;
+		int RegionsParsed { get; }
 		int TemplatesParsed { get; }
 
 
-		new string[] Parse( string[] regionData );
+		string[] Parse( string[] regionData );
 	}
 }
