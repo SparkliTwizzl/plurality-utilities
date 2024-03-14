@@ -1,8 +1,6 @@
-﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.Logging.Enums;
-using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Utilities;
 
@@ -16,7 +14,7 @@ namespace Petrichor.App.Utilities
 		public static string OutputFilePath { get; set; } = string.Empty;
 
 
-		public static void Execute() => CreateTextShortcutScript();
+		public static void Execute() => CreateAutoHotkeyScript();
 
 		public static void WaitForUserAndExit()
 		{
@@ -26,52 +24,16 @@ namespace Petrichor.App.Utilities
 		}
 
 
-		private static void CreateTextShortcutScript()
+		private static void CreateAutoHotkeyScript()
 		{
 			try
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
-
-				var metadataRegionTokenHandlers = new Dictionary< string, Func< string[], int, StringWrapper, DataToken< StringWrapper >>>()
-				{
-				};
-				var metadataRegionParser = new RegionParser< StringWrapper >(
-					Common.Syntax.TokenNames.MetadataRegion,
-					Common.Info.DataRegionInfo.MetadataRegionsAllowed,
-					metadataRegionTokenHandlers );
-
-				var moduleOptionsRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptModuleOptions, DataToken< ScriptModuleOptions >>>()
-				{
-				};
-				var moduleOptionsRegionParser = new RegionParser< ScriptModuleOptions >(
-					ShortcutScriptGeneration.Syntax.TokenNames.ModuleOptionsRegion,
-					ShortcutScriptGeneration.Info.DataRegionInfo.ModuleOptionsRegionsAllowed,
-					moduleOptionsRegionTokenHandlers );
-
-				var entryRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptEntry, DataToken< ScriptEntry >>>()
-				{
-				};
-				var entryRegionParser = new RegionParser< ScriptEntry >(
-					ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion,
-					ShortcutScriptGeneration.Info.DataRegionInfo.EntryRegionsAllowed,
-					entryRegionTokenHandlers );
-
-				var entriesRegionTokenHandlers = new Dictionary< string, Func< string[], int, List< ScriptEntry >, DataToken< List< ScriptEntry >>>>()
-				{
-				};
-				var entriesRegionParser = new RegionParser< List< ScriptEntry >>(
-					ShortcutScriptGeneration.Syntax.TokenNames.EntriesRegion,
-					ShortcutScriptGeneration.Info.DataRegionInfo.EntriesRegionsAllowed,
-					entriesRegionTokenHandlers );
-
-				var templatesRegionTokenHandlers = new Dictionary< string, Func< string[], int, List< string >, DataToken< List< string >>>>()
-				{
-				};
-				var templatesRegionParser = new RegionParser< List< string > >(
-					ShortcutScriptGeneration.Syntax.TokenNames.TemplatesRegion,
-					ShortcutScriptGeneration.Info.DataRegionInfo.TemplatesRegionsAllowed,
-					templatesRegionTokenHandlers );
-
+				var metadataRegionParser = new MetadataRegionParser();
+				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
+				var entryRegionParser = new EntryRegionParser();
+				var entriesRegionParser = new EntriesRegionParser( entryRegionParser );
+				var templatesRegionParser = new TemplatesRegionParser();
 				var macroGenerator = new MacroGenerator();
 				var inputFileParser = new InputFileParser( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 
@@ -88,7 +50,7 @@ namespace Petrichor.App.Utilities
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: { exception.Message }", exception ) );
+				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
 			}
 		}
 	}

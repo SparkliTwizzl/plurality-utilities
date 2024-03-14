@@ -4,10 +4,10 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class RegionParser< T > : IRegionParser< T > where T : new()
+	public class RegionParser< T > : IRegionParser< T > where T : class, new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Dictionary< string, Func<string[], int, T, DataToken< T >>> TokenHandlers { get; set; }
+		private Dictionary< string, Action< StringToken, T > > TokenHandlers { get; set; } = new();
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -17,14 +17,13 @@ namespace Petrichor.Common.Utilities
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Func<string[], int, T, DataToken< T >>> tokenHandlers )
+		public RegionParser( string regionName, int maxRegionsAllowed )
 		{
 			MaxRegionsAllowed = maxRegionsAllowed;
 			RegionName = regionName;
-			TokenHandlers = tokenHandlers;
 		}
 
-		public DataToken< T > Parse( string[] regionData )
+		public T Parse( string[] regionData )
 		{
 			var taskMessage = $"Parse region: { RegionName }";
 			Log.TaskStart( taskMessage );
@@ -35,6 +34,7 @@ namespace Petrichor.Common.Utilities
 			}
 
 			var result = new T();
+
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
 				var isTokenRecognized = false;
@@ -58,7 +58,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing curly brace was found when parsing a { RegionName } region" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: { RegionName }" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -77,9 +77,7 @@ namespace Petrichor.Common.Utilities
 					{
 						isTokenRecognized = true;
 						var handler = tokenHandler.Value;
-						var dataToken = handler( token, result );
-						result = dataToken.Value;
-						i += dataToken.TokenLinesLength;
+						handler( token, result );
 						break;
 					}
 				}
@@ -101,5 +99,7 @@ namespace Petrichor.Common.Utilities
 			Log.TaskFinish( taskMessage );
 			return result;
 		}
+
+		public void SetTokenHandlers( Dictionary< string, Action< StringToken, T >> tokenHandlers ) => TokenHandlers = tokenHandlers;
 	}
 }
