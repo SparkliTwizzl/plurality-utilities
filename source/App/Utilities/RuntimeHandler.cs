@@ -32,7 +32,7 @@ namespace Petrichor.App.Utilities
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
 
-				var metadataRegionTokenHandlers = new Dictionary< string, Action< StringToken, StringWrapper >>()
+				var metadataRegionTokenHandlers = new Dictionary< string, Func< string[], int, StringWrapper, DataToken< StringWrapper >>>()
 				{
 				};
 				var metadataRegionParser = new RegionParser< StringWrapper >(
@@ -40,7 +40,7 @@ namespace Petrichor.App.Utilities
 					Common.Info.DataRegionInfo.MetadataRegionsAllowed,
 					metadataRegionTokenHandlers );
 
-				var moduleOptionsRegionTokenHandlers = new Dictionary< string, Action< StringToken, ScriptModuleOptions >>()
+				var moduleOptionsRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptModuleOptions, DataToken< ScriptModuleOptions >>>()
 				{
 				};
 				var moduleOptionsRegionParser = new RegionParser< ScriptModuleOptions >(
@@ -48,7 +48,7 @@ namespace Petrichor.App.Utilities
 					ShortcutScriptGeneration.Info.DataRegionInfo.ModuleOptionsRegionsAllowed,
 					moduleOptionsRegionTokenHandlers );
 
-				var entryRegionTokenHandlers = new Dictionary< string, Action< StringToken, ScriptEntry >>()
+				var entryRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptEntry, DataToken< ScriptEntry >>>()
 				{
 				};
 				var entryRegionParser = new RegionParser< ScriptEntry >(
@@ -56,15 +56,15 @@ namespace Petrichor.App.Utilities
 					ShortcutScriptGeneration.Info.DataRegionInfo.EntryRegionsAllowed,
 					entryRegionTokenHandlers );
 
-				var entriesRegionTokenHandlers = new Dictionary< string, Action< StringToken, List< ScriptEntry > >>()
+				var entriesRegionTokenHandlers = new Dictionary< string, Func< string[], int, List< ScriptEntry >, DataToken< List< ScriptEntry >>>>()
 				{
 				};
-				var entriesRegionParser = new RegionParser< List< ScriptEntry > >(
+				var entriesRegionParser = new RegionParser< List< ScriptEntry >>(
 					ShortcutScriptGeneration.Syntax.TokenNames.EntriesRegion,
 					ShortcutScriptGeneration.Info.DataRegionInfo.EntriesRegionsAllowed,
 					entriesRegionTokenHandlers );
 
-				var templatesRegionTokenHandlers = new Dictionary< string, Action< StringToken, List< string > >>()
+				var templatesRegionTokenHandlers = new Dictionary< string, Func< string[], int, List< string >, DataToken< List< string >>>>()
 				{
 				};
 				var templatesRegionParser = new RegionParser< List< string > >(

@@ -1,6 +1,9 @@
-﻿namespace Petrichor.Common.Utilities
+﻿using Petrichor.Common.Containers;
+
+
+namespace Petrichor.Common.Utilities
 {
-	public interface IRegionParser< out T > where T : new()
+	public interface IRegionParser< T > where T : new()
 	{
 		bool HasParsedMaxAllowedRegions { get; }
 		int LinesParsed { get; }
@@ -9,6 +12,6 @@
 		int RegionsParsed { get; }
 
 
-		T Parse( string[] regionData );
+		DataToken< T > Parse( string[] regionData );
 	}
 }

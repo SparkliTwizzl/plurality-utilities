@@ -7,7 +7,7 @@ namespace Petrichor.Common.Utilities
 	public class RegionParser< T > : IRegionParser< T > where T : new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Dictionary< string, Action< StringToken, T > > TokenHandlers { get; set; }
+		private Dictionary< string, Func<string[], int, T, DataToken< T >>> TokenHandlers { get; set; }
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -17,14 +17,14 @@ namespace Petrichor.Common.Utilities
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Action< StringToken, T >> tokenHandlers )
+		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Func<string[], int, T, DataToken< T >>> tokenHandlers )
 		{
 			MaxRegionsAllowed = maxRegionsAllowed;
 			RegionName = regionName;
 			TokenHandlers = tokenHandlers;
 		}
 
-		public T Parse( string[] regionData )
+		public DataToken< T > Parse( string[] regionData )
 		{
 			var taskMessage = $"Parse region: { RegionName }";
 			Log.TaskStart( taskMessage );
@@ -35,7 +35,6 @@ namespace Petrichor.Common.Utilities
 			}
 
 			var result = new T();
-
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
 				var isTokenRecognized = false;
@@ -78,7 +77,9 @@ namespace Petrichor.Common.Utilities
 					{
 						isTokenRecognized = true;
 						var handler = tokenHandler.Value;
-						handler( token, result );
+						var dataToken = handler( token, result );
+						result = dataToken.Value;
+						i += dataToken.TokenLinesLength;
 						break;
 					}
 				}
