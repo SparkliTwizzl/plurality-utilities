@@ -16,10 +16,10 @@ namespace Petrichor.Common.Containers
 			Value = other.Value;
 		}
 
-		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken.Trim() );
+		public StringToken( string rawToken ) => StoreDataFromRawToken( rawToken.Trim() );
 
 
-		private void SplitAndStoreRawToken( string rawToken )
+		private void StoreDataFromRawToken( string rawToken )
 		{
 			var lineCommentTokenIndex = rawToken.IndexOf( TokenNames.LineComment );
 			var doesTokenContainLineComment = lineCommentTokenIndex > -1;
