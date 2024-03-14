@@ -4,10 +4,10 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class RegionParser< T > : IRegionParser< T > where T : class, new()
+	public class RegionParser< T > : IRegionParser< T > where T : new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Dictionary< string, Action< StringToken, T > > TokenHandlers { get; set; } = new();
+		private Dictionary< string, Action< StringToken, T > > TokenHandlers { get; set; }
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -17,10 +17,11 @@ namespace Petrichor.Common.Utilities
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public RegionParser( string regionName, int maxRegionsAllowed )
+		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Action< StringToken, T >> tokenHandlers )
 		{
 			MaxRegionsAllowed = maxRegionsAllowed;
 			RegionName = regionName;
+			TokenHandlers = tokenHandlers;
 		}
 
 		public T Parse( string[] regionData )
@@ -58,7 +59,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: { RegionName }" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing curly brace was found when parsing a { RegionName } region" ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -99,7 +100,5 @@ namespace Petrichor.Common.Utilities
 			Log.TaskFinish( taskMessage );
 			return result;
 		}
-
-		public void SetTokenHandlers( Dictionary< string, Action< StringToken, T >> tokenHandlers ) => TokenHandlers = tokenHandlers;
 	}
 }

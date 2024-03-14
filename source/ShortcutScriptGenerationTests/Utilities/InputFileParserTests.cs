@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -18,20 +19,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptEntry(),
 			};
-			public static int EntriesRegionLength => 3;
+			public const int EntriesRegionLength = 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
 				"macro",
 			};
-			public static int MetadataRegionLength => 3;
+			public const string MetadataRegionIsValidMessage = "mock value";
+			public const int MetadataRegionLength = 3;
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFilePath, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static int ModuleOptionsRegionLength => 3;
+			public const int ModuleOptionsRegionLength = 3;
 			public static string[] Templates => new[]
 			{
 				"template",
 			};
-			public static int TemplatesRegionLength => 3;
+			public const int TemplatesRegionLength = 3;
 		}
 
 
@@ -102,13 +104,32 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
+		public class RegionParserStub<T> : IRegionParser<T> where T : new()
+		{
 
-		public EntriesRegionParserStub? entriesRegionParserStub;
+			public bool HasParsedMaxAllowedRegions { get; set; } = false;
+			public int LinesInRegion { get; set; } = 0;
+			public int LinesParsed { get; set; } = 0;
+			public int MaxRegionsAllowed { get; set; } = 0;
+			public string RegionName { get; set; } = string.Empty;
+			public int RegionsParsed { get; set; } = 0;
+			public T ReturnValue { get; set; } = new();
+
+			public T Parse( string[] regionData )
+			{
+				++RegionsParsed;
+				HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
+				LinesParsed = LinesInRegion;
+				return ReturnValue;
+			}
+		}
+
+		public RegionParserStub< List< ScriptEntry > >? entriesRegionParserStub;
 		public InputFileParser? parser;
 		public Mock<IMacroGenerator>? macroGeneratorMock;
-		public MetadataRegionParserStub? metadataRegionParserStub;
-		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
-		public TemplatesRegionParserStub? templatesRegionParserStub;
+		public RegionParserStub< StringWrapper >? metadataRegionParserStub;
+		public RegionParserStub< ScriptModuleOptions >? moduleOptionsRegionParserStub;
+		public RegionParserStub< List< string > >? templatesRegionParserStub;
 
 
 		[TestInitialize]
@@ -116,14 +137,38 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			TestUtilities.InitializeLoggingForTests();
 
-			entriesRegionParserStub = new();
+			entriesRegionParserStub = new()
+			{
+				LinesInRegion = TestData.EntriesRegionLength,
+				MaxRegionsAllowed = Info.DataRegionInfo.EntriesRegionsAllowed,
+				ReturnValue = TestData.Entries.ToList(),
+			};
+
 			macroGeneratorMock = new();
 			_ = macroGeneratorMock
 				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
 				.Returns( TestData.Macros );
-			metadataRegionParserStub = new();
-			moduleOptionsRegionParserStub = new();
-			templatesRegionParserStub = new();
+
+			metadataRegionParserStub = new()
+			{
+				LinesInRegion = TestData.MetadataRegionLength,
+				MaxRegionsAllowed = Common.Info.DataRegionInfo.MetadataRegionsAllowed,
+				ReturnValue = new StringWrapper( TestData.MetadataRegionIsValidMessage ),
+			};
+
+			moduleOptionsRegionParserStub = new()
+			{
+				LinesInRegion = TestData.ModuleOptionsRegionLength,
+				MaxRegionsAllowed = Info.DataRegionInfo.ModuleOptionsRegionsAllowed,
+				ReturnValue = TestData.ModuleOptions,
+			};
+
+			templatesRegionParserStub = new()
+			{
+				LinesInRegion = TestData.TemplatesRegionLength,
+				MaxRegionsAllowed = Info.DataRegionInfo.TemplatesRegionsAllowed,
+				ReturnValue = TestData.Templates.ToList(),
+			};
 
 			parser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
