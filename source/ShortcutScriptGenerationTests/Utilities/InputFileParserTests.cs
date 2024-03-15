@@ -39,7 +39,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int MaxRegionsAllowed => 1;
 			public int RegionsParsed { get; private set; } = 0;
 
 			public ScriptEntry[] Parse( string[] regionData )
@@ -55,8 +55,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed { get; private set; } = 1;
-			public static string RegionIsValidMessage => Common.Utilities.MetadataRegionParser.RegionIsValidMessage;
+			public int MaxRegionsAllowed => 1;
+			public static string RegionIsValidMessage => MetadataRegionParser.RegionIsValidMessage;
 			public int RegionsParsed { get; private set; } = 0;
 
 			public string Parse( string[] regionData )
@@ -72,7 +72,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int MaxRegionsAllowed => 1;
 			public int RegionsParsed { get; private set; } = 0;
 
 			public ScriptModuleOptions Parse( string[] regionData )
@@ -88,7 +88,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed { get; private set; } = 1;
+			public int MaxRegionsAllowed => 1;
 			public int RegionsParsed { get; private set; } = 0;
 			public int TemplatesParsed { get; private set; } = 0;
 

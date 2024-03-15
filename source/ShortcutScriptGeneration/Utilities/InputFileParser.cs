@@ -3,7 +3,6 @@ using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -15,6 +14,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private IMetadataRegionParser MetadataRegionParser { get; set; }
 		private IModuleOptionsRegionParser ModuleOptionsRegionParser { get; set; }
 		private ITemplatesRegionParser TemplatesRegionParser { get; set; }
+		private IRegionParser< ScriptInput > FileRegionParser { get; set; }
 
 
 		public InputFileParser( IMetadataRegionParser metadataRegionParser, IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
@@ -24,83 +24,78 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			MetadataRegionParser = metadataRegionParser;
 			ModuleOptionsRegionParser = moduleOptionsRegionParser;
 			TemplatesRegionParser = templatesRegionParser;
+
+			var EntriesRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			{
+				var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
+				result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
+				return new RegionData< ScriptInput >()
+				{
+					LineCount = EntriesRegionParser.LinesParsed,
+					Value = result,
+				};
+			};
+
+			var MetadataRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			{
+				var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
+				_ = MetadataRegionParser.Parse( dataTrimmedToRegion ) ;
+				return new RegionData< ScriptInput >()
+				{
+					LineCount = MetadataRegionParser.LinesParsed,
+					Value = result,
+				};
+			};
+
+			var ModuleOptionsRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			{
+				var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
+				result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
+				return new RegionData< ScriptInput >()
+				{
+					LineCount = ModuleOptionsRegionParser.LinesParsed,
+					Value = result,
+				};
+			};
+
+			var TemplatesRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			{
+				var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
+				result.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
+				return new RegionData< ScriptInput >()
+				{
+					LineCount = TemplatesRegionParser.LinesParsed,
+					Value = result,
+				};
+			};
+
+			var fileRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptInput, RegionData< ScriptInput > > >()
+			{
+				{ Syntax.TokenNames.EntriesRegion, EntriesRegionHandler },
+				{ Common.Syntax.TokenNames.MetadataRegion, MetadataRegionHandler },
+				{ Syntax.TokenNames.ModuleOptionsRegion, ModuleOptionsRegionHandler },
+				{ Syntax.TokenNames.TemplatesRegion, TemplatesRegionHandler },
+			};
+			FileRegionParser = new RegionParser< ScriptInput >( "Input file body", 1, fileRegionTokenHandlers );
 		}
 
 
 		public ScriptInput Parse( string filePath )
 		{
-			var taskMessage = $"Parse input file \"{filePath}\"";
+			var taskMessage = $"Parse input file \"{ filePath }\"";
 			Log.TaskStart( taskMessage );
 
-			var data = File.ReadAllLines( filePath );
-			var input = new ScriptInput();
+			var fileData = File.ReadAllLines( filePath );
+			var result = FileRegionParser.Parse( fileData );
+			result.Macros = MacroGenerator.Generate( result );
 
-			for ( var i = 0 ; i < data.Length ; ++i )
+			if ( MetadataRegionParser.RegionsParsed < 1 )
 			{
-				var rawToken = data[ i ];
-				var token = new StringToken( rawToken );
-
-				if ( token.Name == string.Empty )
-				{
-					continue;
-				}
-
-				else if ( token.Name == Common.Syntax.Tokens.RegionOpen )
-				{
-					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched open bracket was found when parsing input file \"{filePath}\"" ) );
-				}
-
-				else if ( token.Name == Common.Syntax.Tokens.RegionClose )
-				{
-					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched close bracket was found when parsing input file \"{filePath}\"" ) );
-				}
-
-				else if ( token.Name == TokenNames.EntriesRegion )
-				{
-					++i;
-					var dataTrimmedToRegion = data[ i.. ];
-					input.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
-					i += EntriesRegionParser.LinesParsed;
-				}
-
-				else if ( token.Name == TokenNames.ModuleOptionsRegion )
-				{
-					++i;
-					var dataTrimmedToRegion = data[ i.. ];
-					input.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
-					i += ModuleOptionsRegionParser.LinesParsed;
-				}
-
-				else if ( token.Name == Common.Syntax.TokenNames.MetadataRegion )
-				{
-					++i;
-					var dataTrimmedToRegion = data[ i.. ];
-					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
-					i += MetadataRegionParser.LinesParsed;
-				}
-
-				else if ( token.Name == TokenNames.TemplatesRegion )
-				{
-					++i;
-					var dataTrimmedToRegion = data[ i.. ];
-					input.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
-					i += TemplatesRegionParser.LinesParsed;
-				}
-
-				else
-				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unknown token ( \"{ rawToken }\" ) was read when a region name was expected" ) );
-				}
-
-				if ( MetadataRegionParser.RegionsParsed == 0 )
-				{
-					ExceptionLogger.LogAndThrow( new FileRegionException( $"First region in input file must be a { Common.Syntax.TokenNames.MetadataRegion } region" ) );
-				}
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain a { Common.Syntax.TokenNames.MetadataRegion } region." ) );
 			}
 
-			input.Macros = MacroGenerator.Generate( input );
 			Log.TaskFinish( taskMessage );
-			return input;
+			return result;
 		}
 	}
 }

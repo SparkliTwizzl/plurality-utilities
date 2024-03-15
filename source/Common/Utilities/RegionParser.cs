@@ -7,7 +7,7 @@ namespace Petrichor.Common.Utilities
 	public class RegionParser< T > : IRegionParser< T > where T : class, new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Dictionary< string, Action< StringToken, T > > TokenHandlers { get; set; } = new();
+		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; }
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -17,10 +17,11 @@ namespace Petrichor.Common.Utilities
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public RegionParser( string regionName, int maxRegionsAllowed )
+		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Func< string[], int, T, RegionData< T > > > tokenHandlers )
 		{
 			MaxRegionsAllowed = maxRegionsAllowed;
 			RegionName = regionName;
+			TokenHandlers = tokenHandlers;
 		}
 
 		public T Parse( string[] regionData )
@@ -37,7 +38,6 @@ namespace Petrichor.Common.Utilities
 
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
-				var isTokenRecognized = false;
 				var rawToken = regionData[ i ];
 				var token = new StringToken( rawToken );
 
@@ -70,22 +70,17 @@ namespace Petrichor.Common.Utilities
 					continue;
 				}
 
-				foreach ( var tokenHandler in TokenHandlers )
+				if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
 				{
-					var recognizedTokenName = tokenHandler.Key;
-					if ( token.Name == recognizedTokenName )
-					{
-						isTokenRecognized = true;
-						var handler = tokenHandler.Value;
-						handler( token, result );
-						break;
-					}
+					++i;
+					var handlerResult = handler( regionData, i, result );
+					i += handlerResult.LineCount;
+					result = handlerResult.Value;
+					continue;
 				}
 
-				if ( !isTokenRecognized )
-				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found in a { RegionName } region" ) );
-				}
+				// this can only be reached if a token is not recognized and therefore not handled
+				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found in a { RegionName } region" ) );
 			}
 
 			if ( IndentLevel != 0 )
@@ -99,7 +94,5 @@ namespace Petrichor.Common.Utilities
 			Log.TaskFinish( taskMessage );
 			return result;
 		}
-
-		public void SetTokenHandlers( Dictionary< string, Action< StringToken, T >> tokenHandlers ) => TokenHandlers = tokenHandlers;
 	}
 }
