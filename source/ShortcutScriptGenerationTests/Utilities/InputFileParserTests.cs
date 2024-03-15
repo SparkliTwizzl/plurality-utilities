@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -51,20 +52,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class MetadataRegionParserStub : IMetadataRegionParser
+		public class MetadataRegionParserStub : IRegionParser< StringWrapper >
 		{
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+			public bool HasParsedMinRequiredRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
 			public int MaxRegionsAllowed => 1;
+			public int MinRegionsRequired => 1;
 			public static string RegionIsValidMessage => MetadataRegionParser.RegionIsValidMessage;
 			public int RegionsParsed { get; private set; } = 0;
 
-			public string Parse( string[] regionData )
+			string IRegionParser< StringWrapper >.RegionName => Common.Syntax.TokenNames.MetadataRegion;
+
+			StringWrapper IRegionParser<StringWrapper>.Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
+				HasParsedMinRequiredRegions = true;
 				LinesParsed = TestData.MetadataRegionLength;
-				return RegionIsValidMessage;
+				return new StringWrapper( RegionIsValidMessage );
 			}
 		}
 

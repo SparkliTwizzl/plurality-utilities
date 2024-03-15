@@ -11,15 +11,26 @@ namespace Petrichor.Common.Utilities
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
+		public bool HasParsedMinRequiredRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
 		public int MaxRegionsAllowed { get; private set; } = 0;
+		public int MinRegionsRequired { get; private set; } = 0;
 		public string RegionName { get; private set; }
 		public int RegionsParsed { get; private set; } = 0;
 
 
-		public RegionParser( string regionName, int maxRegionsAllowed, Dictionary< string, Func< string[], int, T, RegionData< T > > > tokenHandlers )
+		public RegionParser( RegionParserDescriptor< T > descriptor )
+		{
+			MaxRegionsAllowed = descriptor.MaxRegionsAllowed;
+			MinRegionsRequired = descriptor.MinRegionsRequired;
+			RegionName = descriptor.RegionName;
+			TokenHandlers = descriptor.TokenHandlers;
+		}
+
+		public RegionParser( string regionName, int maxRegionsAllowed, int minRegionsRequired, Dictionary< string, Func< string[], int, T, RegionData< T > > > tokenHandlers )
 		{
 			MaxRegionsAllowed = maxRegionsAllowed;
+			MinRegionsRequired = minRegionsRequired;
 			RegionName = regionName;
 			TokenHandlers = tokenHandlers;
 		}
@@ -72,9 +83,8 @@ namespace Petrichor.Common.Utilities
 
 				if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
 				{
-					++i;
 					var handlerResult = handler( regionData, i, result );
-					i += handlerResult.LineCount;
+					i += handlerResult.BodySize;
 					result = handlerResult.Value;
 					continue;
 				}
@@ -90,6 +100,12 @@ namespace Petrichor.Common.Utilities
 
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
+			HasParsedMinRequiredRegions = RegionsParsed >= MinRegionsRequired;
+
+			if ( !HasParsedMinRequiredRegions )
+			{
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file must contain at least { MinRegionsRequired } { RegionName } regions" ) );
+			}
 
 			Log.TaskFinish( taskMessage );
 			return result;

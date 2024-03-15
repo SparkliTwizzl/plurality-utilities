@@ -5,6 +5,7 @@
 		bool HasParsedMaxAllowedRegions { get; }
 		int LinesParsed { get; }
 		int MaxRegionsAllowed { get; }
+		int MinRegionsRequired { get; }
 		string RegionName { get; }
 		int RegionsParsed { get; }
 
