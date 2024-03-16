@@ -1,4 +1,5 @@
 ﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -24,7 +25,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			ModuleOptionsRegionParser = moduleOptionsRegionParser;
 			TemplatesRegionParser = templatesRegionParser;
 
-			var entriesRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			var entriesTokenHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 			{
 				var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
 				result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
@@ -35,7 +36,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 			};
 
-			var metadataRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			var metadataTokenHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 			{
 				var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
 				var resultMessage = MetadataRegionParser.Parse( dataTrimmedToRegion ) ;
@@ -47,7 +48,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 			};
 
-			var moduleOptionsRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			var moduleOptionsTokenHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 			{
 				var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
 				result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
@@ -58,7 +59,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 			};
 
-			var templatesRegionHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
+			var templatesTokenHandler = ( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 			{
 				var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
 				result.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
@@ -69,22 +70,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 			};
 
-			var fileRegionTokenHandlers = new Dictionary< string, Func< string[], int, ScriptInput, RegionData< ScriptInput > > >()
+			var tokenHandlers = new Dictionary< string, Func< string[], int, ScriptInput, RegionData< ScriptInput > > >()
 			{
-				{ Syntax.TokenNames.EntriesRegion, entriesRegionHandler },
-				{ Common.Syntax.TokenNames.MetadataRegion, metadataRegionHandler },
-				{ Syntax.TokenNames.ModuleOptionsRegion, moduleOptionsRegionHandler },
-				{ Syntax.TokenNames.TemplatesRegion, templatesRegionHandler },
+				{ Syntax.TokenNames.EntriesRegion, entriesTokenHandler },
+				{ Common.Syntax.TokenNames.MetadataRegion, metadataTokenHandler },
+				{ Syntax.TokenNames.ModuleOptionsRegion, moduleOptionsTokenHandler },
+				{ Syntax.TokenNames.TemplatesRegion, templatesTokenHandler },
 			};
 
-			var fileRegionParserDesc = new RegionParserDescriptor< ScriptInput >()
+			var parserDescriptor = new RegionParserDescriptor< ScriptInput >()
 			{
 				RegionName = "Input file body",
 				MaxRegionsAllowed = 1,
 				MinRegionsRequired = 1,
-				TokenHandlers = fileRegionTokenHandlers,
+				TokenHandlers = tokenHandlers,
 			};
-			FileRegionParser = new RegionParser< ScriptInput >( fileRegionParserDesc );
+			FileRegionParser = new RegionParser< ScriptInput >( parserDescriptor );
 		}
 
 
@@ -96,6 +97,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var fileData = File.ReadAllLines( filePath );
 			var result = FileRegionParser.Parse( fileData );
 			result.Macros = MacroGenerator.Generate( result );
+
+			if ( !MetadataRegionParser.HasParsedMinRequiredRegions )
+			{
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } { MetadataRegionParser.RegionName } regions" ) );
+			}
 
 			Log.TaskFinish( taskMessage );
 			return result;

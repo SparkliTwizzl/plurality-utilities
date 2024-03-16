@@ -7,7 +7,7 @@ namespace Petrichor.Common.Utilities
 	public class RegionParser< T > : IRegionParser< T > where T : class, new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; }
+		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; } = new();
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
@@ -15,9 +15,11 @@ namespace Petrichor.Common.Utilities
 		public int LinesParsed { get; private set; } = 0;
 		public int MaxRegionsAllowed { get; private set; } = 0;
 		public int MinRegionsRequired { get; private set; } = 0;
-		public string RegionName { get; private set; }
+		public string RegionName { get; private set; } = string.Empty;
 		public int RegionsParsed { get; private set; } = 0;
 
+
+		public RegionParser() { }
 
 		public RegionParser( RegionParserDescriptor< T > descriptor )
 		{

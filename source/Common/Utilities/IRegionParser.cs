@@ -3,6 +3,7 @@
 	public interface IRegionParser< out T > where T : class, new()
 	{
 		bool HasParsedMaxAllowedRegions { get; }
+		bool HasParsedMinRequiredRegions { get; }
 		int LinesParsed { get; }
 		int MaxRegionsAllowed { get; }
 		int MinRegionsRequired { get; }

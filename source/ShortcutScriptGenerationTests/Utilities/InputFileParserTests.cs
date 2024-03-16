@@ -57,20 +57,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public bool HasParsedMinRequiredRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed => 1;
-			public int MinRegionsRequired => 1;
-			public static string RegionIsValidMessage => MetadataRegionParser.RegionIsValidMessage;
+			public int MaxRegionsAllowed => Common.Info.RegionMetadata.MaxMetadataRegions;
+			public int MinRegionsRequired => Common.Info.RegionMetadata.MinMetadataRegions;
 			public int RegionsParsed { get; private set; } = 0;
+			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
 
-			string IRegionParser< StringWrapper >.RegionName => Common.Syntax.TokenNames.MetadataRegion;
-
-			StringWrapper IRegionParser<StringWrapper>.Parse( string[] regionData )
+			StringWrapper IRegionParser< StringWrapper >.Parse( string[] regionData )
 			{
 				++RegionsParsed;
 				HasParsedMaxAllowedRegions = true;
 				HasParsedMinRequiredRegions = true;
 				LinesParsed = TestData.MetadataRegionLength;
-				return new StringWrapper( RegionIsValidMessage );
+				return new StringWrapper();
 			}
 		}
 
@@ -125,7 +123,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			entriesRegionParserStub = new();
 			macroGeneratorMock = new();
 			_ = macroGeneratorMock
-				.Setup( x => x.Generate( It.IsAny<ScriptInput>() ) )
+				.Setup( x => x.Generate( It.IsAny< ScriptInput >() ) )
 				.Returns( TestData.Macros );
 			metadataRegionParserStub = new();
 			moduleOptionsRegionParserStub = new();
@@ -145,11 +143,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			Assert.AreEqual( expected, actual );
 		}
 
-		public static IEnumerable<object[]> Parse_Test_Success_Data
+		public static IEnumerable< object[] > Parse_Test_Success_Data
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileParser )}_Valid.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileParser ) }_Valid.petrichor" };
 			}
 		}
 
@@ -158,12 +156,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_BracketException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
+		public static IEnumerable< object[] > Parse_Test_Throws_BracketException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileParser )}_DanglingCloseBracket.petrichor" };
-				yield return new object[] { $"{nameof( InputFileParser )}_DanglingOpenBracket.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileParser ) }_DanglingCloseBracket.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileParser ) }_DanglingOpenBracket.petrichor" };
 			}
 		}
 
@@ -172,7 +170,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_FileNotFoundException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_FileNotFoundException_Data
+		public static IEnumerable< object[] > Parse_Test_Throws_FileNotFoundException_Data
 		{
 			get
 			{
@@ -185,11 +183,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_FileRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_FileRegionException_Data
+		public static IEnumerable< object[] > Parse_Test_Throws_FileRegionException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileParser )}_NoMetadataRegion.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileParser ) }_NoMetadataRegion.petrichor" };
 			}
 		}
 
@@ -198,11 +196,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
 		public void ParseFile_Test_Throws_TokenException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		public static IEnumerable< object[] > Parse_Test_Throws_TokenException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileParser )}_UnknownToken.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileParser ) }_UnknownToken.petrichor" };
 			}
 		}
 	}
