@@ -1,6 +1,4 @@
-﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Exceptions;
-using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.Logging.Enums;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -32,33 +30,7 @@ namespace Petrichor.App.Utilities
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
 				
-				bool hasParsedMinimumVersionToken = false;
-				var minimumVersionTokenHandler = ( string[] fileData, int regionStartIndex, StringWrapper result ) =>
-				{
-					if ( hasParsedMinimumVersionToken )
-					{
-						ExceptionLogger.LogAndThrow( new TokenException( $"Region cannot contain more than 1 { Common.Syntax.TokenNames.MinimumVersion } token" ) );
-					}
-
-					var token = new StringToken( fileData[ regionStartIndex ] );
-					var version = token.Value;
-					Common.Info.AppVersion.RejectUnsupportedVersions( version );
-					
-					hasParsedMinimumVersionToken = true;
-					return new RegionData< StringWrapper >();
-				};
-				var metadataRegionTokenHandlers = new Dictionary< string, Func< string[], int, StringWrapper, RegionData< StringWrapper > > >()
-				{
-					{ Common.Syntax.TokenNames.MinimumVersion, minimumVersionTokenHandler },
-				};
-				var metadataRegionParserDesc = new RegionParserDescriptor< StringWrapper >()
-				{
-					RegionName = Common.Syntax.TokenNames.MetadataRegion,
-					MaxRegionsAllowed = Common.Info.RegionMetadata.MaxMetadataRegions,
-					MinRegionsRequired = Common.Info.RegionMetadata.MinMetadataRegions,
-					TokenHandlers = metadataRegionTokenHandlers,
-				};
-				var metadataRegionParser = new RegionParser< StringWrapper >( metadataRegionParserDesc );
+				var metadataRegionHandler = new MetadataRegionHandler();
 
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
 				var entryRegionParser = new EntryRegionParser();
@@ -67,8 +39,8 @@ namespace Petrichor.App.Utilities
 
 				var macroGenerator = new MacroGenerator();
 
-				var inputFileParser = new InputFileParser( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
-				var input = inputFileParser.Parse( InputFilePath );
+				var inputFileParser = new InputFileHandler( metadataRegionHandler.Parser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
+				var input = inputFileParser.ProcessFile( InputFilePath );
 				var scriptGenerator = new ScriptGenerator( input );
 				scriptGenerator.Generate( OutputFilePath );
 

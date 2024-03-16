@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Info;
 using Petrichor.Common.Syntax;
@@ -9,7 +10,7 @@ using System.Data;
 namespace Petrichor.Common.Utilities.Tests
 {
 	[TestClass]
-	public class MetadataRegionParserTests
+	public class MetadataRegionHandlerTests
 	{
 		public struct TestData
 		{
@@ -87,14 +88,14 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 
-		public MetadataRegionParser? parser;
+		public MetadataRegionHandler? regionHandler;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			parser = new();
+			regionHandler = new();
 		}
 
 
@@ -102,20 +103,20 @@ namespace Petrichor.Common.Utilities.Tests
 		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
 		public void Parse_Test_Success( string[] regionData )
 		{
-			var expectedResult = MetadataRegionParser.RegionIsValidMessage;
-			var actualResult = parser!.Parse( regionData );
+			var expectedResult = new StringWrapper();
+			var actualResult = regionHandler!.Parser.Parse( regionData );
 			Assert.AreEqual( expectedResult, actualResult );
 
 			var expectedHasParsedMaxAllowedRegions = true;
-			var actualHasParsedMaxAllowedRegions = parser.HasParsedMaxAllowedRegions;
+			var actualHasParsedMaxAllowedRegions = regionHandler.Parser.HasParsedMaxAllowedRegions;
 			Assert.AreEqual( expectedHasParsedMaxAllowedRegions, actualHasParsedMaxAllowedRegions );
 
 			var expectedLinesParsed = regionData.Length;
-			var actualLinesParsed = parser.LinesParsed;
+			var actualLinesParsed = regionHandler.Parser.LinesParsed;
 			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
 
 			var expectedRegionsParsed = 1;
-			var actualRegionsParsed = parser.RegionsParsed;
+			var actualRegionsParsed = regionHandler.Parser.RegionsParsed;
 			Assert.AreEqual( expectedRegionsParsed, actualRegionsParsed );
 		}
 
@@ -132,7 +133,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = regionHandler!.Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
@@ -147,14 +148,14 @@ namespace Petrichor.Common.Utilities.Tests
 		[ExpectedException( typeof( FileRegionException ) )]
 		public void Parse_Test_Throws_FileRegionException()
 		{
-			_ = parser!.Parse( TestData.RegionData_Valid );
-			_ = parser!.Parse( TestData.RegionData_Valid );
+			_ = regionHandler!.Parser.Parse( TestData.RegionData_Valid );
+			_ = regionHandler!.Parser.Parse( TestData.RegionData_Valid );
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = regionHandler!.Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
 		{
@@ -168,7 +169,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( VersionNotFoundException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_VersionNotFoundException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_VersionNotFoundException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_VersionNotFoundException( string[] regionData ) => _ = regionHandler!.Parser.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_VersionNotFoundException_Data
 		{
