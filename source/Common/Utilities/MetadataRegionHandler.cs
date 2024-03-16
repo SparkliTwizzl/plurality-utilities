@@ -38,6 +38,14 @@ namespace Petrichor.Common.Utilities
 				MaxRegionsAllowed = Info.TokenMetadata.MaxMetadataRegions,
 				MinRegionsRequired = Info.TokenMetadata.MinMetadataRegions,
 				TokenHandlers = tokenHandlers,
+				MaxAllowedTokenInstances = new()
+				{
+					{ Syntax.TokenNames.MinimumVersion, Info.TokenMetadata.MaxMinimumVersionTokens },
+				},
+				MinRequiredTokenInstances = new()
+				{
+					{ Syntax.TokenNames.MinimumVersion, Info.TokenMetadata.MinMinimumVersionTokens },
+				},
 			};
 
 			Parser = new RegionParser< StringWrapper >( parserDescriptor );

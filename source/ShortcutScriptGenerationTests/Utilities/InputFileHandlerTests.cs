@@ -57,10 +57,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public bool HasParsedMinRequiredRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
+			public Dictionary< string, int > MaxAllowedTokenInstances { get; } = new();
 			public int MaxRegionsAllowed => Common.Info.TokenMetadata.MaxMetadataRegions;
 			public int MinRegionsRequired => Common.Info.TokenMetadata.MinMetadataRegions;
+			public Dictionary< string, int > MinRequiredTokenInstances { get; } = new();
 			public int RegionsParsed { get; private set; } = 0;
 			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
+			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
 			StringWrapper IRegionParser< StringWrapper >.Parse( string[] regionData )
 			{

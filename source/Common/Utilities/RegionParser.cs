@@ -15,18 +15,23 @@ namespace Petrichor.Common.Utilities
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 		public bool HasParsedMinRequiredRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
+		public Dictionary< string, int > MaxAllowedTokenInstances { get; private set; } = new();
 		public int MaxRegionsAllowed { get; private set; } = 0;
 		public int MinRegionsRequired { get; private set; } = 0;
+		public Dictionary< string, int > MinRequiredTokenInstances { get; private set; } = new();
 		public string RegionName { get; private set; } = string.Empty;
 		public int RegionsParsed { get; private set; } = 0;
+		public Dictionary< string, int > TokenInstancesParsed { get; private set; } = new();
 
 
 		public RegionParser() { }
 
 		public RegionParser( RegionParserDescriptor< T > descriptor )
 		{
+			MaxAllowedTokenInstances = descriptor.MaxAllowedTokenInstances;
 			MaxRegionsAllowed = descriptor.MaxRegionsAllowed;
 			MinRegionsRequired = descriptor.MinRegionsRequired;
+			MinRequiredTokenInstances = descriptor.MinRequiredTokenInstances;
 			PostParseHandler = descriptor.PostParseHandler;
 			PreParseHandler = descriptor.PreParseHandler;
 			RegionName = descriptor.RegionName;
@@ -81,6 +86,12 @@ namespace Petrichor.Common.Utilities
 
 				if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
 				{
+					if ( !TokenInstancesParsed.ContainsKey( token.Name ) )
+					{
+						TokenInstancesParsed.Add( token.Name, 0 );
+					}
+
+					++TokenInstancesParsed[ token.Name ];
 					var handlerResult = handler( regionData, i, result );
 					i += handlerResult.BodySize;
 					result = handlerResult.Value;
@@ -99,6 +110,23 @@ namespace Petrichor.Common.Utilities
 			++RegionsParsed;
 			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
 			HasParsedMinRequiredRegions = RegionsParsed >= MinRegionsRequired;
+
+			foreach ( var tokenName in TokenInstancesParsed.Keys )
+			{
+				var instances = TokenInstancesParsed[ tokenName ];
+				var minRequiredInstances = MinRequiredTokenInstances[ tokenName ];
+				var maxAllowedInstances = MaxAllowedTokenInstances[ tokenName ];
+
+				if ( instances < minRequiredInstances )
+				{
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions must contain at least { minRequiredInstances } { tokenName } tokens" ) );
+				}
+
+				if ( instances > maxAllowedInstances )
+				{
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions cannot contain more than { maxAllowedInstances } { tokenName } tokens" ) );
+				}
+			}
 
 			if ( !HasParsedMinRequiredRegions )
 			{

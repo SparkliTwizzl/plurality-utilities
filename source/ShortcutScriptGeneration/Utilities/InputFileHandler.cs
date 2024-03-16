@@ -119,6 +119,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				MinRegionsRequired = 1,
 				TokenHandlers = tokenHandlers,
 				PostParseHandler = PostParseHandler,
+				MaxAllowedTokenInstances = new()
+				{
+					{ Syntax.TokenNames.EntriesRegion, Info.TokenMetadata.MaxEntriesRegions },
+					{ Common.Syntax.TokenNames.MetadataRegion, Common.Info.TokenMetadata.MaxMetadataRegions },
+					{ Syntax.TokenNames.ModuleOptionsRegion, Info.TokenMetadata.MaxModuleOptionsRegions },
+					{ Syntax.TokenNames.TemplatesRegion, Info.TokenMetadata.MaxTemplatesRegions },
+				},
+				MinRequiredTokenInstances = new()
+				{
+					{ Syntax.TokenNames.EntriesRegion, Info.TokenMetadata.MinEntriesRegions },
+					{ Common.Syntax.TokenNames.MetadataRegion, Common.Info.TokenMetadata.MinMetadataRegions },
+					{ Syntax.TokenNames.ModuleOptionsRegion, Info.TokenMetadata.MinModuleOptionsRegions },
+					{ Syntax.TokenNames.TemplatesRegion, Info.TokenMetadata.MinTemplatesRegions },
+				},
 			};
 
 			return new RegionParser< ScriptInput >( parserDescriptor );
