@@ -11,7 +11,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class InputFileParserTests
+	public class InputFileHandlerTests
 	{
 		public struct TestData
 		{
@@ -108,7 +108,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 
 		public EntriesRegionParserStub? entriesRegionParserStub;
-		public InputFileParser? parser;
+		public InputFileHandler? handler;
 		public Mock<IMacroGenerator>? macroGeneratorMock;
 		public MetadataRegionParserStub? metadataRegionParserStub;
 		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
@@ -129,48 +129,48 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			moduleOptionsRegionParserStub = new();
 			templatesRegionParserStub = new();
 
-			parser = new InputFileParser( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
+			handler = new InputFileHandler( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 
 		[TestMethod]
-		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Success( string fileName )
+		[DynamicData( nameof( ProcessFile_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void ProcessFile_Test_Success( string fileName )
 		{
 			var expected = TestData.Input;
 			var filePath = TestUtilities.LocateInputFile( fileName );
-			var actual = parser!.Parse( filePath );
+			var actual = handler!.ProcessFile( filePath );
 			Assert.AreEqual( expected, actual );
 		}
 
-		public static IEnumerable< object[] > Parse_Test_Success_Data
+		public static IEnumerable< object[] > ProcessFile_Test_Success_Data
 		{
 			get
 			{
-				yield return new object[] { $"{ nameof( InputFileParser ) }_Valid.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_Valid.petrichor" };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_BracketException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		[DynamicData( nameof( ProcessFile_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
+		public void ProcessFile_Test_Throws_BracketException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable< object[] > Parse_Test_Throws_BracketException_Data
+		public static IEnumerable< object[] > ProcessFile_Test_Throws_BracketException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{ nameof( InputFileParser ) }_DanglingCloseBracket.petrichor" };
-				yield return new object[] { $"{ nameof( InputFileParser ) }_DanglingOpenBracket.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_DanglingCloseBracket.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_DanglingOpenBracket.petrichor" };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( FileNotFoundException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileNotFoundException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		[DynamicData( nameof( ProcessFile_Test_Throws_FileNotFoundException_Data ), DynamicDataSourceType.Property )]
+		public void ProcessFile_Test_Throws_FileNotFoundException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable< object[] > Parse_Test_Throws_FileNotFoundException_Data
+		public static IEnumerable< object[] > ProcessFile_Test_Throws_FileNotFoundException_Data
 		{
 			get
 			{
@@ -180,27 +180,27 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[ExpectedException( typeof( FileRegionException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_FileRegionException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		[DynamicData( nameof( ProcessFile_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
+		public void ProcessFile_Test_Throws_FileRegionException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable< object[] > Parse_Test_Throws_FileRegionException_Data
+		public static IEnumerable< object[] > ProcessFile_Test_Throws_FileRegionException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{ nameof( InputFileParser ) }_NoMetadataRegion.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_NoMetadataRegion.petrichor" };
 			}
 		}
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
-		public void ParseFile_Test_Throws_TokenException( string fileName ) => _ = parser!.Parse( TestUtilities.LocateInputFile( fileName ) );
+		[DynamicData( nameof( ProcessFile_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
+		public void ProcessFile_Test_Throws_TokenException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
 
-		public static IEnumerable< object[] > Parse_Test_Throws_TokenException_Data
+		public static IEnumerable< object[] > ProcessFile_Test_Throws_TokenException_Data
 		{
 			get
 			{
-				yield return new object[] { $"{ nameof( InputFileParser ) }_UnknownToken.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_UnknownToken.petrichor" };
 			}
 		}
 	}

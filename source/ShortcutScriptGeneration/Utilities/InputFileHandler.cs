@@ -7,7 +7,7 @@ using Petrichor.ShortcutScriptGeneration.Containers;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class InputFileParser
+	public class InputFileHandler
 	{
 		private IEntriesRegionParser EntriesRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
@@ -17,7 +17,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private IRegionParser< ScriptInput > FileRegionParser { get; set; }
 
 
-		public InputFileParser( IRegionParser< StringWrapper > metadataRegionParser, IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
+		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntriesRegionParser = entriesRegionParser;
 			MacroGenerator = macroGenerator;
@@ -89,7 +89,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		public ScriptInput Parse( string filePath )
+		public ScriptInput ProcessFile( string filePath )
 		{
 			var taskMessage = $"Parse input file \"{ filePath }\"";
 			Log.TaskStart( taskMessage );
