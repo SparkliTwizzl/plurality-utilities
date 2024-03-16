@@ -7,6 +7,8 @@ namespace Petrichor.Common.Utilities
 	public class RegionParser< T > : IRegionParser< T > where T : class, new()
 	{
 		private int IndentLevel { get; set; } = 0;
+		private Func< T, T > PostParseHandler { get; set; } = ( T result ) => new T();
+		private Func< T > PreParseHandler { get; set; } = () => new T();
 		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; } = new();
 
 
@@ -25,16 +27,10 @@ namespace Petrichor.Common.Utilities
 		{
 			MaxRegionsAllowed = descriptor.MaxRegionsAllowed;
 			MinRegionsRequired = descriptor.MinRegionsRequired;
+			PostParseHandler = descriptor.PostParseHandler;
+			PreParseHandler = descriptor.PreParseHandler;
 			RegionName = descriptor.RegionName;
 			TokenHandlers = descriptor.TokenHandlers;
-		}
-
-		public RegionParser( string regionName, int maxRegionsAllowed, int minRegionsRequired, Dictionary< string, Func< string[], int, T, RegionData< T > > > tokenHandlers )
-		{
-			MaxRegionsAllowed = maxRegionsAllowed;
-			MinRegionsRequired = minRegionsRequired;
-			RegionName = regionName;
-			TokenHandlers = tokenHandlers;
 		}
 
 		public T Parse( string[] regionData )
@@ -47,7 +43,7 @@ namespace Petrichor.Common.Utilities
 				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } { RegionName } regions" ) );
 			}
 
-			var result = new T();
+			var result = PreParseHandler();
 
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
@@ -108,6 +104,8 @@ namespace Petrichor.Common.Utilities
 			{
 				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file must contain at least { MinRegionsRequired } { RegionName } regions" ) );
 			}
+
+			result = PostParseHandler( result );
 
 			Log.TaskFinish( taskMessage );
 			return result;

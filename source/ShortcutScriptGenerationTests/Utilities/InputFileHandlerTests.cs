@@ -57,8 +57,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public bool HasParsedMinRequiredRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed => Common.Info.RegionMetadata.MaxMetadataRegions;
-			public int MinRegionsRequired => Common.Info.RegionMetadata.MinMetadataRegions;
+			public int MaxRegionsAllowed => Common.Info.TokenMetadata.MaxMetadataRegions;
+			public int MinRegionsRequired => Common.Info.TokenMetadata.MinMetadataRegions;
 			public int RegionsParsed { get; private set; } = 0;
 			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
 

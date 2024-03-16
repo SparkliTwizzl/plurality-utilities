@@ -78,12 +78,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ Syntax.TokenNames.TemplatesRegion, templatesTokenHandler },
 			};
 
+			var postParseHandler = ( ScriptInput result ) =>
+			{
+				if ( !MetadataRegionParser.HasParsedMinRequiredRegions )
+				{
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } { MetadataRegionParser.RegionName } regions" ) );
+				}
+
+				result.Macros = MacroGenerator.Generate( result );
+				return result;
+			};
+
 			var parserDescriptor = new RegionParserDescriptor< ScriptInput >()
 			{
 				RegionName = "Input file body",
 				MaxRegionsAllowed = 1,
 				MinRegionsRequired = 1,
 				TokenHandlers = tokenHandlers,
+				PostParseHandler = postParseHandler,
 			};
 			FileRegionParser = new RegionParser< ScriptInput >( parserDescriptor );
 		}
@@ -96,12 +108,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			var fileData = File.ReadAllLines( filePath );
 			var result = FileRegionParser.Parse( fileData );
-			result.Macros = MacroGenerator.Generate( result );
-
-			if ( !MetadataRegionParser.HasParsedMinRequiredRegions )
-			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } { MetadataRegionParser.RegionName } regions" ) );
-			}
 
 			Log.TaskFinish( taskMessage );
 			return result;

@@ -16,7 +16,7 @@ namespace Petrichor.Common.Utilities
 			{
 				if ( HasParsedMinimumVersionToken )
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"Region cannot contain more than 1 { Syntax.TokenNames.MinimumVersion } token" ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"Region cannot contain more than { Info.TokenMetadata.MaxMinimumVersionTokens } { Syntax.TokenNames.MinimumVersion } token" ) );
 				}
 
 				var token = new StringToken( fileData[ regionStartIndex ] );
@@ -35,8 +35,8 @@ namespace Petrichor.Common.Utilities
 			var parserDescriptor = new RegionParserDescriptor< StringWrapper >()
 			{
 				RegionName = Syntax.TokenNames.MetadataRegion,
-				MaxRegionsAllowed = Info.RegionMetadata.MaxMetadataRegions,
-				MinRegionsRequired = Info.RegionMetadata.MinMetadataRegions,
+				MaxRegionsAllowed = Info.TokenMetadata.MaxMetadataRegions,
+				MinRegionsRequired = Info.TokenMetadata.MinMetadataRegions,
 				TokenHandlers = tokenHandlers,
 			};
 
