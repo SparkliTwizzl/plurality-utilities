@@ -87,21 +87,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class TemplatesRegionParserStub : ITemplatesRegionParser
+		public class TemplatesRegionParserStub : IRegionParser< List< string > >
 		{
-			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed => 1;
-			public int RegionsParsed { get; private set; } = 0;
-			public int TemplatesParsed { get; private set; } = 0;
+			public Dictionary< string, int > MaxAllowedTokenInstances { get; } = new();
+			public Dictionary< string, int > MinRequiredTokenInstances { get; } = new();
+			public string RegionName => Syntax.TokenNames.TemplatesRegion;
+			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
-			public string[] Parse( string[] regionData )
+			public List< string > Parse( string[] regionData )
 			{
-				++RegionsParsed;
-				HasParsedMaxAllowedRegions = true;
 				LinesParsed = TestData.TemplatesRegionLength;
-				TemplatesParsed = 1;
-				return TestData.Templates;
+				TokenInstancesParsed[ Syntax.TokenNames.Template ] = TestData.Templates.Length;
+				return TestData.Templates.ToList();
 			}
 		}
 

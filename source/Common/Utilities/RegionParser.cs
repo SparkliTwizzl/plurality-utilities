@@ -74,7 +74,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel == 0 )
 					{
-						LinesParsed = i + 1;
+						LinesParsed = i;
 						break;
 					}
 

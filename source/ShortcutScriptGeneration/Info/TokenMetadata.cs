@@ -16,6 +16,7 @@
 		public const int MaxSuspendIconTokens = 1;
 		public const int MaxSuspendShortcutTokens = 1;
 		public const int MaxTemplatesRegions = 1;
+		public const int MaxTemplateTokens = int.MaxValue;
 
 		public const int MinDefaultIconTokens = 0;
 		public const int MinEntriesRegions = 1;
@@ -31,5 +32,6 @@
 		public const int MinSuspendIconTokens = 0;
 		public const int MinSuspendShortcutTokens = 0;
 		public const int MinTemplatesRegions = 1;
+		public const int MinTemplateTokens = 1;
 	}
 }
