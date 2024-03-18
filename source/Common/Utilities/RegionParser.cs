@@ -7,7 +7,7 @@ namespace Petrichor.Common.Utilities
 	public class RegionParser< T > : IRegionParser< T > where T : class, new()
 	{
 		private int IndentLevel { get; set; } = 0;
-		private Func< T, T > PostParseHandler { get; set; } = ( T result ) => new T();
+		private Func< T, T > PostParseHandler { get; set; } = ( T result ) => result;
 		private Func< T > PreParseHandler { get; set; } = () => new T();
 		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; } = new();
 
