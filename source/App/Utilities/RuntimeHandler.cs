@@ -19,7 +19,7 @@ namespace Petrichor.App.Utilities
 		public static string OutputFilePath { get; set; } = string.Empty;
 
 
-		public static void Execute() => CreateAutoHotkeyScript();
+		public static void Execute() => GenerateAutoHotkeyScript();
 
 		public static void WaitForUserAndExit()
 		{
@@ -29,7 +29,7 @@ namespace Petrichor.App.Utilities
 		}
 
 
-		private static void CreateAutoHotkeyScript()
+		private static void GenerateAutoHotkeyScript()
 		{
 			try
 			{
