@@ -51,7 +51,7 @@ namespace Petrichor.Logging
 		/// Write formatted details about an error to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Error( string message = "" ) => WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleColor.White, ConsoleColor.Red );
+		public static void Error( string message = "" ) => WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleColor.White, ConsoleColor.DarkRed );
 
 		/// <summary>
 		/// Write formatted important information to log.

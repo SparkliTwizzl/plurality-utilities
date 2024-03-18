@@ -1,4 +1,9 @@
-﻿namespace Petrichor.Common.Info
+﻿using Petrichor.Common.Utilities;
+using Petrichor.Logging;
+using System.Data;
+
+
+namespace Petrichor.Common.Info
 {
 	public static class AppVersion
 	{
@@ -59,6 +64,25 @@
 			var isPatchSupported = SupportedPatchVersions.Contains( patch );
 			var isPreviewSupported = SupportedPreviewVersions.Contains( preview );
 			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
+		}
+
+		public static void RejectUnsupportedVersions( string version )
+		{
+			var taskMessage = $"Check version compatibility";
+			Log.TaskStart( taskMessage );
+
+			if ( string.IsNullOrEmpty( version ) )
+			{
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ) );
+			}
+
+			if ( !IsVersionSupported( version ) )
+			{
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{ version }\" is not supported by { AppInfo.AppNameAndVersion }." ) );
+			}
+
+			Log.Info( $"Version \"{ version }\" is compatible with { AppInfo.AppNameAndVersion }" );
+			Log.TaskFinish( taskMessage );
 		}
 	}
 }
