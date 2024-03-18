@@ -79,7 +79,7 @@ namespace Petrichor.Common.Utilities
 
 				if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
 				{
-					if ( !TokenInstancesParsed.ContainsKey( token.Name ) )
+					if ( !TokenInstancesParsed.TryGetValue( token.Name, out var value ) )
 					{
 						TokenInstancesParsed.Add( token.Name, 0 );
 					}
