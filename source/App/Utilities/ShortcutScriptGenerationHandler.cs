@@ -65,7 +65,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ regionStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.DefaultIconFilePath = filePath;
-				Log.Info( $"Stored path to default icon ({ filePath })" );
+				Log.Info( $"Stored path to default icon ( { filePath } )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,
@@ -77,7 +77,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ regionStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.ReloadShortcut = hotstring;
-				Log.Info( $"Stored reload shortcut ({ token.Value } => { hotstring })" );
+				Log.Info( $"Stored reload shortcut ( \"{ token.Value }\" -> \"{ hotstring }\" )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,
@@ -89,7 +89,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ regionStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.SuspendIconFilePath = filePath;
-				Log.Info( $"Stored path to suspend icon ({ filePath })" );
+				Log.Info( $"Stored path to suspend icon ( { filePath } )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,
@@ -101,7 +101,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ regionStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.SuspendShortcut = hotstring;
-				Log.Info( $"Stored suspend shortcut ({ token.Value } => { hotstring })" );
+				Log.Info( $"Stored suspend shortcut ( \"{ token.Value }\" -> \"{ hotstring }\" )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,
