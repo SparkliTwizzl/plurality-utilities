@@ -107,17 +107,9 @@ namespace Petrichor.Common.Utilities.Tests
 			var actualResult = regionHandler!.Parser.Parse( regionData );
 			Assert.AreEqual( expectedResult, actualResult );
 
-			var expectedHasParsedMaxAllowedRegions = true;
-			var actualHasParsedMaxAllowedRegions = regionHandler.Parser.HasParsedMaxAllowedRegions;
-			Assert.AreEqual( expectedHasParsedMaxAllowedRegions, actualHasParsedMaxAllowedRegions );
-
 			var expectedLinesParsed = regionData.Length;
 			var actualLinesParsed = regionHandler.Parser.LinesParsed;
 			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
-
-			var expectedRegionsParsed = 1;
-			var actualRegionsParsed = regionHandler.Parser.RegionsParsed;
-			Assert.AreEqual( expectedRegionsParsed, actualRegionsParsed );
 		}
 
 		public static IEnumerable<object[]> Parse_Test_Success_Data
@@ -142,14 +134,6 @@ namespace Petrichor.Common.Utilities.Tests
 				yield return new object[] { TestData.RegionData_DanglingCloseBracket };
 				yield return new object[] { TestData.RegionData_DanglingOpenBracket };
 			}
-		}
-
-		[TestMethod]
-		[ExpectedException( typeof( FileRegionException ) )]
-		public void Parse_Test_Throws_FileRegionException()
-		{
-			_ = regionHandler!.Parser.Parse( TestData.RegionData_Valid );
-			_ = regionHandler!.Parser.Parse( TestData.RegionData_Valid );
 		}
 
 		[TestMethod]

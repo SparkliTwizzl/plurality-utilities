@@ -1,5 +1,4 @@
 ﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
@@ -56,11 +55,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private Func< ScriptInput, ScriptInput > PostParseHandler => ( ScriptInput result ) =>
 		{
-			if ( !MetadataRegionParser.HasParsedMinRequiredRegions )
-			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } \"{ MetadataRegionParser.RegionName }\" regions." ) );
-			}
-
 			result.Macros = MacroGenerator.Generate( result );
 			return result;
 		};

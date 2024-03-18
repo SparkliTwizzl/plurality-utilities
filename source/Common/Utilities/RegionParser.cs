@@ -12,15 +12,10 @@ namespace Petrichor.Common.Utilities
 		private Dictionary< string, Func< string[], int, T, RegionData< T > > > TokenHandlers { get; set; } = new();
 
 
-		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
-		public bool HasParsedMinRequiredRegions { get; private set; } = false;
 		public int LinesParsed { get; private set; } = 0;
 		public Dictionary< string, int > MaxAllowedTokenInstances { get; private set; } = new();
-		public int MaxRegionsAllowed { get; private set; } = 0;
-		public int MinRegionsRequired { get; private set; } = 0;
 		public Dictionary< string, int > MinRequiredTokenInstances { get; private set; } = new();
 		public string RegionName { get; private set; } = string.Empty;
-		public int RegionsParsed { get; private set; } = 0;
 		public Dictionary< string, int > TokenInstancesParsed { get; private set; } = new();
 
 
@@ -29,8 +24,6 @@ namespace Petrichor.Common.Utilities
 		public RegionParser( RegionParserDescriptor< T > descriptor )
 		{
 			MaxAllowedTokenInstances = descriptor.MaxAllowedTokenInstances;
-			MaxRegionsAllowed = descriptor.MaxRegionsAllowed;
-			MinRegionsRequired = descriptor.MinRegionsRequired;
 			MinRequiredTokenInstances = descriptor.MinRequiredTokenInstances;
 			PostParseHandler = descriptor.PostParseHandler;
 			PreParseHandler = descriptor.PreParseHandler;
@@ -43,9 +36,9 @@ namespace Petrichor.Common.Utilities
 			var taskMessage = $"Parse \"{ RegionName }\" region";
 			Log.TaskStart( taskMessage );
 
-			if ( HasParsedMaxAllowedRegions )
+			foreach ( var tokenName in MinRequiredTokenInstances.Keys )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } \"{ RegionName }\" regions." ) );
+				TokenInstancesParsed.Add( tokenName, 0 );
 			}
 
 			var result = PreParseHandler();
@@ -107,10 +100,6 @@ namespace Petrichor.Common.Utilities
 				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a \"{ RegionName }\" region." ) );
 			}
 
-			++RegionsParsed;
-			HasParsedMaxAllowedRegions = RegionsParsed >= MaxRegionsAllowed;
-			HasParsedMinRequiredRegions = RegionsParsed >= MinRegionsRequired;
-
 			foreach ( var tokenName in TokenInstancesParsed.Keys )
 			{
 				var instances = TokenInstancesParsed[ tokenName ];
@@ -124,11 +113,6 @@ namespace Petrichor.Common.Utilities
 				{
 					ExceptionLogger.LogAndThrow( new TokenException( $"\"{ RegionName }\" regions must contain at least { minRequiredInstances } and no more than { maxAllowedInstances } \"{ tokenName }\" tokens." ) );
 				}
-			}
-
-			if ( !HasParsedMinRequiredRegions )
-			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file must contain at least { MinRegionsRequired } \"{ RegionName }\" regions." ) );
 			}
 
 			result = PostParseHandler( result );

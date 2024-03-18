@@ -182,19 +182,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( FileRegionException ) )]
-		[DynamicData( nameof( ProcessFile_Test_Throws_FileRegionException_Data ), DynamicDataSourceType.Property )]
-		public void ProcessFile_Test_Throws_FileRegionException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
-
-		public static IEnumerable< object[] > ProcessFile_Test_Throws_FileRegionException_Data
-		{
-			get
-			{
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_NoMetadataRegion.petrichor" };
-			}
-		}
-
-		[TestMethod]
 		[ExpectedException( typeof( TokenException ) )]
 		[DynamicData( nameof( ProcessFile_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
 		public void ProcessFile_Test_Throws_TokenException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
@@ -203,6 +190,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_NoMetadataRegion.petrichor" };
 				yield return new object[] { $"{ nameof( InputFileHandler ) }_UnknownToken.petrichor" };
 			}
 		}
