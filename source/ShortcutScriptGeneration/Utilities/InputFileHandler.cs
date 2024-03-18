@@ -19,7 +19,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > EntriesTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
-					var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
+					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
 					return new RegionData< ScriptInput >()
 					{
@@ -31,7 +31,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > MetadataTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
-					var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
+					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
 					return new RegionData< ScriptInput >()
 					{
@@ -43,7 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > ModuleOptionsTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
-					var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
+					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
 					return new RegionData< ScriptInput >()
 					{
@@ -61,7 +61,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > TemplatesTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
-					var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
+					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion );
 					return new RegionData< ScriptInput >()
 					{

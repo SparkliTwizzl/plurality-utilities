@@ -41,6 +41,11 @@ namespace Petrichor.Common.Utilities
 				TokenInstancesParsed.Add( tokenName, 0 );
 			}
 
+			if ( !TokenHandlers.TryGetValue( RegionName, out var value ) )
+			{
+				TokenHandlers.Add( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new() );
+			}
+
 			var result = PreParseHandler();
 
 			for ( var i = 0 ; i < regionData.Length ; ++i )

@@ -11,7 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ModuleOptionsRegionParser : IModuleOptionsRegionParser
 	{
 		private int IndentLevel { get; set; } = 0;
-		private static string RegionName => Syntax.Tokens.ModuleOptionsRegion;
+		private static string RegionName => Syntax.TokenNames.ModuleOptionsRegion;
 
 
 		public bool HasParsedMaxAllowedRegions { get; private set; } = false;
