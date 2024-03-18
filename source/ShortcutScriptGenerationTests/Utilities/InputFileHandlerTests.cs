@@ -36,19 +36,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public class EntriesRegionParserStub : IEntriesRegionParser
+		public class EntriesRegionParserStub : IRegionParser< List< ScriptEntry > >
 		{
-			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed => 1;
-			public int RegionsParsed { get; private set; } = 0;
+			public Dictionary< string, int > MaxAllowedTokenInstances { get; } = new();
+			public Dictionary< string, int > MinRequiredTokenInstances { get; } = new();
+			public string RegionName => Syntax.TokenNames.EntriesRegion;
+			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
-			public ScriptEntry[] Parse( string[] regionData )
+			public List< ScriptEntry > Parse( string[] regionData )
 			{
-				++RegionsParsed;
-				HasParsedMaxAllowedRegions = true;
+				TokenInstancesParsed.Add( Syntax.TokenNames.EntryRegion, 1 );
 				LinesParsed = TestData.EntriesRegionLength;
-				return TestData.Entries;
+				return TestData.Entries.ToList();
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
 			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
-			StringWrapper IRegionParser< StringWrapper >.Parse( string[] regionData )
+			public StringWrapper Parse( string[] regionData )
 			{
 				TokenInstancesParsed.Add( Common.Syntax.TokenNames.MinimumVersion, 1 );
 				LinesParsed = TestData.MetadataRegionLength;

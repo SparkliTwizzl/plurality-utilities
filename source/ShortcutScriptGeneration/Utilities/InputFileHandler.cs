@@ -8,7 +8,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputFileHandler
 	{
-		private IEntriesRegionParser EntriesRegionParser { get; set; }
+		private IRegionParser< List< ScriptEntry > > EntriesRegionParser { get; set; }
 		private IRegionParser< ScriptInput > FileRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
 		private IRegionParser< StringWrapper > MetadataRegionParser { get; set; }
@@ -20,7 +20,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
-					result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion );
+					result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion ).ToArray();
 					return new RegionData< ScriptInput >()
 					{
 						BodySize = EntriesRegionParser.LinesParsed,
@@ -71,7 +71,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 
 
-		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IRegionParser< ScriptModuleOptions > moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
+		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IRegionParser< ScriptModuleOptions > moduleOptionsRegionParser, IRegionParser< List< ScriptEntry > > entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntriesRegionParser = entriesRegionParser;
 			MacroGenerator = macroGenerator;

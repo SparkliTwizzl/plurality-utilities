@@ -36,16 +36,13 @@ namespace Petrichor.Common.Utilities
 			var taskMessage = $"Parse \"{ RegionName }\" region";
 			Log.TaskStart( taskMessage );
 
-			MaxAllowedTokenInstances.Add( RegionName, int.MaxValue );
-			MinRequiredTokenInstances.Add( RegionName, 0 );
+			// handle this region's token name with no effect
+			_ = TokenHandlers.TryAdd( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new(){ Value = result } );
+			_ = MaxAllowedTokenInstances.TryAdd( RegionName, int.MaxValue );
+			_ = MinRequiredTokenInstances.TryAdd( RegionName, 0 );
 			foreach ( var tokenName in MinRequiredTokenInstances.Keys )
 			{
-				TokenInstancesParsed.Add( tokenName, 0 );
-			}
-
-			if ( !TokenHandlers.TryGetValue( RegionName, out var value ) )
-			{
-				TokenHandlers.Add( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new(){ Value = result } );
+				_ = TokenInstancesParsed.TryAdd( tokenName, 0 );
 			}
 
 			var result = PreParseHandler();
@@ -103,7 +100,7 @@ namespace Petrichor.Common.Utilities
 				}
 
 				// this can only be reached if a token is not recognized and therefore not handled
-				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found in a \"{ RegionName }\" region." ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token ( \"{ rawToken.Trim() }\" ) was found in a \"{ RegionName }\" region." ) );
 			}
 
 			if ( IndentLevel != 0 )
