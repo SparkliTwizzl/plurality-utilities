@@ -77,11 +77,15 @@ namespace Petrichor.Common.Utilities
 					continue;
 				}
 
-				if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
+				else if ( TokenHandlers.TryGetValue( token.Name, out var handler ) )
 				{
-					if ( !TokenInstancesParsed.TryGetValue( token.Name, out var value ) )
+					if ( token.Value == string.Empty )
 					{
-						TokenInstancesParsed.Add( token.Name, 0 );
+						StringToken? nextToken = i < regionData.Length - 1 ? new( regionData[ i + 1 ] ) : null;
+						if ( nextToken is not null && nextToken.Name != Syntax.TokenNames.RegionOpen )
+						{
+							Log.Warning( $"Parsed a \"{ token.Name }\" token with no value." );
+						}
 					}
 
 					++TokenInstancesParsed[ token.Name ];
