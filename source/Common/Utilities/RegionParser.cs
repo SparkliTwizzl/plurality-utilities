@@ -36,6 +36,8 @@ namespace Petrichor.Common.Utilities
 			var taskMessage = $"Parse \"{ RegionName }\" region";
 			Log.TaskStart( taskMessage );
 
+			MaxAllowedTokenInstances.Add( RegionName, int.MaxValue );
+			MinRequiredTokenInstances.Add( RegionName, 0 );
 			foreach ( var tokenName in MinRequiredTokenInstances.Keys )
 			{
 				TokenInstancesParsed.Add( tokenName, 0 );
@@ -43,7 +45,7 @@ namespace Petrichor.Common.Utilities
 
 			if ( !TokenHandlers.TryGetValue( RegionName, out var value ) )
 			{
-				TokenHandlers.Add( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new() );
+				TokenHandlers.Add( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new(){ Value = result } );
 			}
 
 			var result = PreParseHandler();
@@ -112,12 +114,11 @@ namespace Petrichor.Common.Utilities
 			foreach ( var tokenName in TokenInstancesParsed.Keys )
 			{
 				var instances = TokenInstancesParsed[ tokenName ];
-				var minRequiredInstances = MinRequiredTokenInstances[ tokenName ];
-				var maxAllowedInstances = MaxAllowedTokenInstances[ tokenName ];
+				_ = MinRequiredTokenInstances.TryGetValue( tokenName, out var minRequiredInstances );
+				_ = MaxAllowedTokenInstances.TryGetValue( tokenName, out var maxAllowedInstances );
 
 				var hasTooManyInstances = instances > maxAllowedInstances;
 				var hasTooFewInstances = instances < minRequiredInstances;
-
 				if ( hasTooFewInstances || hasTooManyInstances )
 				{
 					ExceptionLogger.LogAndThrow( new TokenException( $"\"{ RegionName }\" regions must contain at least { minRequiredInstances } and no more than { maxAllowedInstances } \"{ tokenName }\" tokens." ) );
