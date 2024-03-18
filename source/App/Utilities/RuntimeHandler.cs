@@ -1,4 +1,7 @@
-﻿using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Info;
+using Petrichor.Common.Utilities;
+using Petrichor.Common.Syntax;
 using Petrichor.Logging;
 using Petrichor.Logging.Enums;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
@@ -9,8 +12,8 @@ namespace Petrichor.App.Utilities
 {
 	public static class RuntimeHandler
 	{
-		public static string InputFilePath { get; set; } = string.Empty;
 		public static LogMode ActiveLogMode { get; set; } = LogMode.None;
+		public static string InputFilePath { get; set; } = string.Empty;
 		public static string OutputFilePath { get; set; } = string.Empty;
 
 
@@ -30,7 +33,7 @@ namespace Petrichor.App.Utilities
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
 				
-				var metadataRegionHandler = new MetadataRegionHandler();
+				var metadataRegionParser = CreateMetadataRegionParser();
 
 				var moduleOptionsRegionParser = new ModuleOptionsRegionParser();
 				var entryRegionParser = new EntryRegionParser();
@@ -39,7 +42,7 @@ namespace Petrichor.App.Utilities
 
 				var macroGenerator = new MacroGenerator();
 
-				var inputFileParser = new InputFileHandler( metadataRegionHandler.Parser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
+				var inputFileParser = new InputFileHandler( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
 				var input = inputFileParser.ProcessFile( InputFilePath );
 				var scriptGenerator = new ScriptGenerator( input );
 				scriptGenerator.Generate( OutputFilePath );
@@ -55,6 +58,36 @@ namespace Petrichor.App.Utilities
 			{
 				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
 			}
+		}
+
+		private static RegionParser< StringWrapper > CreateMetadataRegionParser()
+		{
+			var minimumVersionTokenHandler = ( string[] fileData, int regionStartIndex, StringWrapper result ) =>
+			{
+				var token = new StringToken( fileData[ regionStartIndex ] );
+				var version = token.Value;
+				AppVersion.RejectUnsupportedVersions( version );
+				return new RegionData< StringWrapper >();
+			};
+
+			var parserDescriptor = new RegionParserDescriptor< StringWrapper >()
+			{
+				RegionName = TokenNames.MetadataRegion,
+				TokenHandlers = new()
+				{
+					{ TokenNames.MinimumVersion, minimumVersionTokenHandler },
+				},
+				MaxAllowedTokenInstances = new()
+				{
+					{ TokenNames.MinimumVersion, TokenMetadata.MaxMinimumVersionTokens },
+				},
+				MinRequiredTokenInstances = new()
+				{
+					{TokenNames.MinimumVersion, TokenMetadata.MinMinimumVersionTokens },
+				},
+			};
+
+			return new RegionParser< StringWrapper >( parserDescriptor );
 		}
 	}
 }

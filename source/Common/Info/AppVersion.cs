@@ -1,5 +1,7 @@
 ﻿using Petrichor.Common.Utilities;
+using Petrichor.Logging;
 using System.Data;
+
 
 namespace Petrichor.Common.Info
 {
@@ -66,6 +68,9 @@ namespace Petrichor.Common.Info
 
 		public static void RejectUnsupportedVersions( string version )
 		{
+			var taskMessage = $"Check version compatibility";
+			Log.TaskStart( taskMessage );
+
 			if ( string.IsNullOrEmpty( version ) )
 			{
 				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ) );
@@ -73,8 +78,11 @@ namespace Petrichor.Common.Info
 
 			if ( !IsVersionSupported( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version { version } is not supported by { AppInfo.AppNameAndVersion }." ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{ version }\" is not supported by { AppInfo.AppNameAndVersion }." ) );
 			}
+
+			Log.Info( $"Version \"{ version }\" is compatible with { AppInfo.AppNameAndVersion }" );
+			Log.TaskFinish( taskMessage );
 		}
 	}
 }

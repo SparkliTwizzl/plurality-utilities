@@ -32,8 +32,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ ( regionStartIndex + 1 ).. ];
-					var resultMessage = MetadataRegionParser.Parse( dataTrimmedToRegion ) ;
-					Log.Important( resultMessage.ToString() );
+					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
 					return new RegionData< ScriptInput >()
 					{
 						BodySize = MetadataRegionParser.LinesParsed,
@@ -98,18 +97,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private RegionParser< ScriptInput > CreateRegionParser()
 		{
-			var tokenHandlers = new Dictionary< string, Func< string[], int, ScriptInput, RegionData< ScriptInput > > >()
-			{
-				{ Syntax.TokenNames.EntriesRegion, EntriesTokenHandler },
-				{ Common.Syntax.TokenNames.MetadataRegion, MetadataTokenHandler },
-				{ Syntax.TokenNames.ModuleOptionsRegion, ModuleOptionsTokenHandler },
-				{ Syntax.TokenNames.TemplatesRegion, TemplatesTokenHandler },
-			};
-
 			var parserDescriptor = new RegionParserDescriptor< ScriptInput >()
 			{
 				RegionName = "Input file body",
-				TokenHandlers = tokenHandlers,
+				TokenHandlers = new()
+				{
+					{ Syntax.TokenNames.EntriesRegion, EntriesTokenHandler },
+					{ Common.Syntax.TokenNames.MetadataRegion, MetadataTokenHandler },
+					{ Syntax.TokenNames.ModuleOptionsRegion, ModuleOptionsTokenHandler },
+					{ Syntax.TokenNames.TemplatesRegion, TemplatesTokenHandler },
+				},
 				PostParseHandler = PostParseHandler,
 				MaxAllowedTokenInstances = new()
 				{
