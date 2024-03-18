@@ -54,22 +54,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public class MetadataRegionParserStub : IRegionParser< StringWrapper >
 		{
-			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
-			public bool HasParsedMinRequiredRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
 			public Dictionary< string, int > MaxAllowedTokenInstances { get; } = new();
-			public int MaxRegionsAllowed => Common.Info.TokenMetadata.MaxMetadataRegions;
-			public int MinRegionsRequired => Common.Info.TokenMetadata.MinMetadataRegions;
 			public Dictionary< string, int > MinRequiredTokenInstances { get; } = new();
-			public int RegionsParsed { get; private set; } = 0;
 			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
 			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
 			StringWrapper IRegionParser< StringWrapper >.Parse( string[] regionData )
 			{
-				++RegionsParsed;
-				HasParsedMaxAllowedRegions = true;
-				HasParsedMinRequiredRegions = true;
 				LinesParsed = TestData.MetadataRegionLength;
 				return new StringWrapper();
 			}
@@ -112,7 +104,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		public EntriesRegionParserStub? entriesRegionParserStub;
 		public InputFileHandler? handler;
-		public Mock<IMacroGenerator>? macroGeneratorMock;
+		public Mock< IMacroGenerator >? macroGeneratorMock;
 		public MetadataRegionParserStub? metadataRegionParserStub;
 		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
 		public TemplatesRegionParserStub? templatesRegionParserStub;
