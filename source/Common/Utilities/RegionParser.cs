@@ -117,14 +117,12 @@ namespace Petrichor.Common.Utilities
 				var minRequiredInstances = MinRequiredTokenInstances[ tokenName ];
 				var maxAllowedInstances = MaxAllowedTokenInstances[ tokenName ];
 
-				if ( instances < minRequiredInstances )
-				{
-					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions must contain at least { minRequiredInstances } { tokenName } tokens" ) );
-				}
+				var hasTooManyInstances = instances > maxAllowedInstances;
+				var hasTooFewInstances = instances < minRequiredInstances;
 
-				if ( instances > maxAllowedInstances )
+				if ( hasTooFewInstances || hasTooManyInstances )
 				{
-					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions cannot contain more than { maxAllowedInstances } { tokenName } tokens" ) );
+					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions must contain between { minRequiredInstances } and { maxAllowedInstances } { tokenName } tokens ( { instances } present )." ) );
 				}
 			}
 
