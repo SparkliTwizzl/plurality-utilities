@@ -1,12 +1,11 @@
 ﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Exceptions;
 
 
 namespace Petrichor.Common.Utilities
 {
 	public class MetadataRegionHandler
 	{
-		public bool HasParsedMinimumVersionToken { get; private set; } = false;
+		public string VersionIsValidMessage { get; private set; } = $"Input file version is valid for { Info.AppInfo.AppNameAndVersion }";
 		public RegionParser< StringWrapper > Parser { get; private set; }
 
 
@@ -14,17 +13,13 @@ namespace Petrichor.Common.Utilities
 		{
 			var minimumVersionTokenHandler = ( string[] fileData, int regionStartIndex, StringWrapper result ) =>
 			{
-				if ( HasParsedMinimumVersionToken )
-				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"Region cannot contain more than { Info.TokenMetadata.MaxMinimumVersionTokens } { Syntax.TokenNames.MinimumVersion } token" ) );
-				}
-
 				var token = new StringToken( fileData[ regionStartIndex ] );
 				var version = token.Value;
 				Info.AppVersion.RejectUnsupportedVersions( version );
-
-				HasParsedMinimumVersionToken = true;
-				return new RegionData< StringWrapper >();
+				return new RegionData< StringWrapper >()
+				{
+					Value = new( VersionIsValidMessage ),
+				};
 			};
 
 			var tokenHandlers = new Dictionary< string, Func< string[], int, StringWrapper, RegionData< StringWrapper > > >()

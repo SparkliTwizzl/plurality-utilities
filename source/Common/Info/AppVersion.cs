@@ -1,5 +1,4 @@
-﻿using Petrichor.Common.Exceptions;
-using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Utilities;
 using System.Data;
 
 namespace Petrichor.Common.Info
@@ -69,12 +68,12 @@ namespace Petrichor.Common.Info
 		{
 			if ( string.IsNullOrEmpty( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"Input file version cannot be blank" ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ) );
 			}
 
 			if ( !IsVersionSupported( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Input file version ({ version }) is not supported by this version of { AppInfo.AppName }" ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version { version } is not supported by { AppInfo.AppNameAndVersion }." ) );
 			}
 		}
 	}

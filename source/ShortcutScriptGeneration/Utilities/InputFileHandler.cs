@@ -58,7 +58,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			if ( !MetadataRegionParser.HasParsedMinRequiredRegions )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } { MetadataRegionParser.RegionName } regions" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input files must contain at least { MetadataRegionParser.MinRegionsRequired } \"{ MetadataRegionParser.RegionName }\" regions." ) );
 			}
 
 			result.Macros = MacroGenerator.Generate( result );

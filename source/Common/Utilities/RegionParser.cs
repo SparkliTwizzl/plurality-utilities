@@ -40,12 +40,12 @@ namespace Petrichor.Common.Utilities
 
 		public T Parse( string[] regionData )
 		{
-			var taskMessage = $"Parse region: { RegionName }";
+			var taskMessage = $"Parse \"{ RegionName }\" region";
 			Log.TaskStart( taskMessage );
 
 			if ( HasParsedMaxAllowedRegions )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } { RegionName } regions" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file cannot contain more than { MaxRegionsAllowed } \"{ RegionName }\" regions." ) );
 			}
 
 			var result = PreParseHandler();
@@ -72,7 +72,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel < 0 )
 					{
-						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found when parsing region: { RegionName }" ) );
+						ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found in a \"{ RegionName }\" region." ) );
 					}
 
 					if ( IndentLevel == 0 )
@@ -99,12 +99,12 @@ namespace Petrichor.Common.Utilities
 				}
 
 				// this can only be reached if a token is not recognized and therefore not handled
-				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found in a { RegionName } region" ) );
+				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token (\"{ rawToken.Trim() }\") was found in a \"{ RegionName }\" region." ) );
 			}
 
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a { RegionName } region" ) );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a \"{ RegionName }\" region." ) );
 			}
 
 			++RegionsParsed;
@@ -122,13 +122,13 @@ namespace Petrichor.Common.Utilities
 
 				if ( hasTooFewInstances || hasTooManyInstances )
 				{
-					ExceptionLogger.LogAndThrow( new FileRegionException( $"{ RegionName } regions must contain between { minRequiredInstances } and { maxAllowedInstances } { tokenName } tokens ( { instances } present )." ) );
+					ExceptionLogger.LogAndThrow( new TokenException( $"\"{ RegionName }\" regions must contain at least { minRequiredInstances } and no more than { maxAllowedInstances } \"{ tokenName }\" tokens." ) );
 				}
 			}
 
 			if ( !HasParsedMinRequiredRegions )
 			{
-				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file must contain at least { MinRegionsRequired } { RegionName } regions" ) );
+				ExceptionLogger.LogAndThrow( new FileRegionException( $"Input file must contain at least { MinRegionsRequired } \"{ RegionName }\" regions." ) );
 			}
 
 			result = PostParseHandler( result );

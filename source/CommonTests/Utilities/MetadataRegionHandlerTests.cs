@@ -161,7 +161,6 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { TestData.RegionData_BlankVersion };
 				yield return new object[] { TestData.RegionData_TooManyMinimumVersionTokens };
 			}
 		}
@@ -175,6 +174,7 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			get
 			{
+				yield return new object[] { TestData.RegionData_BlankVersion };
 				yield return new object[] { TestData.RegionData_UnsupportedMajorVersion };
 				yield return new object[] { TestData.RegionData_UnsupportedMinorVersion };
 				yield return new object[] { TestData.RegionData_UnsupportedPatchVersion };
