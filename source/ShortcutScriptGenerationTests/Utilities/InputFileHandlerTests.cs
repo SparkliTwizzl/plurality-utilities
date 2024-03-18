@@ -62,22 +62,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 			StringWrapper IRegionParser< StringWrapper >.Parse( string[] regionData )
 			{
+				TokenInstancesParsed.Add( Common.Syntax.TokenNames.MinimumVersion, 1 );
 				LinesParsed = TestData.MetadataRegionLength;
 				return new StringWrapper();
 			}
 		}
 
-		public class ModuleOptionsRegionParserStub : IModuleOptionsRegionParser
+		public class ModuleOptionsRegionParserStub : IRegionParser< ScriptModuleOptions >
 		{
-			public bool HasParsedMaxAllowedRegions { get; private set; } = false;
 			public int LinesParsed { get; private set; } = 0;
-			public int MaxRegionsAllowed => 1;
-			public int RegionsParsed { get; private set; } = 0;
+			public Dictionary< string, int > MaxAllowedTokenInstances { get; } = new();
+			public Dictionary< string, int > MinRequiredTokenInstances { get; } = new();
+			public string RegionName => Syntax.TokenNames.ModuleOptionsRegion;
+			public Dictionary< string, int > TokenInstancesParsed { get; } = new();
 
 			public ScriptModuleOptions Parse( string[] regionData )
 			{
-				++RegionsParsed;
-				HasParsedMaxAllowedRegions = true;
+				TokenInstancesParsed.Add( Syntax.TokenNames.DefaultIconFilePath, 1 );
+				TokenInstancesParsed.Add( Syntax.TokenNames.ReloadShortcut, 1 );
+				TokenInstancesParsed.Add( Syntax.TokenNames.SuspendIconFilePath, 1 );
+				TokenInstancesParsed.Add( Syntax.TokenNames.SuspendShortcut, 1 );
 				LinesParsed = TestData.ModuleOptionsRegionLength;
 				return TestData.ModuleOptions;
 			}

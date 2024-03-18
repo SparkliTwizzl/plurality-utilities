@@ -12,7 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private IRegionParser< ScriptInput > FileRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
 		private IRegionParser< StringWrapper > MetadataRegionParser { get; set; }
-		private IModuleOptionsRegionParser ModuleOptionsRegionParser { get; set; }
+		private IRegionParser< ScriptModuleOptions > ModuleOptionsRegionParser { get; set; }
 		private ITemplatesRegionParser TemplatesRegionParser { get; set; }
 
 
@@ -71,7 +71,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 
 
-		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IModuleOptionsRegionParser moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
+		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IRegionParser< ScriptModuleOptions > moduleOptionsRegionParser, IEntriesRegionParser entriesRegionParser, ITemplatesRegionParser templatesRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntriesRegionParser = entriesRegionParser;
 			MacroGenerator = macroGenerator;
