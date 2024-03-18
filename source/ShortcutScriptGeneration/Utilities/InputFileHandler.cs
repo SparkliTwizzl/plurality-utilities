@@ -109,8 +109,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var parserDescriptor = new RegionParserDescriptor< ScriptInput >()
 			{
 				RegionName = "Input file body",
-				MaxRegionsAllowed = 1,
-				MinRegionsRequired = 1,
 				TokenHandlers = tokenHandlers,
 				PostParseHandler = PostParseHandler,
 				MaxAllowedTokenInstances = new()
