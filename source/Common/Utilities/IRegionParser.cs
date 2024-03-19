@@ -4,7 +4,7 @@ namespace Petrichor.Common.Utilities
 {
 	public interface IRegionParser<out T> where T : new()
 	{
-		static Func<string[], int, T, RegionData<T>> InertHandler => ( string[] regionData, int tokenStartIndex, T result ) => new() { Value = result };
+		static Func<IndexedString[], int, T, RegionData<T>> InertHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) => new() { Value = result };
 
 
 		int LinesParsed { get; }
@@ -14,7 +14,7 @@ namespace Petrichor.Common.Utilities
 		Dictionary<string, int> TokenInstancesParsed { get; }
 
 
-		T Parse( string[] regionData );
+		T Parse( IndexedString[] regionData );
 
 		void Reset();
 	}

@@ -16,7 +16,7 @@ namespace Petrichor.App.Utilities
 		public static void GenerateScript( string inputFilePath, string outputFilePath ) => GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
 
 
-		private static string ConvertPetrichorTemplateToAHK( string line )
+		private static string ConvertTemplateToAutoHotkeySyntax( string line )
 		{
 			var components = line.Split( "::" );
 			var findString = $"::{components[ 0 ].Trim()}::";
@@ -28,10 +28,10 @@ namespace Petrichor.App.Utilities
 		{
 			var entryRegionParser = CreateEntryRegionParser();
 
-			var entryRegionTokenHandler = ( string[] fileData, int tokenStartIndex, List<ScriptEntry> result ) =>
+			var entryRegionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptEntry> result ) =>
 			{
 				entryRegionParser.Reset();
-				var dataTrimmedToRegion = fileData[ tokenStartIndex.. ];
+				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
 				var entry = entryRegionParser.Parse( dataTrimmedToRegion );
 				result.Add( entry );
 				return new RegionData<List<ScriptEntry>>()
@@ -68,9 +68,9 @@ namespace Petrichor.App.Utilities
 
 		private static RegionParser<ScriptEntry> CreateEntryRegionParser()
 		{
-			var entryColorTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryColorTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Color = token.Value;
 				return new RegionData<ScriptEntry>()
 				{
@@ -78,9 +78,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var entryDecorationTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryDecorationTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Decoration = token.Value;
 				return new RegionData<ScriptEntry>()
 				{
@@ -88,9 +88,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var entryIDTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryIDTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.ID = token.Value;
 				return new RegionData<ScriptEntry>()
 				{
@@ -98,9 +98,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var entryNameTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryNameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Identities.Add( ParseNameTokenValue( token ) );
 				return new RegionData<ScriptEntry>()
 				{
@@ -108,9 +108,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var entryLastNameTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryLastNameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.LastIdentity = ParseNameTokenValue( token );
 				return new RegionData<ScriptEntry>()
 				{
@@ -118,9 +118,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var entryPronounTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptEntry result ) =>
+			var entryPronounTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Pronoun = token.Value;
 				return new RegionData<ScriptEntry>()
 				{
@@ -163,17 +163,17 @@ namespace Petrichor.App.Utilities
 			return new RegionParser<ScriptEntry>( parserDescriptor );
 		}
 
-		private static RegionParser<StringWrapper> CreateMetadataRegionParser()
+		private static RegionParser<IndexedString> CreateMetadataRegionParser()
 		{
-			var minimumVersionTokenHandler = ( string[] fileData, int tokenStartIndex, StringWrapper result ) =>
+			var minimumVersionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var version = token.Value;
 				Common.Info.AppVersion.RejectUnsupportedVersions( version );
-				return new RegionData<StringWrapper>();
+				return new RegionData<IndexedString>();
 			};
 
-			var parserDescriptor = new RegionParserDescriptor<StringWrapper>()
+			var parserDescriptor = new RegionParserDescriptor<IndexedString>()
 			{
 				RegionName = Common.Syntax.TokenNames.MetadataRegion,
 				TokenHandlers = new()
@@ -190,14 +190,14 @@ namespace Petrichor.App.Utilities
 				},
 			};
 
-			return new RegionParser<StringWrapper>( parserDescriptor );
+			return new RegionParser<IndexedString>( parserDescriptor );
 		}
 
 		private static RegionParser<ScriptModuleOptions> CreateModuleOptionsRegionParser()
 		{
-			var defaultIconTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptModuleOptions result ) =>
+			var defaultIconTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.DefaultIconFilePath = filePath;
 				Log.Info( $"Stored default icon file path ( {filePath} )" );
@@ -207,9 +207,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var reloadShortcutTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptModuleOptions result ) =>
+			var reloadShortcutTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.ReloadShortcut = hotstring;
 				Log.Info( $"Stored reload shortcut ( \"{token.Value}\" -> \"{hotstring}\" )" );
@@ -219,9 +219,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var suspendIconTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptModuleOptions result ) =>
+			var suspendIconTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.SuspendIconFilePath = filePath;
 				Log.Info( $"Stored suspend icon file path ( {filePath} )" );
@@ -231,9 +231,9 @@ namespace Petrichor.App.Utilities
 				};
 			};
 
-			var suspendShortcutTokenHandler = ( string[] fileData, int tokenStartIndex, ScriptModuleOptions result ) =>
+			var suspendShortcutTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.SuspendShortcut = hotstring;
 				Log.Info( $"Stored suspend shortcut ( \"{token.Value}\" -> \"{hotstring}\" )" );
@@ -274,10 +274,10 @@ namespace Petrichor.App.Utilities
 
 		private static RegionParser<List<string>> CreateTemplatesRegionParser()
 		{
-			var templateTokenHandler = ( string[] fileData, int tokenStartIndex, List<string> result ) =>
+			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<string> result ) =>
 			{
-				var token = new StringToken( fileData[ tokenStartIndex ] );
-				result.Add( ParseTemplateFromLine( token.Value ) );
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.Add( ParseTemplateFromLine( token.Value, token.LineNumber ) );
 				return new RegionData<List<string>>()
 				{
 					Value = result,
@@ -309,9 +309,9 @@ namespace Petrichor.App.Utilities
 			return new RegionParser<List<string>>( parserDescriptor );
 		}
 
-		private static string ExtractFindString( string input )
+		private static string ExtractFindString( string input, int lineNumber )
 		{
-			var lengthOfFindString = GetLengthOfFindString( input );
+			var lengthOfFindString = GetLengthOfFindString( input, lineNumber );
 			return input[ ..( lengthOfFindString + 1 ) ];
 		}
 
@@ -319,7 +319,7 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				Log.Important( "Generating AutoHotkey shortcuts script..." );
+				Log.Start( "Generating AutoHotkey shortcuts script..." );
 
 				var input = new InputFileHandler(
 					CreateMetadataRegionParser(),
@@ -336,40 +336,40 @@ namespace Petrichor.App.Utilities
 				{
 					Console.WriteLine( successMessage );
 				}
-				Log.Important( successMessage );
+				Log.Finish( successMessage );
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
+				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Generating AutoHotkey shortcuts script failed.", exception ) );
 			}
 		}
 
-		private static int GetIndexOfNextFindStringCloseChar( string input )
+		private static int GetIndexOfNextFindStringCloseChar( string input, int lineNumber )
 		{
 			var nextCloseCharIndex = input.IndexOf( Common.Syntax.OperatorChars.TokenNameClose );
 			if ( nextCloseCharIndex < 0 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string open character ( '{Common.Syntax.OperatorChars.TokenNameOpen}' )." ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string open character ( '{Common.Syntax.OperatorChars.TokenNameOpen}' )." ), lineNumber );
 			}
 
 			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
 			if ( isCloseCharEscaped )
 			{
 				var substring = input[ ( nextCloseCharIndex + 1 ).. ];
-				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring );
+				return nextCloseCharIndex + GetIndexOfNextFindStringCloseChar( substring, lineNumber );
 			}
 
 			return nextCloseCharIndex;
 		}
 
-		private static int GetLengthOfFindString( string input ) => GetIndexOfNextFindStringCloseChar( input );
+		private static int GetLengthOfFindString( string input, int lineNumber ) => GetIndexOfNextFindStringCloseChar( input, lineNumber );
 
 		private static ScriptIdentity ParseNameTokenValue( StringToken token )
 		{
 			var components = token.Value.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( $"A {token.Name} token had an invalid value ( \"{token.Value}\" )." ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A {token.Name} token had an invalid value ( \"{token.Value}\" )." ), token.LineNumber );
 			}
 
 			var name = components[ 0 ].Trim();
@@ -378,9 +378,9 @@ namespace Petrichor.App.Utilities
 			return identity;
 		}
 
-		private static string ParseTemplateFromLine( string line )
+		private static string ParseTemplateFromLine( string line, int lineNumber )
 		{
-			var rawHotstring = ConvertPetrichorTemplateToAHK( line );
+			var rawHotstring = ConvertTemplateToAutoHotkeySyntax( line );
 			var sanitizedHotstring = SanitizeHotstring( rawHotstring );
 
 			var template = new StringBuilder();
@@ -389,14 +389,14 @@ namespace Petrichor.App.Utilities
 				var c = sanitizedHotstring[ i ];
 				if ( c == Common.Syntax.OperatorChars.TokenNameClose )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{Common.Syntax.OperatorChars.TokenNameClose}')." ) );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{Common.Syntax.OperatorChars.TokenNameClose}')." ), lineNumber );
 				}
 
 				else if ( c == Common.Syntax.OperatorChars.TokenNameOpen )
 				{
 					var substring = sanitizedHotstring[ i.. ];
-					var findString = ExtractFindString( substring );
-					ValidateFindString( findString );
+					var findString = ExtractFindString( substring, lineNumber );
+					ValidateFindString( findString, lineNumber );
 					_ = template.Append( findString );
 					var charsToSkip = findString.Length - 1;
 					i += charsToSkip;
@@ -412,7 +412,7 @@ namespace Petrichor.App.Utilities
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{Common.Syntax.OperatorChars.Escape}') with no following character to escape.", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{Common.Syntax.OperatorChars.Escape}') with no following character to escape.", exception ), lineNumber );
 					}
 				}
 
@@ -444,11 +444,11 @@ namespace Petrichor.App.Utilities
 				.Replace( $"{Common.Syntax.OperatorChars.Escape}{Common.Syntax.OperatorChars.TokenNameOpen}", Common.Syntax.OperatorChars.TokenNameOpenStandin )
 				.Replace( $"{Common.Syntax.OperatorChars.Escape}{Common.Syntax.OperatorChars.TokenNameClose}", Common.Syntax.OperatorChars.TokenNameCloseStandin );
 
-		private static void ValidateFindString( string findString )
+		private static void ValidateFindString( string findString, int lineNumber )
 		{
 			if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findString ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained an unknown \"find\" string ( \"{findString}\" )." ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained an unknown \"find\" string ( \"{findString}\" )." ), lineNumber );
 			}
 		}
 	}

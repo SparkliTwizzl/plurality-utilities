@@ -43,7 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public string RegionName => Syntax.TokenNames.EntriesRegion;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
-			public List<ScriptEntry> Parse( string[] regionData )
+			public List<ScriptEntry> Parse( IndexedString[] regionData )
 			{
 				TokenInstancesParsed.Add( Syntax.TokenNames.EntryRegion, 1 );
 				LinesParsed = TestData.EntriesRegionLength;
@@ -60,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class MetadataRegionParserStub : IRegionParser<StringWrapper>
+		public class MetadataRegionParserStub : IRegionParser<IndexedString>
 		{
 			public int LinesParsed { get; private set; } = 0;
 			public Dictionary<string, int> MaxAllowedTokenInstances { get; } = new();
@@ -68,11 +68,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
-			public StringWrapper Parse( string[] regionData )
+			public IndexedString Parse( IndexedString[] regionData )
 			{
 				TokenInstancesParsed.Add( Common.Syntax.TokenNames.MinimumVersion, 1 );
 				LinesParsed = TestData.MetadataRegionLength;
-				return new StringWrapper();
+				return new IndexedString();
 			}
 
 			public void Reset()
@@ -93,7 +93,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public string RegionName => Syntax.TokenNames.ModuleOptionsRegion;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
-			public ScriptModuleOptions Parse( string[] regionData )
+			public ScriptModuleOptions Parse( IndexedString[] regionData )
 			{
 				TokenInstancesParsed.Add( Syntax.TokenNames.DefaultIconFilePath, 1 );
 				TokenInstancesParsed.Add( Syntax.TokenNames.ReloadShortcut, 1 );
@@ -121,7 +121,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public string RegionName => Syntax.TokenNames.TemplatesRegion;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
-			public List<string> Parse( string[] regionData )
+			public List<string> Parse( IndexedString[] regionData )
 			{
 				LinesParsed = TestData.TemplatesRegionLength;
 				TokenInstancesParsed[ Syntax.TokenNames.Template ] = TestData.Templates.Length;

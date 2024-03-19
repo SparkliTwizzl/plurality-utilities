@@ -24,7 +24,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			OutputFilePath = $"{outputDirectory}{outputFileName}";
 
 			var taskMessage = $"Generate output file \"{OutputFilePath}\"";
-			Log.TaskStart( taskMessage );
+			Log.Start( taskMessage );
 
 			try
 			{
@@ -38,7 +38,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 
 			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file" );
-			Log.TaskFinish( taskMessage );
+			Log.Finish( taskMessage );
 		}
 
 
@@ -134,7 +134,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private void WriteHeaderToFile()
 		{
 			var taskMessage = "Write header to output file";
-			Log.TaskStart( taskMessage );
+			Log.Start( taskMessage );
 			WriteByteOrderMarkToFile();
 			WriteGeneratedByMessageToFile();
 			WriteControlStatementsToFile();
@@ -143,7 +143,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteIconHandlingToFile();
 			WriteControlShortcutsToFile();
 			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file header" );
-			Log.TaskFinish( taskMessage );
+			Log.Finish( taskMessage );
 		}
 
 		private void WriteIconFilePathsToFile()
@@ -240,10 +240,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private void WriteMacrosToFile()
 		{
 			var taskMessage = "Write macros to output file";
-			Log.TaskStart( taskMessage );
-			WriteLineToFile( "; macros generated from entries and templates" );
-			WriteLinesToFile( Input.Macros );
-			Log.TaskFinish( taskMessage );
+			Log.Start( taskMessage );
+			var lines = new List<string>
+			{
+				"; macros generated from entries and templates",
+			};
+			lines.AddRange( Input.Macros );
+			WriteLinesToFile( lines.ToArray() );
+			Log.Finish( taskMessage );
 		}
 	}
 }
