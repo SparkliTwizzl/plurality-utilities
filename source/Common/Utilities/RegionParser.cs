@@ -111,7 +111,7 @@ namespace Petrichor.Common.Utilities
 				var parseResult = ParseToken( token, regionData, i, result );
 				i += parseResult.BodySize;
 				result = parseResult.Value;
-
+				LinesParsed = i + 1;
 				if ( IsParsingFinished )
 				{
 					break;
