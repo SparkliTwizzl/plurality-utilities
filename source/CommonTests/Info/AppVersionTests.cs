@@ -11,13 +11,13 @@ namespace Petrichor.Common.Info.Tests
 		public struct TestData
 		{
 			public static string VersionNumber_Blank => string.Empty;
-			public static string VersionNumber_FullCurrent => $"{ AppVersion.Major }.{ AppVersion.Minor }.{ AppVersion.Patch }{ AppVersion.Preview }";
-			public static string VersionNumber_UnspecifiedPatchAndPreview => $"{ AppVersion.Major }.{ AppVersion.Minor }";
-			public static string VersionNumber_UnspecifiedPreview => $"{ AppVersion.Major }.{ AppVersion.Minor }.{ AppVersion.Patch }";
-			public static string VersionNumber_UnsupportedMajor => $"void.{ AppVersion.Minor }.{ AppVersion.Patch }{ AppVersion.Preview }";
-			public static string VersionNumber_UnsupportedMinor => $"{ AppVersion.Major }.void.{ AppVersion.Patch }{ AppVersion.Preview }";
-			public static string VersionNumber_UnsupportedPatch => $"{ AppVersion.Major }.{ AppVersion.Minor }.void{ AppVersion.Preview }";
-			public static string VersionNumber_UnsupportedPreview => $"{ AppVersion.Major }.{ AppVersion.Minor }.{ AppVersion.Patch }.void";
+			public static string VersionNumber_FullCurrent => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";
+			public static string VersionNumber_UnspecifiedPatchAndPreview => $"{AppVersion.Major}.{AppVersion.Minor}";
+			public static string VersionNumber_UnspecifiedPreview => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}";
+			public static string VersionNumber_UnsupportedMajor => $"void.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedMinor => $"{AppVersion.Major}.void.{AppVersion.Patch}{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedPatch => $"{AppVersion.Major}.{AppVersion.Minor}.void{AppVersion.Preview}";
+			public static string VersionNumber_UnsupportedPreview => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}.void";
 		}
 
 

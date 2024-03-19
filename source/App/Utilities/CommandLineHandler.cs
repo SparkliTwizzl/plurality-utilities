@@ -12,7 +12,7 @@ namespace Petrichor.App.Utilities
 		{
 			if ( arguments.Length < 1 )
 			{
-				Console.WriteLine( $"Run with { CommandOptions.DefaultCommandOptionHelp } to see usage." );
+				Console.WriteLine( $"Run with {CommandOptions.DefaultCommandOptionHelp} to see usage." );
 				RuntimeHandler.WaitForUserAndExit();
 			}
 
@@ -86,6 +86,6 @@ namespace Petrichor.App.Utilities
 				{
 					Log.SetLogFile( logFileArgument );
 				}
-			});
+			} );
 	}
 }

@@ -5,12 +5,12 @@ namespace Petrichor.TestShared.Info
 {
 	public class TestDirectories : ProjectDirectories
 	{
-		private const string testDirectoryName = "_test";
+		private const string TestDirectoryName = "_test";
 
 
-		public static string TestDirectory => $@"{debugBaseDirectory}\{testDirectoryName}";
-		public static string TestInputDirectory => $@"{TestDirectory}\{inputDirectoryName}";
-		public static string TestLogDirectory => $@"{TestDirectory}\{logDirectoryName}";
-		public static string TestOutputDirectory => $@"{TestDirectory}\{outputDirectoryName}";
+		public static string TestDirectory => $@"{DebugBaseDirectory}\{TestDirectoryName}";
+		public static string TestInputDirectory => $@"{TestDirectory}\{InputDirectoryName}";
+		public static string TestLogDirectory => $@"{TestDirectory}\{LogDirectoryName}";
+		public static string TestOutputDirectory => $@"{TestDirectory}\{OutputDirectoryName}";
 	}
 }

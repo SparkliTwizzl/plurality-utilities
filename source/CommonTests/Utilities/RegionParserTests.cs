@@ -12,7 +12,7 @@ namespace Petrichor.Common.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static RegionParserDescriptor< StringWrapper > ParserDescriptor => new()
+			public static RegionParserDescriptor<StringWrapper> ParserDescriptor => new()
 			{
 				MaxAllowedTokenInstances = new()
 				{
@@ -76,14 +76,14 @@ namespace Petrichor.Common.Utilities.Tests
 				Tokens.RegionClose,
 			};
 			public static string RegionName => nameof( RegionParserTests );
-			public static string RegionToken => $"{ RegionName }{ OperatorChars.TokenValueDivider }";
-			public static string Token => $"{ TokenName }{ OperatorChars.TokenValueDivider }";
+			public static string RegionToken => $"{RegionName}{OperatorChars.TokenValueDivider}";
+			public static string Token => $"{TokenName}{OperatorChars.TokenValueDivider}";
 			public static string TokenName => "token-name";
 			public static string TokenValue => "Value";
 		}
 
 
-		public RegionParser< StringWrapper >? parser;
+		public RegionParser<StringWrapper>? parser;
 
 
 		[TestInitialize]

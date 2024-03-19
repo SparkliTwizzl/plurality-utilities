@@ -7,7 +7,7 @@ namespace Petrichor.Common.Info
 {
 	public static class AppVersion
 	{
-		private static string AnyVersion => "*";
+		private const string AnyVersion = "*";
 
 
 		public static string Current =>
@@ -17,11 +17,11 @@ namespace Petrichor.Common.Info
 			ReleaseAppVersion;
 #endif
 		public static string DevelopmentAppVersion => $"{ReleaseAppVersion}{DevelopmentAppVersionSuffix}";
-		public static string DevelopmentAppVersionSuffix => "-dev";
-		public static string Major => "0";
-		public static string Minor => "10";
-		public static string Patch => "0";
-		public static string Preview => "";
+		public const string DevelopmentAppVersionSuffix = "-dev";
+		public const string Major = "0";
+		public const string Minor = "10";
+		public const string Patch = "0";
+		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
 		public static string[] SupportedMajorVersions => new[]
 		{
@@ -78,10 +78,10 @@ namespace Petrichor.Common.Info
 
 			if ( !IsVersionSupported( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{ version }\" is not supported by { AppInfo.AppNameAndVersion }." ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{version}\" is not supported by {AppInfo.AppNameAndVersion}." ) );
 			}
 
-			Log.Info( $"Version \"{ version }\" is compatible with { AppInfo.AppNameAndVersion }" );
+			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}" );
 			Log.TaskFinish( taskMessage );
 		}
 	}

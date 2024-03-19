@@ -22,7 +22,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private static List<string> GenerateMacrosFromEntries( string[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
-			foreach ( var identity in entry.Identities.ToList())
+			foreach ( var identity in entry.Identities.ToList() )
 			{
 				var batch = new ScriptEntry( entry );
 				batch.Identities.Clear();
@@ -59,7 +59,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
 			{
 				macro = macro
-					.Replace( $"{ findString }", fields[ findString ] )
+					.Replace( $"{findString}", fields[ findString ] )
 					.Replace( OperatorChars.EscapeStandin, OperatorChars.Escape.ToString() )
 					.Replace( OperatorChars.TokenNameOpenStandin, OperatorChars.TokenNameOpen.ToString() )
 					.Replace( OperatorChars.TokenNameCloseStandin, OperatorChars.TokenNameClose.ToString() );

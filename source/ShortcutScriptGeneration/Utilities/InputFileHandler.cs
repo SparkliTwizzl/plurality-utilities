@@ -8,62 +8,62 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputFileHandler
 	{
-		private IRegionParser< List< ScriptEntry > > EntriesRegionParser { get; set; }
-		private IRegionParser< ScriptInput > FileRegionParser { get; set; }
+		private IRegionParser<List<ScriptEntry>> EntriesRegionParser { get; set; }
+		private IRegionParser<ScriptInput> FileRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
-		private IRegionParser< StringWrapper > MetadataRegionParser { get; set; }
-		private IRegionParser< ScriptModuleOptions > ModuleOptionsRegionParser { get; set; }
-		private IRegionParser< List< string > > TemplatesRegionParser { get; set; }
+		private IRegionParser<StringWrapper> MetadataRegionParser { get; set; }
+		private IRegionParser<ScriptModuleOptions> ModuleOptionsRegionParser { get; set; }
+		private IRegionParser<List<string>> TemplatesRegionParser { get; set; }
 
 
-		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > EntriesTokenHandler =>
+		private Func<string[], int, ScriptInput, RegionData<ScriptInput>> EntriesTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.Entries = EntriesRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-					return new RegionData< ScriptInput >()
+					return new RegionData<ScriptInput>()
 					{
 						BodySize = EntriesRegionParser.LinesParsed,
 						Value = result,
 					};
 				};
 
-		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > MetadataTokenHandler =>
+		private Func<string[], int, ScriptInput, RegionData<ScriptInput>> MetadataTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
-					return new RegionData< ScriptInput >()
+					return new RegionData<ScriptInput>()
 					{
 						BodySize = MetadataRegionParser.LinesParsed,
 						Value = result,
 					};
 				};
 
-		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > ModuleOptionsTokenHandler =>
+		private Func<string[], int, ScriptInput, RegionData<ScriptInput>> ModuleOptionsTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
-					return new RegionData< ScriptInput >()
+					return new RegionData<ScriptInput>()
 					{
 						BodySize = ModuleOptionsRegionParser.LinesParsed,
 						Value = result,
 					};
 				};
 
-		private Func< ScriptInput, ScriptInput > PostParseHandler => ( ScriptInput result ) =>
+		private Func<ScriptInput, ScriptInput> PostParseHandler => ( ScriptInput result ) =>
 		{
 			result.Macros = MacroGenerator.Generate( result );
 			return result;
 		};
 
-		private Func< string[], int, ScriptInput, RegionData< ScriptInput > > TemplatesTokenHandler =>
+		private Func<string[], int, ScriptInput, RegionData<ScriptInput>> TemplatesTokenHandler =>
 			( string[] fileData, int regionStartIndex, ScriptInput result ) =>
 				{
 					var dataTrimmedToRegion = fileData[ regionStartIndex.. ];
 					result.Templates = TemplatesRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-					return new RegionData< ScriptInput >()
+					return new RegionData<ScriptInput>()
 					{
 						BodySize = TemplatesRegionParser.LinesParsed,
 						Value = result,
@@ -71,7 +71,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				};
 
 
-		public InputFileHandler( IRegionParser< StringWrapper > metadataRegionParser, IRegionParser< ScriptModuleOptions > moduleOptionsRegionParser, IRegionParser< List< ScriptEntry > > entriesRegionParser, IRegionParser< List< string > > templatesRegionParser, IMacroGenerator macroGenerator )
+		public InputFileHandler( IRegionParser<StringWrapper> metadataRegionParser, IRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IRegionParser<List<ScriptEntry>> entriesRegionParser, IRegionParser<List<string>> templatesRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntriesRegionParser = entriesRegionParser;
 			MacroGenerator = macroGenerator;
@@ -84,7 +84,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		public ScriptInput ProcessFile( string filePath )
 		{
-			var taskMessage = $"Parse input file \"{ filePath }\"";
+			var taskMessage = $"Parse input file \"{filePath}\"";
 			Log.TaskStart( taskMessage );
 
 			var fileData = File.ReadAllLines( filePath );
@@ -95,9 +95,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private RegionParser< ScriptInput > CreateRegionParser()
+		private RegionParser<ScriptInput> CreateRegionParser()
 		{
-			var parserDescriptor = new RegionParserDescriptor< ScriptInput >()
+			var parserDescriptor = new RegionParserDescriptor<ScriptInput>()
 			{
 				RegionName = "Input file body",
 				TokenHandlers = new()
@@ -124,7 +124,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				},
 			};
 
-			return new RegionParser< ScriptInput >( parserDescriptor );
+			return new RegionParser<ScriptInput>( parserDescriptor );
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
 			OutputFilePath = $"{outputDirectory}{outputFileName}";
 
-			var taskMessage = $"Generate output file \"{ OutputFilePath }\"";
+			var taskMessage = $"Generate output file \"{OutputFilePath}\"";
 			Log.TaskStart( taskMessage );
 
 			try
@@ -33,7 +33,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{ OutputFilePath }\".", exception ) );
+				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{OutputFilePath}\".", exception ) );
 			}
 
 			Input = new();
@@ -231,7 +231,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				WriteLineToFile( line );
 				++linesWritten;
 			}
-			Log.Info( $"Wrote { linesWritten } lines to output file { message }" );
+			Log.Info( $"Wrote {linesWritten} lines to output file {message}" );
 		}
 
 		private void WriteMacrosToFile()

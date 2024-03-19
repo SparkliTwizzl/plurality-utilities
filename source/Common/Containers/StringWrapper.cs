@@ -1,13 +1,14 @@
 ﻿namespace Petrichor.Common.Containers
 {
-	public sealed class StringWrapper : IEquatable< StringWrapper >
+	public sealed class StringWrapper : IEquatable<StringWrapper>
 	{
-		public string Value {  get; set; } = string.Empty;
+		public string Value { get; set; } = string.Empty;
 
 
 		public StringWrapper() { }
 		public StringWrapper( StringWrapper other ) => Value = other.Value;
 		public StringWrapper( string value ) => Value = value;
+
 
 		public override bool Equals( object? obj )
 		{
@@ -34,8 +35,8 @@
 
 		public override string ToString() => Value;
 
-		public static bool operator==( StringWrapper a, StringWrapper b ) => a.Equals( b );
+		public static bool operator ==( StringWrapper a, StringWrapper b ) => a.Equals( b );
 
-		public static bool operator!=( StringWrapper a, StringWrapper b ) => !a.Equals( b );
+		public static bool operator !=( StringWrapper a, StringWrapper b ) => !a.Equals( b );
 	}
 }
