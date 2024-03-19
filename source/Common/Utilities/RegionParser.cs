@@ -42,7 +42,7 @@ namespace Petrichor.Common.Utilities
 		/// <summary>
 		/// Default logic, removes the need to offset the token start index in handlers to skip the region name token.
 		/// </summary>
-		private Func<string[], int, T, RegionData<T>> RegionNameTokenHandler => ( string[] regionData, int tokenStartIndex, T result ) =>
+		private static Func<string[], int, T, RegionData<T>> RegionNameTokenHandler => ( string[] regionData, int tokenStartIndex, T result ) =>
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			if ( token.Value != string.Empty )
