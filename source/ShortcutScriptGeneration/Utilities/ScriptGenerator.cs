@@ -241,8 +241,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var taskMessage = "Write macros to output file";
 			Log.Start( taskMessage );
-			var lines = new List<string>();
-			lines.Add( "; macros generated from entries and templates" );
+			var lines = new List<string>
+			{
+				"; macros generated from entries and templates",
+			};
 			lines.AddRange( Input.Macros );
 			WriteLinesToFile( lines.ToArray() );
 			Log.Finish( taskMessage );

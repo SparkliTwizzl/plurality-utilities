@@ -15,7 +15,7 @@ namespace Petrichor.Common.Utilities
 		private bool IsParsingFinished { get; set; } = false;
 		private Func<T, T> PostParseHandler { get; set; } = ( T result ) => result;
 		private Func<T> PreParseHandler { get; set; } = () => new T();
-		private int RegionTokenLineNumber { get; set; } = 0;
+		private StringToken RegionToken { get; set; } = new();
 		private Dictionary<string, Func<IndexedString[], int, T, RegionData<T>>> TokenHandlers { get; set; } = new();
 
 
@@ -35,22 +35,6 @@ namespace Petrichor.Common.Utilities
 				IsParsingFinished = true;
 			}
 
-			return new()
-			{
-				Value = result,
-			};
-		};
-
-		/// <summary>
-		/// Default logic, removes the need to offset the token start index in handlers to skip the region name token.
-		/// </summary>
-		private static Func<IndexedString[], int, T, RegionData<T>> RegionNameTokenHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) =>
-		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
-			if ( token.Value != string.Empty )
-			{
-				Log.Info( $"\"{token.Name}\" value: \"{token.Value}\"" );
-			}
 			return new()
 			{
 				Value = result,
@@ -88,10 +72,11 @@ namespace Petrichor.Common.Utilities
 
 		public T Parse( IndexedString[] regionData )
 		{
-			var taskMessage = $"Parse \"{RegionName}\" region";
-			Log.Start( taskMessage );
+			RegionToken = new StringToken( regionData[ 0 ] );
+			var regionTokenValue = RegionToken.Value != string.Empty ? $"(\"{RegionToken.Value}\")" : string.Empty;
+			var taskMessage = $"Parse \"{RegionName}\" region {regionTokenValue}";
+			Log.Start( taskMessage, RegionToken.LineNumber );
 
-			RegionTokenLineNumber = regionData[ 0 ].LineNumber;
 			TryAddDefaultControlTokenHandlers();
 			PopulateTokenInstanceCountKeys();
 			var result = PreParseHandler();
@@ -100,7 +85,8 @@ namespace Petrichor.Common.Utilities
 			ValidateTokenInstanceCounts();
 			result = PostParseHandler( result );
 
-			Log.Finish( taskMessage );
+			var regionCloseLineNumber = RegionToken.LineNumber + LinesParsed - 1;
+			Log.Finish( taskMessage, regionCloseLineNumber );
 			return result;
 		}
 
@@ -168,14 +154,14 @@ namespace Petrichor.Common.Utilities
 			_ = TokenHandlers.TryAdd( string.Empty, IRegionParser<T>.InertHandler );
 			_ = TokenHandlers.TryAdd( Tokens.RegionClose, RegionCloseTokenHandler );
 			_ = TokenHandlers.TryAdd( Tokens.RegionOpen, RegionOpenTokenHandler );
-			_ = TokenHandlers.TryAdd( RegionName, RegionNameTokenHandler );
+			_ = TokenHandlers.TryAdd( RegionName, IRegionParser<T>.InertHandler ); // this removes the need to offset the token start index in handlers to skip the region name token
 		}
 
 		private void ValidateIndentLevel()
 		{
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a(n) \"{RegionName}\" region." ), RegionTokenLineNumber );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a(n) \"{RegionName}\" region." ), RegionToken.LineNumber );
 			}
 		}
 
@@ -193,7 +179,7 @@ namespace Petrichor.Common.Utilities
 				var quantityWord = hasTooFewInstances ? "few" : "many";
 				if ( hasTooFewInstances || hasTooManyInstances )
 				{
-					ExceptionLogger.LogAndThrow( new TokenCountException( $"A(n) \"{RegionName}\" region has too {quantityWord} \"{tokenName}\" tokens (Has: {instances} / Requires: Between {minRequiredInstances} and {maxAllowedInstances})." ), RegionTokenLineNumber );
+					ExceptionLogger.LogAndThrow( new TokenCountException( $"A(n) \"{RegionName}\" region has too {quantityWord} \"{tokenName}\" tokens (Has: {instances} / Requires: Between {minRequiredInstances} and {maxAllowedInstances})." ), RegionToken.LineNumber );
 				}
 			}
 		}

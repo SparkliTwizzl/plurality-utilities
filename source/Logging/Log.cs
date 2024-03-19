@@ -40,7 +40,7 @@ namespace Petrichor.Logging
 			Foreground = ConsoleColor.Green,
 			Background = ConsoleColor.Black,
 		};
-		private const int FormattedMessagePaddingAmount = 6;
+		private const int FormattedMessagePaddingAmount = 8;
 		private static ColorScheme ImportantColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
@@ -53,7 +53,7 @@ namespace Petrichor.Logging
 		};
 		private static ColorScheme StartColorScheme = new()
 		{
-			Foreground = ConsoleColor.Yellow,
+			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.Black,
 		};
 		private static ColorScheme WarningColorScheme = new()
@@ -269,9 +269,8 @@ namespace Petrichor.Logging
 		private static void WriteFormattedInformation( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
 		{
 			var hasLineNumber = lineNumber is not null;
-			var lineNumberString = hasLineNumber ? $"<LINE {lineNumber}> " : string.Empty;
-			var paddingAmount = Math.Max( 0, Math.Max( FormattedMessagePaddingAmount - lineNumberString.Length, FormattedMessagePaddingAmount - label.Length ) );
-			WriteLineWithTimestamp( $"{lineNumberString}{string.Format( "{0," + paddingAmount + "}", label )} : {message}", colorScheme );
+			var lineNumberString = hasLineNumber ? $" <LINE {lineNumber}>" : string.Empty;
+			WriteLineWithTimestamp( $"{string.Format( "{0," + FormattedMessagePaddingAmount + "}", label )}{lineNumberString} : {message}", colorScheme );
 		}
 	}
 }
