@@ -11,21 +11,9 @@ using System.Text;
 
 namespace Petrichor.App.Utilities
 {
-	public class ShortcutScriptGenerationHandler
+	public static class ShortcutScriptGenerationHandler
 	{
-		private string InputFilePath { get; set; } = string.Empty;
-		private string OutputFilePath { get; set; } = string.Empty;
-
-
-		public ShortcutScriptGenerationHandler() { }
-		public ShortcutScriptGenerationHandler( string inputFilePath, string outputFilePath )
-		{
-			InputFilePath = inputFilePath;
-			OutputFilePath = outputFilePath;
-		}
-
-
-		public void GenerateScript() => GenerateAutoHotkeyScript();
+		public static void GenerateScript( string inputFilePath, string outputFilePath ) => GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
 
 
 		private static string ConvertPetrichorTemplateToAHK( string line )
@@ -327,23 +315,21 @@ namespace Petrichor.App.Utilities
 			return input[ ..( lengthOfFindString + 1 ) ];
 		}
 
-		private void GenerateAutoHotkeyScript()
+		private static void GenerateAutoHotkeyScript( string inputFilePath, string outputFilePath )
 		{
 			try
 			{
 				Log.Important( "Generating AutoHotkey shortcuts script..." );
 				
-				var metadataRegionParser = CreateMetadataRegionParser();
-				var moduleOptionsRegionParser = CreateModuleOptionsRegionParser();
-				var entriesRegionParser = CreateEntriesRegionParser();
-				var templatesRegionParser = CreateTemplatesRegionParser();
-				var macroGenerator = new MacroGenerator();
+				var input = new InputFileHandler(
+					CreateMetadataRegionParser(),
+					CreateModuleOptionsRegionParser(),
+					CreateEntriesRegionParser(),
+					CreateTemplatesRegionParser(),
+					new MacroGenerator() )
+						.ProcessFile( inputFilePath );
 
-				var inputFileParser = new InputFileHandler( metadataRegionParser, moduleOptionsRegionParser, entriesRegionParser, templatesRegionParser, macroGenerator );
-				var input = inputFileParser.ProcessFile( InputFilePath );
-
-				var scriptGenerator = new ScriptGenerator( input );
-				scriptGenerator.Generate( OutputFilePath );
+				new ScriptGenerator().Generate( input, outputFilePath );
 
 				var successMessage = "Generated AutoHotkey shortcuts script successfully";
 				if ( Log.IsLoggingToConsoleDisabled )
@@ -354,7 +340,7 @@ namespace Petrichor.App.Utilities
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
+				ExceptionLogger.LogAndThrow( new ShortcutScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: { exception.Message }", exception ) );
 			}
 		}
 		
@@ -383,7 +369,7 @@ namespace Petrichor.App.Utilities
 			var components = token.Value.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( $"A { token.Name } token had an invalid value ( \"{ token.Value }\" )" ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A { token.Name } token had an invalid value ( \"{ token.Value }\" )." ) );
 			}
 
 			var name = components[ 0 ].Trim();
@@ -403,7 +389,7 @@ namespace Petrichor.App.Utilities
 				var c = sanitizedHotstring[ i ];
 				if ( c == Common.Syntax.OperatorChars.TokenNameClose )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{ Common.Syntax.OperatorChars.TokenNameClose}')" ) );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{ Common.Syntax.OperatorChars.TokenNameClose }')." ) );
 				}
 
 				else if ( c == Common.Syntax.OperatorChars.TokenNameOpen )
@@ -426,7 +412,7 @@ namespace Petrichor.App.Utilities
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{ Common.Syntax.OperatorChars.Escape }') with no following character to escape", exception ) );
+						ExceptionLogger.LogAndThrow( new EscapeCharacterException( $"A template contained a dangling escape character ('{ Common.Syntax.OperatorChars.Escape }') with no following character to escape.", exception ) );
 					}
 				}
 

@@ -10,23 +10,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ScriptGenerator
 	{
-		private string outputFilePath = string.Empty;
+		private ScriptInput Input { get; set; } = new();
+		private string OutputFilePath { get; set; } = string.Empty;
 
 
-		private ScriptInput Input { get; set; }
-
-
-		public ScriptGenerator( ScriptInput input )
-			=> Input = input;
-
-
-		public void Generate( string outputFile )
+		public void Generate( ScriptInput input, string outputFile )
 		{
+			Input = input;
+
 			var outputDirectory = GetNormalizedOutputDirectory( outputFile );
 			var outputFileName = GetNormalizedOutputFileName( outputFile );
-			outputFilePath = $"{outputDirectory}{outputFileName}";
+			OutputFilePath = $"{outputDirectory}{outputFileName}";
 
-			var taskMessage = $"Generate output file \"{outputFilePath}\"";
+			var taskMessage = $"Generate output file \"{ OutputFilePath }\"";
 			Log.TaskStart( taskMessage );
 
 			try
@@ -37,8 +33,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \'{outputFilePath}\'", exception ) );
+				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{ OutputFilePath }\".", exception ) );
 			}
+
+			Input = new();
 			Log.TaskFinish( taskMessage );
 		}
 
@@ -59,7 +57,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private void WriteByteOrderMarkToFile()
 		{
 			var encoding = Encoding.UTF8;
-			using var stream = new FileStream( outputFilePath, FileMode.Create );
+			using var stream = new FileStream( OutputFilePath, FileMode.Create );
 			using var writer = new BinaryWriter( stream, encoding );
 			writer.Write( encoding.GetPreamble() );
 			Log.Info( "Wrote byte order mark to output file" );
@@ -216,12 +214,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			try
 			{
-				using var writer = File.AppendText( outputFilePath );
+				using var writer = File.AppendText( OutputFilePath );
 				writer.WriteLine( line );
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new FileLoadException( "Failed to write line to output file", exception ) );
+				ExceptionLogger.LogAndThrow( new FileLoadException( "Failed to write line to output file.", exception ) );
 			}
 		}
 
@@ -233,7 +231,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				WriteLineToFile( line );
 				++linesWritten;
 			}
-			Log.Info( $"Wrote {linesWritten} lines to output file {message}" );
+			Log.Info( $"Wrote { linesWritten } lines to output file { message }" );
 		}
 
 		private void WriteMacrosToFile()

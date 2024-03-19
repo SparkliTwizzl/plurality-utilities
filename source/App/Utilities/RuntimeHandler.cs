@@ -10,11 +10,7 @@ namespace Petrichor.App.Utilities
 		public static string OutputFilePath { get; set; } = string.Empty;
 
 
-		public static void Execute()
-		{
-			var handler = new ShortcutScriptGenerationHandler( InputFilePath, OutputFilePath );
-			handler.GenerateScript();
-		}
+		public static void Execute() => ShortcutScriptGenerationHandler.GenerateScript( InputFilePath, OutputFilePath );
 
 		public static void WaitForUserAndExit()
 		{
