@@ -12,6 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private ScriptInput Input { get; set; } = new();
 		private string OutputFilePath { get; set; } = string.Empty;
+		private int TotalLinesWritten { get; set; } = 0;
 
 
 		public void Generate( ScriptInput input, string outputFile )
@@ -36,7 +37,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{OutputFilePath}\".", exception ) );
 			}
 
-			Input = new();
+			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file" );
 			Log.TaskFinish( taskMessage );
 		}
 
@@ -141,6 +142,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			WriteConstantsToFile();
 			WriteIconHandlingToFile();
 			WriteControlShortcutsToFile();
+			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file header" );
 			Log.TaskFinish( taskMessage );
 		}
 
@@ -216,6 +218,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				using var writer = File.AppendText( OutputFilePath );
 				writer.WriteLine( line );
+				++TotalLinesWritten;
 			}
 			catch ( Exception exception )
 			{
