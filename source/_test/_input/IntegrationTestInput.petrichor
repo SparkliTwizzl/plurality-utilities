@@ -18,7 +18,7 @@ module-options:
 entries:
 {
 	// line comment before entries in entries region body
-	entry: // inline comment in entries region body
+	entry: 1 // inline comment in entries region body
 	{
 		// line comment in entry region body
 		id: 1234 // inline comment in entry region body
@@ -26,11 +26,11 @@ entries:
 		name: Sammy @smy
 		last-name: Smith @s
 		pronoun: they/them
-		color: black
+		color: green
 		decoration: -> a person
 	}
 	
-	entry:
+	entry: 2
 	{
 		id: 4321
 		name: ALEX @AX
