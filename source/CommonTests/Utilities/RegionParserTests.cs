@@ -12,7 +12,7 @@ namespace Petrichor.Common.Utilities.Tests
 	{
 		public struct TestData
 		{
-			public static RegionParserDescriptor<StringWrapper> ParserDescriptor => new()
+			public static RegionParserDescriptor<IndexedString> ParserDescriptor => new()
 			{
 				MaxAllowedTokenInstances = new()
 				{
@@ -25,56 +25,56 @@ namespace Petrichor.Common.Utilities.Tests
 				RegionName = RegionName,
 				TokenHandlers = new()
 				{
-					{ TokenName, ( string[] regionData, int tokenStartIndex, StringWrapper result ) => new() },
+					{ TokenName, ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) => new() },
 				},
 			};
-			public static string[] RegionData_MismatchedRegionClose => new[]
+			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				$"\t{ Token } { TokenValue }",
 				Tokens.RegionClose,
-			};
-			public static string[] RegionData_MismatchedRegionOpen => new[]
+			} );
+			public static IndexedString[] RegionData_MismatchedRegionOpen => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				Tokens.RegionOpen,
 				$"\t{ Token } { TokenValue }",
-			};
-			public static string[] RegionData_TokenWithNoValue => new[]
+			} );
+			public static IndexedString[] RegionData_TokenWithNoValue => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				Tokens.RegionOpen,
 				$"\t{ Token }",
 				Tokens.RegionClose,
-			};
-			public static string[] RegionData_TooFewTokenInstances => new[]
+			} );
+			public static IndexedString[] RegionData_TooFewTokenInstances => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				Tokens.RegionOpen,
 				Tokens.RegionClose,
-			};
-			public static string[] RegionData_TooManyTokenInstances => new[]
+			} );
+			public static IndexedString[] RegionData_TooManyTokenInstances => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				Tokens.RegionOpen,
 				$"\t{ Token } { TokenValue }",
 				$"\t{ Token } { TokenValue }",
 				Tokens.RegionClose,
-			};
-			public static string[] RegionData_UnrecognizedToken => new[]
+			} );
+			public static IndexedString[] RegionData_UnrecognizedToken => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				Tokens.RegionOpen,
 				$"\tunknown-token{ OperatorChars.TokenValueDivider } value",
 				Tokens.RegionClose,
-			};
-			public static string[] RegionData_Valid => new[]
+			} );
+			public static IndexedString[] RegionData_Valid => IndexedString.IndexStringArray( new[]
 			{
 				RegionToken,
 				$"{ Tokens.RegionOpen } { Tokens.LineComment } inline comment",
 				$"\t{ Token } { TokenValue }",
 				Tokens.RegionClose,
-			};
+			} );
 			public static string RegionName => nameof( RegionParserTests );
 			public static string RegionToken => $"{RegionName}{OperatorChars.TokenValueDivider}";
 			public static string Token => $"{TokenName}{OperatorChars.TokenValueDivider}";
@@ -83,7 +83,7 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 
-		public RegionParser<StringWrapper>? parser;
+		public RegionParser<IndexedString>? parser;
 
 
 		[TestInitialize]
@@ -97,9 +97,9 @@ namespace Petrichor.Common.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Success( string[] regionData )
+		public void Parse_Test_Success( IndexedString[] regionData )
 		{
-			var expectedResult = new StringWrapper();
+			var expectedResult = new IndexedString();
 			var actualResult = parser!.Parse( regionData );
 			Assert.AreEqual( expectedResult, actualResult );
 
@@ -120,7 +120,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_BracketException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
@@ -134,7 +134,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenCountException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenCountException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenCountException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_TokenCountException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenCountException_Data
 		{
@@ -148,7 +148,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenNameException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenNameException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenNameException( string[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_TokenNameException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenNameException_Data
 		{

@@ -12,19 +12,21 @@ namespace Petrichor.Common.Utilities
 		private const int DefaultTokenInstancesParsed = 0;
 
 		private int IndentLevel { get; set; } = 0;
+		private bool IsParsingFinished { get; set; } = false;
 		private Func<T, T> PostParseHandler { get; set; } = ( T result ) => result;
 		private Func<T> PreParseHandler { get; set; } = () => new T();
-		private Dictionary<string, Func<string[], int, T, RegionData<T>>> TokenHandlers { get; set; } = new();
-		private bool IsParsingFinished { get; set; } = false;
+		private int RegionTokenLineNumber { get; set; } = 0;
+		private Dictionary<string, Func<IndexedString[], int, T, RegionData<T>>> TokenHandlers { get; set; } = new();
 
 
-		private Func<string[], int, T, RegionData<T>> RegionCloseTokenHandler => ( string[] regionData, int currentLine, T result ) =>
+		private Func<IndexedString[], int, T, RegionData<T>> RegionCloseTokenHandler => ( IndexedString[] regionData, int currentLine, T result ) =>
 		{
 			--IndentLevel;
 
 			if ( IndentLevel < 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found in a(n) \"{RegionName}\" region." ) );
+				var lineNumber = regionData[ currentLine ].LineNumber;
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found in a(n) \"{RegionName}\" region." ), lineNumber );
 			}
 
 			if ( IndentLevel == 0 )
@@ -42,7 +44,7 @@ namespace Petrichor.Common.Utilities
 		/// <summary>
 		/// Default logic, removes the need to offset the token start index in handlers to skip the region name token.
 		/// </summary>
-		private static Func<string[], int, T, RegionData<T>> RegionNameTokenHandler => ( string[] regionData, int tokenStartIndex, T result ) =>
+		private static Func<IndexedString[], int, T, RegionData<T>> RegionNameTokenHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) =>
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			if ( token.Value != string.Empty )
@@ -55,7 +57,7 @@ namespace Petrichor.Common.Utilities
 			};
 		};
 
-		private Func<string[], int, T, RegionData<T>> RegionOpenTokenHandler => ( string[] regionData, int tokenStartIndex, T result ) =>
+		private Func<IndexedString[], int, T, RegionData<T>> RegionOpenTokenHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) =>
 		{
 			++IndentLevel;
 			return new()
@@ -84,11 +86,12 @@ namespace Petrichor.Common.Utilities
 		}
 
 
-		public T Parse( string[] regionData )
+		public T Parse( IndexedString[] regionData )
 		{
 			var taskMessage = $"Parse \"{RegionName}\" region";
-			Log.TaskStart( taskMessage );
+			Log.Start( taskMessage );
 
+			RegionTokenLineNumber = regionData[ 0 ].LineNumber;
 			TryAddDefaultControlTokenHandlers();
 			PopulateTokenInstanceCountKeys();
 			var result = PreParseHandler();
@@ -97,7 +100,7 @@ namespace Petrichor.Common.Utilities
 			ValidateTokenInstanceCounts();
 			result = PostParseHandler( result );
 
-			Log.TaskFinish( taskMessage );
+			Log.Finish( taskMessage );
 			return result;
 		}
 
@@ -113,7 +116,7 @@ namespace Petrichor.Common.Utilities
 		}
 
 
-		private T ParseAllTokens( string[] regionData, T result )
+		private T ParseAllTokens( IndexedString[] regionData, T result )
 		{
 			for ( var i = 0 ; i < regionData.Length ; ++i )
 			{
@@ -143,11 +146,11 @@ namespace Petrichor.Common.Utilities
 			}
 		}
 
-		private RegionData<T> ParseToken( StringToken token, string[] regionData, int tokenStartIndex, T result )
+		private RegionData<T> ParseToken( StringToken token, IndexedString[] regionData, int tokenStartIndex, T result )
 		{
 			if ( !TokenHandlers.TryGetValue( token.Name, out var handler ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{token.Name}{OperatorChars.TokenValueDivider} {token.Value}\" was found in a(n) \"{RegionName}\" region." ) );
+				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{token.Name}{OperatorChars.TokenValueDivider} {token.Value}\" was found in a(n) \"{RegionName}\" region." ), token.LineNumber );
 			}
 
 			WarnAboutBlankTokenValues( token, regionData, tokenStartIndex );
@@ -172,7 +175,7 @@ namespace Petrichor.Common.Utilities
 		{
 			if ( IndentLevel != 0 )
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a(n) \"{RegionName}\" region." ) );
+				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a(n) \"{RegionName}\" region." ), RegionTokenLineNumber );
 			}
 		}
 
@@ -186,14 +189,16 @@ namespace Petrichor.Common.Utilities
 
 				var hasTooManyInstances = instances > maxAllowedInstances;
 				var hasTooFewInstances = instances < minRequiredInstances;
+
+				var quantityWord = hasTooFewInstances ? "few" : "many";
 				if ( hasTooFewInstances || hasTooManyInstances )
 				{
-					ExceptionLogger.LogAndThrow( new TokenCountException( $"\"{RegionName}\" regions must contain at least {minRequiredInstances} and no more than {maxAllowedInstances} \"{tokenName}\" tokens." ) );
+					ExceptionLogger.LogAndThrow( new TokenCountException( $"A(n) \"{RegionName}\" region has too {quantityWord} \"{tokenName}\" tokens (Has: {instances} / Requires: Between {minRequiredInstances} and {maxAllowedInstances})." ), RegionTokenLineNumber );
 				}
 			}
 		}
 
-		private static void WarnAboutBlankTokenValues( StringToken token, string[] regionData, int tokenStartIndex )
+		private static void WarnAboutBlankTokenValues( StringToken token, IndexedString[] regionData, int tokenStartIndex )
 		{
 			var isTokenNameBlank = token.Name == string.Empty;
 			if ( isTokenNameBlank )
@@ -218,7 +223,7 @@ namespace Petrichor.Common.Utilities
 			var isTokenARegion = hasNextToken && nextToken!.Name == TokenNames.RegionOpen;
 			if ( !isTokenARegion )
 			{
-				Log.Warning( $"A(n) \"{token.Name}\" token has no value. You can ignore this warning if it is intentional." );
+				Log.Warning( $"A(n) \"{token.Name}\" token has no value. You can ignore this warning if it is intentional.", token.LineNumber );
 			}
 		}
 	}

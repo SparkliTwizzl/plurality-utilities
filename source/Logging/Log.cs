@@ -5,22 +5,62 @@ namespace Petrichor.Logging
 {
 	public static class Log
 	{
-		private const ConsoleColor ConsoleDefaultBackgroundColor = ConsoleColor.Black;
-		private const ConsoleColor ConsoleDefaultForegroundColor = ConsoleColor.White;
-		private const ConsoleColor ConsoleErrorBackgroundColor = ConsoleColor.DarkRed;
-		private const ConsoleColor ConsoleErrorForegroundColor = ConsoleColor.White;
-		private const ConsoleColor ConsoleImportantBackgroundColor = ConsoleColor.DarkGreen;
-		private const ConsoleColor ConsoleImportantForegroundColor = ConsoleColor.White;
-		private const ConsoleColor ConsoleInfoBackgroundColor = ConsoleColor.Black;
-		private const ConsoleColor ConsoleInfoForegroundColor = ConsoleColor.Gray;
-		private const ConsoleColor ConsoleTaskFinishBackgroundColor = ConsoleColor.Black;
-		private const ConsoleColor ConsoleTaskFinishForegroundColor = ConsoleColor.Green;
-		private const ConsoleColor ConsoleTaskStartBackgroundColor = ConsoleColor.Black;
-		private const ConsoleColor ConsoleTaskStartForegroundColor = ConsoleColor.Cyan;
-		private const ConsoleColor ConsoleWarningBackgroundColor = ConsoleColor.DarkYellow;
-		private const ConsoleColor ConsoleWarningForegroundColor = ConsoleColor.White;
+		public struct ColorScheme
+		{
+			public ConsoleColor Background { get; set; } = ConsoleColor.Black;
+			public ConsoleColor Foreground { get; set; } = ConsoleColor.White;
+
+
+			public ColorScheme() { }
+
+
+			public readonly void Assign()
+			{
+				Console.BackgroundColor = Background;
+				Console.ForegroundColor = Foreground;
+			}
+		}
+
+
+		private static ColorScheme DebugColorScheme = new()
+		{
+			Foreground = ConsoleColor.Cyan,
+			Background = ConsoleColor.DarkBlue,
+		};
+		private static ColorScheme DefaultColorScheme = new();
 		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
 		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
+		private static ColorScheme ErrorColorScheme = new()
+		{
+			Foreground = ConsoleColor.White,
+			Background = ConsoleColor.DarkRed,
+		};
+		private static ColorScheme FinishColorScheme = new()
+		{
+			Foreground = ConsoleColor.Green,
+			Background = ConsoleColor.Black,
+		};
+		private const int FormattedMessagePaddingAmount = 6;
+		private static ColorScheme ImportantColorScheme = new()
+		{
+			Foreground = ConsoleColor.White,
+			Background = ConsoleColor.DarkCyan,
+		};
+		private static ColorScheme InfoColorScheme = new()
+		{
+			Foreground = ConsoleColor.Gray,
+			Background = ConsoleColor.Black,
+		};
+		private static ColorScheme StartColorScheme = new()
+		{
+			Foreground = ConsoleColor.Yellow,
+			Background = ConsoleColor.Black,
+		};
+		private static ColorScheme WarningColorScheme = new()
+		{
+			Foreground = ConsoleColor.White,
+			Background = ConsoleColor.DarkMagenta,
+		};
 
 		private static string LogDirectory { get; set; } = string.Empty;
 		private static string LogFileName { get; set; } = string.Empty;
@@ -61,25 +101,32 @@ namespace Petrichor.Logging
 		}
 
 		/// <summary>
-		/// Write formatted details about an error to log.
+		/// Write formatted debug information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Error( string message = "" )
-			=> WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleErrorForegroundColor, ConsoleErrorBackgroundColor );
+		public static void Debug( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "DEBUG", message, lineNumber, DebugColorScheme );
+
+		/// <summary>
+		/// Write a formatted error message to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Error( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "ERROR", message, lineNumber, ErrorColorScheme );
 
 		/// <summary>
 		/// Write formatted important information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Important( string message = "" )
-			=> WriteLineWithTimestamp( $"IMPORTANT : {message}", ConsoleImportantForegroundColor, ConsoleImportantBackgroundColor );
+		public static void Important( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "IMPORTANT", message, lineNumber, ImportantColorScheme );
 
 		/// <summary>
 		/// Write formatted information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Info( string message = "" )
-			=> WriteLineWithTimestamp( $"     INFO : {message}", ConsoleInfoForegroundColor, ConsoleInfoBackgroundColor );
+		public static void Info( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "INFO", message, lineNumber, InfoColorScheme );
 
 		/// <summary>
 		/// Set log file directory and/or name.
@@ -117,30 +164,30 @@ namespace Petrichor.Logging
 		/// Write formatted details about a task finishing to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskFinish( string message = "" )
-			=> WriteLineWithTimestamp( $"   FINISH : {message}", ConsoleTaskFinishForegroundColor, ConsoleTaskFinishBackgroundColor );
+		public static void Finish( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "FINISH", message, lineNumber, FinishColorScheme );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskStart( string message = "" )
-			=> WriteLineWithTimestamp( $"    START : {message}", ConsoleTaskStartForegroundColor, ConsoleTaskStartBackgroundColor );
+		public static void Start( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "START", message, lineNumber, StartColorScheme );
 
 		/// <summary>
-		/// Write formatted details about a warning starting to log.
+		/// Write a formatted warning message to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Warning( string message = "" )
-			=> WriteLineWithTimestamp( $"  WARNING : {message}", ConsoleWarningForegroundColor, ConsoleWarningBackgroundColor );
+		public static void Warning( string message = "", int? lineNumber = null )
+			=> WriteFormattedInformation( "WARNING", message, lineNumber, WarningColorScheme );
 
 		/// <summary>
-		/// Write text directly to log without timestamp.
+		/// Write text to log.
 		/// </summary>
 		/// <param name="message">Text to write to log.</param>
-		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
-		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void Write( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
+		/// <param name="consoleForegroundColor">Text color to use in console mode.</param>
+		/// <param name="consoleBackgroundColor">Background color to use if in console mode.</param>
+		public static void Write( string message = "", ColorScheme? colorScheme = null )
 		{
 			if ( ActiveMode == LogMode.None || message == "" )
 			{
@@ -158,11 +205,9 @@ namespace Petrichor.Logging
 
 			if ( IsLoggingToConsoleEnabled )
 			{
-				Console.BackgroundColor = consoleHighlightColor;
-				Console.ForegroundColor = consoleTextColor;
+				colorScheme?.Assign();
 				Console.Write( message );
-				Console.BackgroundColor = ConsoleDefaultBackgroundColor;
-				Console.ForegroundColor = ConsoleDefaultForegroundColor;
+				DefaultColorScheme.Assign();
 			}
 			if ( IsLoggingToFileEnabled )
 			{
@@ -172,31 +217,31 @@ namespace Petrichor.Logging
 		}
 
 		/// <summary>
-		/// Write text directly to log without timestamp, followed by a newline.
+		/// Write a line of text to log.
 		/// </summary>
-		/// <param name="message">Text to write to log.</param>
-		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
-		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteLine( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
-			=> Write( $"{message}\n", consoleTextColor, consoleHighlightColor );
+		/// <param name="message">Line of text to write to log.</param>
+		/// <param name="consoleForegroundColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleBackgroundColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteLine( string message = "", ColorScheme? colorScheme = null )
+			=> Write( $"{message}\n", colorScheme );
 
 		/// <summary>
-		/// Write text directly to log with timestamp, followed by a newline.
+		/// Write a timestamped line of text to log.
 		/// </summary>
-		/// <param name="message">Text to write to log.</param>
-		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
-		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteLineWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
-			=> WriteLine( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
+		/// <param name="message">Line of text to write to log.</param>
+		/// <param name="consoleForegroundColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleBackgroundColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteLineWithTimestamp( string message = "", ColorScheme? colorScheme = null )
+			=> WriteLine( AddTimestampToMessage( message ), colorScheme );
 
 		/// <summary>
-		/// Write text directly to log with timestamp, followed by a newline.
+		/// Write timestamped textto log.
 		/// </summary>
 		/// <param name="message">Text to write to log.</param>
-		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
-		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
-			=> Write( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
+		/// <param name="consoleForegroundColor">Text color to use if in verbose mode.</param>
+		/// <param name="consoleBackgroundColor">Text highlight color to use if in verbose mode.</param>
+		public static void WriteWithTimestamp( string message = "", ColorScheme? colorScheme = null )
+			=> Write( AddTimestampToMessage( message ), colorScheme );
 
 
 		private static string AddTimestampToMessage( string message = "" )
@@ -219,6 +264,14 @@ namespace Petrichor.Logging
 			{
 				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"" );
 			}
+		}
+
+		private static void WriteFormattedInformation( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
+		{
+			var hasLineNumber = lineNumber is not null;
+			var lineNumberString = hasLineNumber ? $"<LINE {lineNumber}> " : string.Empty;
+			var paddingAmount = Math.Max( 0, Math.Max( FormattedMessagePaddingAmount - lineNumberString.Length, FormattedMessagePaddingAmount - label.Length ) );
+			WriteLineWithTimestamp( $"{lineNumberString}{string.Format( "{0," + paddingAmount + "}", label )} : {message}", colorScheme );
 		}
 	}
 }

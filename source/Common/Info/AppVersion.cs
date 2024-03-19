@@ -66,23 +66,23 @@ namespace Petrichor.Common.Info
 			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
 		}
 
-		public static void RejectUnsupportedVersions( string version )
+		public static void RejectUnsupportedVersions( string version, int? lineNumber = null )
 		{
 			var taskMessage = $"Check version compatibility";
-			Log.TaskStart( taskMessage );
+			Log.Start( taskMessage );
 
 			if ( string.IsNullOrEmpty( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ), lineNumber );
 			}
 
 			if ( !IsVersionSupported( version ) )
 			{
-				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{version}\" is not supported by {AppInfo.AppNameAndVersion}." ) );
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{version}\" is not supported by {AppInfo.AppNameAndVersion}." ), lineNumber );
 			}
 
 			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}" );
-			Log.TaskFinish( taskMessage );
+			Log.Finish( taskMessage );
 		}
 	}
 }
