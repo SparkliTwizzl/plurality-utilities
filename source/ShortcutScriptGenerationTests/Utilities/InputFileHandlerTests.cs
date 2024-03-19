@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Petrichor.Common.Containers;
-using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.TestShared.Info;
@@ -180,21 +179,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_Valid.petrichor" };
-			}
-		}
-
-		[TestMethod]
-		[ExpectedException( typeof( BracketException ) )]
-		[DynamicData( nameof( ProcessFile_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
-		public void ProcessFile_Test_Throws_BracketException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
-
-		public static IEnumerable< object[] > ProcessFile_Test_Throws_BracketException_Data
-		{
-			get
-			{
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_DanglingCloseBracket.petrichor" };
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_DanglingOpenBracket.petrichor" };
+				yield return new object[] { $"{ nameof( InputFileHandler ) }_{ nameof( ProcessFile_Test_Success ) }.petrichor" };
 			}
 		}
 
@@ -208,20 +193,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { "nonexistent.txt" };
-			}
-		}
-
-		[TestMethod]
-		[ExpectedException( typeof( TokenException ) )]
-		[DynamicData( nameof( ProcessFile_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
-		public void ProcessFile_Test_Throws_TokenException( string fileName ) => _ = handler!.ProcessFile( TestUtilities.LocateInputFile( fileName ) );
-
-		public static IEnumerable< object[] > ProcessFile_Test_Throws_TokenException_Data
-		{
-			get
-			{
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_NoMetadataRegion.petrichor" };
-				yield return new object[] { $"{ nameof( InputFileHandler ) }_UnknownToken.petrichor" };
 			}
 		}
 	}

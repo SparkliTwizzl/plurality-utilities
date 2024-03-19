@@ -22,46 +22,61 @@ namespace Petrichor.Common.Utilities.Tests
 				{
 					{ TokenName, 1 },
 				},
-				RegionName = nameof( RegionParserTests ),
+				RegionName = RegionName,
 				TokenHandlers = new()
 				{
 					{ TokenName, ( string[] regionData, int tokenStartIndex, StringWrapper result ) => new() },
 				},
 			};
+			public static string[] RegionData_MismatchedRegionClose => new[]
+			{
+				RegionToken,
+				$"\t{ Token } { TokenValue }",
+				Tokens.RegionClose,
+			};
+			public static string[] RegionData_MismatchedRegionOpen => new[]
+			{
+				RegionToken,
+				Tokens.RegionOpen,
+				$"\t{ Token } { TokenValue }",
+			};
 			public static string[] RegionData_TokenWithNoValue => new[]
 			{
+				RegionToken,
 				Tokens.RegionOpen,
 				$"\t{ Token }",
 				Tokens.RegionClose,
 			};
-			public static string[] RegionData_DanglingRegionClose => new[]
-			{
-				$"\t{ Token } { TokenValue }",
-				Tokens.RegionClose,
-			};
-			public static string[] RegionData_DanglingRegionOpen => new[]
-			{
-				Tokens.RegionOpen,
-				$"\t{ Token } { TokenValue }",
-			};
 			public static string[] RegionData_TooFewTokenInstances => new[]
 			{
+				RegionToken,
 				Tokens.RegionOpen,
 				Tokens.RegionClose,
 			};
 			public static string[] RegionData_TooManyTokenInstances => new[]
 			{
+				RegionToken,
 				Tokens.RegionOpen,
 				$"\t{ Token } { TokenValue }",
 				$"\t{ Token } { TokenValue }",
 				Tokens.RegionClose,
 			};
+			public static string[] RegionData_UnrecognizedToken => new[]
+			{
+				RegionToken,
+				Tokens.RegionOpen,
+				$"\tunknown-token{ OperatorChars.TokenValueDivider } value",
+				Tokens.RegionClose,
+			};
 			public static string[] RegionData_Valid => new[]
 			{
+				RegionToken,
 				$"{ Tokens.RegionOpen } { Tokens.LineComment } inline comment",
 				$"\t{ Token } { TokenValue }",
 				Tokens.RegionClose,
 			};
+			public static string RegionName => nameof( RegionParserTests );
+			public static string RegionToken => $"{ RegionName }{ OperatorChars.TokenValueDivider }";
 			public static string Token => $"{ TokenName }{ OperatorChars.TokenValueDivider }";
 			public static string TokenName => "token-name";
 			public static string TokenValue => "Value";
@@ -111,22 +126,35 @@ namespace Petrichor.Common.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { TestData.RegionData_DanglingRegionClose };
-				yield return new object[] { TestData.RegionData_DanglingRegionOpen };
+				yield return new object[] { TestData.RegionData_MismatchedRegionClose };
+				yield return new object[] { TestData.RegionData_MismatchedRegionOpen };
 			}
 		}
 
 		[TestMethod]
-		[ExpectedException( typeof( TokenException ) )]
-		[DynamicData( nameof( Parse_Test_Throws_TokenException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenException( string[] regionData ) => _ = parser!.Parse( regionData );
+		[ExpectedException( typeof( TokenCountException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenCountException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenCountException( string[] regionData ) => _ = parser!.Parse( regionData );
 
-		public static IEnumerable<object[]> Parse_Test_Throws_TokenException_Data
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenCountException_Data
 		{
 			get
 			{
 				yield return new object[] { TestData.RegionData_TooFewTokenInstances };
 				yield return new object[] { TestData.RegionData_TooManyTokenInstances };
+			}
+		}
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenNameException ) )]
+		[DynamicData( nameof( Parse_Test_Throws_TokenNameException_Data ), DynamicDataSourceType.Property )]
+		public void Parse_Test_Throws_TokenNameException( string[] regionData ) => _ = parser!.Parse( regionData );
+
+		public static IEnumerable<object[]> Parse_Test_Throws_TokenNameException_Data
+		{
+			get
+			{
+				yield return new object[] { TestData.RegionData_UnrecognizedToken };
 			}
 		}
 	}

@@ -41,7 +41,8 @@ namespace Petrichor.Common.Utilities
 			var taskMessage = $"Parse \"{ RegionName }\" region";
 			Log.TaskStart( taskMessage );
 
-			// handle this region's token name with no effect; this removes the need to offset the token start index in handlers to prevent this region's token from being parsed
+			// handle this region's token name with no effect by default
+			// this removes the need to offset the token start index in handlers to prevent this region's token from being parsed
 			_ = TokenHandlers.TryAdd( RegionName, ( string[] regionData, int tokenStartIndex, T result ) => new(){ Value = result } );
 			_ = MaxAllowedTokenInstances.TryAdd( RegionName, int.MaxValue );
 			_ = MinRequiredTokenInstances.TryAdd( RegionName, 0 );
@@ -79,7 +80,7 @@ namespace Petrichor.Common.Utilities
 
 					if ( IndentLevel == 0 )
 					{
-						LinesParsed = i;
+						LinesParsed = i + 1;
 						break;
 					}
 
@@ -105,7 +106,7 @@ namespace Petrichor.Common.Utilities
 				}
 
 				// this can only be reached if a token is not recognized and therefore not handled
-				ExceptionLogger.LogAndThrow( new TokenException( $"An unrecognized token \"{ token.Name }{ OperatorChars.TokenValueDivider } { token.Value }\" was found in a(n) \"{ RegionName }\" region." ) );
+				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{ token.Name }{ OperatorChars.TokenValueDivider } { token.Value }\" was found in a(n) \"{ RegionName }\" region." ) );
 			}
 
 			if ( IndentLevel != 0 )
@@ -123,7 +124,7 @@ namespace Petrichor.Common.Utilities
 				var hasTooFewInstances = instances < minRequiredInstances;
 				if ( hasTooFewInstances || hasTooManyInstances )
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"\"{ RegionName }\" regions must contain at least { minRequiredInstances } and no more than { maxAllowedInstances } \"{ tokenName }\" tokens." ) );
+					ExceptionLogger.LogAndThrow( new TokenCountException( $"\"{ RegionName }\" regions must contain at least { minRequiredInstances } and no more than { maxAllowedInstances } \"{ tokenName }\" tokens." ) );
 				}
 			}
 

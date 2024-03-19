@@ -48,7 +48,7 @@ namespace Petrichor.App.Utilities
 				result.Add( entry );
 				return new RegionData< List< ScriptEntry > >()
 				{
-					BodySize = entryRegionParser.LinesParsed,
+					BodySize = entryRegionParser.LinesParsed - 1,
 					Value = result,
 				};
 			};
@@ -363,7 +363,7 @@ namespace Petrichor.App.Utilities
 			var nextCloseCharIndex = input.IndexOf( Common.Syntax.OperatorChars.TokenNameClose );
 			if ( nextCloseCharIndex < 0 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string open character ( '{ Common.Syntax.OperatorChars.TokenNameOpen }' )." ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string open character ( '{ Common.Syntax.OperatorChars.TokenNameOpen }' )." ) );
 			}
 
 			var isCloseCharEscaped = input[ nextCloseCharIndex - 1 ] == '\\';
@@ -383,7 +383,7 @@ namespace Petrichor.App.Utilities
 			var components = token.Value.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A { token.Name } token had an invalid value ( \"{ token.Value }\" )" ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A { token.Name } token had an invalid value ( \"{ token.Value }\" )" ) );
 			}
 
 			var name = components[ 0 ].Trim();
@@ -403,7 +403,7 @@ namespace Petrichor.App.Utilities
 				var c = sanitizedHotstring[ i ];
 				if ( c == Common.Syntax.OperatorChars.TokenNameClose )
 				{
-					ExceptionLogger.LogAndThrow( new TokenException( $"A template contained a mismatched find-string close character ('{ Common.Syntax.OperatorChars.TokenNameClose}')" ) );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{ Common.Syntax.OperatorChars.TokenNameClose}')" ) );
 				}
 
 				else if ( c == Common.Syntax.OperatorChars.TokenNameOpen )
@@ -462,7 +462,7 @@ namespace Petrichor.App.Utilities
 		{
 			if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findString ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenException( $"A template contained an unknown \"find\" string ( \"{ findString }\" )." ) );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained an unknown \"find\" string ( \"{ findString }\" )." ) );
 			}
 		}
 	}
