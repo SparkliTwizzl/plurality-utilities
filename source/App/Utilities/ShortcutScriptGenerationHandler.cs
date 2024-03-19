@@ -16,7 +16,7 @@ namespace Petrichor.App.Utilities
 		public static void GenerateScript( string inputFilePath, string outputFilePath ) => GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
 
 
-		private static string ConvertPetrichorTemplateToAHK( string line )
+		private static string ConvertTemplateToAutoHotkeySyntax( string line )
 		{
 			var components = line.Split( "::" );
 			var findString = $"::{components[ 0 ].Trim()}::";
@@ -380,7 +380,7 @@ namespace Petrichor.App.Utilities
 
 		private static string ParseTemplateFromLine( string line )
 		{
-			var rawHotstring = ConvertPetrichorTemplateToAHK( line );
+			var rawHotstring = ConvertTemplateToAutoHotkeySyntax( line );
 			var sanitizedHotstring = SanitizeHotstring( rawHotstring );
 
 			var template = new StringBuilder();
