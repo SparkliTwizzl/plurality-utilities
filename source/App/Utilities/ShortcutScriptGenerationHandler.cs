@@ -38,9 +38,11 @@ namespace Petrichor.App.Utilities
 
 		private static RegionParser< List< ScriptEntry > > CreateEntriesRegionParser()
 		{
+			var entryRegionParser = CreateEntryRegionParser();
+
 			var entryRegionTokenHandler = ( string[] fileData, int tokenStartIndex, List< ScriptEntry > result ) =>
 			{
-				var entryRegionParser = CreateEntryRegionParser(); // recreating this every time is stupid but trying to reuse it leaves garbage data in it
+				entryRegionParser.Reset();
 				var dataTrimmedToRegion = fileData[ tokenStartIndex.. ];
 				var entry = entryRegionParser.Parse( dataTrimmedToRegion );
 				result.Add( entry );
@@ -210,7 +212,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.DefaultIconFilePath = filePath;
-				Log.Info( $"Stored path to default icon ( { filePath } )" );
+				Log.Info( $"Stored default icon file path ( { filePath } )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,
@@ -234,7 +236,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( fileData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.SuspendIconFilePath = filePath;
-				Log.Info( $"Stored path to suspend icon ( { filePath } )" );
+				Log.Info( $"Stored suspend icon file path ( { filePath } )" );
 				return new RegionData< ScriptModuleOptions >()
 				{
 					Value = result,

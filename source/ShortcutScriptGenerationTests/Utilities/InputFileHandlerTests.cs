@@ -50,6 +50,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				LinesParsed = TestData.EntriesRegionLength;
 				return TestData.Entries.ToList();
 			}
+
+			public void Reset()
+			{
+				LinesParsed = 0;
+				foreach ( var tokenName in TokenInstancesParsed.Keys )
+				{
+					TokenInstancesParsed[ tokenName ] = 0;
+				}
+			}
 		}
 
 		public class MetadataRegionParserStub : IRegionParser< StringWrapper >
@@ -65,6 +74,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				TokenInstancesParsed.Add( Common.Syntax.TokenNames.MinimumVersion, 1 );
 				LinesParsed = TestData.MetadataRegionLength;
 				return new StringWrapper();
+			}
+
+			public void Reset()
+			{
+				LinesParsed = 0;
+				foreach ( var tokenName in TokenInstancesParsed.Keys )
+				{
+					TokenInstancesParsed[ tokenName ] = 0;
+				}
 			}
 		}
 
@@ -85,6 +103,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				LinesParsed = TestData.ModuleOptionsRegionLength;
 				return TestData.ModuleOptions;
 			}
+
+			public void Reset()
+			{
+				LinesParsed = 0;
+				foreach ( var tokenName in TokenInstancesParsed.Keys )
+				{
+					TokenInstancesParsed[ tokenName ] = 0;
+				}
+			}
 		}
 
 		public class TemplatesRegionParserStub : IRegionParser< List< string > >
@@ -100,6 +127,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				LinesParsed = TestData.TemplatesRegionLength;
 				TokenInstancesParsed[ Syntax.TokenNames.Template ] = TestData.Templates.Length;
 				return TestData.Templates.ToList();
+			}
+
+			public void Reset()
+			{
+				LinesParsed = 0;
+				foreach ( var tokenName in TokenInstancesParsed.Keys )
+				{
+					TokenInstancesParsed[ tokenName ] = 0;
+				}
 			}
 		}
 

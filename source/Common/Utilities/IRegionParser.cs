@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.Common.Utilities
 {
-	public interface IRegionParser< out T > where T : class, new()
+	public interface IRegionParser< out T > where T : new()
 	{
 		int LinesParsed { get; }
 		Dictionary< string, int > MaxAllowedTokenInstances { get; }
@@ -10,5 +10,7 @@
 
 
 		T Parse( string[] regionData );
+
+		void Reset();
 	}
 }
