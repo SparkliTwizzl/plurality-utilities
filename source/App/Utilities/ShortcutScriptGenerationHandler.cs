@@ -13,7 +13,19 @@ namespace Petrichor.App.Utilities
 {
 	public static class ShortcutScriptGenerationHandler
 	{
-		public static void GenerateScript( string inputFilePath, string outputFilePath ) => GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
+		public static void GenerateScript( string inputFilePath, string outputFilePath )
+		{
+			Log.Important( "Generating AutoHotkey shortcuts script..." );
+
+			GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
+
+			var successMessage = "Generated AutoHotkey shortcuts script successfully";
+			if ( Log.IsLoggingToConsoleDisabled )
+			{
+				Console.WriteLine( successMessage );
+			}
+			Log.Important( successMessage );
+		}
 
 
 		private static string ConvertTemplateToAutoHotkeySyntax( string line )
@@ -319,8 +331,6 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				Log.Start( "Generating AutoHotkey shortcuts script..." );
-
 				var input = new InputFileHandler(
 					CreateMetadataRegionParser(),
 					CreateModuleOptionsRegionParser(),
@@ -328,15 +338,7 @@ namespace Petrichor.App.Utilities
 					CreateTemplatesRegionParser(),
 					new MacroGenerator() )
 						.ProcessFile( inputFilePath );
-
 				new ScriptGenerator().Generate( input, outputFilePath );
-
-				var successMessage = "Generated AutoHotkey shortcuts script successfully";
-				if ( Log.IsLoggingToConsoleDisabled )
-				{
-					Console.WriteLine( successMessage );
-				}
-				Log.Finish( successMessage );
 			}
 			catch ( Exception exception )
 			{
