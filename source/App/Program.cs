@@ -15,7 +15,7 @@ namespace Petrichor.App
 			_ = await CommandLineHandler.ParseArguments( args );
 			var startMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}";
 			Console.WriteLine( startMessage );
-			Log.Important( AppInfo.AppNameAndVersion );
+			Log.Info( AppInfo.AppNameAndVersion );
 			Log.Important( startMessage );
 
 			try
