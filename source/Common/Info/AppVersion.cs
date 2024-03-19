@@ -68,9 +68,6 @@ namespace Petrichor.Common.Info
 
 		public static void RejectUnsupportedVersions( string version, int? lineNumber = null )
 		{
-			var taskMessage = $"Check version compatibility";
-			Log.Start( taskMessage );
-
 			if ( string.IsNullOrEmpty( version ) )
 			{
 				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ), lineNumber );
@@ -82,7 +79,6 @@ namespace Petrichor.Common.Info
 			}
 
 			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}" );
-			Log.Finish( taskMessage );
 		}
 	}
 }
