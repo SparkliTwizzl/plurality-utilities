@@ -5,13 +5,26 @@ namespace Petrichor.Logging
 {
 	public static class Log
 	{
-		private const ConsoleColor defaultConsoleBackgroundColor = ConsoleColor.Black;
-		private const ConsoleColor defaultConsoleForegroundColor = ConsoleColor.White;
-		private static readonly string defaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
-		private static readonly string defaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
-		private static string logDirectory = string.Empty;
-		private static string logFileName = string.Empty;
-		private static string logFilePath = string.Empty;
+		private const ConsoleColor ConsoleDefaultBackgroundColor = ConsoleColor.Black;
+		private const ConsoleColor ConsoleDefaultForegroundColor = ConsoleColor.White;
+		private const ConsoleColor ConsoleErrorBackgroundColor = ConsoleColor.DarkRed;
+		private const ConsoleColor ConsoleErrorForegroundColor = ConsoleColor.White;
+		private const ConsoleColor ConsoleImportantBackgroundColor = ConsoleColor.DarkGreen;
+		private const ConsoleColor ConsoleImportantForegroundColor = ConsoleColor.White;
+		private const ConsoleColor ConsoleInfoBackgroundColor = ConsoleColor.Black;
+		private const ConsoleColor ConsoleInfoForegroundColor = ConsoleColor.Gray;
+		private const ConsoleColor ConsoleTaskFinishBackgroundColor = ConsoleColor.Black;
+		private const ConsoleColor ConsoleTaskFinishForegroundColor = ConsoleColor.Green;
+		private const ConsoleColor ConsoleTaskStartBackgroundColor = ConsoleColor.Black;
+		private const ConsoleColor ConsoleTaskStartForegroundColor = ConsoleColor.Cyan;
+		private const ConsoleColor ConsoleWarningBackgroundColor = ConsoleColor.DarkYellow;
+		private const ConsoleColor ConsoleWarningForegroundColor = ConsoleColor.White;
+		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
+		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
+
+		private static string LogDirectory { get; set; } = string.Empty;
+		private static string LogFileName { get; set; } = string.Empty;
+		private static string LogFilePath { get; set; } = string.Empty;
 
 
 		public static LogMode ActiveMode { get; private set; } = LogMode.None;
@@ -51,19 +64,22 @@ namespace Petrichor.Logging
 		/// Write formatted details about an error to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Error( string message = "" ) => WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleColor.White, ConsoleColor.DarkRed );
+		public static void Error( string message = "" )
+			=> WriteLineWithTimestamp( $"    ERROR : {message}", ConsoleErrorForegroundColor, ConsoleErrorBackgroundColor );
 
 		/// <summary>
 		/// Write formatted important information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Important( string message = "" ) => WriteLineWithTimestamp( $"IMPORTANT : {message}", ConsoleColor.Cyan );
+		public static void Important( string message = "" )
+			=> WriteLineWithTimestamp( $"IMPORTANT : {message}", ConsoleImportantForegroundColor, ConsoleImportantBackgroundColor );
 
 		/// <summary>
 		/// Write formatted information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Info( string message = "" ) => WriteLineWithTimestamp( $"     INFO : {message}" );
+		public static void Info( string message = "" )
+			=> WriteLineWithTimestamp( $"     INFO : {message}", ConsoleInfoForegroundColor, ConsoleInfoBackgroundColor );
 
 		/// <summary>
 		/// Set log file directory and/or name.
@@ -86,14 +102,14 @@ namespace Petrichor.Logging
 
 		public static void SetLogFileName( string fileName )
 		{
-			logFileName = fileName;
+			LogFileName = fileName;
 			SetLogFilePath();
 		}
 
 		public static void SetLogDirectory( string directory )
 		{
-			logDirectory = AddTrailingSlashToDirectoryPath( directory );
-			_ = Directory.CreateDirectory( logDirectory );
+			LogDirectory = AddTrailingSlashToDirectoryPath( directory );
+			_ = Directory.CreateDirectory( LogDirectory );
 			SetLogFilePath();
 		}
 
@@ -101,19 +117,22 @@ namespace Petrichor.Logging
 		/// Write formatted details about a task finishing to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskFinish( string message = "" ) => WriteLineWithTimestamp( $"   FINISH : {message}", ConsoleColor.Green );
+		public static void TaskFinish( string message = "" )
+			=> WriteLineWithTimestamp( $"   FINISH : {message}", ConsoleTaskFinishForegroundColor, ConsoleTaskFinishBackgroundColor );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void TaskStart( string message = "" ) => WriteLineWithTimestamp( $"    START : {message}", ConsoleColor.Yellow );
+		public static void TaskStart( string message = "" )
+			=> WriteLineWithTimestamp( $"    START : {message}", ConsoleTaskStartForegroundColor, ConsoleTaskStartBackgroundColor );
 
 		/// <summary>
 		/// Write formatted details about a warning starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
-		public static void Warning( string message = "" ) => WriteLineWithTimestamp( $"  WARNING : {message}", ConsoleColor.White, ConsoleColor.DarkYellow );
+		public static void Warning( string message = "" )
+			=> WriteLineWithTimestamp( $"  WARNING : {message}", ConsoleWarningForegroundColor, ConsoleWarningBackgroundColor );
 
 		/// <summary>
 		/// Write text directly to log without timestamp.
@@ -121,20 +140,20 @@ namespace Petrichor.Logging
 		/// <param name="message">Text to write to log.</param>
 		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
 		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void Write( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+		public static void Write( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
 		{
 			if ( ActiveMode == LogMode.None || message == "" )
 			{
 				return;
 			}
 
-			if ( logDirectory == "" )
+			if ( LogDirectory == "" )
 			{
-				SetLogDirectory( defaultLogDirectory );
+				SetLogDirectory( DefaultLogDirectory );
 			}
-			if ( logFileName == "" )
+			if ( LogFileName == "" )
 			{
-				SetLogFileName( defaultLogFileName );
+				SetLogFileName( DefaultLogFileName );
 			}
 
 			if ( IsLoggingToConsoleEnabled )
@@ -142,12 +161,12 @@ namespace Petrichor.Logging
 				Console.BackgroundColor = consoleHighlightColor;
 				Console.ForegroundColor = consoleTextColor;
 				Console.Write( message );
-				Console.BackgroundColor = defaultConsoleBackgroundColor;
-				Console.ForegroundColor = defaultConsoleForegroundColor;
+				Console.BackgroundColor = ConsoleDefaultBackgroundColor;
+				Console.ForegroundColor = ConsoleDefaultForegroundColor;
 			}
 			if ( IsLoggingToFileEnabled )
 			{
-				using var logFile = File.AppendText( logFilePath );
+				using var logFile = File.AppendText( LogFilePath );
 				logFile.Write( message );
 			}
 		}
@@ -158,7 +177,7 @@ namespace Petrichor.Logging
 		/// <param name="message">Text to write to log.</param>
 		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
 		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteLine( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+		public static void WriteLine( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
 			=> Write( $"{message}\n", consoleTextColor, consoleHighlightColor );
 
 		/// <summary>
@@ -167,7 +186,7 @@ namespace Petrichor.Logging
 		/// <param name="message">Text to write to log.</param>
 		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
 		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteLineWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+		public static void WriteLineWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
 			=> WriteLine( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
 
 		/// <summary>
@@ -176,7 +195,7 @@ namespace Petrichor.Logging
 		/// <param name="message">Text to write to log.</param>
 		/// <param name="consoleTextColor">Text color to use if in verbose mode.</param>
 		/// <param name="consoleHighlightColor">Text highlight color to use if in verbose mode.</param>
-		public static void WriteWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleColor.White, ConsoleColor consoleHighlightColor = ConsoleColor.Black )
+		public static void WriteWithTimestamp( string message = "", ConsoleColor consoleTextColor = ConsoleDefaultForegroundColor, ConsoleColor consoleHighlightColor = ConsoleDefaultBackgroundColor )
 			=> Write( AddTimestampToMessage( message ), consoleTextColor, consoleHighlightColor );
 
 
@@ -195,10 +214,10 @@ namespace Petrichor.Logging
 
 		private static void SetLogFilePath()
 		{
-			logFilePath = $@"{logDirectory}{logFileName}";
-			if ( logFileName.CompareTo( "" ) != 0 )
+			LogFilePath = $@"{LogDirectory}{LogFileName}";
+			if ( LogFileName.CompareTo( "" ) != 0 )
 			{
-				Console.WriteLine( $"Log file will be created at \"{logFilePath}\"" );
+				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"" );
 			}
 		}
 	}
