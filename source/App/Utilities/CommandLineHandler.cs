@@ -1,4 +1,5 @@
-﻿using Petrichor.App.Syntax;
+﻿using Petrichor.App.Enums;
+using Petrichor.App.Syntax;
 using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.CommandLine;
@@ -8,28 +9,48 @@ namespace Petrichor.App.Utilities
 {
 	public static class CommandLineHandler
 	{
-		public static async Task<int> ParseArguments( string[] arguments )
+		public static Module ModuleToRun { get; private set; } = Module.None;
+
+
+		public static async Task<Module> ParseArguments( string[] arguments )
 		{
-			if ( arguments.Length < 1 )
+			ModuleToRun = HandleEmptyArguments( arguments );
+			if ( ModuleToRun == Module.None )
 			{
-				Console.WriteLine( $"Run with {CommandOptions.DefaultCommandOptionHelp} to see usage." );
-				RuntimeHandler.WaitForUserAndExit();
+				return Module.None;
 			}
 
+			var rootCommand = CreateCommands();
+			_ = await rootCommand.InvokeAsync( arguments );
+			return ModuleToRun;
+		}
+
+
+		private static RootCommand CreateCommands()
+		{
+			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
+			rootCommand.AddCommand( CreateShortcutScriptCommand() );
+			return rootCommand;
+		}
+
+		private static Command CreateShortcutScriptCommand()
+		{
 			var inputFileOption = new Option<string>(
 				name: CommandOptions.ShortcutScriptOptionInputFile,
 				description: "Path to input file." );
+
 			var outputFileOption = new Option<string>(
 				name: CommandOptions.ShortcutScriptOptionOutputFile,
 				description: "Path and filename to generate AutoHotkey script at." );
+
 			var logModeOption = new Option<string>(
 				name: CommandOptions.ShortcutScriptOptionLogMode,
 				description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
+
 			var logFileOption = new Option<string>(
 				name: CommandOptions.ShortcutScriptOptionLogFile,
 				description: "Path to generate log file at. If not provided, a default filepath will be used." );
 
-			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
 			var shortcutScriptCommand = new Command( Commands.ShortcutScript, "Parse input file and generate a text find-and-replace shortcut script." )
 			{
 				inputFileOption,
@@ -37,20 +58,30 @@ namespace Petrichor.App.Utilities
 				logModeOption,
 				logFileOption,
 			};
-			rootCommand.AddCommand( shortcutScriptCommand );
 
 			shortcutScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
 					{
 						RuntimeHandler.InputFilePath = inputFilePath;
 						RuntimeHandler.OutputFilePath = outputFilePath;
+						ModuleToRun = Module.ShortcutScriptGeneration;
 						await InitalizeLogging( logMode, logFile );
 					},
 					inputFileOption, outputFileOption, logModeOption, logFileOption
 				);
 
-			return await rootCommand.InvokeAsync( arguments );
+			return shortcutScriptCommand;
 		}
 
+		private static Module HandleEmptyArguments( string[] arguments )
+		{
+			if ( arguments.Length < 1 )
+			{
+				Console.WriteLine( $"Run with {CommandOptions.DefaultCommandOptionHelp} to see usage." );
+				return Module.None;
+			}
+
+			return Module.Some;
+		}
 
 		private static async Task InitalizeLogging( string logModeArgument, string logFileArgument )
 			=> await Task.Run( () =>

@@ -1,4 +1,5 @@
-﻿using Petrichor.Logging.Enums;
+﻿using Petrichor.App.Enums;
+using Petrichor.Logging.Enums;
 
 
 namespace Petrichor.App.Utilities
@@ -10,7 +11,19 @@ namespace Petrichor.App.Utilities
 		public static string OutputFilePath { get; set; } = string.Empty;
 
 
-		public static void Execute() => ShortcutScriptGenerationHandler.GenerateScript( InputFilePath, OutputFilePath );
+		public static void Execute( Module module )
+		{
+			switch ( module )
+			{
+				case Module.ShortcutScriptGeneration:
+					ShortcutScriptGenerationHandler.GenerateScript( InputFilePath, OutputFilePath );
+					break;
+
+				default:
+					WaitForUserAndExit();
+					break;
+			}
+		}
 
 		public static void WaitForUserAndExit()
 		{

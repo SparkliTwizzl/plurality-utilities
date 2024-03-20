@@ -12,15 +12,15 @@ namespace Petrichor.App
 			Console.Title = AppInfo.AppName;
 			var startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
-			_ = await CommandLineHandler.ParseArguments( args );
 			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}";
 			Console.WriteLine( startTimeMessage );
+			var moduleToRun = await CommandLineHandler.ParseArguments( args );
 			Log.Info( AppInfo.AppNameAndVersion );
 			Log.Info( startTimeMessage );
 
 			try
 			{
-				RuntimeHandler.Execute();
+				RuntimeHandler.Execute( moduleToRun );
 			}
 			catch ( Exception exception )
 			{
