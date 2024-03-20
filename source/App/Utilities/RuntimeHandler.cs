@@ -19,8 +19,15 @@ namespace Petrichor.App.Utilities
 					ShortcutScriptGenerationHandler.GenerateScript( InputFilePath, OutputFilePath );
 					break;
 
+				case Module.Some:
+					Console.WriteLine( "Unrecognized command." );
+					break;
+
+				case Module.None:
+					Console.WriteLine( "No command provided." );
+					break;
+
 				default:
-					WaitForUserAndExit();
 					break;
 			}
 		}
