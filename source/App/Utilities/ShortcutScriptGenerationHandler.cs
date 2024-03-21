@@ -15,11 +15,11 @@ namespace Petrichor.App.Utilities
 	{
 		public static void GenerateScript( string inputFilePath, string outputFilePath )
 		{
-			Log.Important( "Generating AutoHotkey shortcuts script..." );
+			Log.Important( "Generating text shortcuts script..." );
 
 			GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
 
-			var successMessage = "Generated AutoHotkey shortcuts script successfully";
+			var successMessage = "Generated text shortcuts script successfully.";
 			if ( Log.IsLoggingToConsoleDisabled )
 			{
 				Console.WriteLine( successMessage );

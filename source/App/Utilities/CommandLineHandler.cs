@@ -113,6 +113,11 @@ namespace Petrichor.App.Utilities
 					}
 				}
 
+				if ( Log.IsLoggingToConsoleDisabled )
+				{
+					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{CommandOptions.ShortcutScriptOptionLogMode}\" with parameters \"{CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly}\" or \"{CommandOptions.ShortcutScriptLogModeArgumentAll}\"." );
+				}
+
 				if ( Log.IsLoggingToFileEnabled )
 				{
 					Log.SetLogFile( logFileArgument );

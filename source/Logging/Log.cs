@@ -77,26 +77,26 @@ namespace Petrichor.Logging
 		public static void Disable()
 		{
 			ActiveMode = LogMode.None;
-			Console.WriteLine( "Logging is disabled" );
+			Console.WriteLine( "Logging is disabled." );
 		}
 
 		public static void EnableForConsoleOnly()
 		{
 			ActiveMode = LogMode.ConsoleOnly;
-			Console.WriteLine( "Console logging is enabled" );
+			Console.WriteLine( "Logging to console is enabled." );
 		}
 
 		public static void EnableForFileOnly( string logDirectory )
 		{
 			ActiveMode = LogMode.FileOnly;
-			Console.WriteLine( "File logging is enabled" );
+			Console.WriteLine( "Logging to file is enabled." );
 			SetLogDirectory( logDirectory );
 		}
 
 		public static void EnableForAll( string logDirectory )
 		{
 			ActiveMode = LogMode.All;
-			Console.WriteLine( "Console and file logging are enabled" );
+			Console.WriteLine( "Logging to console and file is enabled." );
 			SetLogDirectory( logDirectory );
 		}
 
@@ -260,9 +260,9 @@ namespace Petrichor.Logging
 		private static void SetLogFilePath()
 		{
 			LogFilePath = $@"{LogDirectory}{LogFileName}";
-			if ( LogFileName.CompareTo( "" ) != 0 )
+			if ( LogFileName != string.Empty )
 			{
-				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"" );
+				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
 			}
 		}
 

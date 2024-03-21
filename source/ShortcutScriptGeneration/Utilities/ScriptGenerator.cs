@@ -37,7 +37,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{OutputFilePath}\".", exception ) );
 			}
 
-			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file" );
+			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file." );
 			Log.Finish( taskMessage );
 		}
 
@@ -234,7 +234,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				WriteLineToFile( line );
 				++linesWritten;
 			}
-			Log.Info( $"Wrote {linesWritten} lines to output file {message}" );
+			Log.Info( $"Wrote {linesWritten} lines to output file {message}." );
 		}
 
 		private void WriteMacrosToFile()
