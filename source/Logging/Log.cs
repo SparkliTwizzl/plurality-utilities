@@ -77,7 +77,7 @@ namespace Petrichor.Logging
 		{
 			SetLogFilePath( file );
 			_ = Directory.CreateDirectory( LogDirectory );
-			using var logFile = File.Create( LogFilePath );
+			File.Create( LogFilePath ).Close();
 		}
 
 		/// <summary>
