@@ -27,7 +27,7 @@ namespace Petrichor.Logging
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.DarkBlue,
 		};
-		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
+		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\_log";
 		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
 		private static readonly ColorScheme ErrorColorScheme = new()
 		{
@@ -73,6 +73,20 @@ namespace Petrichor.Logging
 		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.FileOnly or LogMode.All;
 
 
+		public static void CreateLogFile( string file )
+		{
+			SetLogFilePath( file );
+			_ = Directory.CreateDirectory( LogDirectory );
+			using var logFile = File.Create( LogFilePath );
+		}
+
+		/// <summary>
+		/// Write formatted debug information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Debug( string message = "", int? lineNumber = null )
+			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
+
 		public static void Disable()
 		{
 			ActiveMode = LogMode.None;
@@ -85,26 +99,18 @@ namespace Petrichor.Logging
 			Console.WriteLine( "Logging to console is enabled." );
 		}
 
-		public static void EnableForFile( string logDirectory )
+		public static void EnableForFile()
 		{
 			ActiveMode = LogMode.FileOnly;
 			Console.WriteLine( "Logging to file is enabled." );
-			SetLogDirectory( logDirectory );
 		}
 
-		public static void EnableForAll( string logDirectory )
+		public static void EnableForAll()
 		{
 			EnableForConsole();
-			EnableForFile( logDirectory );
+			EnableForFile();
 			ActiveMode = LogMode.All;
 		}
-
-		/// <summary>
-		/// Write formatted debug information to log.
-		/// </summary>
-		/// <param name="message">Information to write to log.</param>
-		public static void Debug( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
 
 		/// <summary>
 		/// Write a formatted error message to log.
@@ -112,6 +118,13 @@ namespace Petrichor.Logging
 		/// <param name="message">Information to write to log.</param>
 		public static void Error( string message = "", int? lineNumber = null )
 			=> WriteFormattedMessage( "ERROR", message, lineNumber, ErrorColorScheme );
+
+		/// <summary>
+		/// Write formatted details about a task finishing to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Finish( string message = "", int? lineNumber = null )
+			=> WriteFormattedMessage( "FINISH", message, lineNumber, FinishColorScheme );
 
 		/// <summary>
 		/// Write formatted important information to log.
@@ -126,44 +139,6 @@ namespace Petrichor.Logging
 		/// <param name="message">Information to write to log.</param>
 		public static void Info( string message = "", int? lineNumber = null )
 			=> WriteFormattedMessage( "INFO", message, lineNumber, InfoColorScheme );
-
-		/// <summary>
-		/// Set log file directory and/or name.
-		/// </summary>
-		/// <param name="file">File name and/or directory to generate log file at.</param>
-		public static void SetLogFile( string file )
-		{
-			var directory = Path.GetDirectoryName( file );
-			if ( directory is not null )
-			{
-				SetLogDirectory( directory );
-			}
-			var fileName = Path.GetFileName( file );
-			if ( fileName is not null )
-			{
-				SetLogFileName( fileName );
-			}
-		}
-
-		public static void SetLogFileName( string fileName )
-		{
-			LogFileName = fileName;
-			SetLogFilePath();
-		}
-
-		public static void SetLogDirectory( string directory )
-		{
-			LogDirectory = AddTrailingSlashToDirectoryPath( directory );
-			_ = Directory.CreateDirectory( LogDirectory );
-			SetLogFilePath();
-		}
-
-		/// <summary>
-		/// Write formatted details about a task finishing to log.
-		/// </summary>
-		/// <param name="message">Information to write to log.</param>
-		public static void Finish( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "FINISH", message, lineNumber, FinishColorScheme );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
@@ -227,20 +202,12 @@ namespace Petrichor.Logging
 		private static string AddTimestampToMessage( string message = "" )
 			=> $"[{DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}] {message}";
 
-		private static string AddTrailingSlashToDirectoryPath( string directory )
+		private static void SetLogFilePath( string file )
 		{
-			var lastChar = directory[ ^1 ];
-			if ( lastChar is not '\\' and not '/' )
-			{
-				directory += '\\';
-			}
-			return directory;
-		}
-
-		private static void SetLogFilePath()
-		{
-			LogFilePath = $@"{LogDirectory}{LogFileName}";
-			if ( LogFileName != string.Empty )
+			LogDirectory = Path.GetDirectoryName( file ) ?? DefaultLogDirectory;
+			LogFileName = Path.GetFileName( file ) ?? DefaultLogFileName;
+			LogFilePath = Path.Combine( LogDirectory, LogFileName );
+			if ( LogFilePath != string.Empty )
 			{
 				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
 			}

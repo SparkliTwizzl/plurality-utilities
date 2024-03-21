@@ -73,8 +73,8 @@ namespace Petrichor.Common.Utilities
 		public T Parse( IndexedString[] regionData )
 		{
 			RegionToken = new StringToken( regionData[ 0 ] );
-			var regionTokenValue = RegionToken.Value != string.Empty ? $"(\"{RegionToken.Value}\")" : string.Empty;
-			var taskMessage = $"Parse \"{RegionName}\" region {regionTokenValue}";
+			var regionTokenValue = RegionToken.Value != string.Empty ? $" (\"{RegionToken.Value}\")" : string.Empty;
+			var taskMessage = $"Parse \"{RegionName}\" region{regionTokenValue}";
 			Log.Start( taskMessage, RegionToken.LineNumber );
 
 			TryAddDefaultControlTokenHandlers();
