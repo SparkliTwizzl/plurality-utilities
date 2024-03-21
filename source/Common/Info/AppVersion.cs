@@ -78,7 +78,7 @@ namespace Petrichor.Common.Info
 				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{version}\" is not supported by {AppInfo.AppNameAndVersion}." ), lineNumber );
 			}
 
-			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}" );
+			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}." );
 		}
 	}
 }

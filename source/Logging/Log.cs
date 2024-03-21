@@ -22,41 +22,40 @@ namespace Petrichor.Logging
 		}
 
 
-		private static ColorScheme DebugColorScheme = new()
+		private static readonly ColorScheme DebugColorScheme = new()
 		{
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.DarkBlue,
 		};
-		private static ColorScheme DefaultColorScheme = new();
 		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
 		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
-		private static ColorScheme ErrorColorScheme = new()
+		private static readonly ColorScheme ErrorColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkRed,
 		};
-		private static ColorScheme FinishColorScheme = new()
+		private static readonly ColorScheme FinishColorScheme = new()
 		{
 			Foreground = ConsoleColor.Green,
 			Background = ConsoleColor.Black,
 		};
 		private const int FormattedMessagePaddingAmount = 8;
-		private static ColorScheme ImportantColorScheme = new()
+		private static readonly ColorScheme ImportantColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkCyan,
 		};
-		private static ColorScheme InfoColorScheme = new()
+		private static readonly ColorScheme InfoColorScheme = new()
 		{
 			Foreground = ConsoleColor.Gray,
 			Background = ConsoleColor.Black,
 		};
-		private static ColorScheme StartColorScheme = new()
+		private static readonly ColorScheme StartColorScheme = new()
 		{
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.Black,
 		};
-		private static ColorScheme WarningColorScheme = new()
+		private static readonly ColorScheme WarningColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkMagenta,
@@ -67,7 +66,7 @@ namespace Petrichor.Logging
 		private static string LogFilePath { get; set; } = string.Empty;
 
 
-		public static LogMode ActiveMode { get; private set; } = LogMode.None;
+		public static LogMode ActiveMode { get; private set; } = LogMode.FileOnly;
 		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
 		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
 		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.ConsoleOnly or LogMode.All;
@@ -188,31 +187,13 @@ namespace Petrichor.Logging
 		/// <param name="consoleBackgroundColor">Background color to use if in console mode.</param>
 		public static void Write( string message = "", ColorScheme? colorScheme = null )
 		{
-			if ( ActiveMode == LogMode.None || message == "" )
+			if ( ActiveMode == LogMode.None || message == string.Empty )
 			{
 				return;
 			}
 
-			if ( LogDirectory == "" )
-			{
-				SetLogDirectory( DefaultLogDirectory );
-			}
-			if ( LogFileName == "" )
-			{
-				SetLogFileName( DefaultLogFileName );
-			}
-
-			if ( IsLoggingToConsoleEnabled )
-			{
-				colorScheme?.Assign();
-				Console.Write( message );
-				DefaultColorScheme.Assign();
-			}
-			if ( IsLoggingToFileEnabled )
-			{
-				using var logFile = File.AppendText( LogFilePath );
-				logFile.Write( message );
-			}
+			WriteToConsole( message, colorScheme );
+			WriteToFile( message );
 		}
 
 		/// <summary>
@@ -232,6 +213,25 @@ namespace Petrichor.Logging
 		/// <param name="consoleBackgroundColor">Text highlight color to use if in verbose mode.</param>
 		public static void WriteLineWithTimestamp( string message = "", ColorScheme? colorScheme = null )
 			=> WriteLine( AddTimestampToMessage( message ), colorScheme );
+
+		public static void WriteToConsole( string message, ColorScheme? colorScheme = null )
+		{
+			if ( IsLoggingToConsoleEnabled )
+			{
+				colorScheme?.Assign();
+				Console.Write( message );
+				Console.ResetColor();
+			}
+		}
+
+		public static void WriteToFile( string message )
+		{
+			if ( IsLoggingToFileEnabled )
+			{
+				using var logFile = File.AppendText( LogFilePath );
+				logFile.Write( message );
+			}
+		}
 
 		/// <summary>
 		/// Write timestamped textto log.
