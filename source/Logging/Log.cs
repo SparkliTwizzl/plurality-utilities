@@ -144,7 +144,6 @@ namespace Petrichor.Logging
 			{
 				SetLogFileName( fileName );
 			}
-			SetLogFilePath();
 		}
 
 		public static void SetLogFileName( string fileName )
