@@ -90,13 +90,13 @@ namespace Petrichor.App.Utilities
 				{
 					case CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly:
 					{
-						Log.EnableForConsoleOnly();
+						Log.EnableForConsole();
 						break;
 					}
 
 					case CommandOptions.ShortcutScriptLogModeArgumentFileOnly:
 					{
-						Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
+						Log.EnableForFile( ProjectDirectories.LogDirectory );
 						break;
 					}
 

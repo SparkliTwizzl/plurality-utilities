@@ -39,7 +39,7 @@ namespace Petrichor.Logging
 			Foreground = ConsoleColor.Green,
 			Background = ConsoleColor.Black,
 		};
-		private const int FormattedMessagePaddingAmount = 8;
+		private const int FormattedMessagePaddingAmount = 10;
 		private static readonly ColorScheme ImportantColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
@@ -61,8 +61,8 @@ namespace Petrichor.Logging
 			Background = ConsoleColor.DarkMagenta,
 		};
 
-		private static string LogDirectory { get; set; } = string.Empty;
-		private static string LogFileName { get; set; } = string.Empty;
+		private static string LogDirectory { get; set; } = DefaultLogDirectory;
+		private static string LogFileName { get; set; } = DefaultLogFileName;
 		private static string LogFilePath { get; set; } = string.Empty;
 
 
@@ -79,13 +79,13 @@ namespace Petrichor.Logging
 			Console.WriteLine( "Logging is disabled." );
 		}
 
-		public static void EnableForConsoleOnly()
+		public static void EnableForConsole()
 		{
 			ActiveMode = LogMode.ConsoleOnly;
 			Console.WriteLine( "Logging to console is enabled." );
 		}
 
-		public static void EnableForFileOnly( string logDirectory )
+		public static void EnableForFile( string logDirectory )
 		{
 			ActiveMode = LogMode.FileOnly;
 			Console.WriteLine( "Logging to file is enabled." );
@@ -94,9 +94,9 @@ namespace Petrichor.Logging
 
 		public static void EnableForAll( string logDirectory )
 		{
+			EnableForConsole();
+			EnableForFile( logDirectory );
 			ActiveMode = LogMode.All;
-			Console.WriteLine( "Logging to console and file is enabled." );
-			SetLogDirectory( logDirectory );
 		}
 
 		/// <summary>
@@ -104,28 +104,28 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Debug( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "DEBUG", message, lineNumber, DebugColorScheme );
+			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
 
 		/// <summary>
 		/// Write a formatted error message to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Error( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "ERROR", message, lineNumber, ErrorColorScheme );
+			=> WriteFormattedMessage( "ERROR", message, lineNumber, ErrorColorScheme );
 
 		/// <summary>
 		/// Write formatted important information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Important( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "IMPORTANT", message, lineNumber, ImportantColorScheme );
+			=> WriteFormattedMessage( "IMPORTANT", message, lineNumber, ImportantColorScheme );
 
 		/// <summary>
 		/// Write formatted information to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Info( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "INFO", message, lineNumber, InfoColorScheme );
+			=> WriteFormattedMessage( "INFO", message, lineNumber, InfoColorScheme );
 
 		/// <summary>
 		/// Set log file directory and/or name.
@@ -163,21 +163,21 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Finish( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "FINISH", message, lineNumber, FinishColorScheme );
+			=> WriteFormattedMessage( "FINISH", message, lineNumber, FinishColorScheme );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Start( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "START", message, lineNumber, StartColorScheme );
+			=> WriteFormattedMessage( "START", message, lineNumber, StartColorScheme );
 
 		/// <summary>
 		/// Write a formatted warning message to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Warning( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "WARNING", message, lineNumber, WarningColorScheme );
+			=> WriteFormattedMessage( "WARNING", message, lineNumber, WarningColorScheme );
 
 		/// <summary>
 		/// Write text to log.
@@ -214,25 +214,6 @@ namespace Petrichor.Logging
 		public static void WriteLineWithTimestamp( string message = "", ColorScheme? colorScheme = null )
 			=> WriteLine( AddTimestampToMessage( message ), colorScheme );
 
-		public static void WriteToConsole( string message, ColorScheme? colorScheme = null )
-		{
-			if ( IsLoggingToConsoleEnabled )
-			{
-				colorScheme?.Assign();
-				Console.Write( message );
-				Console.ResetColor();
-			}
-		}
-
-		public static void WriteToFile( string message )
-		{
-			if ( IsLoggingToFileEnabled )
-			{
-				using var logFile = File.AppendText( LogFilePath );
-				logFile.Write( message );
-			}
-		}
-
 		/// <summary>
 		/// Write timestamped textto log.
 		/// </summary>
@@ -265,11 +246,36 @@ namespace Petrichor.Logging
 			}
 		}
 
-		private static void WriteFormattedInformation( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
+		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
 		{
 			var hasLineNumber = lineNumber is not null;
-			var lineNumberString = hasLineNumber ? $" <LINE {lineNumber}>" : string.Empty;
-			WriteLineWithTimestamp( $"{string.Format( "{0," + FormattedMessagePaddingAmount + "}", label )}{lineNumberString} : {message}", colorScheme );
+			var lineNumberString = hasLineNumber ? $"<LINE {lineNumber}> " : string.Empty;
+			var formattedLabel = string.Format( "{0," + FormattedMessagePaddingAmount + "}", $"{label}" );
+			var formattedMessage = $"{formattedLabel} : {lineNumberString}{message}";
+			WriteLineWithTimestamp( formattedMessage, colorScheme );
+		}
+
+		private static void WriteToConsole( string message, ColorScheme? colorScheme = null )
+		{
+			if ( IsLoggingToConsoleDisabled )
+			{
+				return;
+			}
+
+			colorScheme?.Assign();
+			Console.Write( message );
+			Console.ResetColor();
+		}
+
+		private static void WriteToFile( string message )
+		{
+			if ( IsLoggingToFileDisabled || LogFilePath == string.Empty )
+			{
+				return;
+			}
+
+			using var logFile = File.AppendText( LogFilePath );
+			logFile.Write( message );
 		}
 	}
 }
