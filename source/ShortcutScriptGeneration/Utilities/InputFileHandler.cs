@@ -8,6 +8,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputFileHandler
 	{
+		private const string DefaultInputDirectory = @".\";
+		private const string DefaultInputFileName = "input.petrichor";
+
 		private IRegionParser<List<ScriptEntry>> EntriesRegionParser { get; set; }
 		private IRegionParser<ScriptInput> FileRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
@@ -82,8 +85,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		public ScriptInput ProcessFile( string filePath )
+		public ScriptInput ProcessFile( string file )
 		{
+			var directory = Path.GetDirectoryName( file ) ?? DefaultInputDirectory;
+			var fileName = Path.GetFileName( file ) ?? DefaultInputFileName;
+			var filePath = Path.Combine( directory, fileName );
+
 			var taskMessage = $"Parse input file \"{filePath}\"";
 			Log.Start( taskMessage );
 

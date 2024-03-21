@@ -8,9 +8,9 @@ namespace Petrichor.TestShared.Info
 		private const string TestDirectoryName = "_test";
 
 
-		public static string TestDirectory => $@"{DebugBaseDirectory}\{TestDirectoryName}";
-		public static string TestInputDirectory => $@"{TestDirectory}\{InputDirectoryName}";
-		public static string TestLogDirectory => $@"{TestDirectory}\{LogDirectoryName}";
-		public static string TestOutputDirectory => $@"{TestDirectory}\{OutputDirectoryName}";
+		public static string TestDirectory => Path.Combine( DebugBaseDirectory, TestDirectoryName );
+		public static string TestInputDirectory => Path.Combine( TestDirectory, InputDirectoryName );
+		public static string TestLogDirectory => Path.Combine( TestDirectory, LogDirectoryName );
+		public static string TestOutputDirectory => Path.Combine( TestDirectory, OutputDirectoryName );
 	}
 }

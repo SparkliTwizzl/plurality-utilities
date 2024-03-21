@@ -12,9 +12,11 @@ namespace Petrichor.App
 			Console.Title = AppInfo.AppName;
 			var startTime = DateTime.Now;
 			Console.WriteLine( AppInfo.AppNameAndVersion );
-			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}";
-			Console.WriteLine( startTimeMessage );
 			var moduleToRun = await CommandLineHandler.ParseArguments( args );
+			Console.WriteLine();
+
+			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}.";
+			Console.WriteLine( startTimeMessage );
 			Log.Info( AppInfo.AppNameAndVersion );
 			Log.Info( startTimeMessage );
 
@@ -30,9 +32,10 @@ namespace Petrichor.App
 
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
-			var finishTimeMessage = $"Execution finished at {DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )} and took {executionTime} seconds";
+			var finishTimeMessage = $"Execution finished at {DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )} and took {executionTime} seconds.";
 			Log.Info( finishTimeMessage );
 			Console.WriteLine( finishTimeMessage );
+			Console.WriteLine();
 
 			RuntimeHandler.WaitForUserAndExit();
 		}

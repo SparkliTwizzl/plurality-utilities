@@ -2,6 +2,15 @@
 {
 	public static class StringExtensions
 	{
+		public static string AddTrailingPathSeparator( this string input )
+		{
+			if ( input.EndsWith( Path.PathSeparator ) )
+			{
+				return input;
+			}
+			return $"{input}{Path.PathSeparator}";
+		}
+
 		public static string WrapInQuotes( this string input )
 		{
 			var startsWithQuote = input.StartsWith( '"' );

@@ -15,11 +15,11 @@ namespace Petrichor.App.Utilities
 	{
 		public static void GenerateScript( string inputFilePath, string outputFilePath )
 		{
-			Log.Important( "Generating AutoHotkey shortcuts script..." );
+			Log.Important( "Generating text shortcuts script..." );
 
 			GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
 
-			var successMessage = "Generated AutoHotkey shortcuts script successfully";
+			var successMessage = "Generated text shortcuts script successfully.";
 			if ( Log.IsLoggingToConsoleDisabled )
 			{
 				Console.WriteLine( successMessage );
@@ -70,7 +70,7 @@ namespace Petrichor.App.Utilities
 				},
 				PostParseHandler = ( List<ScriptEntry> entries ) =>
 				{
-					Log.Info( $"Parsed {entries.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion}\" tokens" );
+					Log.Info( $"Parsed {entries.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion}\" tokens." );
 					return entries;
 				},
 			};
@@ -212,7 +212,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.DefaultIconFilePath = filePath;
-				Log.Info( $"Stored default icon file path ( {filePath} )" );
+				Log.Info( $"Stored default icon file path ({filePath})." );
 				return new RegionData<ScriptModuleOptions>()
 				{
 					Value = result,
@@ -224,7 +224,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.ReloadShortcut = hotstring;
-				Log.Info( $"Stored reload shortcut ( \"{token.Value}\" -> \"{hotstring}\" )" );
+				Log.Info( $"Stored reload shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
 				return new RegionData<ScriptModuleOptions>()
 				{
 					Value = result,
@@ -236,7 +236,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var filePath = token.Value.WrapInQuotes();
 				result.SuspendIconFilePath = filePath;
-				Log.Info( $"Stored suspend icon file path ( {filePath} )" );
+				Log.Info( $"Stored suspend icon file path ({filePath})." );
 				return new RegionData<ScriptModuleOptions>()
 				{
 					Value = result,
@@ -248,7 +248,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.SuspendShortcut = hotstring;
-				Log.Info( $"Stored suspend shortcut ( \"{token.Value}\" -> \"{hotstring}\" )" );
+				Log.Info( $"Stored suspend shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
 				return new RegionData<ScriptModuleOptions>()
 				{
 					Value = result,
@@ -313,7 +313,7 @@ namespace Petrichor.App.Utilities
 				},
 				PostParseHandler = ( List<string> templates ) =>
 				{
-					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.Template}\" tokens" );
+					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.Template}\" tokens." );
 					return templates;
 				},
 			};

@@ -1,6 +1,5 @@
 ﻿using Petrichor.App.Enums;
 using Petrichor.App.Syntax;
-using Petrichor.Common.Info;
 using Petrichor.Logging;
 using System.CommandLine;
 
@@ -90,19 +89,19 @@ namespace Petrichor.App.Utilities
 				{
 					case CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly:
 					{
-						Log.EnableForConsoleOnly();
+						Log.EnableForConsole();
 						break;
 					}
 
 					case CommandOptions.ShortcutScriptLogModeArgumentFileOnly:
 					{
-						Log.EnableForFileOnly( ProjectDirectories.LogDirectory );
+						Log.EnableForFile();
 						break;
 					}
 
 					case CommandOptions.ShortcutScriptLogModeArgumentAll:
 					{
-						Log.EnableForAll( ProjectDirectories.LogDirectory );
+						Log.EnableForAll();
 						break;
 					}
 
@@ -113,9 +112,14 @@ namespace Petrichor.App.Utilities
 					}
 				}
 
+				if ( Log.IsLoggingToConsoleDisabled )
+				{
+					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{CommandOptions.ShortcutScriptOptionLogMode}\" with parameters \"{CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly}\" or \"{CommandOptions.ShortcutScriptLogModeArgumentAll}\"." );
+				}
+
 				if ( Log.IsLoggingToFileEnabled )
 				{
-					Log.SetLogFile( logFileArgument );
+					Log.CreateLogFile( logFileArgument );
 				}
 			} );
 	}

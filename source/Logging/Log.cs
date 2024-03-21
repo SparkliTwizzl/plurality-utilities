@@ -22,82 +22,62 @@ namespace Petrichor.Logging
 		}
 
 
-		private static ColorScheme DebugColorScheme = new()
+		private static readonly ColorScheme DebugColorScheme = new()
 		{
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.DarkBlue,
 		};
-		private static ColorScheme DefaultColorScheme = new();
-		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\log";
+		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\_log";
 		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
-		private static ColorScheme ErrorColorScheme = new()
+		private static readonly ColorScheme ErrorColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkRed,
 		};
-		private static ColorScheme FinishColorScheme = new()
+		private static readonly ColorScheme FinishColorScheme = new()
 		{
 			Foreground = ConsoleColor.Green,
 			Background = ConsoleColor.Black,
 		};
-		private const int FormattedMessagePaddingAmount = 8;
-		private static ColorScheme ImportantColorScheme = new()
+		private const int FormattedMessagePaddingAmount = 10;
+		private static readonly ColorScheme ImportantColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkCyan,
 		};
-		private static ColorScheme InfoColorScheme = new()
+		private static readonly ColorScheme InfoColorScheme = new()
 		{
 			Foreground = ConsoleColor.Gray,
 			Background = ConsoleColor.Black,
 		};
-		private static ColorScheme StartColorScheme = new()
+		private static readonly ColorScheme StartColorScheme = new()
 		{
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.Black,
 		};
-		private static ColorScheme WarningColorScheme = new()
+		private static readonly ColorScheme WarningColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
 			Background = ConsoleColor.DarkMagenta,
 		};
 
-		private static string LogDirectory { get; set; } = string.Empty;
-		private static string LogFileName { get; set; } = string.Empty;
+		private static string LogDirectory { get; set; } = DefaultLogDirectory;
+		private static string LogFileName { get; set; } = DefaultLogFileName;
 		private static string LogFilePath { get; set; } = string.Empty;
 
 
-		public static LogMode ActiveMode { get; private set; } = LogMode.None;
+		public static LogMode ActiveMode { get; private set; } = LogMode.FileOnly;
 		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
 		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
 		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.ConsoleOnly or LogMode.All;
 		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.FileOnly or LogMode.All;
 
 
-		public static void Disable()
+		public static void CreateLogFile( string file )
 		{
-			ActiveMode = LogMode.None;
-			Console.WriteLine( "Logging is disabled" );
-		}
-
-		public static void EnableForConsoleOnly()
-		{
-			ActiveMode = LogMode.ConsoleOnly;
-			Console.WriteLine( "Console logging is enabled" );
-		}
-
-		public static void EnableForFileOnly( string logDirectory )
-		{
-			ActiveMode = LogMode.FileOnly;
-			Console.WriteLine( "File logging is enabled" );
-			SetLogDirectory( logDirectory );
-		}
-
-		public static void EnableForAll( string logDirectory )
-		{
-			ActiveMode = LogMode.All;
-			Console.WriteLine( "Console and file logging are enabled" );
-			SetLogDirectory( logDirectory );
+			SetLogFilePath( file );
+			_ = Directory.CreateDirectory( LogDirectory );
+			File.Create( LogFilePath ).Close();
 		}
 
 		/// <summary>
@@ -105,81 +85,74 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Debug( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "DEBUG", message, lineNumber, DebugColorScheme );
+			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
+
+		public static void Disable()
+		{
+			ActiveMode = LogMode.None;
+			Console.WriteLine( "Logging is disabled." );
+		}
+
+		public static void EnableForConsole()
+		{
+			ActiveMode = LogMode.ConsoleOnly;
+			Console.WriteLine( "Logging to console is enabled." );
+		}
+
+		public static void EnableForFile()
+		{
+			ActiveMode = LogMode.FileOnly;
+			Console.WriteLine( "Logging to file is enabled." );
+		}
+
+		public static void EnableForAll()
+		{
+			EnableForConsole();
+			EnableForFile();
+			ActiveMode = LogMode.All;
+		}
 
 		/// <summary>
 		/// Write a formatted error message to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Error( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "ERROR", message, lineNumber, ErrorColorScheme );
-
-		/// <summary>
-		/// Write formatted important information to log.
-		/// </summary>
-		/// <param name="message">Information to write to log.</param>
-		public static void Important( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "IMPORTANT", message, lineNumber, ImportantColorScheme );
-
-		/// <summary>
-		/// Write formatted information to log.
-		/// </summary>
-		/// <param name="message">Information to write to log.</param>
-		public static void Info( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "INFO", message, lineNumber, InfoColorScheme );
-
-		/// <summary>
-		/// Set log file directory and/or name.
-		/// </summary>
-		/// <param name="file">File name and/or directory to generate log file at.</param>
-		public static void SetLogFile( string file )
-		{
-			var directory = Path.GetDirectoryName( file );
-			if ( directory is not null )
-			{
-				SetLogDirectory( directory );
-			}
-			var fileName = Path.GetFileName( file );
-			if ( fileName is not null )
-			{
-				SetLogFileName( fileName );
-			}
-			SetLogFilePath();
-		}
-
-		public static void SetLogFileName( string fileName )
-		{
-			LogFileName = fileName;
-			SetLogFilePath();
-		}
-
-		public static void SetLogDirectory( string directory )
-		{
-			LogDirectory = AddTrailingSlashToDirectoryPath( directory );
-			_ = Directory.CreateDirectory( LogDirectory );
-			SetLogFilePath();
-		}
+			=> WriteFormattedMessage( "ERROR", message, lineNumber, ErrorColorScheme );
 
 		/// <summary>
 		/// Write formatted details about a task finishing to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Finish( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "FINISH", message, lineNumber, FinishColorScheme );
+			=> WriteFormattedMessage( "FINISH", message, lineNumber, FinishColorScheme );
+
+		/// <summary>
+		/// Write formatted important information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Important( string message = "", int? lineNumber = null )
+			=> WriteFormattedMessage( "IMPORTANT", message, lineNumber, ImportantColorScheme );
+
+		/// <summary>
+		/// Write formatted information to log.
+		/// </summary>
+		/// <param name="message">Information to write to log.</param>
+		public static void Info( string message = "", int? lineNumber = null )
+			=> WriteFormattedMessage( "INFO", message, lineNumber, InfoColorScheme );
 
 		/// <summary>
 		/// Write formatted details about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Start( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "START", message, lineNumber, StartColorScheme );
+			=> WriteFormattedMessage( "START", message, lineNumber, StartColorScheme );
 
 		/// <summary>
 		/// Write a formatted warning message to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Warning( string message = "", int? lineNumber = null )
-			=> WriteFormattedInformation( "WARNING", message, lineNumber, WarningColorScheme );
+			=> WriteFormattedMessage( "WARNING", message, lineNumber, WarningColorScheme );
 
 		/// <summary>
 		/// Write text to log.
@@ -189,31 +162,13 @@ namespace Petrichor.Logging
 		/// <param name="consoleBackgroundColor">Background color to use if in console mode.</param>
 		public static void Write( string message = "", ColorScheme? colorScheme = null )
 		{
-			if ( ActiveMode == LogMode.None || message == "" )
+			if ( ActiveMode == LogMode.None || message == string.Empty )
 			{
 				return;
 			}
 
-			if ( LogDirectory == "" )
-			{
-				SetLogDirectory( DefaultLogDirectory );
-			}
-			if ( LogFileName == "" )
-			{
-				SetLogFileName( DefaultLogFileName );
-			}
-
-			if ( IsLoggingToConsoleEnabled )
-			{
-				colorScheme?.Assign();
-				Console.Write( message );
-				DefaultColorScheme.Assign();
-			}
-			if ( IsLoggingToFileEnabled )
-			{
-				using var logFile = File.AppendText( LogFilePath );
-				logFile.Write( message );
-			}
+			WriteToConsole( message, colorScheme );
+			WriteToFile( message );
 		}
 
 		/// <summary>
@@ -247,30 +202,47 @@ namespace Petrichor.Logging
 		private static string AddTimestampToMessage( string message = "" )
 			=> $"[{DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}] {message}";
 
-		private static string AddTrailingSlashToDirectoryPath( string directory )
+		private static void SetLogFilePath( string file )
 		{
-			var lastChar = directory[ ^1 ];
-			if ( lastChar is not '\\' and not '/' )
+			LogDirectory = Path.GetDirectoryName( file ) ?? DefaultLogDirectory;
+			LogFileName = Path.GetFileName( file ) ?? DefaultLogFileName;
+			LogFilePath = Path.Combine( LogDirectory, LogFileName );
+			if ( LogFilePath != string.Empty )
 			{
-				directory += '\\';
-			}
-			return directory;
-		}
-
-		private static void SetLogFilePath()
-		{
-			LogFilePath = $@"{LogDirectory}{LogFileName}";
-			if ( LogFileName.CompareTo( "" ) != 0 )
-			{
-				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"" );
+				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
 			}
 		}
 
-		private static void WriteFormattedInformation( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
+		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
 		{
 			var hasLineNumber = lineNumber is not null;
-			var lineNumberString = hasLineNumber ? $" <LINE {lineNumber}>" : string.Empty;
-			WriteLineWithTimestamp( $"{string.Format( "{0," + FormattedMessagePaddingAmount + "}", label )}{lineNumberString} : {message}", colorScheme );
+			var lineNumberString = hasLineNumber ? $"<LINE {lineNumber}> " : string.Empty;
+			var formattedLabel = string.Format( "{0," + FormattedMessagePaddingAmount + "}", $"{label}" );
+			var formattedMessage = $"{formattedLabel} : {lineNumberString}{message}";
+			WriteLineWithTimestamp( formattedMessage, colorScheme );
+		}
+
+		private static void WriteToConsole( string message, ColorScheme? colorScheme = null )
+		{
+			if ( IsLoggingToConsoleDisabled )
+			{
+				return;
+			}
+
+			colorScheme?.Assign();
+			Console.Write( message );
+			Console.ResetColor();
+		}
+
+		private static void WriteToFile( string message )
+		{
+			if ( IsLoggingToFileDisabled || LogFilePath == string.Empty )
+			{
+				return;
+			}
+
+			using var logFile = File.AppendText( LogFilePath );
+			logFile.Write( message );
 		}
 	}
 }
