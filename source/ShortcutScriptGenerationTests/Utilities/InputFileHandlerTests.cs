@@ -18,7 +18,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptEntry(),
 			};
-			public static int EntriesRegionLength => 3;
+			public static int EntryListRegionLength => 3;
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
 			public static string[] Macros => new[]
 			{
@@ -31,22 +31,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				"template",
 			};
-			public static int TemplatesRegionLength => 3;
+			public static int TemplateListRegionLength => 3;
 		}
 
 
-		public class EntriesRegionParserStub : IRegionParser<List<ScriptEntry>>
+		public class EntryListRegionParserStub : IDataRegionParser<List<ScriptEntry>>
 		{
 			public int LinesParsed { get; private set; } = 0;
-			public Dictionary<string, int> MaxAllowedTokenInstances { get; } = new();
-			public Dictionary<string, int> MinRequiredTokenInstances { get; } = new();
-			public string RegionName => Syntax.TokenNames.EntriesRegion;
+			public DataToken RegionToken => Syntax.Tokens.EntryList;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
 			public List<ScriptEntry> Parse( IndexedString[] regionData )
 			{
-				TokenInstancesParsed.Add( Syntax.TokenNames.EntryRegion, 1 );
-				LinesParsed = TestData.EntriesRegionLength;
+				TokenInstancesParsed.Add( Syntax.Tokens.Entry.Key, 1 );
+				LinesParsed = TestData.EntryListRegionLength;
 				return TestData.Entries.ToList();
 			}
 
@@ -60,17 +58,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class MetadataRegionParserStub : IRegionParser<IndexedString>
+		public class MetadataRegionParserStub : IDataRegionParser<IndexedString>
 		{
 			public int LinesParsed { get; private set; } = 0;
-			public Dictionary<string, int> MaxAllowedTokenInstances { get; } = new();
-			public Dictionary<string, int> MinRequiredTokenInstances { get; } = new();
-			public string RegionName => Common.Syntax.TokenNames.MetadataRegion;
+			public DataToken RegionToken => Common.Syntax.Tokens.Metadata;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
 			public IndexedString Parse( IndexedString[] regionData )
 			{
-				TokenInstancesParsed.Add( Common.Syntax.TokenNames.MinimumVersion, 1 );
+				TokenInstancesParsed.Add( Common.Syntax.Tokens.MinimumVersion.Key, 1 );
 				LinesParsed = TestData.MetadataRegionLength;
 				return new IndexedString();
 			}
@@ -85,20 +81,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class ModuleOptionsRegionParserStub : IRegionParser<ScriptModuleOptions>
+		public class ModuleOptionsRegionParserStub : IDataRegionParser<ScriptModuleOptions>
 		{
 			public int LinesParsed { get; private set; } = 0;
 			public Dictionary<string, int> MaxAllowedTokenInstances { get; } = new();
 			public Dictionary<string, int> MinRequiredTokenInstances { get; } = new();
-			public string RegionName => Syntax.TokenNames.ModuleOptionsRegion;
+			public DataToken RegionToken => Syntax.Tokens.ModuleOptions;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
 			public ScriptModuleOptions Parse( IndexedString[] regionData )
 			{
-				TokenInstancesParsed.Add( Syntax.TokenNames.DefaultIconFilePath, 1 );
-				TokenInstancesParsed.Add( Syntax.TokenNames.ReloadShortcut, 1 );
-				TokenInstancesParsed.Add( Syntax.TokenNames.SuspendIconFilePath, 1 );
-				TokenInstancesParsed.Add( Syntax.TokenNames.SuspendShortcut, 1 );
+				TokenInstancesParsed.Add( Syntax.Tokens.DefaultIcon.Key, 1 );
+				TokenInstancesParsed.Add( Syntax.Tokens.ReloadShortcut.Key, 1 );
+				TokenInstancesParsed.Add( Syntax.Tokens.SuspendIcon.Key, 1 );
+				TokenInstancesParsed.Add( Syntax.Tokens.SuspendShortcut.Key, 1 );
 				LinesParsed = TestData.ModuleOptionsRegionLength;
 				return TestData.ModuleOptions;
 			}
@@ -113,18 +109,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			}
 		}
 
-		public class TemplatesRegionParserStub : IRegionParser<List<string>>
+		public class TemplateListRegionParserStub : IDataRegionParser<List<string>>
 		{
 			public int LinesParsed { get; private set; } = 0;
 			public Dictionary<string, int> MaxAllowedTokenInstances { get; } = new();
 			public Dictionary<string, int> MinRequiredTokenInstances { get; } = new();
-			public string RegionName => Syntax.TokenNames.TemplatesRegion;
+			public DataToken RegionToken => Syntax.Tokens.TemplateList;
 			public Dictionary<string, int> TokenInstancesParsed { get; } = new();
 
 			public List<string> Parse( IndexedString[] regionData )
 			{
-				LinesParsed = TestData.TemplatesRegionLength;
-				TokenInstancesParsed[ Syntax.TokenNames.Template ] = TestData.Templates.Length;
+				LinesParsed = TestData.TemplateListRegionLength;
+				TokenInstancesParsed[ Syntax.Tokens.Template.Key ] = TestData.Templates.Length;
 				return TestData.Templates.ToList();
 			}
 
@@ -139,12 +135,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public EntriesRegionParserStub? entriesRegionParserStub;
-		public InputFileHandler? handler;
+		public EntryListRegionParserStub? entriesRegionParserStub;
+		public InputHandler? handler;
 		public Mock<IMacroGenerator>? macroGeneratorMock;
 		public MetadataRegionParserStub? metadataRegionParserStub;
 		public ModuleOptionsRegionParserStub? moduleOptionsRegionParserStub;
-		public TemplatesRegionParserStub? templatesRegionParserStub;
+		public TemplateListRegionParserStub? templatesRegionParserStub;
 
 
 		[TestInitialize]
@@ -161,7 +157,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			moduleOptionsRegionParserStub = new();
 			templatesRegionParserStub = new();
 
-			handler = new InputFileHandler( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
+			handler = new InputHandler( metadataRegionParserStub, moduleOptionsRegionParserStub, entriesRegionParserStub, templatesRegionParserStub, macroGeneratorMock.Object );
 		}
 
 
@@ -179,7 +175,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { $"{nameof( InputFileHandler )}_{nameof( ProcessFile_Test_Success )}.petrichor" };
+				yield return new object[] { $"{nameof( InputHandler )}_{nameof( ProcessFile_Test_Success )}.petrichor" };
 			}
 		}
 

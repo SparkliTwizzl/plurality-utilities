@@ -549,10 +549,10 @@ This option is used to control where logs are sent.
 
 Values for this option are:
 
-- `all` - send logs to all output locations.
-- `fileOnly` (DEFAULT) - send logs only to log file.
-- `consoleOnly` - send logs only to console output.
-- `none` - disable logging.
+- `all` (DEFAULT) - Send logs to all output locations.
+- `fileOnly` - Send logs only to log file.
+- `consoleOnly` - Send logs only to console output.
+- `none` - Disable logging.
 
 #### 4.2.1.4 - `--logFile` option (OPTIONAL)
 

@@ -10,12 +10,12 @@ module-options:
 	// region body
 }
 
-entries:
+entry-list:
 {
 	// region body
 }
 
-templates:
+template-list:
 {
 	// region body
 }

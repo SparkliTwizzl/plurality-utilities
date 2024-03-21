@@ -5,7 +5,7 @@ namespace Petrichor.Common.Containers
 	public class StringToken
 	{
 		public int LineNumber { get; set; } = 0;
-		public string Name { get; set; } = string.Empty;
+		public string Key { get; set; } = string.Empty;
 		public string RawLine { get; set; } = string.Empty;
 		public string Value { get; set; } = string.Empty;
 
@@ -14,7 +14,7 @@ namespace Petrichor.Common.Containers
 		public StringToken( StringToken other )
 		{
 			LineNumber = other.LineNumber;
-			Name = other.Name;
+			Key = other.Key;
 			RawLine = other.RawLine;
 			Value = other.Value;
 		}
@@ -34,7 +34,7 @@ namespace Petrichor.Common.Containers
 		private void GetTokenDataFromLine( string rawLine )
 		{
 			var line = rawLine.Trim();
-			var lineCommentTokenIndex = line.IndexOf( TokenNames.LineComment );
+			var lineCommentTokenIndex = line.IndexOf( Tokens.LineComment.Key );
 			var doesTokenContainLineComment = lineCommentTokenIndex >= 0;
 			if ( doesTokenContainLineComment )
 			{
@@ -46,11 +46,11 @@ namespace Petrichor.Common.Containers
 			var doesTokenContainAValue = nameEndsAt >= 0;
 			if ( !doesTokenContainAValue )
 			{
-				Name = line.Trim();
+				Key = line.Trim();
 				return;
 			}
 
-			Name = line[ ..nameEndsAt ].Trim();
+			Key = line[ ..nameEndsAt ].Trim();
 
 			var valueStartsAt = nameEndsAt + 1;
 			Value = line[ valueStartsAt.. ].Trim();

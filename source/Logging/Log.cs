@@ -66,7 +66,7 @@ namespace Petrichor.Logging
 		private static string LogFilePath { get; set; } = string.Empty;
 
 
-		public static LogMode ActiveMode { get; private set; } = LogMode.FileOnly;
+		public static LogMode ActiveMode { get; private set; } = LogMode.All;
 		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
 		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
 		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.ConsoleOnly or LogMode.All;

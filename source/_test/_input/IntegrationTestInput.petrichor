@@ -4,6 +4,12 @@ metadata: // inline comment in region name
 {
 	// line comment in metadata region body
 	minimum-version: 0.10 // inline comment in metadata region body
+	// command: generateTextShortcutScript
+	// {
+		// output-file: ../_output/IntegrationTestOutput.ahk
+		// log-mode: all
+		// log-file: ../_log/IntegrationTestLog.log
+	// }
 }
 
 module-options:
@@ -15,10 +21,10 @@ module-options:
 	suspend-shortcut: [win]s
 }
 
-entries:
+entry-list:
 {
-	// line comment before entries in entries region body
-	entry: 1 // inline comment in entries region body
+	// line comment before entry-list in entry-list region body
+	entry: 1 // inline comment in entry-list region body
 	{
 		// line comment in entry region body
 		id: 1234 // inline comment in entry region body
@@ -37,11 +43,11 @@ entries:
 	}
 }
 
-templates:
+template-list:
 {
-	// line comment in templates region body
+	// line comment in template-list region body
 	
-	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] ` // inline comment in templates region body
+	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] ` // inline comment in template-list region body
 	template: [tag] :: [name]
 	template: [tag][last-tag] :: [name] [last-name]
 	template: `[tag] :: `[name]

@@ -1,4 +1,5 @@
 ﻿using Petrichor.App.Enums;
+using Petrichor.Logging;
 using Petrichor.Logging.Enums;
 
 
@@ -20,11 +21,11 @@ namespace Petrichor.App.Utilities
 					break;
 
 				case Module.Some:
-					Console.WriteLine( "Unrecognized command." );
+					Log.Error( "Unrecognized command." );
 					break;
 
 				case Module.None:
-					Console.WriteLine( "No command provided." );
+					Log.Error( "No command provided." );
 					break;
 
 				default:
