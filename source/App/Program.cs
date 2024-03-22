@@ -26,7 +26,7 @@ namespace Petrichor.App
 			catch ( Exception exception )
 			{
 				Log.Error( $"Error occurred during execution: {exception.Message}" );
-				Log.Important( $"If you file a bug report, please attach the input and log files to help developers reproduce the error." );
+				Log.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 			}
 
 			var endTime = DateTime.Now;

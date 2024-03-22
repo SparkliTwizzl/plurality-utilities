@@ -13,12 +13,12 @@ namespace Petrichor.Common.Utilities
 		private IDataRegionParser<List<IndexedString>> MetadataRegionParser { get; set; }
 
 
-		public ModuleCommand ActiveCommand { get; private set; } = ModuleCommand.Empty;
+		public ModuleCommand ActiveCommand { get; private set; } = ModuleCommand.None;
 
 
 		public InputHandler( IDataRegionParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
 		{
-			ActiveCommand = command ?? ModuleCommand.Empty;
+			ActiveCommand = command ?? ModuleCommand.None;
 			MetadataRegionParser = metadataRegionParser;
 			FileRegionParser = CreateRegionParser();
 		}
@@ -32,7 +32,7 @@ namespace Petrichor.Common.Utilities
 			var fileName = Path.GetFileName( file ) ?? DefaultInputFileName;
 			var filePath = Path.Combine( directory, fileName );
 
-			var taskMessage = $"Parse input file \"{filePath}\"";
+			var taskMessage = $"Read input file \"{filePath}\"";
 			Log.Start( taskMessage );
 
 			var fileData = new List<string>();
@@ -71,7 +71,7 @@ namespace Petrichor.Common.Utilities
 			{
 				RegionToken = new()
 				{
-					Key = "input-file-data",
+					Key = "input-file-header",
 				},
 				TokenHandlers = new()
 				{

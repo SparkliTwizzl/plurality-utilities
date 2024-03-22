@@ -1,10 +1,13 @@
-﻿using System.Text;
+﻿using Petrichor.Common.Syntax;
+using System.Text;
+
 
 namespace Petrichor.Common.Containers
 {
 	public sealed class ModuleCommand : IEquatable<ModuleCommand>
 	{
-		public static ModuleCommand Empty => new();
+		public static ModuleCommand None => new() { Name = Commands.None };
+		public static ModuleCommand Some => new() { Name = Commands.Some };
 
 
 		public IndexedString[] Data { get; set; } = Array.Empty<IndexedString>();
@@ -37,7 +40,7 @@ namespace Petrichor.Common.Containers
 			{
 				return false;
 			}
-			return Data.Equals( other.Data ) && Name.Equals( other!.Name ) && Options.Equals( other!.Options );
+			return Enumerable.SequenceEqual( Data, other.Data ) && Name.Equals( other.Name ) && Enumerable.SequenceEqual( Options, other.Options );
 		}
 
 		public override int GetHashCode() => Data.GetHashCode() ^ Name.GetHashCode() ^ Options.GetHashCode();

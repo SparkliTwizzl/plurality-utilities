@@ -15,7 +15,7 @@ namespace Petrichor.App.Utilities
 					ShortcutScriptGenerationHandler.GenerateScript( command );
 					break;
 
-				case Commands.DoSomething:
+				case Common.Syntax.Commands.Some:
 					Log.Error( "Unrecognized command." );
 					break;
 

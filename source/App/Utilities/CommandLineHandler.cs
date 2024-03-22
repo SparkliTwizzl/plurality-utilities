@@ -10,15 +10,14 @@ namespace Petrichor.App.Utilities
 {
 	public static class CommandLineHandler
 	{
-		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.Empty;
+		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.None;
 
 
 		public static async Task<ModuleCommand> ParseArguments( string[] arguments )
 		{
-			HandleUnrecognizedArguments( arguments );
-			if ( CommandToRun == ModuleCommand.Empty )
+			if ( !WereArgumentsProvided( arguments ) )
 			{
-				return ModuleCommand.Empty;
+				return ModuleCommand.None;
 			}
 
 			var rootCommand = CreateCLICommands();
@@ -49,9 +48,11 @@ namespace Petrichor.App.Utilities
 							var logFile = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogFile ];
 							await InitalizeLogging( logMode, logFile );
 						}
-						catch ( Exception )
+						catch ( Exception exception )
 						{
-							Log.Error( $"Failed to parse input file \"{inputFilePath}\"." );
+							Log.Error( $"Failed to parse input file \"{inputFilePath}\": {exception.Message}" );
+							Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
+							CommandToRun = ModuleCommand.None;
 						}
 					},
 					inputFileOption );
@@ -161,8 +162,10 @@ namespace Petrichor.App.Utilities
 			var commandTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<IndexedString> result ) =>
 			{
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
+				CommandToRun = ModuleCommand.Some;
 				var command = commandRegionParser.Parse( dataTrimmedToRegion );
 				RejectConflictingModuleCommands( command );
+				CommandToRun = command;
 				return new ProcessedRegionData<List<IndexedString>>()
 				{
 					BodySize = commandRegionParser.LinesParsed - 1,
@@ -182,13 +185,15 @@ namespace Petrichor.App.Utilities
 			return new DataRegionParser<List<IndexedString>>( parserDescriptor );
 		}
 
-		private static void HandleUnrecognizedArguments( string[] arguments )
+		private static bool WereArgumentsProvided( string[] arguments )
 		{
 			if ( arguments.Length < 1 )
 			{
 				Console.WriteLine( $"Run with {CommandOptions.DefaultCommandOptionHelp} to see usage." );
-				CommandToRun = ModuleCommand.Empty;
+				return false;
 			}
+
+			return true;
 		}
 
 		private static async Task InitalizeLogging( string logModeArgument, string logFileArgument )
@@ -236,7 +241,9 @@ namespace Petrichor.App.Utilities
 
 		private static void RejectConflictingModuleCommands( ModuleCommand command )
 		{
-			if ( command == ModuleCommand.Empty || CommandToRun == ModuleCommand.Empty )
+			var isCurrentCommandSet = CommandToRun != ModuleCommand.None && CommandToRun != ModuleCommand.Some;
+			var isNewCommandSet = command != ModuleCommand.None;
+			if ( !isCurrentCommandSet || !isNewCommandSet )
 			{
 				return;
 			}
