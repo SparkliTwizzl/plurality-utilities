@@ -240,7 +240,7 @@ It may be easier to write a batch script (`.bat` file) to do this for you (see b
 
 ---
 
-### 4.3.1 - Available commands
+### 4.3.1 - Commands
 
 Petrichor modules each have a corresponding command to trigger them. These can be given as command line arguments or they can be [put into your input file](#4311---default-command) and Petrichor will attempt to read ane execute them automatically.
 
@@ -271,27 +271,6 @@ Command line usage:
 ```
 {install path}\Petrichor\
 >Petrichor.exe --inputFile {path}\input.txt
-```
-
----
-
-#### 4.3.1.2 - `generateTextShortcutScript` command
-
-To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`.
-
-This command supports the following options:
-
-- [--inputFile](#4321----inputfile-option-optional)
-- [--outputFile](#4322----outputfile-option-optional)
-- [--logMode](#4323----logmode-option-optional)
-- [--logFile](#4324----logfile-option-optional)
-
-
-**Example:**
-
-```
-{install path}\Petrichor\
->Petrichor.exe generateTextShortcutScript
 ```
 
 ---
@@ -833,6 +812,27 @@ template-list:
 
 ::smsm::Sam (they/them) | [Sam is a person]
 ::smysmy::Sammy (they/them) | [Sammy is a person]
+```
+
+---
+
+#### 5.1.2 - `generateTextShortcutScript` command
+
+To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`.
+
+This command supports the following options:
+
+- [--inputFile](#4321----inputfile-option-optional)
+- [--outputFile](#4322----outputfile-option-optional)
+- [--logMode](#4323----logmode-option-optional)
+- [--logFile](#4324----logfile-option-optional)
+
+
+**Example:**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe generateTextShortcutScript
 ```
 
 ---
