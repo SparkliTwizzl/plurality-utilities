@@ -257,10 +257,10 @@ namespace Petrichor.App.Utilities
 			try
 			{
 				var input = new ShortcutScriptGeneration.Utilities.InputHandler(
-					CreateModuleOptionsRegionParser(),
-					CreateEntryListRegionParser(),
-					CreateTemplateListRegionParser(),
-					new MacroGenerator() )
+					moduleOptionsRegionParser: CreateModuleOptionsRegionParser(),
+					entryListRegionParser: CreateEntryListRegionParser(),
+					templateListRegionParser: CreateTemplateListRegionParser(),
+					macroGenerator: new MacroGenerator() )
 						.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}

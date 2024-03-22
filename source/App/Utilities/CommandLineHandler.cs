@@ -29,7 +29,32 @@ namespace Petrichor.App.Utilities
 
 		private static RootCommand CreateCLICommands()
 		{
-			var rootCommand = new RootCommand( "Command line app with miscellaneous utilities." );
+			var inputFileOption = new Option<string>(
+				name: CommandOptions.ShortcutScriptOptionInputFile,
+				description: "Path to input file." );
+
+			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
+			{
+				inputFileOption,
+			};
+
+			rootCommand.SetHandler( async ( inputFilePath ) =>
+					{
+						try
+						{
+							CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() )
+								.ProcessFile( inputFilePath )
+								.ToArray();
+							var logMode = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogMode ];
+							var logFile = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogFile ];
+							await InitalizeLogging( logMode, logFile );
+						}
+						catch ( Exception )
+						{
+							Log.Error( $"Failed to parse input file \"{inputFilePath}\"." );
+						}
+					},
+					inputFileOption );
 			rootCommand.AddCommand( CreateCLIShortcutScriptCommand() );
 			return rootCommand;
 		}
@@ -52,7 +77,9 @@ namespace Petrichor.App.Utilities
 				name: CommandOptions.ShortcutScriptOptionLogFile,
 				description: "Path to generate log file at. If not provided, a default filepath will be used." );
 
-			var shortcutScriptCommand = new Command( Commands.GenerateShortcutScript, "Parse input file and generate a text find-and-replace shortcut script." )
+			var shortcutScriptCommand = new Command(
+				name: Commands.GenerateShortcutScript,
+				description: "Parse input file and generate a text find-and-replace shortcut script." )
 			{
 				inputFileOption,
 				outputFileOption,
@@ -77,8 +104,7 @@ namespace Petrichor.App.Utilities
 						var inputHandler = new InputHandler( CreateMetadataRegionParser() );
 						CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
 					},
-					inputFileOption, outputFileOption, logModeOption, logFileOption
-				);
+					inputFileOption, outputFileOption, logModeOption, logFileOption );
 
 			return shortcutScriptCommand;
 		}
@@ -128,7 +154,7 @@ namespace Petrichor.App.Utilities
 			{
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var version = token.Value;
-				Common.Info.AppVersion.RejectUnsupportedVersions( version );
+				Common.Info.AppVersion.RejectUnsupportedVersions( version: version, lineNumber: token.LineNumber );
 				return new ProcessedRegionData<List<IndexedString>>();
 			};
 
@@ -162,7 +188,6 @@ namespace Petrichor.App.Utilities
 			{
 				Console.WriteLine( $"Run with {CommandOptions.DefaultCommandOptionHelp} to see usage." );
 				CommandToRun = ModuleCommand.Empty;
-				return;
 			}
 		}
 
@@ -211,15 +236,12 @@ namespace Petrichor.App.Utilities
 
 		private static void RejectConflictingModuleCommands( ModuleCommand command )
 		{
-			if ( command == ModuleCommand.Empty )
+			if ( command == ModuleCommand.Empty || CommandToRun == ModuleCommand.Empty )
 			{
 				return;
 			}
 
-			if ( CommandToRun != ModuleCommand.Empty )
-			{
-				ExceptionLogger.LogAndThrow( new CommandException( $"A(n) \"{Common.Syntax.Tokens.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"." ) );
-			}
+			ExceptionLogger.LogAndThrow( exception: new CommandException( $"A(n) \"{Common.Syntax.Tokens.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"." ) );
 		}
 
 		public static void TryParseInputFile( string inputFile )

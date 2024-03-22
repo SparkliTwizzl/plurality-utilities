@@ -15,12 +15,12 @@ namespace Petrichor.App
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			Console.WriteLine( startTimeMessage );
 			Console.WriteLine();
-			var commandToRun = await CommandLineHandler.ParseArguments( args );
-			Log.Info( AppInfo.AppNameAndVersion );
-			Log.Info( startTimeMessage );
 
 			try
 			{
+				Log.Info( AppInfo.AppNameAndVersion );
+				Log.Info( startTimeMessage );
+				var commandToRun = await CommandLineHandler.ParseArguments( args );
 				RuntimeHandler.Execute( commandToRun );
 			}
 			catch ( Exception exception )

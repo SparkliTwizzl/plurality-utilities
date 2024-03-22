@@ -4,12 +4,12 @@ metadata: // inline comment in region name
 {
 	// line comment in metadata region body
 	minimum-version: 0.10 // inline comment in metadata region body
-	// command: generateTextShortcutScript
-	// {
-		// output-file: ../_output/IntegrationTestOutput.ahk
-		// log-mode: all
-		// log-file: ../_log/IntegrationTestLog.log
-	// }
+	command: generateTextShortcutScript
+	{
+		output-file: ../_output/IntegrationTestOutput.ahk
+		log-mode: all
+		log-file: ../_log/IntegrationTestLog.log
+	}
 }
 
 module-options:
