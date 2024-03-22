@@ -17,6 +17,7 @@ namespace Petrichor.App
 
 			try
 			{
+				Log.EnableBuffering();
 				Log.Info( AppInfo.AppNameAndVersion );
 				Log.Info( startTimeMessage );
 				var commandToRun = await CommandLineHandler.ParseArguments( args );

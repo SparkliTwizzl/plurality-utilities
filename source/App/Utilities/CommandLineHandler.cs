@@ -38,24 +38,29 @@ namespace Petrichor.App.Utilities
 			};
 
 			rootCommand.SetHandler( async ( inputFilePath ) =>
+				{
+					try
 					{
-						try
-						{
-							CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() )
-								.ProcessFile( inputFilePath )
-								.ToArray();
-							var logMode = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogMode ];
-							var logFile = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogFile ];
-							await InitalizeLogging( logMode, logFile );
-						}
-						catch ( Exception exception )
-						{
-							Log.Error( $"Failed to parse input file \"{inputFilePath}\": {exception.Message}" );
-							Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
-							CommandToRun = ModuleCommand.None;
-						}
-					},
-					inputFileOption );
+						CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() )
+							.ProcessFile( inputFilePath )
+							.ToArray();
+
+						var logMode = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogMode ];
+						var logFile = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogFile ];
+						await InitalizeLogging( logMode, logFile );
+
+						Log.WriteBufferToFile();
+						Log.DisableBuffering();
+					}
+					catch ( Exception exception )
+					{
+						Log.Error( $"Failed to parse input file \"{inputFilePath}\": {exception.Message}" );
+						Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
+						CommandToRun = ModuleCommand.None;
+					}
+				},
+				inputFileOption );
+
 			rootCommand.AddCommand( CreateCLIShortcutScriptCommand() );
 			return rootCommand;
 		}
@@ -89,23 +94,27 @@ namespace Petrichor.App.Utilities
 			};
 
 			shortcutScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
+				{
+					CommandToRun = new()
 					{
-						CommandToRun = new()
+						Name = Commands.GenerateShortcutScript,
+						Options = new()
 						{
-							Name = Commands.GenerateShortcutScript,
-							Options = new()
-							{
-								{ CommandOptions.ShortcutScriptOptionInputFile, inputFilePath },
-								{ CommandOptions.ShortcutScriptOptionOutputFile, outputFilePath },
-								{ CommandOptions.ShortcutScriptOptionLogMode, logMode },
-								{ CommandOptions.ShortcutScriptOptionLogFile, logFile },
-							},
-						};
-						await InitalizeLogging( logMode, logFile );
-						var inputHandler = new InputHandler( CreateMetadataRegionParser() );
-						CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
-					},
-					inputFileOption, outputFileOption, logModeOption, logFileOption );
+							{ CommandOptions.ShortcutScriptOptionInputFile, inputFilePath },
+							{ CommandOptions.ShortcutScriptOptionOutputFile, outputFilePath },
+							{ CommandOptions.ShortcutScriptOptionLogMode, logMode },
+							{ CommandOptions.ShortcutScriptOptionLogFile, logFile },
+						},
+					};
+
+					await InitalizeLogging( logMode, logFile );
+					Log.WriteBufferToFile();
+					Log.DisableBuffering();
+
+					var inputHandler = new InputHandler( CreateMetadataRegionParser() );
+					CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
+				},
+				inputFileOption, outputFileOption, logModeOption, logFileOption );
 
 			return shortcutScriptCommand;
 		}
@@ -200,31 +209,29 @@ namespace Petrichor.App.Utilities
 		private static async Task InitalizeLogging( string logModeArgument, string logFileArgument )
 			=> await Task.Run( () =>
 			{
-				Console.WriteLine();
-
 				switch ( logModeArgument )
 				{
 					case CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly:
 					{
-						Log.EnableForConsole();
+						Log.EnableLoggingToConsole();
 						break;
 					}
 
 					case CommandOptions.ShortcutScriptLogModeArgumentFileOnly:
 					{
-						Log.EnableForFile();
+						Log.EnableLoggingToFile();
 						break;
 					}
 
 					case CommandOptions.ShortcutScriptLogModeArgumentAll:
 					{
-						Log.EnableForAll();
+						Log.EnableAllLogDestinations();
 						break;
 					}
 
 					default:
 					{
-						Log.Disable();
+						Log.DisableLogging();
 						break;
 					}
 				}
@@ -238,8 +245,6 @@ namespace Petrichor.App.Utilities
 				{
 					Log.CreateLogFile( logFileArgument );
 				}
-
-				Console.WriteLine();
 			} );
 
 		private static void RejectConflictingModuleCommands( ModuleCommand command )
