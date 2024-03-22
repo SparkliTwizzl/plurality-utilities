@@ -41,14 +41,12 @@ namespace Petrichor.App.Utilities
 				{
 					try
 					{
-						CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() )
-							.ProcessFile( inputFilePath )
-							.ToArray();
-
+						var inputHandler = new InputHandler( CreateMetadataRegionParser() );
+						var data = inputHandler.ProcessFile( inputFilePath ).ToArray();
+						CommandToRun.Data = data;
 						var logMode = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogMode ];
 						var logFile = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogFile ];
 						await InitalizeLogging( logMode, logFile );
-
 						Log.WriteBufferToFile();
 						Log.DisableBuffering();
 					}
@@ -260,6 +258,9 @@ namespace Petrichor.App.Utilities
 		}
 
 		public static void TryParseInputFile( string inputFile )
-			=> CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() ).ProcessFile( inputFile ).ToArray();
+		{
+			CommandToRun.Data = new InputHandler( CreateMetadataRegionParser() ).ProcessFile( inputFile ).ToArray();
+			CommandToRun.Options.Add( CommandOptions.ShortcutScriptOptionInputFile, inputFile );
+		}
 	}
 }

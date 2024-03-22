@@ -256,12 +256,12 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				var input = new ShortcutScriptGeneration.Utilities.InputHandler(
+				var inputHandler = new ShortcutScriptGeneration.Utilities.InputHandler(
 					moduleOptionsRegionParser: CreateModuleOptionsRegionParser(),
 					entryListRegionParser: CreateEntryListRegionParser(),
 					templateListRegionParser: CreateTemplateListRegionParser(),
-					macroGenerator: new MacroGenerator() )
-						.ParseRegionData( data );
+					macroGenerator: new MacroGenerator() );
+				var input = inputHandler.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}
 			catch ( Exception exception )
