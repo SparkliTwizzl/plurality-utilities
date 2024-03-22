@@ -3,7 +3,7 @@
 
 namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public struct Tokens
+	public readonly struct Tokens
 	{
 		public static DataToken Color => new()
 		{

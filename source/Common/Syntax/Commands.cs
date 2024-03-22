@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.Common.Syntax
 {
-	public struct Commands
+	public readonly struct Commands
 	{
 		public const string None = "none";
 		public const string Some = "some";

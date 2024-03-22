@@ -6,9 +6,9 @@ metadata: // inline comment in region name
 	minimum-version: 0.10 // inline comment in metadata region body
 	command: generateTextShortcutScript
 	{
-		output-file: ../_output/IntegrationTestOutput.ahk
+		output-file: ../../../../_test/_output/_integrationtest/
 		log-mode: all
-		log-file: ../_log/IntegrationTestLog.log
+		log-file: ../../../../_test/_log/_integrationtest/
 	}
 }
 

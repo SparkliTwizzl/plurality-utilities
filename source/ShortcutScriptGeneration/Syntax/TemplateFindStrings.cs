@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public struct TemplateFindStrings
+	public readonly struct TemplateFindStrings
 	{
 		public static string Color => $"{Common.Syntax.OperatorChars.TokenNameOpen}{Tokens.Color.Key}{Common.Syntax.OperatorChars.TokenNameClose}";
 		public static string Decoration => $"{Common.Syntax.OperatorChars.TokenNameOpen}{Tokens.Decoration.Key}{Common.Syntax.OperatorChars.TokenNameClose}";

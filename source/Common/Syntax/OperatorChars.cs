@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.Common.Syntax
 {
-	public struct OperatorChars
+	public readonly struct OperatorChars
 	{
 		public const char Escape = '\\';
 		public const string EscapeStandin = "&bksl";

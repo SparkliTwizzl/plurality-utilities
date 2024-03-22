@@ -125,7 +125,8 @@ namespace Petrichor.App.Utilities
 			var commandOptionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
 			{
 				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Options.Add( token.Key, token.Value );
+				var commandLineOption = TokenKeysToCommandLineOptions.LookUpTable[ token.Key ];
+				result.Options.Add( commandLineOption, token.Value );
 				return new ProcessedRegionData<ModuleCommand>()
 				{
 					Value = result,
@@ -199,6 +200,8 @@ namespace Petrichor.App.Utilities
 		private static async Task InitalizeLogging( string logModeArgument, string logFileArgument )
 			=> await Task.Run( () =>
 			{
+				Console.WriteLine();
+
 				switch ( logModeArgument )
 				{
 					case CommandOptions.ShortcutScriptLogModeArgumentConsoleOnly:

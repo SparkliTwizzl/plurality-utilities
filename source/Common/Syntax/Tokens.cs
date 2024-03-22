@@ -3,7 +3,7 @@
 
 namespace Petrichor.Common.Syntax
 {
-	public struct Tokens
+	public readonly struct Tokens
 	{
 		public static DataToken BlankLine => new()
 		{
@@ -12,6 +12,11 @@ namespace Petrichor.Common.Syntax
 		public static DataToken Command => new()
 		{
 			Key = "command",
+			MaxAllowed = 1,
+		};
+		public static DataToken InputFile => new()
+		{
+			Key = "input-file",
 			MaxAllowed = 1,
 		};
 		public static DataToken LineComment => new()

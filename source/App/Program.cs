@@ -14,7 +14,6 @@ namespace Petrichor.App
 			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}.";
 			Console.WriteLine( AppInfo.AppNameAndVersion );
 			Console.WriteLine( startTimeMessage );
-			Console.WriteLine();
 
 			try
 			{

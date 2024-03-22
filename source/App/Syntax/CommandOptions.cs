@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.App.Syntax
 {
-	public struct CommandOptions
+	public readonly struct CommandOptions
 	{
 		public const string DefaultCommandOptionHelp = "--help";
 		public const string ShortcutScriptLogModeArgumentAll = "all";

@@ -204,13 +204,20 @@ namespace Petrichor.Logging
 
 		private static void SetLogFilePath( string file )
 		{
-			LogDirectory = Path.GetDirectoryName( file ) ?? DefaultLogDirectory;
-			LogFileName = Path.GetFileName( file ) ?? DefaultLogFileName;
-			LogFilePath = Path.Combine( LogDirectory, LogFileName );
-			if ( LogFilePath != string.Empty )
+			LogDirectory = Path.GetDirectoryName( file ) ?? string.Empty;
+			if ( LogDirectory == string.Empty )
 			{
-				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
+				LogDirectory = DefaultLogDirectory;
 			}
+
+			LogFileName = Path.GetFileName( file ) ?? string.Empty;
+			if ( LogFileName == string.Empty )
+			{
+				LogFileName = DefaultLogFileName;
+			}
+
+			LogFilePath = Path.Combine( LogDirectory, LogFileName );
+			Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
 		}
 
 		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
