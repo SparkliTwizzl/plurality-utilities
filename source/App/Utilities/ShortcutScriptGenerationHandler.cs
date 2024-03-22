@@ -1,4 +1,5 @@
-﻿using Petrichor.Common.Containers;
+﻿using Petrichor.App.Syntax;
+using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
@@ -13,11 +14,13 @@ namespace Petrichor.App.Utilities
 {
 	public static class ShortcutScriptGenerationHandler
 	{
-		public static void GenerateScript( string inputFilePath, string outputFilePath )
+		public static void GenerateScript( ModuleCommand command )
 		{
 			Log.Important( "Generating text shortcuts script..." );
 
-			GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
+			var outputFilePath = command.Options[ CommandOptions.ShortcutScriptOptionOutputFile ];
+			var data = command.Data;
+			GenerateAutoHotkeyScript( data, outputFilePath );
 
 			var successMessage = "Generated text shortcuts script successfully.";
 			if ( Log.IsLoggingToConsoleDisabled )
@@ -36,176 +39,120 @@ namespace Petrichor.App.Utilities
 			return $"{findString}{replaceString}";
 		}
 
-		private static RegionParser<List<ScriptEntry>> CreateEntriesRegionParser()
+		private static DataRegionParser<ScriptEntry> CreateEntryRegionParser()
+		{
+			var colorTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.Color = token.Value;
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var decorationTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.Decoration = token.Value;
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var idTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.ID = token.Value;
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var nameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.Identities.Add( ParseNameTokenValue( token ) );
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var lastNameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.LastIdentity = ParseNameTokenValue( token );
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var pronounTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
+			{
+				var token = new StringToken( regionData[ tokenStartIndex ] );
+				result.Pronoun = token.Value;
+				return new ProcessedRegionData<ScriptEntry>()
+				{
+					Value = result,
+				};
+			};
+
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptEntry>()
+			{
+				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.Entry,
+				TokenHandlers = new()
+				{
+					{ ShortcutScriptGeneration.Syntax.Tokens.Color, colorTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Decoration, decorationTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.ID, idTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Name, nameTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.LastName, lastNameTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Pronoun, pronounTokenHandler },
+				},
+			};
+
+			return new DataRegionParser<ScriptEntry>( parserDescriptor );
+		}
+
+		private static DataRegionParser<List<ScriptEntry>> CreateEntryListRegionParser()
 		{
 			var entryRegionParser = CreateEntryRegionParser();
 
-			var entryRegionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptEntry> result ) =>
+			var entryTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptEntry> result ) =>
 			{
 				entryRegionParser.Reset();
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
 				var entry = entryRegionParser.Parse( dataTrimmedToRegion );
 				result.Add( entry );
-				return new RegionData<List<ScriptEntry>>()
+				return new ProcessedRegionData<List<ScriptEntry>>()
 				{
 					BodySize = entryRegionParser.LinesParsed - 1,
 					Value = result,
 				};
 			};
 
-			var parserDescriptor = new RegionParserDescriptor<List<ScriptEntry>>()
+			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptEntry>>()
 			{
-				RegionName = ShortcutScriptGeneration.Syntax.TokenNames.EntriesRegion,
+				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.EntryList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion, entryRegionTokenHandler },
-				},
-				MaxAllowedTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryRegions },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryRegions },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Entry, entryTokenHandler },
 				},
 				PostParseHandler = ( List<ScriptEntry> entries ) =>
 				{
-					Log.Info( $"Parsed {entries.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion}\" tokens." );
+					Log.Info( $"Parsed {entries.Count} \"{ShortcutScriptGeneration.Syntax.Tokens.Entry.Key}\" tokens." );
 					return entries;
 				},
 			};
 
-			return new RegionParser<List<ScriptEntry>>( parserDescriptor );
+			return new DataRegionParser<List<ScriptEntry>>( parserDescriptor );
 		}
 
-		private static RegionParser<ScriptEntry> CreateEntryRegionParser()
-		{
-			var entryColorTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Color = token.Value;
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var entryDecorationTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Decoration = token.Value;
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var entryIDTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.ID = token.Value;
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var entryNameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Identities.Add( ParseNameTokenValue( token ) );
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var entryLastNameTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.LastIdentity = ParseNameTokenValue( token );
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var entryPronounTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Pronoun = token.Value;
-				return new RegionData<ScriptEntry>()
-				{
-					Value = result,
-				};
-			};
-
-			var parserDescriptor = new RegionParserDescriptor<ScriptEntry>()
-			{
-				RegionName = ShortcutScriptGeneration.Syntax.TokenNames.EntryRegion,
-				TokenHandlers = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryColor, entryColorTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryDecoration, entryDecorationTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryID, entryIDTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryName, entryNameTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryLastName, entryLastNameTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryPronoun, entryPronounTokenHandler },
-				},
-				MaxAllowedTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryColor, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryColorTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryDecoration, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryDecorationTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryID, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryIDTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryName, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryNameTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryLastName, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryLastNameTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryPronoun, ShortcutScriptGeneration.Info.TokenMetadata.MaxEntryPronounTokens },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryColor, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryColorTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryDecoration, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryDecorationTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryID, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryIDTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryName, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryNameTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryLastName, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryLastNameTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.EntryPronoun, ShortcutScriptGeneration.Info.TokenMetadata.MinEntryPronounTokens },
-				},
-			};
-
-			return new RegionParser<ScriptEntry>( parserDescriptor );
-		}
-
-		private static RegionParser<IndexedString> CreateMetadataRegionParser()
-		{
-			var minimumVersionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				var version = token.Value;
-				Common.Info.AppVersion.RejectUnsupportedVersions( version );
-				return new RegionData<IndexedString>();
-			};
-
-			var parserDescriptor = new RegionParserDescriptor<IndexedString>()
-			{
-				RegionName = Common.Syntax.TokenNames.MetadataRegion,
-				TokenHandlers = new()
-				{
-					{ Common.Syntax.TokenNames.MinimumVersion, minimumVersionTokenHandler },
-				},
-				MaxAllowedTokenInstances = new()
-				{
-					{ Common.Syntax.TokenNames.MinimumVersion, Common.Info.TokenMetadata.MaxMinimumVersionTokens },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ Common.Syntax.TokenNames.MinimumVersion, Common.Info.TokenMetadata.MinMinimumVersionTokens },
-				},
-			};
-
-			return new RegionParser<IndexedString>( parserDescriptor );
-		}
-
-		private static RegionParser<ScriptModuleOptions> CreateModuleOptionsRegionParser()
+		private static DataRegionParser<ScriptModuleOptions> CreateModuleOptionsRegionParser()
 		{
 			var defaultIconTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
 			{
@@ -213,7 +160,7 @@ namespace Petrichor.App.Utilities
 				var filePath = token.Value.WrapInQuotes();
 				result.DefaultIconFilePath = filePath;
 				Log.Info( $"Stored default icon file path ({filePath})." );
-				return new RegionData<ScriptModuleOptions>()
+				return new ProcessedRegionData<ScriptModuleOptions>()
 				{
 					Value = result,
 				};
@@ -225,7 +172,7 @@ namespace Petrichor.App.Utilities
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.ReloadShortcut = hotstring;
 				Log.Info( $"Stored reload shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-				return new RegionData<ScriptModuleOptions>()
+				return new ProcessedRegionData<ScriptModuleOptions>()
 				{
 					Value = result,
 				};
@@ -237,7 +184,7 @@ namespace Petrichor.App.Utilities
 				var filePath = token.Value.WrapInQuotes();
 				result.SuspendIconFilePath = filePath;
 				Log.Info( $"Stored suspend icon file path ({filePath})." );
-				return new RegionData<ScriptModuleOptions>()
+				return new ProcessedRegionData<ScriptModuleOptions>()
 				{
 					Value = result,
 				};
@@ -249,76 +196,54 @@ namespace Petrichor.App.Utilities
 				var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 				result.SuspendShortcut = hotstring;
 				Log.Info( $"Stored suspend shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-				return new RegionData<ScriptModuleOptions>()
+				return new ProcessedRegionData<ScriptModuleOptions>()
 				{
 					Value = result,
 				};
 			};
 
-			var parserDescriptor = new RegionParserDescriptor<ScriptModuleOptions>()
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptModuleOptions>()
 			{
-				RegionName = ShortcutScriptGeneration.Syntax.TokenNames.ModuleOptionsRegion,
+				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.ModuleOptions,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.DefaultIconFilePath, defaultIconTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.ReloadShortcut, reloadShortcutTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendIconFilePath, suspendIconTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendShortcut, suspendShortcutTokenHandler },
-				},
-				MaxAllowedTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.DefaultIconFilePath, ShortcutScriptGeneration.Info.TokenMetadata.MaxDefaultIconTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.ReloadShortcut, ShortcutScriptGeneration.Info.TokenMetadata.MaxReloadShortcutTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendIconFilePath, ShortcutScriptGeneration.Info.TokenMetadata.MaxSuspendIconTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendShortcut, ShortcutScriptGeneration.Info.TokenMetadata.MaxSuspendShortcutTokens },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.DefaultIconFilePath, ShortcutScriptGeneration.Info.TokenMetadata.MinDefaultIconTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.ReloadShortcut, ShortcutScriptGeneration.Info.TokenMetadata.MinReloadShortcutTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendIconFilePath, ShortcutScriptGeneration.Info.TokenMetadata.MinSuspendIconTokens },
-					{ ShortcutScriptGeneration.Syntax.TokenNames.SuspendShortcut, ShortcutScriptGeneration.Info.TokenMetadata.MinSuspendShortcutTokens },
+					{ ShortcutScriptGeneration.Syntax.Tokens.DefaultIcon, defaultIconTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.ReloadShortcut, reloadShortcutTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.SuspendIcon, suspendIconTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.SuspendShortcut, suspendShortcutTokenHandler },
 				},
 			};
 
-			return new RegionParser<ScriptModuleOptions>( parserDescriptor );
+			return new DataRegionParser<ScriptModuleOptions>( parserDescriptor );
 		}
 
-		private static RegionParser<List<string>> CreateTemplatesRegionParser()
+		private static DataRegionParser<List<string>> CreateTemplateListRegionParser()
 		{
 			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<string> result ) =>
 			{
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Add( ParseTemplateFromLine( token.Value, token.LineNumber ) );
-				return new RegionData<List<string>>()
+				return new ProcessedRegionData<List<string>>()
 				{
 					Value = result,
 				};
 			};
 
-			var parserDescriptor = new RegionParserDescriptor<List<string>>()
+			var parserDescriptor = new DataRegionParserDescriptor<List<string>>()
 			{
-				RegionName = ShortcutScriptGeneration.Syntax.TokenNames.TemplatesRegion,
+				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.TemplateList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.Template, templateTokenHandler },
-				},
-				MaxAllowedTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.Template, ShortcutScriptGeneration.Info.TokenMetadata.MaxTemplateTokens },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ ShortcutScriptGeneration.Syntax.TokenNames.Template, ShortcutScriptGeneration.Info.TokenMetadata.MinTemplateTokens },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Template, templateTokenHandler },
 				},
 				PostParseHandler = ( List<string> templates ) =>
 				{
-					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.TokenNames.Template}\" tokens." );
+					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.Tokens.Template.Key}\" tokens." );
 					return templates;
 				},
 			};
 
-			return new RegionParser<List<string>>( parserDescriptor );
+			return new DataRegionParser<List<string>>( parserDescriptor );
 		}
 
 		private static string ExtractFindString( string input, int lineNumber )
@@ -327,22 +252,21 @@ namespace Petrichor.App.Utilities
 			return input[ ..( lengthOfFindString + 1 ) ];
 		}
 
-		private static void GenerateAutoHotkeyScript( string inputFilePath, string outputFilePath )
+		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
 		{
 			try
 			{
-				var input = new InputFileHandler(
-					CreateMetadataRegionParser(),
-					CreateModuleOptionsRegionParser(),
-					CreateEntriesRegionParser(),
-					CreateTemplatesRegionParser(),
-					new MacroGenerator() )
-						.ProcessFile( inputFilePath );
+				var inputHandler = new ShortcutScriptGeneration.Utilities.InputHandler(
+					moduleOptionsRegionParser: CreateModuleOptionsRegionParser(),
+					entryListRegionParser: CreateEntryListRegionParser(),
+					templateListRegionParser: CreateTemplateListRegionParser(),
+					macroGenerator: new MacroGenerator() );
+				var input = inputHandler.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}
 			catch ( Exception exception )
 			{
-				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Generating AutoHotkey shortcuts script failed.", exception ) );
+				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Generating AutoHotkey shortcuts script failed: {exception.Message}", exception ) );
 			}
 		}
 
@@ -371,7 +295,7 @@ namespace Petrichor.App.Utilities
 			var components = token.Value.Split( '@' );
 			if ( components.Length != 2 )
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( $"A {token.Name} token had an invalid value ( \"{token.Value}\" )." ), token.LineNumber );
+				ExceptionLogger.LogAndThrow( new TokenValueException( $"A {token.Key} token had an invalid value ( \"{token.Value}\" )." ), token.LineNumber );
 			}
 
 			var name = components[ 0 ].Trim();

@@ -1,7 +1,7 @@
 ﻿namespace Petrichor.App.Syntax
 {
-	public struct Commands
+	public readonly struct Commands
 	{
-		public const string ShortcutScript = "generateTextShortcutScript";
+		public const string GenerateShortcutScript = "generateTextShortcutScript";
 	}
 }

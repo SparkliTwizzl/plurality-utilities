@@ -8,82 +8,80 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.Common.Utilities.Tests
 {
 	[TestClass]
-	public class RegionParserTests
+	public class DataRegionParserTests
 	{
 		public struct TestData
 		{
-			public static RegionParserDescriptor<IndexedString> ParserDescriptor => new()
+			public static DataRegionParserDescriptor<IndexedString> ParserDescriptor => new()
 			{
-				MaxAllowedTokenInstances = new()
-				{
-					{ TokenName, 1 },
-				},
-				MinRequiredTokenInstances = new()
-				{
-					{ TokenName, 1 },
-				},
-				RegionName = RegionName,
+				RegionToken = RegionToken,
 				TokenHandlers = new()
 				{
-					{ TokenName, ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) => new() },
+					{ TestToken, ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) => new() },
 				},
 			};
 			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				$"\t{ Token } { TokenValue }",
-				Tokens.RegionClose,
+				RegionToken.Qualify(),
+				$"\t{ TestToken.Qualify() } { TestTokenValue }",
+				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_MismatchedRegionOpen => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				Tokens.RegionOpen,
-				$"\t{ Token } { TokenValue }",
+				RegionToken.Qualify(),
+				Tokens.RegionOpen.Key,
+				$"\t{ TestToken.Qualify() } { TestTokenValue }",
 			} );
 			public static IndexedString[] RegionData_TokenWithNoValue => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				Tokens.RegionOpen,
-				$"\t{ Token }",
-				Tokens.RegionClose,
+				RegionToken.Qualify(),
+				Tokens.RegionOpen.Key,
+				$"\t{ TestToken.Qualify() }",
+				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_TooFewTokenInstances => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				Tokens.RegionOpen,
-				Tokens.RegionClose,
+				RegionToken.Qualify(),
+				Tokens.RegionOpen.Key,
+				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_TooManyTokenInstances => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				Tokens.RegionOpen,
-				$"\t{ Token } { TokenValue }",
-				$"\t{ Token } { TokenValue }",
-				Tokens.RegionClose,
+				RegionToken.Qualify(),
+				Tokens.RegionOpen.Key,
+				$"\t{ TestToken.Qualify() } { TestTokenValue }",
+				$"\t{ TestToken.Qualify() } { TestTokenValue }",
+				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_UnrecognizedToken => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				Tokens.RegionOpen,
+				RegionToken.Qualify(),
+				Tokens.RegionOpen.Key,
 				$"\tunknown-token{ OperatorChars.TokenValueDivider } value",
-				Tokens.RegionClose,
+				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_Valid => IndexedString.IndexStringArray( new[]
 			{
-				RegionToken,
-				$"{ Tokens.RegionOpen } { Tokens.LineComment } inline comment",
-				$"\t{ Token } { TokenValue }",
-				Tokens.RegionClose,
+				$"{RegionToken.Qualify()} region token value",
+				$"{ Tokens.RegionOpen.Key } { Tokens.LineComment.Key } inline comment",
+				$"\t{ TestToken.Qualify() } { TestTokenValue }",
+				Tokens.RegionClose.Key,
 			} );
-			public static string RegionName => nameof( RegionParserTests );
-			public static string RegionToken => $"{RegionName}{OperatorChars.TokenValueDivider}";
-			public static string Token => $"{TokenName}{OperatorChars.TokenValueDivider}";
-			public static string TokenName => "token-name";
-			public static string TokenValue => "Value";
+			public static DataToken RegionToken => new()
+			{
+				Key = nameof( DataRegionParserTests ),
+			};
+			public static DataToken TestToken => new()
+			{
+				Key = "test-token",
+				MaxAllowed = 1,
+				MinRequired = 1,
+			};
+			public static string TestTokenValue => "Value";
 		}
 
 
-		public RegionParser<IndexedString>? parser;
+		public DataRegionParser<IndexedString>? parser;
 
 
 		[TestInitialize]

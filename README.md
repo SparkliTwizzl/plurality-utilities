@@ -21,7 +21,11 @@ This tool is a command-line app with miscellaneous utilities. Currently wi're th
 
 # 2 - What does it do?
 
-Currently the only utility it supports is generating AutoHotkey scripts to replace short sequences of text (tags) with longer strings with names, pronouns, and similar information. These scripts can be written by hand, but learning how to use AutoHotkey is required, and they're hard to make changes to if you ever want to, for example, change your name or your pronouns.
+Petrichor consists of modules for performing various utilities.
+
+Modules:
+
+- [Text Shortcut Script Generation](#51---text-shortcut-script-generation-module)
 
 ---
 
@@ -51,6 +55,8 @@ Petrichor Script is made up of data regions, which are made up of tokens. Some a
 
 All data in Petrichor input files is in the form of data tokens, which can be grouped into data regions.
 
+---
+
 #### 4.1.1.1 - Data tokens
 
 The most basic element in input files is a data token, or simply a token.
@@ -65,6 +71,8 @@ Token names are always in `lower-kebab-case`.
 token-name:Token value.
  token-name : Token value. 
 ```
+
+---
 
 #### 4.1.1.2 - Data regions
 
@@ -115,14 +123,32 @@ region:
 }
 ```
 
+---
+
+### 4.1.3 - Escape characters
+
+Backslash `\` is treated as an "escape character" in some cases. It is used to disable the normal function of special characters. An escape character can be applied to another escape character in order to make the scond one print literally.
+
+**Example:**
+
+```petrichor
+do-something: @blah // this hypothetical token treats @ as a special character and changes it.
+do-something: \@blah // but in this case, it will be left as-is, since the @ is escaped.
+```
 
 ---
 
-### 4.1.3 - Metadata region (REQUIRED)
+## 4.2 - Supported tokens
 
-This region contains required information for Petrichor to run, and it must be the first region in the file.
+---
 
-#### 4.1.3.1 - Minimum version token (REQUIRED)
+### 4.2.1 - Metadata region (REQUIRED)
+
+This region contains required information for Petrichor to run, and it must be the first region in the file regardless of what module is used.
+
+---
+
+#### 4.2.1.1 - Minimum version token (REQUIRED)
 
 This token is required. It specifies the minimum Petrichor version required in order to parse the file.
 
@@ -147,11 +173,387 @@ minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview v
 
 ---
 
-### 4.1.4 - Module options region (OPTIONAL)
+#### 4.2.1.2 - Command token (OPTIONAL)
 
-This region is optional. It allows you to set up optional properties in the shortcut script if desired.
+This token is optional. It allows you to specify the [command to run](#43---running-the-tool) in your input file for Petrichor to handle automatically.
 
-#### 4.1.4.1 - Custom icon tokens (OPTIONAL)
+Set the token's value to the command to be run.
+
+To use [command options](#432---command-options), add a region body to the token and put options into it as tokens, converting the option names to `kebab-case` and setting the tokens' values to the command option values.
+
+**Example:**
+
+```petrichor
+metadata:
+{
+	minimum-version: {version number}
+	command: commandName
+	{
+		command-option-1: value1
+		command-option-2: value2
+	}
+}
+```
+```
+{install path}\Petrichor\
+>Petrichor.exe --inputFile input.txt
+```
+
+This is equivalent to the following:
+```petrichor
+metadata:
+{
+	minimum-version: {version number}
+}
+```
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
+```
+
+---
+
+### 4.2.2 - Module options region (OPTIONAL)
+
+This region is optional. It allows you to configure module-specific options, if supported by a module. Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
+
+---
+
+### 4.2.3 - Module-specific tokens
+
+Most modules have tokens that are specific to their functions. See the relevant module's documentation for information about its tokens.
+
+---
+
+## 4.3 - Running the tool
+
+Call the executable (`.exe` file) via command line to run it.
+
+It may be easier to write a batch script (`.bat` file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
+
+**Example:**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe
+```
+
+---
+
+### 4.3.1 - Commands
+
+Petrichor modules each have a corresponding command to trigger them. These can be given as command line arguments or they can be [put into your input file](#4311---default-command) and Petrichor will attempt to read ane execute them automatically.
+
+---
+
+#### 4.3.1.1 - Default command
+
+If you call Petrichor with no arguments, you will be prompted to use the `--help` option to see available commands.
+
+You can call Petrichor without passing it a command if you [put the command in your input file](#421---metadata-region-required) and use the [--inputFile option](#4321----inputfile-option-optional) when you run Petrichor.
+
+**Example:**
+
+Input file contents:
+```petrichor
+metadata
+{
+	minimum-version: {version number}
+	command: commandName
+	{
+		command-option-1: value1
+		command-option-2: value2
+	}
+}
+```
+
+Command line usage:
+```
+{install path}\Petrichor\
+>Petrichor.exe --inputFile {path}\input.txt
+```
+
+---
+
+### 4.3.2 - Command options
+
+Most commands can have their behavior modified with options. 
+
+---
+
+#### 4.3.2.1 - `--inputFile` option (OPTIONAL)
+
+Add the `--inputFile` option to a command and pass the input file argument after it.
+
+You can specify the input file directory and/or name.
+If you only provide the directory, `input.petrichor` will be used as the file name.
+If you only provide the file name, `{install path}\Petrichor\` will be used as the directory.
+
+You must include the file extension if you provide a file name. [Relative file paths](#433---relative-file-paths) can be used.
+
+**Example (full file path):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --inputFile "{path}\inputFile.txt"
+```
+Petrichor will look for `{path}\inputFile.txt`.
+
+**Example (directory only, default file name):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --inputFile "{path}\"
+```
+Petrichor will look for `{path}\input.petrichor`.
+
+**Example (directory only, default file name):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --inputFile "inputFile.txt"
+```
+Petrichor will look for `{install path}\Petrichor\inputFile.txt`.
+
+---
+
+#### 4.3.2.2 - `--outputFile` option (OPTIONAL)
+
+Add the `--outout` option to a command which generates a file and pass the output file argument after it.
+
+You can specify the file directory and/or name.
+If you only provide the directory, `output.ahk` will be used as the file name.
+If you only provide the file name, `{install path}\Petrichor\_output\` will be used as the directory.
+
+A file extension is not required, and if one is included it will be replaced automatically. [Relative file paths](#433---relative-file-paths) can be used.
+
+**Example (full file path):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --outputFile "C:\path\to\output\file\outputFile"
+
+RESULT:
+
+C:\path\to\output\file\outputFile.ext ← will be generated by Petrichor
+```
+
+**Example (directory only, default file name):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --outputFile "outputFile"
+
+RESULT:
+
+{install path}\Petrichor\_output\outputFile.ext ← will be generated by Petrichor
+```
+
+**Example (file name only, default directory):**
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --outputFile "{path}\output\"
+
+RESULT:
+
+{path}\output\output.ext ← will be generated by Petrichor
+```
+
+---
+
+#### 4.3.2.3 - `--logMode` option (OPTIONAL)
+
+This option is used to control where logs are sent.
+
+Values for this option are:
+
+- `all` (DEFAULT) - Send logs to all output locations.
+- `fileOnly` - Send logs only to log file.
+- `consoleOnly` - Send logs only to console output.
+- `none` - Disable logging.
+
+---
+
+#### 4.3.2.4 - `--logFile` option (OPTIONAL)
+
+This option is used to customize the file name and/or location to generate a log file at.
+
+NOTE: log file will only be created if logging to file is enabled (see 4.3.3.3).
+
+**Example (filename only, default directory):**
+
+```
+Petrichor.exe comandName --logFile logFile.txt
+
+RESULT:
+
+{path}/Petrichor/_log/logFile.txt ← will be generated by Petrichor
+```
+
+**Example (directory path only, default filename):**
+
+```
+Petrichor.exe commandName --logMode all --logFile {log path}/
+
+RESULT:
+
+{log path}/{yyyy}-{MM}-{dd}_{HH}-{mm}-{ss}.log ← will be generated by Petrichor
+```
+
+**Example: (full filepath, no defaults):**
+
+```
+Petrichor.exe commandName --logMode all --logFile {log path}/logFile.txt
+
+RESULT:
+
+{log path}/logFile.txt ← will be generated by Petrichor
+```
+
+---
+
+### 4.3.3 - Relative file paths
+
+If you dont like having to get the full path for files, you can use relative paths instead.
+
+`./` gets the folder the .exe file is in, and `../` gets the parent folder of that folder.
+
+**Example:**
+
+FOLDER CONTENTS:
+
+```
+- parent/
+    - Petrichor/
+        - outputFile.ext (will be generated after running)
+        - Petrichor.exe
+    - inputFile.txt
+```
+
+IN COMMAND PROMPT:
+
+```
+{install path}\Petrichor\
+>Petrichor.exe commandName --inputFile ../inputFile.txt --outputFile ./outputFile
+```
+
+---
+
+### 4.3.4 - A note about slashes in file paths on Windows
+
+On Windows, backslashes `\` and forward slashes `/` both work the same way. Use whichever you prefer to. **They are not equivalent to each other in input files, however.**
+
+---
+
+### 4.3.5 - Running Petrichor via batch script (`.bat` file)
+
+If you're going to run the tool with the same arguments every time, it's much simpler to write a simple `.bat` file to run the tool for you.
+
+1. Make a new text file, name it whatever you want, and change its extension to `.bat`.
+    -  You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
+2. Open the file in a text editor program, such as Notepad.
+3. Type `start {install path}/Petrichor.exe]`, followed by command usage as shown above.
+    - **NOTE:** [Relative paths](#433---relative-file-paths) are relative to the batch script by default. If relative paths are used in Petrichor commands, they must be relative to Petrichor.exe instead.
+4. Save the batch file.
+
+Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set.
+
+**Example (command passed with command line arguments):**
+
+FOLDER CONTENTS:
+
+```
+- parent\
+    - Petrichor\
+        - Petrichor.exe
+    - example batch file.bat
+    - inputFile.txt
+    - outputFile.ahk (will be generated after running)
+```
+
+IN FILE "example batch file.bat":
+
+```batch
+start Petrichor\Petrichor.exe generateTextShortcutScript --inputFile ..\inputFile.txt --outputFile ..\outputFile
+```
+
+**Example (command set in input file):**
+
+FOLDER CONTENTS:
+
+```
+- parent\
+    - Petrichor\
+        - Petrichor.exe
+    - example batch file.bat
+    - inputFile.txt
+    - outputFile.ahk (will be generated after running)
+```
+
+IN FILE "example batch file.bat":
+
+```batch
+start Petrichor\Petrichor.exe --inputFile ..\inputFile.txt
+```
+
+Optionally, you can make a batch script wait for Petrichor to finish running and launch the output script automatically.
+
+1. Create a batch script using the steps above.
+2. After the `start` keyword, add `/wait`. This will cause the batch script to wait until Petrichor is closed before continuing.
+3. Add a new line to the batch script, and enter `start [path/script.ahk]`.
+4. Save the batch file.
+
+Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set, wait until it closes, then launch the output script.
+
+**NOTE:** If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
+
+**Example:**
+
+FOLDER CONTENTS:
+
+```
+- parent\
+    - Petrichor\
+        - Petrichor.exe
+    - example batch file.bat
+    - inputFile.txt
+    - outputFile.ahk (will be generated after running)
+
+```
+
+IN FILE "example batch file.bat":
+
+```batch
+start /wait Petrichor\Petrichor.exe generateTextShortcutScript --inputFile ..\inputFile.txt --outputFile ..\outputFile
+start outputFile.ahk
+```
+
+---
+
+# 5 - Module-specific information
+
+## 5.1 - Text Shortcut Script Generation module
+
+This module generates text shortcut scripts to replace short sequences of text (tags) with longer strings with names, pronouns, and similar information. These scripts can be written by hand, but learning how to use AutoHotkey is required, and they're hard to make changes to if you ever want to, for example, change your name or your pronouns.
+
+---
+
+### 5.1.1 - Text Shortcut Script Generation module tokens
+
+This section details all the [data tokens](#411---data-tokens-and-regions) that are [module-specific](#423---module-specific-tokens) for the Text Shortcut Script Generation module.
+
+This information likely won't make sense unless you [know how to use it](#4---how-do-i-use-it) first.
+
+---
+
+#### 5.1.1.1 - Module options region (OPTIONAL)
+
+This variant of the [module options region](#422---module-options-region-optional) includes options supported by the [Text Shortcut Script Generation module](#51---text-shortcut-script-generation-module).
+
+---
+
+##### 5.1.1.1.1 - Custom icon tokens (OPTIONAL)
 
 If desired, you can specify filepaths to custom icons for the shortcut script to use.
 
@@ -172,7 +574,7 @@ module-options:
 }
 ```
 
-For simplicity, if an icon file will be in the same folder as the shortcut script, you can use a [relative path](#4.2.2---relative-file-paths).
+For simplicity, if an icon file will be in the same folder as the shortcut script, you can use a [relative path](#433---relative-file-paths).
 
 **Example:**
 
@@ -184,11 +586,13 @@ module-options:
 }
 ```
 
-#### 4.1.4.2 - Reload / suspend shortcut tokens (OPTIONAL)
+---
+
+##### 5.1.1.1.2 - Reload / suspend shortcut tokens (OPTIONAL)
 
 If desired, you can include keyboard shortcuts to reload and/or suspend the script.
 
-To include a shortcut to reload the script, add a token to the module options region with the name `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation. To make this easier, some [find and replace strings](#41421---shortcut-find-and-replace-strings) are supported by Petrichor.
+To include a shortcut to reload the script, add a token to the module options region with the name `reload-shortcut` and set its value to a valid AutoHotkey v2.0 shortcut string; If you do not know how to write one, consult AutoHotkey documentation. To make this easier, some [find and replace strings](#511121---shortcut-find-and-replace-strings) are supported by Petrichor.
 
 To include a shortcut to suspend the script, do the same with a token named `suspend-shortcut`.
 
@@ -202,7 +606,9 @@ module-options:
 }
 ```
 
-##### 4.1.4.2.1 - Shortcut find-and-replace strings
+---
+
+###### 5.1.1.1.2.1 - Shortcut find-and-replace strings
 
 The following strings are supported:
 
@@ -246,13 +652,15 @@ module-options:
 
 ---
 
-### 4.1.5 - Entries region (REQUIRED)
+#### 5.1.1.2 - Entry list region (REQUIRED)
 
-This region defines the entries to be converted into macros. It must come before the `templates` region.
+This region defines the entries to be converted into macros. It must come before the `template-list` region.
 
-Each entry is an `entry` region which defines a set of values to create shortcut macros from. There is no limit to how many entries the `entries` region can contain.
+Each entry is an `entry` region which defines a set of values to create shortcut macros from. There is no limit to how many entries the `entry-list` region can contain.
 
-#### 4.1.5.1 - Entry regions (OPTIONAL)
+---
+
+##### 5.1.1.2.1 - Entry regions (OPTIONAL)
 
 Entry regions are made up several token types. There are different restrictions and requirements for each type.
 
@@ -290,13 +698,15 @@ entry: // only required tokens present
 
 ---
 
-### 4.1.6 - Templates region (REQUIRED)
+#### 5.1.1.3 - Template list region (REQUIRED)
 
-This region defines the structure of generated macros. It must come after the entries region.
+This region defines the structure of generated macros. It must come after the entry list region.
 
 Templates define the structure of AutoHotkey macros to create from entries. There is no limit to how many templates can be used.
 
-#### 4.1.6.1 - Template tokens (OPTIONAL)
+---
+
+##### 5.1.1.3.1 - Template tokens (OPTIONAL)
 
 Templates are defined by tokens with the name `template` and a valid AutoHotkey hotstring. Consult AutoHotkey documentation if you do not know how to write one. A basic overview is provided here.
 
@@ -306,14 +716,14 @@ All templates must start with a `find` text string, then `::`, then a `replace` 
 
 These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the `find` and/or `replace` strings.
 
-Use [marker strings](#4.1.6.1.1---template-marker-strings) to define how templates should be applied to entries.
+Use [marker strings](#511311---template-marker-strings) to define how templates should be applied to entries.
 
 If this is not followed, the generated script wont work correctly, even though Petrichor will run without errors.
 
 **Example:**
 
 ```petrichor
-templates:
+template-list:
 {
     template: [find string] :: ` [replace string] `
 }
@@ -323,7 +733,9 @@ templates:
 ::[find string]::` [replace string] `
 ```
 
-##### 4.1.6.1.1 - Template marker strings
+---
+
+###### 5.1.1.3.1.1 - Template marker strings
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -342,12 +754,12 @@ Available marker strings are:
 
 **NOTE:** Only these supported marker strings can be used. Unknown marker strings will be rejected.
 
-**NOTE:** By default, you cannot use the `[` or `]` symbols in a template string. Use [escape characters](#41612---escape-characters) to circumvent this.
+**NOTE:** By default, you cannot use the `[` or `]` symbols in a template string. Use [escape characters](#413---escape-characters) to circumvent this.
 
 **Example:**
 
 ```petrichor
-entries:
+entry-list:
 {
     entry:
     {
@@ -361,7 +773,7 @@ entries:
     }
 }
 
-templates:
+template-list:
 {
     template:  [tag][last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
 }
@@ -377,7 +789,7 @@ You can use each marker string in a template as many times as you want
 **Example:**
 
 ```petrichor
-entries:
+entry-list:
 {
     entry:
     {
@@ -391,7 +803,7 @@ entries:
     }
 }
 
-templates:
+template-list:
 {
     template: [tag][tag] :: [name] | {[name] [decoration]}
 }
@@ -402,312 +814,54 @@ templates:
 ::smysmy::Sammy (they/them) | [Sammy is a person]
 ```
 
-##### 4.1.6.1.2 - Escape characters
-
-Backslash `\` is treated as an "escape character" in templates. It is used to disable the normal function of special characters. An escape character can be applied to another escape character in order to make the scond one print literally.
-
-**Example:**
-
-```petrichor
-entries:
-{
-    entry:
-    {
-        id: 1234
-        name: Sam @sm
-        name: Sammy @smy
-        last-name: Smith @s
-        pronoun: they/them
-        color: #89abcd
-        decoration: -- a person
-    }
-}
-
-templates:
-{
-    template: [tag] :: [name] \\ \[[decoration]\]
-}
-
-// MACROS GENERATED FROM INPUT:
-
-::sm::Sam \ [a person]
-::smy::Sammy \ [a person]
-```
-
 ---
 
-## 4.2 - Running the tool
+#### 5.1.2 - `generateTextShortcutScript` command
 
-Call the executable (`.exe` file) via command line to run it
+To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`.
 
-It may be easier to write a batch script (`.bat` file) to do this for you (see below for how to do this). If you call it with no arguments, it will show helptext explaining how to use it.
+This command supports the following options:
 
-**Example:**
+- [--inputFile](#4321----inputfile-option-optional)
+- [--outputFile](#4322----outputfile-option-optional)
+- [--logMode](#4323----logmode-option-optional)
+- [--logFile](#4324----logfile-option-optional)
 
-```
-{installpath}\Petrichor\
->Petrichor.exe
-```
-
-### 4.2.1 - `generateTextShortcutScript` command
-
-To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`. This command has several options, some of which are required, which are explained below.
 
 **Example:**
 
 ```
-{installpath}\Petrichor\
+{install path}\Petrichor\
 >Petrichor.exe generateTextShortcutScript
 ```
 
-#### 4.2.1.1 - `--inputFile` option (OPTIONAL)
+---
 
-Add the `--inputFile` option to the `generateTextShortcutScript` command and pass the input file argument after it.
-
-You can specify the input file directory and/or name.
-If you only provide the directory, `input.petrichor` will be used as the file name.
-If you only provide the file name, `{installpath}\Petrichor\` will be used as the directory.
-
-You must include the file extension if you provide a file name. [Relative file paths](#4.2.2---relative-file-paths) can be used.
-
-**Example (full file path):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile "{path}\inputFile.txt"
-```
-Petrichor will look for `{path}\inputFile.txt`.
-
-**Example (directory only, default file name):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile "{path}\"
-```
-Petrichor will look for `{path}\input.petrichor`.
-
-**Example (directory only, default file name):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile "inputFile.txt"
-```
-Petrichor will look for `{installpath}\Petrichor\inputFile.txt`.
-
-#### 4.2.1.2 - `--outputFile` option (OPTIONAL)
-
-Add the `--outout` option to the `generateTextShortcutScript` command and pass the output file argument after it.
-
-You can specify the file directory and/or name.
-If you only provide the directory, `output.ahk` will be used as the file name.
-If you only provide the file name, `{installpath}\Petrichor\_output\` will be used as the directory.
-
-A file extension is not required, and if one is included it will be replaced automatically. [Relative file paths](#4.2.2---relative-file-paths) can be used.
-
-**Example (full file path):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile {input file} --outputFile "C:\path\to\output\file\outputFile"
-```
-
-RESULT:
-
-```
-C:\path\to\output\file\outputFile.ahk ← will be generated by Petrichor
-```
-
-**Example (directory only, default file name):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile {input file} --outputFile "outputFile"
-```
-
-RESULT:
-
-```
-{installpath}\Petrichor\_output\outputFile.ahk ← will be generated by Petrichor
-```
-
-**Example (file name only, default directory):**
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile {input file} --outputFile "{path}\output\"
-```
-
-RESULT:
-
-```
-{path}\output\output.ahk ← will be generated by Petrichor
-```
-
-#### 4.2.1.3 - `--logMode` option (OPTIONAL)
-
-This option is used to control where logs are sent.
-
-Values for this option are:
-
-- `all` - send logs to all output locations.
-- `fileOnly` (DEFAULT) - send logs only to log file.
-- `consoleOnly` - send logs only to console output.
-- `none` - disable logging.
-
-#### 4.2.1.4 - `--logFile` option (OPTIONAL)
-
-This option is used to customize the file name and/or location to generate a log file at.
-
-NOTE: log file will only be created if logging to file is enabled (see 4.2.2.3).
-
-**Example (filename only, default directory):**
-
-```
-Petrichor.exe generateTextShortcutScript --inputFile {input file} --logMode all --logFile logFile.txt
-```
-
-RESULT:
-
-```
-{path}/Petrichor/_log/logFile.txt ← will be generated by Petrichor
-```
-
-**Example (directory path only, default filename):**
-
-```
-Petrichor.exe generateTextShortcutScript --inputFile {input file} --logMode all --logFile {log path}/
-```
-
-RESULT:
-
-```
-{log path}/{yyyy}-{MM}-{dd}_{HH}-{mm}-{ss}.log ← will be generated by Petrichor
-```
-
-**Example: (full filepath, no defaults):**
-
-```
-Petrichor.exe generateTextShortcutScript --inputFile {input file} --logMode all --logFile {log path}/logFile.txt
-```
-
-RESULT:
-
-```
-{log path}/logFile.txt ← will be generated by Petrichor
-```
-
-### 4.2.2 - Relative file paths
-
-If you dont like having to get the full path for files, you can use relative paths instead.
-
-`./` gets the folder the .exe file is in, and `../` gets the parent folder of that folder.
-
-**Example:**
-
-FOLDER CONTENTS:
-
-```
-- parent/
-    - Petrichor/
-        - outputFile.ahk (will be generated after running)
-        - Petrichor.exe
-    - inputFile.txt
-```
-
-IN COMMAND PROMPT:
-
-```
-{installpath}\Petrichor\
->Petrichor.exe generateTextShortcutScript --inputFile ../inputFile.txt --outputFile ./outputFile
-```
-
-### 4.2.3 - A note about slashes in file paths on Windows
-
-On Windows, backslashes `\` and forward slashes `/` both work the same way. Use whichever you prefer to. **They are not equivalent to each other in input files, however.**
-
-### 4.2.4 - Running Petrichor via batch script (`.bat` file)
-
-If you're going to run the tool with the same arguments every time, it's much simpler to write a simple `.bat` file to run the tool for you.
-
-1. Make a new text file, name it whatever you want, and change its extension to `.bat`.
-    -  You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
-2. Open the file in a text editor program, such as Notepad.
-3. Type `start {installpath}/Petrichor.exe]`, followed by command usage as shown above.
-    - **NOTE:** [Relative paths](#4.2.2---relative-file-paths) are relative to the batch script by default. If relative paths are used in Petrichor commands, they must be relative to Petrichor.exe instead.
-4. Save the batch file.
-
-Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set.
-
-**Example:**
-
-FOLDER CONTENTS:
-
-```
-- parent\
-    - Petrichor\
-        - Petrichor.exe
-    - example batch file.bat
-    - inputFile.txt
-    - outputFile.ahk (will be generated after running)
-```
-
-IN FILE "example batch file.bat":
-
-```batch
-start Petrichor\Petrichor.exe generateTextShortcutScript --inputFile ..\inputFile.txt --outputFile ..\outputFile
-```
-
-Optionally, you can make a batch script wait for Petrichor to finish running and launch the output script automatically.
-
-1. Create a batch script using the steps above.
-2. After the `start` keyword, add `/wait`. This will cause the batch script to wait until Petrichor is closed before continuing.
-3. Add a new line to the batch script, and enter `start [path/script.ahk]`.
-4. Save the batch file.
-
-Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set, wait until it closes, then launch the output script.
-
-**NOTE:** If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
-
-**Example:**
-
-FOLDER CONTENTS:
-
-```
-- parent\
-    - Petrichor\
-        - Petrichor.exe
-    - example batch file.bat
-    - inputFile.txt
-    - outputFile.ahk (will be generated after running)
-
-```
-
-IN FILE "example batch file.bat":
-
-```batch
-start /wait Petrichor\Petrichor.exe generateTextShortcutScript --inputFile ..\inputFile.txt --outputFile ..\outputFile
-start outputFile.ahk
-```
+# 6 - Using the script generated by Petrichor
 
 ---
 
-# 5 - Using the script generated by Petrichor
-
-## 5.1 - Install AutoHotkey
+## 6.1 - Install AutoHotkey
 
 Before you can do anything with your script, you need to install AutoHotkey. Download and install AutoHotkey v2 [here](https://www.autohotkey.com) and install it, then continue.
 
-## 5.2 - Running the script
+---
+
+## 6.2 - Running the script
 
 Either double-click the .ahk file or right click on it and click "run script" in the dropdown menu.
 
-## 5.3 - Methods to run the script automatically
+---
+
+## 6.3 - Methods to launch the script automatically
 
 If you get sick of launching a script manually, there are a few options.
 
-### 5.3.1 - Windows Startup shortcut
+---
 
-This is the simplest method. It's not totally reliable, but it works most of the time. Occasionally a script will launch successfully, but not show up in the taskbar tray. If that bothers you, just relaunch the script manually.
+### 6.3.1 - Windows Startup shortcut (RECOMMENDED)
+
+This is the simplest method. It's not totally reliable, but it works the majority of the time. Occasionally a script will launch successfully, but not show up in the taskbar tray. If that bothers you, just relaunch the script manually.
 
 Here's how to do it:
 
@@ -717,13 +871,17 @@ Here's how to do it:
 4. Type `shell:startup` into the dialog, then click OK.
 5. The Startup folder will open. Copy the shortcut you created in step 2 into it.
 
-### 5.3.2 - Task Scheduler
+---
+
+### 6.3.2 - Task Scheduler
 
 Wi've found this method to be less reliable than the Windows Startup method, but it does work more often than not. It's also kind of a pain to set up. Wi recommend using the Windows Startup method over this one, unless that method doesnt work for you.
 
 You can follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-windows-startup/) to set it up.
 
-### 5.3.3 - Registry (NOT RECOMMENDED)
+---
+
+### 6.3.3 - Registry (NOT RECOMMENDED)
 
 **DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING. Editing the registry can brick your computer if you're not careful.**
 
@@ -740,7 +898,7 @@ Also, wi havent personally tested this method, so wi dont know how reliable it i
 
 ---
 
-# 6 - I think i found a bug / I have an idea for the project
+# 7 - I think i found a bug / I have an idea for the project
 
 Report bugs and make suggestions here: [GitHub issues board](https://github.com/SparkliTwizzl/plurality-utilities/issues)
 

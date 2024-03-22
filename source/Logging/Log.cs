@@ -5,6 +5,15 @@ namespace Petrichor.Logging
 {
 	public static class Log
 	{
+		private struct FormattedMessage
+		{
+			public ColorScheme? ColorScheme { get; set; } = null;
+			public string Text { get; set; } = string.Empty;
+
+
+			public FormattedMessage() { }
+		}
+
 		public struct ColorScheme
 		{
 			public ConsoleColor Background { get; set; } = ConsoleColor.Black;
@@ -64,13 +73,15 @@ namespace Petrichor.Logging
 		private static string LogDirectory { get; set; } = DefaultLogDirectory;
 		private static string LogFileName { get; set; } = DefaultLogFileName;
 		private static string LogFilePath { get; set; } = string.Empty;
+		private static List<FormattedMessage> MessageBuffer { get; set; } = new();
 
 
-		public static LogMode ActiveMode { get; private set; } = LogMode.FileOnly;
+		public static LogMode ActiveMode { get; private set; } = LogMode.All;
 		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
 		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
 		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.ConsoleOnly or LogMode.All;
 		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.FileOnly or LogMode.All;
+		public static bool IsBufferingEnabled { get; private set; } = false;
 
 
 		public static void CreateLogFile( string file )
@@ -78,6 +89,7 @@ namespace Petrichor.Logging
 			SetLogFilePath( file );
 			_ = Directory.CreateDirectory( LogDirectory );
 			File.Create( LogFilePath ).Close();
+			Info( $"Created log file \"{LogFilePath}\"." );
 		}
 
 		/// <summary>
@@ -87,29 +99,41 @@ namespace Petrichor.Logging
 		public static void Debug( string message = "", int? lineNumber = null )
 			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
 
-		public static void Disable()
+		public static void DisableLogging()
 		{
+			Info( "Disabled logging." );
 			ActiveMode = LogMode.None;
-			Console.WriteLine( "Logging is disabled." );
 		}
 
-		public static void EnableForConsole()
+		public static void DisableBuffering()
+		{
+			IsBufferingEnabled = false;
+			Info( "Disabled log buffering." );
+		}
+
+		public static void EnableBuffering()
+		{
+			IsBufferingEnabled = true;
+			Info( "Enabled log buffering." );
+		}
+
+		public static void EnableLoggingToConsole()
 		{
 			ActiveMode = LogMode.ConsoleOnly;
-			Console.WriteLine( "Logging to console is enabled." );
+			Info( "Enabled logging to console." );
 		}
 
-		public static void EnableForFile()
+		public static void EnableLoggingToFile()
 		{
 			ActiveMode = LogMode.FileOnly;
-			Console.WriteLine( "Logging to file is enabled." );
+			Info( "Enabled logging to file." );
 		}
 
-		public static void EnableForAll()
+		public static void EnableAllLogDestinations()
 		{
-			EnableForConsole();
-			EnableForFile();
 			ActiveMode = LogMode.All;
+			Info( "Enabled logging to console." );
+			Info( "Enabled logging to file." );
 		}
 
 		/// <summary>
@@ -120,7 +144,7 @@ namespace Petrichor.Logging
 			=> WriteFormattedMessage( "ERROR", message, lineNumber, ErrorColorScheme );
 
 		/// <summary>
-		/// Write formatted details about a task finishing to log.
+		/// Write formatted information about a task finishing to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Finish( string message = "", int? lineNumber = null )
@@ -141,7 +165,7 @@ namespace Petrichor.Logging
 			=> WriteFormattedMessage( "INFO", message, lineNumber, InfoColorScheme );
 
 		/// <summary>
-		/// Write formatted details about a task starting to log.
+		/// Write formatted information about a task starting to log.
 		/// </summary>
 		/// <param name="message">Information to write to log.</param>
 		public static void Start( string message = "", int? lineNumber = null )
@@ -161,14 +185,20 @@ namespace Petrichor.Logging
 		/// <param name="consoleForegroundColor">Text color to use in console mode.</param>
 		/// <param name="consoleBackgroundColor">Background color to use if in console mode.</param>
 		public static void Write( string message = "", ColorScheme? colorScheme = null )
-		{
-			if ( ActiveMode == LogMode.None || message == string.Empty )
-			{
-				return;
-			}
+			=> WriteOrBuffer( message, colorScheme );
 
-			WriteToConsole( message, colorScheme );
-			WriteToFile( message );
+		/// <summary>
+		/// Write all buffered messages to log file and clear buffer.
+		/// Does not disable log buffering.
+		/// </summary>
+		public static void WriteBufferToFile()
+		{
+			Info( "Wrote log buffer to file." );
+			foreach ( var message in MessageBuffer )
+			{
+				WriteToFile( message.Text );
+			}
+			MessageBuffer.Clear();
 		}
 
 		/// <summary>
@@ -204,13 +234,19 @@ namespace Petrichor.Logging
 
 		private static void SetLogFilePath( string file )
 		{
-			LogDirectory = Path.GetDirectoryName( file ) ?? DefaultLogDirectory;
-			LogFileName = Path.GetFileName( file ) ?? DefaultLogFileName;
-			LogFilePath = Path.Combine( LogDirectory, LogFileName );
-			if ( LogFilePath != string.Empty )
+			LogDirectory = Path.GetDirectoryName( file ) ?? string.Empty;
+			if ( LogDirectory == string.Empty )
 			{
-				Console.WriteLine( $"Log file will be created at \"{LogFilePath}\"." );
+				LogDirectory = DefaultLogDirectory;
 			}
+
+			LogFileName = Path.GetFileName( file ) ?? string.Empty;
+			if ( LogFileName == string.Empty )
+			{
+				LogFileName = DefaultLogFileName;
+			}
+
+			LogFilePath = Path.Combine( LogDirectory, LogFileName );
 		}
 
 		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
@@ -220,6 +256,28 @@ namespace Petrichor.Logging
 			var formattedLabel = string.Format( "{0," + FormattedMessagePaddingAmount + "}", $"{label}" );
 			var formattedMessage = $"{formattedLabel} : {lineNumberString}{message}";
 			WriteLineWithTimestamp( formattedMessage, colorScheme );
+		}
+
+		private static void WriteOrBuffer( string message = "", ColorScheme? colorScheme = null )
+		{
+			if ( message == string.Empty )
+			{
+				return;
+			}
+
+			if ( IsBufferingEnabled )
+			{
+				WriteToConsole( message, colorScheme );
+				MessageBuffer.Add( new()
+				{
+					ColorScheme = colorScheme,
+					Text = message,
+				} );
+				return;
+			}
+
+			WriteToConsole( message, colorScheme );
+			WriteToFile( message );
 		}
 
 		private static void WriteToConsole( string message, ColorScheme? colorScheme = null )

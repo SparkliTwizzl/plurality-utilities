@@ -53,7 +53,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			file.Close();
 		}
 
-		private void WriteByteOrderMarkToFile( FileStream file )
+		private static void WriteByteOrderMarkToFile( FileStream file )
 		{
 			var encoding = Encoding.UTF8;
 			file.Write( encoding.GetPreamble() );

@@ -11,23 +11,22 @@ namespace Petrichor.App
 		{
 			Console.Title = AppInfo.AppName;
 			var startTime = DateTime.Now;
-			Console.WriteLine( AppInfo.AppNameAndVersion );
-			var moduleToRun = await CommandLineHandler.ParseArguments( args );
-			Console.WriteLine();
-
 			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}.";
+			Console.WriteLine( AppInfo.AppNameAndVersion );
 			Console.WriteLine( startTimeMessage );
-			Log.Info( AppInfo.AppNameAndVersion );
-			Log.Info( startTimeMessage );
 
 			try
 			{
-				RuntimeHandler.Execute( moduleToRun );
+				Log.EnableBuffering();
+				Log.Info( AppInfo.AppNameAndVersion );
+				Log.Info( startTimeMessage );
+				var commandToRun = await CommandLineHandler.ParseArguments( args );
+				RuntimeHandler.Execute( commandToRun );
 			}
 			catch ( Exception exception )
 			{
 				Log.Error( $"Error occurred during execution: {exception.Message}" );
-				Log.Important( $"If you file a bug report, please attach the input and log files to help developers reproduce the error." );
+				Log.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 			}
 
 			var endTime = DateTime.Now;
