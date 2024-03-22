@@ -36,12 +36,14 @@ namespace Petrichor.Common.Utilities
 		}
 
 
+		public void CancelParsing() => IsParsingFinished = true;
+
 		public T Parse( IndexedString[] regionData )
 		{
 			var token = new StringToken( regionData[ 0 ] );
 			RegionStartLineNumber = token.LineNumber;
 			var regionTokenValue = token.Value != string.Empty ? $" (\"{token.Value}\")" : string.Empty;
-			var taskMessage = $"Parse \"{token.Key}\" region{regionTokenValue}";
+			var taskMessage = $"Parse \"{RegionToken.Key}\" region{regionTokenValue}";
 			Log.Start( taskMessage, token.LineNumber );
 
 			TryAddDefaultControlTokenHandlers();

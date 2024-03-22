@@ -2,7 +2,7 @@
 
 namespace Petrichor.Common.Utilities
 {
-	public interface IDataRegionParser<out T> where T : new()
+	public interface IDataRegionParser<T> where T : new()
 	{
 		static Func<IndexedString[], int, T, ProcessedRegionData<T>> InertHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) => new() { Value = result };
 
@@ -12,8 +12,8 @@ namespace Petrichor.Common.Utilities
 		Dictionary<string, int> TokenInstancesParsed { get; }
 
 
+		void CancelParsing();
 		T Parse( IndexedString[] regionData );
-
 		void Reset();
 	}
 }

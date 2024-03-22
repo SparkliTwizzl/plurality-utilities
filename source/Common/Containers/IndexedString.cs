@@ -2,6 +2,9 @@
 {
 	public sealed class IndexedString : IEquatable<IndexedString>
 	{
+		public static IndexedString Empty => new();
+
+
 		public string Value { get; set; } = string.Empty;
 		public int LineNumber { get; set; } = 0;
 
@@ -54,7 +57,7 @@
 
 		public override int GetHashCode() => Value.GetHashCode() ^ LineNumber.GetHashCode();
 
-		public override string ToString() => Value;
+		public override string ToString() => $"<{LineNumber}> {Value}";
 
 		public static bool operator ==( IndexedString a, IndexedString b ) => a.Equals( b );
 

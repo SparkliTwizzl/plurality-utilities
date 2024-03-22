@@ -26,7 +26,7 @@ namespace Petrichor.Common.Containers
 		public StringToken( IndexedString line )
 		{
 			LineNumber = line.LineNumber;
-			RawLine = line.ToString();
+			RawLine = line.Value;
 			GetTokenDataFromLine( RawLine );
 		}
 

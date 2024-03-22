@@ -18,6 +18,16 @@ namespace Petrichor.Common.Syntax
 		{
 			Key = "//",
 		};
+		public static DataToken LogFile => new()
+		{
+			Key = "log-file",
+			MaxAllowed = 1,
+		};
+		public static DataToken LogMode => new()
+		{
+			Key = "log-mode",
+			MaxAllowed = 1,
+		};
 		public static DataToken Metadata => new()
 		{
 			Key = "metadata",
@@ -29,6 +39,11 @@ namespace Petrichor.Common.Syntax
 			Key = "minimum-version",
 			MaxAllowed = 1,
 			MinRequired = 1,
+		};
+		public static DataToken OutputFile => new()
+		{
+			Key = "output-file",
+			MaxAllowed = 1,
 		};
 		public static DataToken RegionClose => new()
 		{

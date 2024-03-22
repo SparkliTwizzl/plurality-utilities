@@ -1,4 +1,5 @@
-﻿using Petrichor.Common.Containers;
+﻿using Petrichor.App.Syntax;
+using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
@@ -13,11 +14,13 @@ namespace Petrichor.App.Utilities
 {
 	public static class ShortcutScriptGenerationHandler
 	{
-		public static void GenerateScript( string inputFilePath, string outputFilePath )
+		public static void GenerateScript( ModuleCommand command )
 		{
 			Log.Important( "Generating text shortcuts script..." );
 
-			GenerateAutoHotkeyScript( inputFilePath, outputFilePath );
+			var outputFilePath = command.Options[ CommandOptions.ShortcutScriptOptionOutputFile ];
+			var data = command.Data;
+			GenerateAutoHotkeyScript( data, outputFilePath );
 
 			var successMessage = "Generated text shortcuts script successfully.";
 			if ( Log.IsLoggingToConsoleDisabled )
@@ -149,28 +152,6 @@ namespace Petrichor.App.Utilities
 			return new DataRegionParser<List<ScriptEntry>>( parserDescriptor );
 		}
 
-		private static DataRegionParser<IndexedString> CreateMetadataRegionParser()
-		{
-			var minimumVersionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) =>
-			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				var version = token.Value;
-				Common.Info.AppVersion.RejectUnsupportedVersions( version );
-				return new ProcessedRegionData<IndexedString>();
-			};
-
-			var parserDescriptor = new DataRegionParserDescriptor<IndexedString>()
-			{
-				RegionToken = Common.Syntax.Tokens.Metadata,
-				TokenHandlers = new()
-				{
-					{ Common.Syntax.Tokens.MinimumVersion, minimumVersionTokenHandler },
-				},
-			};
-
-			return new DataRegionParser<IndexedString>( parserDescriptor );
-		}
-
 		private static DataRegionParser<ScriptModuleOptions> CreateModuleOptionsRegionParser()
 		{
 			var defaultIconTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result ) =>
@@ -271,17 +252,16 @@ namespace Petrichor.App.Utilities
 			return input[ ..( lengthOfFindString + 1 ) ];
 		}
 
-		private static void GenerateAutoHotkeyScript( string inputFilePath, string outputFilePath )
+		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
 		{
 			try
 			{
 				var input = new ShortcutScriptGeneration.Utilities.InputHandler(
-					CreateMetadataRegionParser(),
 					CreateModuleOptionsRegionParser(),
 					CreateEntryListRegionParser(),
 					CreateTemplateListRegionParser(),
 					new MacroGenerator() )
-						.ProcessFile( inputFilePath );
+						.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}
 			catch ( Exception exception )

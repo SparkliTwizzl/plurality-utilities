@@ -9,45 +9,24 @@ namespace Petrichor.Common.Utilities
 		private const string DefaultInputDirectory = @".\";
 		private const string DefaultInputFileName = "input.petrichor";
 
-		private IDataRegionParser<IndexedString> FileRegionParser { get; set; }
-		private IDataRegionParser<IndexedString> MetadataRegionParser { get; set; }
-		private IDataRegionParser<IndexedString> CommandOptionsRegionParser { get; set; }
+		private IDataRegionParser<List<IndexedString>> FileRegionParser { get; set; }
+		private IDataRegionParser<List<IndexedString>> MetadataRegionParser { get; set; }
 
 
-		private Func<IndexedString[], int, IndexedString, ProcessedRegionData<IndexedString>> MetadataHandler =>
-			( IndexedString[] regionData, int regionStartIndex, IndexedString result ) =>
-				{
-					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
-					return new ProcessedRegionData<IndexedString>()
-					{
-						BodySize = MetadataRegionParser.LinesParsed,
-						Value = result,
-					};
-				};
-
-		private Func<IndexedString[], int, IndexedString, ProcessedRegionData<IndexedString>> CommandHandler =>
-			( IndexedString[] regionData, int regionStartIndex, IndexedString result ) =>
-				{
-					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-					result = CommandOptionsRegionParser.Parse( dataTrimmedToRegion );
-					return new ProcessedRegionData<IndexedString>()
-					{
-						BodySize = CommandOptionsRegionParser.LinesParsed,
-						Value = result,
-					};
-				};
+		public ModuleCommand ActiveCommand { get; private set; } = ModuleCommand.Empty;
 
 
-		public InputHandler( IDataRegionParser<IndexedString> metadataRegionParser, IDataRegionParser<IndexedString> commandOptionsRegionParser )
+		public InputHandler( IDataRegionParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
 		{
+			ActiveCommand = command ?? ModuleCommand.Empty;
 			MetadataRegionParser = metadataRegionParser;
-			CommandOptionsRegionParser = commandOptionsRegionParser;
 			FileRegionParser = CreateRegionParser();
 		}
 
 
-		public IndexedString ProcessFile( string file )
+		public List<IndexedString> ParseRegionData( IndexedString[] regionData ) => FileRegionParser.Parse( regionData );
+
+		public List<IndexedString> ProcessFile( string file )
 		{
 			var directory = Path.GetDirectoryName( file ) ?? DefaultInputDirectory;
 			var fileName = Path.GetFileName( file ) ?? DefaultInputFileName;
@@ -66,16 +45,29 @@ namespace Petrichor.Common.Utilities
 				ExceptionLogger.LogAndThrow( new FileNotFoundException( $"Input file was not found (\"{filePath}\").", exception ) );
 			}
 			var regionData = IndexedString.IndexStringArray( fileData.ToArray() );
-			var result = FileRegionParser.Parse( regionData.ToArray() );
+			var result = ParseRegionData( regionData.ToArray() );
 
 			Log.Finish( taskMessage );
 			return result;
 		}
 
 
-		private DataRegionParser<IndexedString> CreateRegionParser()
+		private DataRegionParser<List<IndexedString>> CreateRegionParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<IndexedString>()
+			var metadataTokenHandler = ( IndexedString[] regionData, int regionStartIndex, List<IndexedString> result ) =>
+				{
+					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
+					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
+					var remainingData = dataTrimmedToRegion[ MetadataRegionParser.LinesParsed.. ].ToList();
+					FileRegionParser.CancelParsing();
+					return new ProcessedRegionData<List<IndexedString>>()
+					{
+						BodySize = MetadataRegionParser.LinesParsed,
+						Value = remainingData,
+					};
+				};
+
+			var parserDescriptor = new DataRegionParserDescriptor<List<IndexedString>>()
 			{
 				RegionToken = new()
 				{
@@ -83,12 +75,12 @@ namespace Petrichor.Common.Utilities
 				},
 				TokenHandlers = new()
 				{
-					{ Syntax.Tokens.Metadata, MetadataHandler },
-					{ Syntax.Tokens.Command, CommandHandler },
+					{ Syntax.Tokens.Metadata, metadataTokenHandler },
 				},
 			};
 
-			return new DataRegionParser<IndexedString>( parserDescriptor );
+			var parser = new DataRegionParser<List<IndexedString>>( parserDescriptor );
+			return parser;
 		}
 	}
 }

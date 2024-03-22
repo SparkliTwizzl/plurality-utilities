@@ -12,6 +12,6 @@ namespace Petrichor.Common.Containers
 
 		public DataToken() { }
 
-		public string Qualify() => $"{Key}{OperatorChars.TokenValueDivider}";
+		public readonly string Qualify() => $"{Key}{OperatorChars.TokenValueDivider}";
 	}
 }
