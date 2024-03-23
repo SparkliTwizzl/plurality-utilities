@@ -2,7 +2,7 @@
   "profiles": {
     "App": {
       "commandName": "Project",
-      "commandLineArgs": "--inputFile $(SolutionDir)$(TestInputDir)IntegrationTestInput.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTestInput.petrichor"
     }
   }
 }

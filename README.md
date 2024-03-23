@@ -250,7 +250,7 @@ Petrichor modules each have a corresponding command to trigger them. These can b
 
 If you call Petrichor with no arguments, you will be prompted to use the `--help` option to see available commands.
 
-You can call Petrichor without passing it a command if you [put the command in your input file](#421---metadata-region-required) and use the [--inputFile option](#4321----inputfile-option-optional) when you run Petrichor.
+You can call Petrichor without passing it a command if you [put the command in your input file](#421---metadata-region-required) and pass the input file as an argument when you run Petrichor. (You can also just drag-and-drop the input file onto the `.exe` file.)
 
 **Example:**
 
@@ -270,7 +270,7 @@ metadata
 Command line usage:
 ```
 {install path}\Petrichor\
->Petrichor.exe --inputFile {path}\input.txt
+>Petrichor.exe {path}\input.txt
 ```
 
 ---

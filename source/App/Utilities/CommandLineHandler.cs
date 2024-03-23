@@ -28,13 +28,13 @@ namespace Petrichor.App.Utilities
 
 		private static RootCommand CreateCLICommands()
 		{
-			var inputFileOption = new Option<string>(
+			var inputFileArgument = new Argument<string>(
 				name: CommandOptions.ShortcutScriptOptionInputFile,
 				description: "Path to input file." );
 
 			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
 			{
-				inputFileOption,
+				inputFileArgument,
 			};
 
 			rootCommand.SetHandler( async ( inputFilePath ) =>
@@ -57,7 +57,7 @@ namespace Petrichor.App.Utilities
 						CommandToRun = ModuleCommand.None;
 					}
 				},
-				inputFileOption );
+				inputFileArgument );
 
 			rootCommand.AddCommand( CreateCLIShortcutScriptCommand() );
 			return rootCommand;
