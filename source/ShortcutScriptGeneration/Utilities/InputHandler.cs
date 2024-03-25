@@ -73,7 +73,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				RegionToken = new()
 				{
-					Key = "input-file-data",
+					Key = "text-shortcuts-script-input",
 				},
 				TokenHandlers = new()
 				{
