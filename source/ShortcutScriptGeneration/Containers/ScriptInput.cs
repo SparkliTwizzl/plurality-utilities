@@ -5,23 +5,23 @@
 		public ScriptEntry[] Entries { get; set; } = Array.Empty<ScriptEntry>();
 		public string[] Macros { get; set; } = Array.Empty<string>();
 		public ScriptModuleOptions ModuleOptions { get; set; } = new();
-		public string[] Templates { get; set; } = Array.Empty<string>();
+		public ScriptMacroTemplate[] Templates { get; set; } = Array.Empty<ScriptMacroTemplate>();
 
 
 		public ScriptInput() { }
-		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, string[] templates )
+		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, ScriptMacroTemplate[] templates, string[]? macros = null )
 		{
 			Entries = entries;
-			Macros = Array.Empty<string>();
+			Macros = macros ?? Array.Empty<string>();
 			ModuleOptions = moduleOptions;
 			Templates = templates;
 		}
-		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, string[] templates, string[] macros )
+		public ScriptInput( ScriptInput other)
 		{
-			Entries = entries;
-			Macros = macros;
-			ModuleOptions = moduleOptions;
-			Templates = templates;
+			Entries = other.Entries;
+			Macros = other.Macros;
+			ModuleOptions = other.ModuleOptions;
+			Templates = other.Templates;
 		}
 
 
