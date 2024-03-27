@@ -60,11 +60,7 @@ namespace Petrichor.Common.Utilities
 					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
 					var remainingData = dataTrimmedToRegion[ MetadataRegionParser.LinesParsed.. ].ToList();
 					FileRegionParser.CancelParsing();
-					return new ProcessedRegionData<List<IndexedString>>()
-					{
-						BodySize = MetadataRegionParser.LinesParsed,
-						Value = remainingData,
-					};
+					return new ProcessedRegionData<List<IndexedString>>( value: remainingData, bodySize: MetadataRegionParser.LinesParsed );
 				};
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<IndexedString>>()

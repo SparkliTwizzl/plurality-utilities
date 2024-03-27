@@ -10,14 +10,14 @@ namespace Petrichor.Common.Utilities.Tests
 	[TestClass]
 	public class DataRegionParserTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
 			public static DataRegionParserDescriptor<IndexedString> ParserDescriptor => new()
 			{
 				RegionToken = RegionToken,
 				TokenHandlers = new()
 				{
-					{ TestToken, ( IndexedString[] regionData, int tokenStartIndex, IndexedString result ) => new() },
+					{ TestToken, IDataRegionParser<IndexedString>.InertHandler },
 				},
 			};
 			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexStringArray( new[]
@@ -57,7 +57,7 @@ namespace Petrichor.Common.Utilities.Tests
 			{
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
-				$"\tunknown-token{ OperatorChars.TokenValueDivider } value",
+				$"\tunknown-token{ ControlSequences.TokenValueDivider } value",
 				Tokens.RegionClose.Key,
 			} );
 			public static IndexedString[] RegionData_Valid => IndexedString.IndexStringArray( new[]
@@ -88,7 +88,6 @@ namespace Petrichor.Common.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-
 			parser = new( TestData.ParserDescriptor );
 		}
 
@@ -115,6 +114,7 @@ namespace Petrichor.Common.Utilities.Tests
 			}
 		}
 
+
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
@@ -129,6 +129,7 @@ namespace Petrichor.Common.Utilities.Tests
 			}
 		}
 
+
 		[TestMethod]
 		[ExpectedException( typeof( TokenCountException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenCountException_Data ), DynamicDataSourceType.Property )]
@@ -142,6 +143,7 @@ namespace Petrichor.Common.Utilities.Tests
 				yield return new object[] { TestData.RegionData_TooManyTokenInstances };
 			}
 		}
+
 
 		[TestMethod]
 		[ExpectedException( typeof( TokenNameException ) )]

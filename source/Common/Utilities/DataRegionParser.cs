@@ -105,7 +105,7 @@ namespace Petrichor.Common.Utilities
 		{
 			if ( !TokenHandlers.TryGetValue( stringToken.Key, out var handler ) )
 			{
-				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{stringToken.Key}{OperatorChars.TokenValueDivider} {stringToken.Value}\" was found in a(n) \"{RegionToken.Key}\" region." ), stringToken.LineNumber );
+				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{stringToken.Key}{ControlSequences.TokenValueDivider} {stringToken.Value}\" was found in a(n) \"{RegionToken.Key}\" region." ), stringToken.LineNumber );
 			}
 
 			WarnAboutBlankTokenValues( stringToken, regionData, tokenStartIndex );
@@ -149,19 +149,13 @@ namespace Petrichor.Common.Utilities
 					IsParsingFinished = true;
 				}
 
-				return new ProcessedRegionData<T>()
-				{
-					Value = result,
-				};
+				return new ProcessedRegionData<T>( result );
 			};
 
 			var regionOpenTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, T result ) =>
 			{
 				++IndentLevel;
-				return new ProcessedRegionData<T>()
-				{
-					Value = result,
-				};
+				return new ProcessedRegionData<T>( result );
 			};
 
 			_ = TokenHandlers.TryAdd( Tokens.BlankLine.Key, IDataRegionParser<T>.InertHandler );

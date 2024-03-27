@@ -52,11 +52,11 @@ namespace Petrichor.Common.Syntax
 		};
 		public static DataToken RegionClose => new()
 		{
-			Key = OperatorChars.RegionClose.ToString(),
+			Key = ControlSequences.RegionClose.ToString(),
 		};
 		public static DataToken RegionOpen => new()
 		{
-			Key = OperatorChars.RegionOpen.ToString(),
+			Key = ControlSequences.RegionOpen.ToString(),
 		};
 
 

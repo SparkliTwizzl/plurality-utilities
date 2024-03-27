@@ -1,5 +1,4 @@
-﻿using Petrichor.Common.Syntax;
-using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 
@@ -60,9 +59,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				macro = macro
 					.Replace( $"{findString}", fields[ findString ] )
-					.Replace( OperatorChars.EscapeStandin, OperatorChars.Escape.ToString() )
-					.Replace( OperatorChars.TokenNameOpenStandin, OperatorChars.TokenNameOpen.ToString() )
-					.Replace( OperatorChars.TokenNameCloseStandin, OperatorChars.TokenNameClose.ToString() );
+					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
 			}
 			return macro;
 		}

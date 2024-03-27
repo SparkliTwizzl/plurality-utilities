@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[TestClass]
 	public class MacroGeneratorTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
 			public static ScriptEntry[] Entries => new[]
 			{
@@ -34,10 +34,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ScriptInput Input => new( ModuleOptions, Entries, Templates );
 			public static string[] Macros => new[]
 			{
-				$"::{ Common.Syntax.OperatorChars.Escape }{ EntryTag }{ EntryLastTag }:: { Common.Syntax.OperatorChars.TokenNameOpen }{ EntryID }{ Common.Syntax.OperatorChars.TokenNameClose } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } `",
+				$"::{ Common.Syntax.ControlSequences.Escape }{ EntryTag }{ EntryLastTag }:: { Common.Syntax.ControlSequences.FindTagOpen }{ EntryID }{ Common.Syntax.ControlSequences.FindTagClose } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } `",
 			};
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string Template => $"::{Common.Syntax.OperatorChars.EscapeStandin}{TemplateFindStrings.Tag}{TemplateFindStrings.LastTag}:: {Common.Syntax.OperatorChars.TokenNameOpenStandin}{TemplateFindStrings.ID}{Common.Syntax.OperatorChars.TokenNameCloseStandin} {TemplateFindStrings.Name} {TemplateFindStrings.LastName} {TemplateFindStrings.Pronoun} {TemplateFindStrings.Color} {TemplateFindStrings.Decoration} `";
+			public static string Template => $"::{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindStrings.Tag}{TemplateFindStrings.LastTag}:: {Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindStrings.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindStrings.Name} {TemplateFindStrings.LastName} {TemplateFindStrings.Pronoun} {TemplateFindStrings.Color} {TemplateFindStrings.Decoration} `";
 			public static string[] Templates => new[]
 			{
 				Template,

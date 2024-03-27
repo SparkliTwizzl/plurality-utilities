@@ -6,16 +6,21 @@ namespace Petrichor.Common.Utilities.Tests
 	[TestClass]
 	public class StringExtensionsTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
 			public const string WrapInQuotes_Expected = "\"text\"";
+			public const string WrapInQuotes_LeadingAndTrailngQuotes = "\"text\"";
+			public const string WrapInQuotes_LeadingQuote = "\"text";
+			public const string WrapInQuotes_NoQuotes = "text";
+			public const string WrapInQuotes_TrailingQuote = "text\"";
 		}
 
+
 		[TestMethod]
-		[DataRow( "text" )]
-		[DataRow( "\"text" )]
-		[DataRow( "text\"" )]
-		[DataRow( "\"text\"" )]
+		[DataRow( TestData.WrapInQuotes_NoQuotes )]
+		[DataRow( TestData.WrapInQuotes_LeadingQuote )]
+		[DataRow( TestData.WrapInQuotes_TrailingQuote )]
+		[DataRow( TestData.WrapInQuotes_LeadingAndTrailngQuotes )]
 		public void WrapInQuotes_Test_Success( string input )
 		{
 			var expected = TestData.WrapInQuotes_Expected;
