@@ -57,11 +57,7 @@ namespace Petrichor.App.Utilities
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
 				var entry = entryRegionParser.Parse( dataTrimmedToRegion );
 				result.Add( entry );
-				return new ProcessedRegionData<List<ScriptEntry>>()
-				{
-					BodySize = entryRegionParser.LinesParsed - 1,
-					Value = result,
-				};
+				return new ProcessedRegionData<List<ScriptEntry>>( value: result, bodySize: entryRegionParser.LinesParsed - 1 );
 			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptEntry>>()

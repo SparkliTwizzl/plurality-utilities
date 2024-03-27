@@ -11,60 +11,42 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Color = token.Value;
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 		public static ProcessedRegionData<ScriptEntry> DecorationTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Decoration = token.Value;
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 		public static ProcessedRegionData<ScriptEntry> IDTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.ID = token.Value;
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 		public static ProcessedRegionData<ScriptEntry> NameTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Identities.Add( ParseNameTokenValue( token ) );
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 		public static ProcessedRegionData<ScriptEntry> LastNameTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.LastIdentity = ParseNameTokenValue( token );
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 		public static ProcessedRegionData<ScriptEntry> PronounTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Pronoun = token.Value;
-			return new ProcessedRegionData<ScriptEntry>()
-			{
-				Value = result,
-			};
+			return new ProcessedRegionData<ScriptEntry>( result );
 		}
 
 

@@ -40,7 +40,6 @@
 			{
 				return false;
 			}
-
 			var other = obj as IndexedString;
 			return Equals( other );
 		}
@@ -51,13 +50,12 @@
 			{
 				return false;
 			}
-
 			return Value.Equals( other.Value ) && LineNumber.Equals( other.LineNumber );
 		}
 
 		public override int GetHashCode() => Value.GetHashCode() ^ LineNumber.GetHashCode();
 
-		public override string ToString() => $"<{LineNumber}> {Value}";
+		public override string ToString() => $"{Value} <LINE {LineNumber}>";
 
 		public static bool operator ==( IndexedString a, IndexedString b ) => a.Equals( b );
 

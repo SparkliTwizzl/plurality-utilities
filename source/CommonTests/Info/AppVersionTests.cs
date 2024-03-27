@@ -8,7 +8,7 @@ namespace Petrichor.Common.Info.Tests
 	[TestClass]
 	public class AppVersionTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
 			public static string VersionNumber_Blank => string.Empty;
 			public static string VersionNumber_FullCurrent => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Patch}{AppVersion.Preview}";

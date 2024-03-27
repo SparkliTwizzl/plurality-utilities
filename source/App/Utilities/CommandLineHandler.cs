@@ -123,10 +123,7 @@ namespace Petrichor.App.Utilities
 			{
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				result.Name = token.Value;
-				return new ProcessedRegionData<ModuleCommand>()
-				{
-					Value = result,
-				};
+				return new ProcessedRegionData<ModuleCommand>( result );
 			};
 
 			var commandOptionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
@@ -134,10 +131,7 @@ namespace Petrichor.App.Utilities
 				var token = new StringToken( regionData[ tokenStartIndex ] );
 				var commandLineOption = TokenKeysToCommandLineOptions.LookUpTable[ token.Key ];
 				result.Options.Add( commandLineOption, token.Value );
-				return new ProcessedRegionData<ModuleCommand>()
-				{
-					Value = result,
-				};
+				return new ProcessedRegionData<ModuleCommand>( result );
 			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<ModuleCommand>()
@@ -174,10 +168,7 @@ namespace Petrichor.App.Utilities
 				var command = commandRegionParser.Parse( dataTrimmedToRegion );
 				RejectConflictingModuleCommands( command );
 				CommandToRun = command;
-				return new ProcessedRegionData<List<IndexedString>>()
-				{
-					BodySize = commandRegionParser.LinesParsed - 1,
-				};
+				return new ProcessedRegionData<List<IndexedString>>( value: result, bodySize: commandRegionParser.LinesParsed - 1 );
 			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<IndexedString>>()

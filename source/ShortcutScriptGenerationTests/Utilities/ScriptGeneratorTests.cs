@@ -10,7 +10,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[TestClass]
 	public class ScriptGeneratorTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
 			public static ScriptEntry[] Entries => new[]
 			{

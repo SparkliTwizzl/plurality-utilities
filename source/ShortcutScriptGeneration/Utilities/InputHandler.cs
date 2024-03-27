@@ -33,33 +33,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
 					result.Entries = EntryListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-					return new ProcessedRegionData<ScriptInput>()
-					{
-						BodySize = EntryListRegionParser.LinesParsed,
-						Value = result,
-					};
+					return new ProcessedRegionData<ScriptInput>( value: result, bodySize: EntryListRegionParser.LinesParsed );
 				};
 
 			var moduleOptionsTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 					{
 						var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
 						result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
-						return new ProcessedRegionData<ScriptInput>()
-						{
-							BodySize = ModuleOptionsRegionParser.LinesParsed,
-							Value = result,
-						};
+						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ModuleOptionsRegionParser.LinesParsed );
 					};
 
 			var templateListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 					{
 						var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
 						result.Templates = TemplateListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-						return new ProcessedRegionData<ScriptInput>()
-						{
-							BodySize = TemplateListRegionParser.LinesParsed,
-							Value = result,
-						};
+						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: TemplateListRegionParser.LinesParsed );
 					};
 
 			var postParseHandler = ( ScriptInput result ) =>

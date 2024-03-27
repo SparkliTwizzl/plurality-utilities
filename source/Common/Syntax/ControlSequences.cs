@@ -1,15 +1,15 @@
 ﻿namespace Petrichor.Common.Syntax
 {
-	public readonly struct OperatorChars
+	public readonly struct ControlSequences
 	{
 		public const char Escape = '\\';
 		public const string EscapeStandin = "&bksl";
 		public const char RegionClose = '}';
 		public const char RegionOpen = '{';
-		public const char TokenNameClose = ']';
-		public const string TokenNameCloseStandin = "&clsqb";
-		public const char TokenNameOpen = '[';
-		public const string TokenNameOpenStandin = "&opsqb";
+		public const char FindTagClose = ']';
+		public const string FindTagCloseStandin = "&clsqb";
+		public const char FindTagOpen = '[';
+		public const string FindTagOpenStandin = "&opsqb";
 		public const char TokenValueDivider = ':';
 	}
 }
