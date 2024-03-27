@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 using System.Text;
@@ -26,11 +27,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
 		/// </exception>
-		public static ProcessedRegionData<List<string>> TokenHandler( IndexedString[] regionData, int tokenStartIndex, List<string> result )
+		public static ProcessedRegionData<List<ScriptMacroTemplate>> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, List<ScriptMacroTemplate> result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			result.Add( ParseTemplateFromLine( token.Value, token.LineNumber ) );
-			return new ProcessedRegionData<List<string>>( result );
+			var templateString = ParseTemplateFromLine( token.Value, token.LineNumber );
+			var macroTemplate = new ScriptMacroTemplate()
+			{
+				TemplateString = templateString,
+			};
+			result.Add( macroTemplate );
+			return new ProcessedRegionData<List<ScriptMacroTemplate>>( result );
 		}
 
 

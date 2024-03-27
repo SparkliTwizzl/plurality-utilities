@@ -70,7 +70,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[DynamicData( nameof( TokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
 		public void TokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<List<string>> expected )
 		{
-			var actual = TemplateHandler.TokenHandler( regionData, TestData.TokenStartIndex, result: new() );
+			var actual = TemplateHandler.TemplateTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 			Assert.AreEqual( expected.BodySize, actual.BodySize );
 			CollectionAssert.AreEqual( expected.Value, actual.Value );
 		}
@@ -90,7 +90,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void TokenHandler_Test_Throws_TokenCountException( IndexedString[] regionData )
 		{
 			Log.Info( $"input: {regionData[ 0 ]}" );
-			_ = TemplateHandler.TokenHandler( regionData, TestData.TokenStartIndex, result: new() );
+			_ = TemplateHandler.TemplateTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 		}
 
 		public static IEnumerable<object[]> TokenHandler_Test_Throws_TokenValueExeception_Data

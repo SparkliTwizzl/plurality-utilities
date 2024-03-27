@@ -94,23 +94,23 @@ namespace Petrichor.App.Utilities
 			return new DataRegionParser<ScriptModuleOptions>( parserDescriptor );
 		}
 
-		private static DataRegionParser<List<string>> CreateTemplateListRegionParser()
+		private static DataRegionParser<List<ScriptMacroTemplate>> CreateTemplateListRegionParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<List<string>>()
+			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptMacroTemplate>>()
 			{
 				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.TemplateList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TemplateTokenHandler },
 				},
-				PostParseHandler = ( List<string> templates ) =>
+				PostParseHandler = ( List<ScriptMacroTemplate> templates ) =>
 				{
 					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.Tokens.Template.Key}\" tokens." );
 					return templates;
 				},
 			};
 
-			return new DataRegionParser<List<string>>( parserDescriptor );
+			return new DataRegionParser<List<ScriptMacroTemplate>>( parserDescriptor );
 		}
 
 		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
