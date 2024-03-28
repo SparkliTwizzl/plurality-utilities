@@ -1,21 +1,27 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.Containers
+﻿using Petrichor.ShortcutScriptGeneration.Syntax;
+
+
+namespace Petrichor.ShortcutScriptGeneration.Containers
 {
 	public sealed class ScriptMacroTemplate : IEquatable<ScriptMacroTemplate>
 	{
 		public Dictionary<string, string> FindAndReplace { get; set; } = new();
 		public string TemplateString { get; set; } = string.Empty;
+		public string TextCase { get; set; } = TemplateTextCases.Default;
 
 
 		public ScriptMacroTemplate() { }
-		public ScriptMacroTemplate( string templateString, Dictionary<string, string> findAndReplace )
+		public ScriptMacroTemplate( string templateString, string textCase, Dictionary<string, string> findAndReplace )
 		{
-			TemplateString = templateString;
 			FindAndReplace = findAndReplace;
+			TemplateString = templateString;
+			TextCase = textCase;
 		}
 		public ScriptMacroTemplate( ScriptMacroTemplate other )
 		{
-			TemplateString = other.TemplateString;
 			FindAndReplace = other.FindAndReplace;
+			TemplateString = other.TemplateString;
+			TextCase = other.TextCase;
 		}
 
 
@@ -35,10 +41,10 @@
 			{
 				return false;
 			}
-			return TemplateString.Equals( other.TemplateString ) && AreFindAndReplacesEqual( other.FindAndReplace );
+			return AreFindAndReplacesEqual( other.FindAndReplace ) && TemplateString.Equals( other.TemplateString ) && TextCase.Equals( other.TextCase );
 		}
 
-		public override int GetHashCode() => TemplateString.GetHashCode() ^ FindAndReplace.GetHashCode();
+		public override int GetHashCode() => FindAndReplace.GetHashCode() ^ TemplateString.GetHashCode() ^ TextCase.GetHashCode();
 
 		public override string ToString() => TemplateString;
 
