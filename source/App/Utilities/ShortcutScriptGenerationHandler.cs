@@ -101,6 +101,8 @@ namespace Petrichor.App.Utilities
 				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.Template,
 				TokenHandlers = new()
 				{
+					{ ShortcutScriptGeneration.Syntax.Tokens.Find, TemplateHandler.FindTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
 					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TemplateTokenHandler },
 				},
 			};
@@ -115,8 +117,8 @@ namespace Petrichor.App.Utilities
 			{
 				templateRegionParser.Reset();
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
-				var entry = templateRegionParser.Parse( dataTrimmedToRegion );
-				result.Add( entry );
+				var template = templateRegionParser.Parse( dataTrimmedToRegion );
+				result.Add( template );
 				return new ProcessedRegionData<List<ScriptMacroTemplate>>( value: result, bodySize: templateRegionParser.LinesParsed - 1 );
 			};
 
