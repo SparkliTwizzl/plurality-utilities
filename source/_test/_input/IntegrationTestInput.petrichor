@@ -47,7 +47,11 @@ template-list:
 {
 	// line comment in template-list region body
 	
-	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] ` // inline comment in template-list region body
+	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	{
+		find: { findmetoo, findme }
+		replace: { foundyoutoo, foundyou }
+	}
 	template: [tag] :: [name]
 	template: [tag][last-tag] :: [name] [last-name]
 	template: `[tag] :: `[name]

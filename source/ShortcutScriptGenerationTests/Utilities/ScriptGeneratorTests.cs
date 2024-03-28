@@ -12,15 +12,18 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public readonly struct TestData
 		{
-			public static ScriptEntry[] Entries => new[]
+			public static ScriptEntry[] EntryList => new[]
 			{
 				new ScriptEntry(),
 			};
-			public static string[] Templates => new[]
+			public static ScriptMacroTemplate[] TemplateList => new[]
 			{
-				"template",
+				new ScriptMacroTemplate()
+				{
+					TemplateString = "template",
+				}
 			};
-			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
+			public static ScriptInput Input => new( ModuleOptions, EntryList, TemplateList, Macros );
 			public static string[] Macros => new[]
 			{
 				"macro",

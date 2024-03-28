@@ -5,7 +5,7 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class DataRegionParser<T> : IDataRegionParser<T> where T : new()
+	public class DataRegionParser<T> : IDataRegionParser<T> where T : class, new()
 	{
 		private const int DefaultIndentLevel = 0;
 		private const int DefaultLinesParsed = 0;
@@ -35,6 +35,8 @@ namespace Petrichor.Common.Utilities
 			StoreTokenHandlers( descriptor.TokenHandlers );
 		}
 
+
+		public void AddTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler ) => StoreTokenHandler( token, handler );
 
 		public void CancelParsing() => IsParsingFinished = true;
 
@@ -117,6 +119,9 @@ namespace Petrichor.Common.Utilities
 
 			return handler!( regionData, tokenStartIndex, result );
 		}
+
+		private void StoreTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler )
+			=> StoreTokenHandlers( new Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>>() { { token, handler } } );
 
 		private void StoreTokenHandlers( Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>> rawHandlers )
 		{

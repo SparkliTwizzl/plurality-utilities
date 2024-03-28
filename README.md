@@ -652,53 +652,7 @@ module-options:
 
 ---
 
-#### 5.1.1.2 - Entry list region (REQUIRED)
-
-This region defines the entries to be converted into macros. It must come before the `template-list` region.
-
-Each entry is an `entry` region which defines a set of values to create shortcut macros from. There is no limit to how many entries the `entry-list` region can contain.
-
----
-
-##### 5.1.1.2.1 - Entry regions (OPTIONAL)
-
-Entry regions are made up several token types. There are different restrictions and requirements for each type.
-
-- `color` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
-- `decoration` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
-- `id` : Min 1, max 1. This token defines a value to associated with all `name` tokens that are present.
-- `name` : Min 1. This token defines a name/tag pair.
-    - This token type's value is structured as `[name] @[tag]`, where the `[name]` portion can be any non-blank string that does not contain an `@` character, and the `[tag]` portion can be any string that does not contain whitespace.
-- `last-name` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
-    - This token type's value structure is identical to that of `name` tags.
-- `pronoun` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
-
-**NOTE:** All token values *should* be unique, even though Petrichor wont take issue with it. If a value is repeated, the AutoHotkey script generated from the input data will misbehave in unpredictable ways.
-
-**Example:**
-
-```petrichor
-entry: // all optional tokens present
-{
-    id: 1234
-    name: Sam @sm
-    name: Sammy @smy
-    last-name: Smith @s
-    pronoun: they/them
-    color: #89abcd
-    decoration: -- a person
-}
-
-entry: // only required tokens present
-{
-    id: 4321
-    name: ALEX @AX
-}
-```
-
----
-
-#### 5.1.1.3 - Template list region (REQUIRED)
+#### 5.1.1.2 - Template list region (REQUIRED)
 
 This region defines the structure of generated macros. It must come after the entry list region.
 
@@ -706,17 +660,21 @@ Templates define the structure of AutoHotkey macros to create from entries. Ther
 
 ---
 
-##### 5.1.1.3.1 - Template tokens (OPTIONAL)
+##### 5.1.1.2.1 - Template region (REQUIRED)
+
+This region defines a template to create macros from. At least one this token must be present. If no optional features are used, the region body can be omitted.
 
 Templates are defined by tokens with the name `template` and a valid AutoHotkey hotstring. Consult AutoHotkey documentation if you do not know how to write one. A basic overview is provided here.
 
 All templates must start with a `find` text string, then `::`, then a `replace` text string.
 
-**NOTE:** You cannot use `::` in a `find` string due to the way AutoHotkey hotstrings work.
+**NOTE:** You cannot use `::` in a `find` string due to the way AutoHotkey hotstrings work. Petrichor will allow it, but the macros it generates will not work.
 
 These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the `find` and/or `replace` strings.
 
-Use [marker strings](#511311---template-marker-strings) to define how templates should be applied to entries.
+Use [marker strings](#511211---template-marker-strings) to define how templates should be applied to entries.
+
+Templates support [custom find and replace dictionaries](#511212---find-and-replace-tokens). 
 
 If this is not followed, the generated script wont work correctly, even though Petrichor will run without errors.
 
@@ -725,17 +683,22 @@ If this is not followed, the generated script wont work correctly, even though P
 ```petrichor
 template-list:
 {
-    template: [find string] :: ` [replace string] `
+    template: [find string] :: ` [replace string] ` // no optional features are used, so no region body is needed
+	template: [find string] :: [replace string] // optional features are used, so a region body is needed
+	{
+		// optional feature tokens go here
+	}
 }
 
 // MACROS GENERATED FROM INPUT:
 
-::[find string]::` [replace string] `
+::[find string]::` [replace string] ` // this is a standard template
+::[find string]::[replace string] // optional features will be applied to this template
 ```
 
 ---
 
-###### 5.1.1.3.1.1 - Template marker strings
+###### 5.1.1.2.1.1 - Template marker strings
 
 Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
 
@@ -816,7 +779,85 @@ template-list:
 
 ---
 
-#### 5.1.2 - `generateTextShortcutScript` command
+###### 5.1.1.2.1.2 - Find and replace tokens
+
+These tokens are used to define custom find-and-replace pairs for a template.
+They are applied after a template is populated with data, and therefore are able to modify that data.
+
+A `replace` token must be paired with a `find` token, and must come after it.
+A `find` token can be present without a paired `replace` token, but this will cause all the "find" items to be removed rather than replaced with other text.
+
+The value of a `find` or `replace` token must be an inline region body, starting with a `{` and ending with a `}`.
+Within the token body, put your find/replace items as a comma-separated list.
+The lists cannot contain blank items, and they must have the same number of items as each other.
+
+**Example:**
+
+```petrichor
+template-list:
+{
+	template: [find string] :: [replace string] custom find 1, custom find 2
+	{
+		find: { custom find 1, custom find 2 }
+		replace: { replace 1, replace 2 }
+	}
+}
+
+// MACROS GENERATED FROM INPUT:
+
+::[find string]::[replace string] replace 1, replace 2 // If the "find" items are present in either the [find string] or the [replace string] values for an entry, they will be replaced as well.
+```
+---
+
+#### 5.1.1.3 - Entry list region (REQUIRED)
+
+This region defines the entries to be converted into macros.
+
+Each entry is an `entry` region which defines a set of values to create shortcut macros from. There is no limit to how many entries the `entry-list` region can contain.
+
+---
+
+##### 5.1.1.3.1 - Entry regions (OPTIONAL)
+
+This region defines a set of data to apply macro templates to. At least one of this region must be present.
+
+Entry regions are made up several token types. There are different restrictions and requirements for each type.
+
+- `color` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+- `decoration` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+- `id` : Min 1, max 1. This token defines a value to associated with all `name` tokens that are present.
+- `name` : Min 1. This token defines a name/tag pair.
+    - This token type's value is structured as `[name] @[tag]`, where the `[name]` portion can be any non-blank string that does not contain an `@` character, and the `[tag]` portion can be any string that does not contain whitespace.
+- `last-name` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+    - This token type's value structure is identical to that of `name` tags.
+- `pronoun` : Min 0, max 1. This token defines a value to associate with all `name` tokens that are present.
+
+**NOTE:** All token values *should* be unique, even though Petrichor wont take issue with it. If a value is repeated, the AutoHotkey script generated from the input data will misbehave in unpredictable ways.
+
+**Example:**
+
+```petrichor
+entry: // all optional tokens present
+{
+    id: 1234
+    name: Sam @sm
+    name: Sammy @smy
+    last-name: Smith @s
+    pronoun: they/them
+    color: #89abcd
+    decoration: -- a person
+}
+
+entry: // only required tokens present
+{
+    id: 4321
+    name: ALEX @AX
+}
+```
+
+---
+
+### 5.1.2 - `generateTextShortcutScript` command
 
 To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`.
 
@@ -832,7 +873,7 @@ This command supports the following options:
 
 ```
 {install path}\Petrichor\
->Petrichor.exe generateTextShortcutScript
+>Petrichor.exe generateTextShortcutScript --inputFile {file} --outputFile {file} --logMode {mode} --logFile {file}
 ```
 
 ---
@@ -883,7 +924,8 @@ You can follow the directions [here](https://windowsloop.com/run-autohotkey-scri
 
 ### 6.3.3 - Registry (NOT RECOMMENDED)
 
-**DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING. Editing the registry can brick your computer if you're not careful.**
+**DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING.**
+**Editing the registry can brick your computer if you're not careful.**
 
 Wi strongly recommend using one of the other methods above, unless all of them dont work for you.
 

@@ -11,10 +11,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private IDataRegionParser<ScriptInput> FileRegionParser { get; set; }
 		private IMacroGenerator MacroGenerator { get; set; }
 		private IDataRegionParser<ScriptModuleOptions> ModuleOptionsRegionParser { get; set; }
-		private IDataRegionParser<List<string>> TemplateListRegionParser { get; set; }
+		private IDataRegionParser<List<ScriptMacroTemplate>> TemplateListRegionParser { get; set; }
 
 
-		public InputHandler( IDataRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IDataRegionParser<List<ScriptEntry>> entryListRegionParser, IDataRegionParser<List<string>> templateListRegionParser, IMacroGenerator macroGenerator )
+		public InputHandler( IDataRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IDataRegionParser<List<ScriptEntry>> entryListRegionParser, IDataRegionParser<List<ScriptMacroTemplate>> templateListRegionParser, IMacroGenerator macroGenerator )
 		{
 			EntryListRegionParser = entryListRegionParser;
 			MacroGenerator = macroGenerator;

@@ -18,7 +18,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static List<string> GenerateMacrosFromEntries( string[] templates, ScriptEntry entry )
+		private static List<string> GenerateMacrosFromEntries( ScriptMacroTemplate[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var identity in entry.Identities.ToList() )
@@ -31,7 +31,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return macros;
 		}
 
-		private static List<string> GenerateMacrosFromIdentity( string[] templates, ScriptEntry entry )
+		private static List<string> GenerateMacrosFromIdentity( ScriptMacroTemplate[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var template in templates )
@@ -41,9 +41,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return macros;
 		}
 
-		private static string GenerateMacroFromTemplate( string template, ScriptEntry entry )
+		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptEntry entry )
 		{
-			var macro = template;
+			var macro = template.TemplateString;
 			var fields = new Dictionary<string, string>()
 			{
 				{ TemplateFindStrings.Color, entry.Color },
@@ -54,16 +54,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ TemplateFindStrings.LastTag, entry.LastIdentity.Tag },
 				{ TemplateFindStrings.Pronoun, entry.Pronoun },
 				{ TemplateFindStrings.Tag, entry.Identities[ 0 ].Tag },
-			 };
-			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
+			};
+
+			foreach ( var findTag in ScriptTemplateFindStrings.LookUpTable )
 			{
-				macro = macro
-					.Replace( $"{findString}", fields[ findString ] )
+				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
+			}
+
+			foreach ( var findAndReplace in template.FindAndReplace )
+			{
+				macro = macro.Replace( findAndReplace.Key, findAndReplace.Value );
+			}
+
+			return macro
 					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
 					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
 					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
-			}
-			return macro;
 		}
 	}
 }

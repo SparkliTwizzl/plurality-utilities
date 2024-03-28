@@ -44,7 +44,7 @@ namespace Petrichor.Common.Utilities
 			{
 				ExceptionLogger.LogAndThrow( new FileNotFoundException( $"Input file was not found (\"{filePath}\").", exception ) );
 			}
-			var regionData = IndexedString.IndexStringArray( fileData.ToArray() );
+			var regionData = IndexedString.IndexRawStrings( fileData.ToArray() );
 			var result = ParseRegionData( regionData.ToArray() );
 
 			Log.Finish( taskMessage );
