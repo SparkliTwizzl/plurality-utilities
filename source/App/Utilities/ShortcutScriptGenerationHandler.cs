@@ -94,14 +94,38 @@ namespace Petrichor.App.Utilities
 			return new DataRegionParser<ScriptModuleOptions>( parserDescriptor );
 		}
 
+		private static DataRegionParser<ScriptMacroTemplate> CreateTemplateRegionParser()
+		{
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptMacroTemplate>()
+			{
+				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.Template,
+				TokenHandlers = new()
+				{
+					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TemplateTokenHandler },
+				},
+			};
+			return new DataRegionParser<ScriptMacroTemplate>( parserDescriptor );
+		}
+
 		private static DataRegionParser<List<ScriptMacroTemplate>> CreateTemplateListRegionParser()
 		{
+			var templateRegionParser = CreateTemplateRegionParser();
+
+			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptMacroTemplate> result ) =>
+			{
+				templateRegionParser.Reset();
+				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
+				var entry = templateRegionParser.Parse( dataTrimmedToRegion );
+				result.Add( entry );
+				return new ProcessedRegionData<List<ScriptMacroTemplate>>( value: result, bodySize: templateRegionParser.LinesParsed - 1 );
+			};
+
 			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptMacroTemplate>>()
 			{
 				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.TemplateList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TemplateTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.Template, templateTokenHandler },
 				},
 				PostParseHandler = ( List<ScriptMacroTemplate> templates ) =>
 				{

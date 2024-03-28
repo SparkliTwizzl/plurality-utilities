@@ -27,16 +27,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
 		/// </exception>
-		public static ProcessedRegionData<List<ScriptMacroTemplate>> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, List<ScriptMacroTemplate> result )
+		public static ProcessedRegionData<ScriptMacroTemplate> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			var templateString = ParseTemplateFromLine( token.Value, token.LineNumber );
-			var macroTemplate = new ScriptMacroTemplate()
-			{
-				TemplateString = templateString,
-			};
-			result.Add( macroTemplate );
-			return new ProcessedRegionData<List<ScriptMacroTemplate>>( result );
+			result.TemplateString = ParseTemplateFromLine( token.Value, token.LineNumber );
+			return new ProcessedRegionData<ScriptMacroTemplate>( result );
 		}
 
 
