@@ -45,17 +45,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macro = template.TemplateString;
 			var fields = new Dictionary<string, string>()
 			{
-				{ TemplateFindStrings.Color, entry.Color },
-				{ TemplateFindStrings.Decoration, entry.Decoration },
-				{ TemplateFindStrings.ID, entry.ID },
-				{ TemplateFindStrings.Name, entry.Identities[ 0 ].Name },
-				{ TemplateFindStrings.LastName, entry.LastIdentity.Name },
-				{ TemplateFindStrings.LastTag, entry.LastIdentity.Tag },
-				{ TemplateFindStrings.Pronoun, entry.Pronoun },
-				{ TemplateFindStrings.Tag, entry.Identities[ 0 ].Tag },
+				{ TemplateFindTags.Color, entry.Color },
+				{ TemplateFindTags.Decoration, entry.Decoration },
+				{ TemplateFindTags.ID, entry.ID },
+				{ TemplateFindTags.Name, entry.Identities[ 0 ].Name },
+				{ TemplateFindTags.LastName, entry.LastIdentity.Name },
+				{ TemplateFindTags.LastTag, entry.LastIdentity.Tag },
+				{ TemplateFindTags.Pronoun, entry.Pronoun },
+				{ TemplateFindTags.Tag, entry.Identities[ 0 ].Tag },
 			};
 
-			foreach ( var findTag in TemplateFindStrings.LookUpTable )
+			foreach ( var findTag in TemplateFindTags.LookUpTable )
 			{
 				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
 			}

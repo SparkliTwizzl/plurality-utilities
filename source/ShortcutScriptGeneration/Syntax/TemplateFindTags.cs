@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public readonly struct TemplateFindStrings
+	public readonly struct TemplateFindTags
 	{
 		public static string Color => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Color.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Decoration => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Decoration.Key}{Common.Syntax.ControlSequences.FindTagClose}";

@@ -55,7 +55,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static string TemplateReplace1 => "replace1";
 			public static string TemplateReplace2 => "replace2";
-			public static string TemplateString => $"::{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindStrings.Tag}{TemplateFindStrings.LastTag}:: {Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindStrings.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindStrings.Name} {TemplateFindStrings.LastName} {TemplateFindStrings.Pronoun} {TemplateFindStrings.Color} {TemplateFindStrings.Decoration} {TemplateFind1}{TemplateFind2} `";
+			public static string TemplateString => $"::{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindTags.Tag}{TemplateFindTags.LastTag}:: {Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindTags.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {TemplateFind1}{TemplateFind2} `";
 		}
 
 
