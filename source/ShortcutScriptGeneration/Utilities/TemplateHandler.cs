@@ -46,16 +46,31 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token values cannot be blank." ), token.LineNumber );
 				}
+
 				if ( !token.Value.StartsWith( Common.Syntax.ControlSequences.RegionOpen ) )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies must start with a '{Common.Syntax.ControlSequences.RegionOpen}' character." ), token.LineNumber );
 				}
+
 				if ( !token.Value.EndsWith( Common.Syntax.ControlSequences.RegionClose ) )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies must end with a '{Common.Syntax.ControlSequences.RegionClose}' character." ), token.LineNumber );
 				}
-				var items = token.Value[ 1..( token.Value.Length - 1 ) ];
-				return items.Split( ',' );
+
+				var items = token.Value[ 1..( token.Value.Length - 1 ) ]
+					.Split( ',' );
+
+				for ( var i = 0 ; i < items.Length ; ++i )
+				{
+					items[ i ] = items[ i ].Trim();
+				}
+
+				if ( items.Contains( string.Empty ) )
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies cannot contain blank items." ), token.LineNumber );
+				}
+
+				return items;
 			}
 		}
 
@@ -189,8 +204,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		///
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value has no body.
-		/// Thrown when a token's value has no region open character.
-		/// Thrown when a token's value has no region close character.
+		/// Thrown when a token's body has no region open character.
+		/// Thrown when a token's body has no region close character.
+		/// Thrown when a token's body contains blank items.
 		/// </exception>
 		public static ProcessedRegionData<ScriptMacroTemplate> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{
@@ -209,10 +225,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		///
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value has no body.
-		/// Thrown when a token's value has no region open character.
-		/// Thrown when a token's value has no region close character.
-		/// Thrown when a token's value contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
-		/// Thrown when a token's value contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
+		/// Thrown when a token's body has no region open character.
+		/// Thrown when a token's body has no region close character.
+		/// Thrown when a token's body contains blank items.
+		/// Thrown when a token's body contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
+		/// Thrown when a token's body contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// </exception>
 		public static ProcessedRegionData<ScriptMacroTemplate> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{

@@ -102,7 +102,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_Valid ), new ProcessedRegionData<ScriptMacroTemplate>( TestData.TemplateWithFindKeys ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_NoItems ), new ProcessedRegionData<ScriptMacroTemplate>( TestData.TemplateWithEmptyFindAndReplace ) };
 			}
 		}
 
@@ -121,6 +120,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_NoBody ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_NoItems ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_NoRegionClose ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_NoRegionOpen ) };
 			}
@@ -140,7 +140,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_Valid ), TestData.TemplateWithFindKeys, new ProcessedRegionData<ScriptMacroTemplate>( TestData.TemplateWithFindAndReplace ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ), TestData.TemplateWithEmptyFindAndReplace, new ProcessedRegionData<ScriptMacroTemplate>( TestData.TemplateWithEmptyFindAndReplace ) };
 			}
 		}
 
@@ -159,10 +158,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			get
 			{
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoBody ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionClose ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionOpen ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ) };
 			}
 		}
 

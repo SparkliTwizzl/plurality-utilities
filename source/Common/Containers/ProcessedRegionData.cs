@@ -42,7 +42,7 @@
 
 		public override int GetHashCode() => BodySize.GetHashCode() ^ Value!.GetHashCode();
 
-		public override string ToString() => $"{BodySize} {Value!}";
+		public override string ToString() => $"{nameof(BodySize)}={BodySize}, {nameof(Value)}={Value!}";
 
 		public static bool operator ==( ProcessedRegionData<T> a, ProcessedRegionData<T> b ) => a.Equals( b );
 
