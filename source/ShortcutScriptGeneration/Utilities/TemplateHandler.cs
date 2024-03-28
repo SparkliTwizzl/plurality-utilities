@@ -26,16 +26,23 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			public static Dictionary<string, string> ParseReplaceValues( StringToken token, Dictionary<string, string> result )
 			{
+				if (result.Count < 1)
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" region has a \"{token.Key}\" token, but is missing a corresponding \"{Tokens.Find}\" token." ), token.LineNumber );
+				}
+
 				var items = ExtractItemsFromBody( token );
 				if ( items.Length != result.Count )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's body has a different number of items than its corresponding \"{Tokens.Find.Key}\" token (has: {items.Length} / should have: {result.Count})." ), token.LineNumber );
 				}
+
 				for ( var i = 0 ; i < items.Length ; ++i )
 				{
 					var key = result.ElementAt( i ).Key;
 					result[ key ] = items[ i ];
 				}
+
 				return result;
 			}
 
@@ -224,6 +231,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
 		///
 		/// <exception cref="TokenValueException">
+		/// Thrown when a token is not preceeded by a <see cref="Tokens.Find"/> token.
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's body has no region open character.
 		/// Thrown when a token's body has no region close character.

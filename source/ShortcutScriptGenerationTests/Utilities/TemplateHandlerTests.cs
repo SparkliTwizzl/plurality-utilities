@@ -147,7 +147,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenValueException ) )]
 		[DynamicData( nameof( ReplaceTokenHandler_Test_Throws_TokenValueExeception_Data ), DynamicDataSourceType.Property )]
-		public void ReplaceTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData )
+		public void ReplaceTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData, ScriptMacroTemplate input )
 		{
 			Log.Info( $"input: {regionData[ 0 ]}" );
 			_ = TemplateHandler.ReplaceTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
@@ -157,12 +157,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoBody ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionClose ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionOpen ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ) };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoBody ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionClose ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionOpen ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ), new ScriptMacroTemplate() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_Valid ), TestData.TemplateWithEmptyFindAndReplace };
 			}
 		}
 
