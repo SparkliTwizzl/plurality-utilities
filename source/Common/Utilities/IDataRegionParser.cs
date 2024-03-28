@@ -12,6 +12,7 @@ namespace Petrichor.Common.Utilities
 		Dictionary<string, int> TokenInstancesParsed { get; }
 
 
+		void AddTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler );
 		void CancelParsing();
 		T Parse( IndexedString[] regionData );
 		void Reset();

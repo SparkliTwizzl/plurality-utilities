@@ -150,7 +150,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void ReplaceTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData, ScriptMacroTemplate input )
 		{
 			Log.Info( $"input: {regionData[ 0 ]}" );
-			_ = TemplateHandler.ReplaceTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
+			_ = TemplateHandler.ReplaceTokenHandler( regionData, TestData.TokenStartIndex, result: input );
 		}
 
 		public static IEnumerable<object[]> ReplaceTokenHandler_Test_Throws_TokenValueExeception_Data

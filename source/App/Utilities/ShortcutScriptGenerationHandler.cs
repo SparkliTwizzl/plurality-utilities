@@ -103,10 +103,33 @@ namespace Petrichor.App.Utilities
 				{
 					{ ShortcutScriptGeneration.Syntax.Tokens.Find, TemplateHandler.FindTokenHandler },
 					{ ShortcutScriptGeneration.Syntax.Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.Template, TemplateHandler.TemplateTokenHandler },
+				},
+				PostParseHandler = ( ScriptMacroTemplate template ) =>
+				{
+					if ( template.FindAndReplace.Count > 0 )
+					{
+						Log.Info( $"Parsed {template.FindAndReplace.Count} find-and-replace pairs." );
+					}
+					return template;
 				},
 			};
-			return new DataRegionParser<ScriptMacroTemplate>( parserDescriptor );
+
+			var parser = new DataRegionParser<ScriptMacroTemplate>( parserDescriptor );
+
+			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result ) =>
+			{
+				var handlerResult = TemplateHandler.TemplateTokenHandler( regionData, tokenStartIndex, result );
+				result = handlerResult.Value;
+				var nextToken = new StringToken( regionData[ tokenStartIndex + 1 ] );
+				if ( nextToken.Key != Common.Syntax.Tokens.RegionOpen.Key )
+				{
+					parser.CancelParsing();
+				}
+				return new ProcessedRegionData<ScriptMacroTemplate>( result );
+			};
+
+			parser.AddTokenHandler( ShortcutScriptGeneration.Syntax.Tokens.Template, templateTokenHandler );
+			return parser;
 		}
 
 		private static DataRegionParser<List<ScriptMacroTemplate>> CreateTemplateListRegionParser()

@@ -36,6 +36,8 @@ namespace Petrichor.Common.Utilities
 		}
 
 
+		public void AddTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler ) => StoreTokenHandler( token, handler );
+
 		public void CancelParsing() => IsParsingFinished = true;
 
 		public T Parse( IndexedString[] regionData )
@@ -117,6 +119,9 @@ namespace Petrichor.Common.Utilities
 
 			return handler!( regionData, tokenStartIndex, result );
 		}
+
+		private void StoreTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler )
+			=> StoreTokenHandlers( new Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>>() { { token, handler } } );
 
 		private void StoreTokenHandlers( Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>> rawHandlers )
 		{

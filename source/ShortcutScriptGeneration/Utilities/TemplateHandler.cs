@@ -26,7 +26,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			public static Dictionary<string, string> ParseReplaceValues( StringToken token, Dictionary<string, string> result )
 			{
-				if (result.Count < 1)
+				if ( result.Count < 1 )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" region has a \"{token.Key}\" token, but is missing a corresponding \"{Tokens.Find}\" token." ), token.LineNumber );
 				}
@@ -197,7 +197,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template string contains an unrecognized \"find\" tag value ( \"{findTag}\" )." ), lineNumber );
 				}
 			}
-
 		}
 
 
