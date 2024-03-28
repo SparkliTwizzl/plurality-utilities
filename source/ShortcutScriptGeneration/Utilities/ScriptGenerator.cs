@@ -11,7 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ScriptGenerator
 	{
 		private static readonly string DefaultOutputDirectory = ProjectDirectories.OutputDirectory;
-		private const string DefaultOutputFileName = "output.ahk";
+		private const string DefaultOutputFileName = "output";
 		private const string OutputFileExtension = "ahk";
 
 
@@ -24,11 +24,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			Input = input;
 
-			var directory = Path.GetDirectoryName( outputFile ) ?? DefaultOutputDirectory;
-			var fileName = Path.GetFileNameWithoutExtension( outputFile ) ?? DefaultOutputFileName;
+			var directory = Path.GetDirectoryName( outputFile ) ?? string.Empty;
+			if ( directory == string.Empty )
+			{
+				directory = DefaultOutputDirectory;
+			}
+
+			var fileName = Path.GetFileNameWithoutExtension( outputFile ) ?? string.Empty;
+			if ( fileName == string.Empty )
+			{
+				fileName = DefaultOutputFileName;
+			}
 			var filePath = $"{Path.Combine( directory, fileName )}.{OutputFileExtension}";
 
-			var taskMessage = $"Generate output file \"{filePath}\"";
+			 var taskMessage = $"Generate output file \"{filePath}\"";
 			Log.Start( taskMessage );
 
 			try
