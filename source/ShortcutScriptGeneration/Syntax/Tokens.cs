@@ -29,6 +29,11 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 			MaxAllowed = 1,
 			MinRequired = 1,
 		};
+		public static DataToken Find => new()
+		{
+			Key = "find",
+			MaxAllowed = 1,
+		};
 		public static DataToken ID => new()
 		{
 			Key = "id",
@@ -63,6 +68,11 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 		public static DataToken ReloadShortcut => new()
 		{
 			Key = "reload-shortcut",
+			MaxAllowed = 1,
+		};
+		public static DataToken Replace => new()
+		{
+			Key = "replace",
 			MaxAllowed = 1,
 		};
 		public static DataToken SuspendIcon => new()

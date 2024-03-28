@@ -23,7 +23,9 @@
 		}
 
 
-		public static IndexedString[] IndexStringArray( string[] strings )
+		public static IndexedString[] IndexRawStrings( string value ) => IndexRawStrings( new[] { value } );
+
+		public static IndexedString[] IndexRawStrings( string[] strings )
 		{
 			var result = new List<IndexedString>();
 			for ( var i = 0 ; i < strings.Length ; ++i )

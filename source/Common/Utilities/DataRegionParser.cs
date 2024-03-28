@@ -5,7 +5,7 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class DataRegionParser<T> : IDataRegionParser<T> where T : new()
+	public class DataRegionParser<T> : IDataRegionParser<T> where T : class, new()
 	{
 		private const int DefaultIndentLevel = 0;
 		private const int DefaultLinesParsed = 0;

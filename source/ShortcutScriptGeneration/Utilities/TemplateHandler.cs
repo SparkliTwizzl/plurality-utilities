@@ -12,17 +12,59 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public static class TemplateHandler
 	{
 		/// <summary>
-		/// Converts template token values into Petrichor template strings.
+		/// Converts <see cref="Tokens.Find"/> token values into find-and-replace dictionary keys.
 		/// </summary>
 		/// <param name="regionData">Untrimmed input data.</param>
 		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
 		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/>.</returns>
+		/// <returns>Modified <paramref name="result"/> with "find" keys.</returns>
 		///
 		/// <exception cref="TokenValueException">
-		/// Thrown when a token value is not a valid template string.
-		/// Thrown when a token value contains a dangling escape character.
-		/// Thrown when a token value contains a malformed "find" tag:
+		/// Thrown when a token's value has no body.
+		/// Thrown when a token's value has no region open character.
+		/// Thrown when a token's value has no region close character.
+		/// </exception>
+		public static ProcessedRegionData<ScriptMacroTemplate> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		{
+			var token = new StringToken( regionData[ tokenStartIndex ] );
+			result.FindAndReplace = ParseFindKeysFromStringToken( token );
+			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+		}
+
+		/// <summary>
+		/// Converts <see cref="Tokens.Replace"/> token values into find-and-replace dictionary values.
+		/// </summary>
+		/// <param name="regionData">Untrimmed input data.</param>
+		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
+		/// <param name="result">Existing result to modify and return.</param>
+		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
+		///
+		/// <exception cref="TokenValueException">
+		/// Thrown when a token's value has no body.
+		/// Thrown when a token's value has no region open character.
+		/// Thrown when a token's value has no region close character.
+		/// Thrown when a token's value contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
+		/// Thrown when a token's value contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
+		/// </exception>
+		public static ProcessedRegionData<ScriptMacroTemplate> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		{
+			var token = new StringToken( regionData[ tokenStartIndex ] );
+			result.FindAndReplace = ParseReplaceValuesFromStringToken( token, result );
+			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+		}
+
+		/// <summary>
+		/// Converts <see cref="Tokens.Template"/> token values into Petrichor template strings and stores them in the provided container.
+		/// </summary>
+		/// <param name="regionData">Untrimmed input data.</param>
+		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
+		/// <param name="result">Existing result to modify and return.</param>
+		/// <returns>Modified <paramref name="result"/> with converted template string.</returns>
+		///
+		/// <exception cref="TokenValueException">
+		/// Thrown when token's value is not a valid template string.
+		/// Thrown when token's value contains a dangling escape character.
+		/// Thrown when token's value contains a malformed "find" tag:
 		/// - Mismatched tag open character.
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
@@ -30,7 +72,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public static ProcessedRegionData<ScriptMacroTemplate> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			result.TemplateString = ParseTemplateFromLine( token.Value, token.LineNumber );
+			result.TemplateString = ParseTemplateFromStringToken( token );
 			return new ProcessedRegionData<ScriptMacroTemplate>( result );
 		}
 
@@ -86,9 +128,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return findTagValueLength + 2;
 		}
 
-		private static string ParseTemplateFromLine( string line, int lineNumber )
+		private static Dictionary<string, string> ParseFindKeysFromStringToken( StringToken token )
 		{
-			var rawHotstring = ConvertTemplateToAutoHotkeySyntax( line, lineNumber );
+			var result = new Dictionary<string, string>();
+			return result;
+		}
+
+		private static Dictionary<string, string> ParseReplaceValuesFromStringToken( StringToken token, ScriptMacroTemplate result )
+		{
+			return result.FindAndReplace;
+		}
+
+		private static string ParseTemplateFromStringToken( StringToken token )
+		{
+			var rawHotstring = ConvertTemplateToAutoHotkeySyntax( token.Value, token.LineNumber );
 			var sanitizedHotstring = SanitizeHotstring( rawHotstring );
 
 			var template = new StringBuilder();
@@ -98,15 +151,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				if ( c == Common.Syntax.ControlSequences.FindTagClose )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{Common.Syntax.ControlSequences.FindTagClose}')." ), lineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a mismatched find-string close character ('{Common.Syntax.ControlSequences.FindTagClose}')." ), token.LineNumber );
 					break;
 				}
 
 				else if ( c == Common.Syntax.ControlSequences.FindTagOpen )
 				{
 					var substring = sanitizedHotstring[ i.. ];
-					var findString = ExtractFindTagFromLine( substring, lineNumber );
-					ValidateFindTagValue( findString, lineNumber );
+					var findString = ExtractFindTagFromLine( substring, token.LineNumber );
+					ValidateFindTagValue( findString, token.LineNumber );
 					_ = template.Append( findString );
 					i += findString.Length - 1;
 				}
@@ -121,7 +174,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 					catch ( Exception exception )
 					{
-						ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a dangling escape character ('{Common.Syntax.ControlSequences.Escape}') with no following character to escape.", exception ), lineNumber );
+						ExceptionLogger.LogAndThrow( new TokenValueException( $"A template contained a dangling escape character ('{Common.Syntax.ControlSequences.Escape}') with no following character to escape.", exception ), token.LineNumber );
 						break;
 					}
 				}

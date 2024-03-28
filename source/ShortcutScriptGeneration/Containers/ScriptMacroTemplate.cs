@@ -35,7 +35,11 @@
 			{
 				return false;
 			}
-			return TemplateString.Equals( other.TemplateString ) && FindAndReplace.Equals( other.FindAndReplace );
+			var templateStringEqual = TemplateString.Equals( other.TemplateString );
+			var findAndReplaceReferenceEqual = FindAndReplace.Equals( other.FindAndReplace );
+			var findAndReplaceValueEqual = FindAndReplace.Count == other.FindAndReplace.Count && !FindAndReplace.Except( other.FindAndReplace ).Any();
+			var findAndReplaceEqual = findAndReplaceReferenceEqual || findAndReplaceValueEqual;
+			return templateStringEqual && findAndReplaceEqual;
 		}
 
 		public override int GetHashCode() => TemplateString.GetHashCode() ^ FindAndReplace.GetHashCode();
