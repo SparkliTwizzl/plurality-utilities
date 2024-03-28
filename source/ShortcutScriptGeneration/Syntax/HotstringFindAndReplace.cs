@@ -1,6 +1,6 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.LookUpTables
+﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public static class ScriptHotstringKeys
+	public static class HotstringFindAndReplace
 	{
 		public static Dictionary<string, string> LookUpTable => new()
 		{

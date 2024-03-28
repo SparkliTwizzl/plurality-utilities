@@ -1,5 +1,4 @@
 ﻿using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
@@ -56,7 +55,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ TemplateFindStrings.Tag, entry.Identities[ 0 ].Tag },
 			};
 
-			foreach ( var findTag in ScriptTemplateFindStrings.LookUpTable )
+			foreach ( var findTag in TemplateFindStrings.LookUpTable )
 			{
 				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
 			}

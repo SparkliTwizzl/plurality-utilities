@@ -1,9 +1,8 @@
 ﻿using Petrichor.Common.Containers;
-using Petrichor.Common.Syntax;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -49,7 +48,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string ReplaceFieldsInScriptControlHotstring( string hotstring )
 		{
-			foreach ( var findTag in ScriptHotstringKeys.LookUpTable )
+			foreach ( var findTag in HotstringFindAndReplace.LookUpTable )
 			{
 				var find = findTag.Key;
 				var replace = findTag.Value;
@@ -57,8 +56,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			}
 
 			return hotstring
-				.Replace( $"{ControlSequences.Escape}{ControlSequences.FindTagOpen}", ControlSequences.FindTagOpen.ToString() )
-				.Replace( $"{ControlSequences.Escape}{ControlSequences.FindTagClose}", ControlSequences.FindTagClose.ToString() );
+				.Replace( $"{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagOpen}", Common.Syntax.ControlSequences.FindTagOpen.ToString() )
+				.Replace( $"{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagClose}", Common.Syntax.ControlSequences.FindTagClose.ToString() );
 		}
 	}
 }

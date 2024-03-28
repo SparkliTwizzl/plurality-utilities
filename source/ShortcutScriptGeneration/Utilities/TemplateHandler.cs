@@ -2,7 +2,6 @@
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 using System.Text;
 
@@ -192,7 +191,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			private static void ValidateFindTagValue( string findTag, int lineNumber )
 			{
-				if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findTag ) )
+				if ( !TemplateFindStrings.LookUpTable.Contains( findTag ) )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template string contains an unrecognized \"find\" tag value ( \"{findTag}\" )." ), lineNumber );
 				}

@@ -10,5 +10,17 @@
 		public static string LastTag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.LastTag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Pronoun => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Pronoun.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Tag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Tag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
+
+		public static string[] LookUpTable => new[]
+		{
+			Color,
+			Decoration,
+			ID,
+			Name,
+			LastName,
+			LastTag,
+			Pronoun,
+			Tag,
+		};
 	}
 }

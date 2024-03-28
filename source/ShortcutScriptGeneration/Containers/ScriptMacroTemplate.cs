@@ -2,8 +2,8 @@
 {
 	public sealed class ScriptMacroTemplate : IEquatable<ScriptMacroTemplate>
 	{
-		public string TemplateString { get; set; } = string.Empty;
 		public Dictionary<string, string> FindAndReplace { get; set; } = new();
+		public string TemplateString { get; set; } = string.Empty;
 
 
 		public ScriptMacroTemplate() { }
