@@ -779,17 +779,22 @@ template-list:
 
 ---
 
-###### 5.1.1.2.1.2 - Find and replace tokens
+###### 5.1.1.2.1.2 - Find and replace tokens (OPTIONAL)
 
 These tokens are used to define custom find-and-replace pairs for a template.
-They are applied after a template is populated with data, and therefore are able to modify that data.
 
-A `replace` token must be paired with a `find` token, and must come after it.
-A `find` token can be present without a paired `replace` token, but this will cause all the "find" items to be removed rather than replaced with other text.
+The find-and-replace pairs are only applied to the template's "replace" string.
+They are applied after a template is populated with entry data, and therefore are able to modify that data.
+
+"Find" keys are defined by a token with the name `find`.
+"Replace" values are defined by a token with the name `replace`.
 
 The value of a `find` or `replace` token must be an inline region body, starting with a `{` and ending with a `}`.
 Within the token body, put your find/replace items as a comma-separated list.
 The lists cannot contain blank items, and they must have the same number of items as each other.
+
+A `replace` token must be paired with a `find` token, and must come after it.
+A `find` token can be present without a paired `replace` token, but this will cause all the "find" items to be removed rather than replaced with other text.
 
 **Example:**
 
@@ -798,15 +803,61 @@ template-list:
 {
 	template: [find string] :: [replace string] custom find 1, custom find 2
 	{
-		find: { custom find 1, custom find 2 }
-		replace: { replace 1, replace 2 }
+		find: { custom find 1, custom find 2 } // These are the "find" keys.
+		replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
 	}
 }
 
 // MACROS GENERATED FROM INPUT:
 
-::[find string]::[replace string] replace 1, replace 2 // If the "find" items are present in either the [find string] or the [replace string] values for an entry, they will be replaced as well.
+::[find string]::[replace string] replace 1, replace 2 // If the "find" keys are present in the [replace string] values for an entry, they will be replaced as well.
 ```
+
+---
+
+###### 5.1.1.2.1.2 - Text Case tokens (OPTIONAL)
+
+These tokens are used to change the text case of a template's "replace" string.
+Case conversion is applied after [custom find-and-replace pairs](#511212---find-and-replace-tokens).
+
+Text case is defined by a token with the name `text-case`.
+Allowed values are:
+- unchanged (as-written; default)
+- upper (UPPER CASE)
+- lower (lower case)
+- firstCaps (First Capitals Case)
+
+**Example:**
+
+```petrichor
+template-list:
+{
+	template: [find string] :: [replace String]
+	{
+		text-case: unchanged
+	}
+	template: [find string] :: [replace String]
+	{
+		text-case: upper
+	}
+	template: [find string] :: [replace String]
+	{
+		text-case: lower
+	}
+	template: [find string] :: [replace String]
+	{
+		text-case: firstCaps
+	}
+}
+
+// MACROS GENERATED FROM INPUT:
+
+::[find string]::[replace String]
+::[find string]::[REPLACE STRING]
+::[find string]::[replace string]
+::[find string]::[Replace String]
+```
+
 ---
 
 #### 5.1.1.3 - Entry list region (REQUIRED)
