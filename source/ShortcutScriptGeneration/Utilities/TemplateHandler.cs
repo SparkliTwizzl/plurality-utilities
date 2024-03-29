@@ -83,10 +83,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static class TemplateParseHandler
 		{
-			public static string ParseTemplateString( StringToken token )
+			public static ScriptMacroTemplate ParseTemplateString( StringToken token, ScriptMacroTemplate result )
 			{
-				var rawHotstring = ConvertTemplateToAutoHotkeySyntax( token.Value, token.LineNumber );
-				var sanitizedHotstring = SanitizeHotstring( rawHotstring );
+				ValidateTemplateStructure( token );
+				var sanitizedHotstring = SanitizeHotstring( token.Value );
 
 				var template = new StringBuilder();
 				for ( var i = 0 ; i < sanitizedHotstring.Length ; ++i )
@@ -128,24 +128,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						_ = template.Append( c );
 					}
 				}
-				return template.ToString();
+
+				var components = template.ToString().Split( ControlSequences.TemplateFindReplaceDivider );
+				result.TemplateFindString = components[ 0 ].Trim();
+				result.TemplateReplaceString = components[ 1 ].Trim();
+				return result;
 			}
 
 
-			private static string ConvertTemplateToAutoHotkeySyntax( string template, int lineNumber )
+			private static void ValidateTemplateStructure( StringToken token )
 			{
-				var components = template.Split( ControlSequences.TemplateFindReplaceDivider );
+				var components = token.Value.Split( ControlSequences.TemplateFindReplaceDivider );
 				var doesFindStringExist = components[ 0 ]?.Length > 0;
 				var doesReplaceStringExist = components[ 1 ]?.Length > 0;
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
 				if ( !isTemplateInValidFormat )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" token's value is not a valid template string." ), lineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" token's value is not a valid template string." ), token.LineNumber );
 				}
-
-				var findString = components[ 0 ].Trim();
-				var replaceString = components[ 1 ].Trim();
-				return $"::{findString}::{replaceString}";
 			}
 
 			private static string ExtractFindTagFromLine( string line, int lineNumber )
@@ -282,7 +282,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public static ProcessedRegionData<ScriptMacroTemplate> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			result.TemplateString = TemplateParseHandler.ParseTemplateString( token );
+			result = TemplateParseHandler.ParseTemplateString( token, result );
 			return new ProcessedRegionData<ScriptMacroTemplate>( result );
 		}
 

@@ -6,21 +6,23 @@ namespace Petrichor.ShortcutScriptGeneration.Containers
 	public sealed class ScriptMacroTemplate : IEquatable<ScriptMacroTemplate>
 	{
 		public Dictionary<string, string> FindAndReplace { get; set; } = new();
-		public string TemplateString { get; set; } = string.Empty;
+		public string TemplateFindString { get; set; } = string.Empty;
+		public string TemplateReplaceString { get; set; } = string.Empty;
 		public string TextCase { get; set; } = TemplateTextCases.Default;
 
 
 		public ScriptMacroTemplate() { }
-		public ScriptMacroTemplate( string templateString, string textCase, Dictionary<string, string> findAndReplace )
+		public ScriptMacroTemplate( string templateFindString, string templateReplaceString, string textCase, Dictionary<string, string> findAndReplace )
 		{
 			FindAndReplace = findAndReplace;
-			TemplateString = templateString;
+			TemplateFindString = templateFindString;
+			TemplateReplaceString = templateReplaceString;
 			TextCase = textCase;
 		}
 		public ScriptMacroTemplate( ScriptMacroTemplate other )
 		{
 			FindAndReplace = other.FindAndReplace;
-			TemplateString = other.TemplateString;
+			TemplateReplaceString = other.TemplateReplaceString;
 			TextCase = other.TextCase;
 		}
 
@@ -41,12 +43,12 @@ namespace Petrichor.ShortcutScriptGeneration.Containers
 			{
 				return false;
 			}
-			return AreFindAndReplacesEqual( other.FindAndReplace ) && TemplateString.Equals( other.TemplateString ) && TextCase.Equals( other.TextCase );
+			return AreFindAndReplacesEqual( other.FindAndReplace ) && TemplateFindString.Equals( other.TemplateFindString ) && TemplateReplaceString.Equals( other.TemplateReplaceString ) && TextCase.Equals( other.TextCase );
 		}
 
-		public override int GetHashCode() => FindAndReplace.GetHashCode() ^ TemplateString.GetHashCode() ^ TextCase.GetHashCode();
+		public override int GetHashCode() => FindAndReplace.GetHashCode() ^ TemplateFindString.GetHashCode() ^ TemplateReplaceString.GetHashCode() ^ TextCase.GetHashCode();
 
-		public override string ToString() => TemplateString;
+		public override string ToString() => $"{TemplateFindString}{ControlSequences.TemplateFindReplaceDivider}{TemplateReplaceString}";
 
 		public static bool operator ==( ScriptMacroTemplate a, ScriptMacroTemplate b ) => a.Equals( b );
 

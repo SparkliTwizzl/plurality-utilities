@@ -20,7 +20,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptMacroTemplate()
 				{
-					TemplateString = "template",
+					TemplateFindString = "template-find",
+					TemplateReplaceString = "template-replace",
 				}
 			};
 			public static ScriptInput Input => new( ModuleOptions, EntryList, TemplateList, Macros );

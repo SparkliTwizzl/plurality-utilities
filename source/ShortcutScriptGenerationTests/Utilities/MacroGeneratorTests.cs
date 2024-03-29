@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 using Petrichor.TestShared.Info;
@@ -48,42 +49,48 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				MacroTextCaseUnchanged,
 				MacroTextCaseUpper,
 			};
-			public static string MacroTextCaseDefault
-				=> $"::{ Common.Syntax.ControlSequences.Escape }{ EntryTag }{ EntryLastTag }:: { Common.Syntax.ControlSequences.FindTagOpen }{ EntryID }{ Common.Syntax.ControlSequences.FindTagClose } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } {TemplateReplace1}{TemplateReplace2} `";
+			public static string MacroTextCaseDefault => MacroTextCaseUnchanged;
 			public static string MacroTextCaseFirstCaps
-				=> $"::{ Common.Syntax.ControlSequences.Escape }{ EntryTagFirstCaps }{ EntryLastTagFirstCaps }:: { Common.Syntax.ControlSequences.FindTagOpen }{ EntryIDFirstCaps }{ Common.Syntax.ControlSequences.FindTagClose } { EntryNameFirstCaps } { EntryLastNameFirstCaps } { EntryPronounFirstCaps } { EntryColorFirstCaps } { EntryDecorationFirstCaps } {TemplateReplace1FirstCaps}{TemplateReplace2FirstCaps} `";
-			public static string MacroTextCaseLower => MacroTextCaseDefault.ToLower();
+				=> $"::{Common.Syntax.ControlSequences.Escape}{EntryTag}-{EntryLastTag}::{Common.Syntax.ControlSequences.FindTagOpen}{EntryIDFirstCaps}{Common.Syntax.ControlSequences.FindTagClose} {EntryNameFirstCaps} {EntryLastNameFirstCaps} {EntryPronounFirstCaps} {EntryColorFirstCaps} {EntryDecorationFirstCaps} {TemplateReplace1FirstCaps}{TemplateReplace2FirstCaps} `";
+			public static string MacroTextCaseLower
+				=> $"::{Common.Syntax.ControlSequences.Escape}{EntryTag}-{EntryLastTag}::" + $"{Common.Syntax.ControlSequences.FindTagOpen}{EntryID}{Common.Syntax.ControlSequences.FindTagClose} {EntryName} {EntryLastName} {EntryPronoun} {EntryColor} {EntryDecoration} {TemplateReplace1}{TemplateReplace2} `".ToLower();
 			public static string MacroTextCaseUnchanged
-				=> $"::{ Common.Syntax.ControlSequences.Escape }{ EntryTag }{ EntryLastTag }:: { Common.Syntax.ControlSequences.FindTagOpen }{ EntryID }{ Common.Syntax.ControlSequences.FindTagClose } { EntryName } { EntryLastName } { EntryPronoun } { EntryColor } { EntryDecoration } {TemplateReplace1FirstCaps}{TemplateReplace2FirstCaps} `";
-			public static string MacroTextCaseUpper => MacroTextCaseDefault.ToUpper();
+				=> $"::{Common.Syntax.ControlSequences.Escape}{EntryTag}-{EntryLastTag}::{Common.Syntax.ControlSequences.FindTagOpen}{EntryID}{Common.Syntax.ControlSequences.FindTagClose} {EntryName} {EntryLastName} {EntryPronoun} {EntryColor} {EntryDecoration} {TemplateReplace1}{TemplateReplace2} `";
+			public static string MacroTextCaseUpper
+				=> $"::{Common.Syntax.ControlSequences.Escape}{EntryTag}-{EntryLastTag}::" + $"{Common.Syntax.ControlSequences.FindTagOpen}{EntryID}{Common.Syntax.ControlSequences.FindTagClose} {EntryName} {EntryLastName} {EntryPronoun} {EntryColor} {EntryDecoration} {TemplateReplace1}{TemplateReplace2} `".ToUpper();
 			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static ScriptMacroTemplate TemplateTextCaseDefault => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
-				TemplateString = TemplateString,
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = TemplateReplaceString,
 			};
 			public static ScriptMacroTemplate TemplateTextCaseFirstCaps => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
-				TemplateString = TemplateString,
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseFirstCaps,
 			};
 			public static ScriptMacroTemplate TemplateTextCaseLower => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
-				TemplateString = TemplateString,
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseLower,
 			};
 			public static ScriptMacroTemplate TemplateTextCaseUnchanged => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
-				TemplateString = TemplateString,
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseUnchanged,
 			};
 			public static ScriptMacroTemplate TemplateTextCaseUpper => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
-				TemplateString = TemplateString,
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseUpper,
 			};
 			public static string TemplateFind1 => "find1";
@@ -105,8 +112,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string TemplateReplace1FirstCaps => "Replace1";
 			public static string TemplateReplace2 => "replace2";
 			public static string TemplateReplace2FirstCaps => "Replace2";
-			public static string TemplateString
-				=> $"::{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindTags.Tag}{TemplateFindTags.LastTag}:: {Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindTags.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {TemplateFind1}{TemplateFind2} `";
+			public static string TemplateFindString
+				=> $"{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
+			public static string TemplateReplaceString
+				=> $"{Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindTags.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {TemplateFind1}{TemplateFind2} `";
 			public const string TextCaseFirstCaps = TemplateTextCases.FirstCaps;
 			public const string TextCaseLower = TemplateTextCases.Lower;
 			public const string TextCaseUnchanged = TemplateTextCases.Unchanged;
@@ -130,6 +139,19 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			var expected = TestData.Macros;
 			var actual = generator!.Generate( TestData.Input );
+
+			Log.Info( "expected:" );
+			foreach ( var item in expected )
+			{
+				Log.Info( $"    {item}" );
+			}
+
+			Log.Info( "actual:" );
+			foreach ( var item in actual )
+			{
+				Log.Info( $"    {item}" );
+			}
+
 			CollectionAssert.AreEqual( expected, actual );
 		}
 	}

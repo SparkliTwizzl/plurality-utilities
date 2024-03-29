@@ -80,7 +80,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			};
 			public static ScriptMacroTemplate TemplateWithTemplateString => new()
 			{
-				TemplateString = $"::{TemplateFindString}::{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
+				TemplateFindString = TemplateFindString,
+				TemplateReplaceString = $"{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
 			};
 			public static ScriptMacroTemplate TemplateWithTextCase => new()
 			{

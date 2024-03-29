@@ -1,4 +1,5 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
+﻿using Petrichor.Common.Utilities;
+using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
@@ -17,19 +18,33 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static string ApplyFindAndReplaceToTemplate( ScriptMacroTemplate template, Dictionary<string, string> fields )
+		private static string ApplyFindAndReplaceToTemplate( string templateString, Dictionary<string, string> findAndReplace, Dictionary<string, string> fields )
 		{
-			var macro = template.TemplateString;
+			var macro = templateString;
 			foreach ( var findTag in TemplateFindTags.LookUpTable )
 			{
 				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
 			}
-			foreach ( var findAndReplace in template.FindAndReplace )
+			foreach ( var pair in findAndReplace )
 			{
-				macro = macro.Replace( findAndReplace.Key, findAndReplace.Value );
+				macro = macro.Replace( pair.Key, pair.Value );
 			}
-			return macro;
+			return macro
+					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
 		}
+
+		private static string ApplyTextCaseToMacro( string macro, string textCase ) => textCase switch
+		{
+			TemplateTextCases.FirstCaps => macro.ToFirstCaps(),
+			TemplateTextCases.Lower => macro.ToLower(),
+			TemplateTextCases.Unchanged => macro,
+			TemplateTextCases.Upper => macro.ToUpper(),
+			_ => macro,
+		};
+
+		private static string ConvertTemplateToAutoHotkeySyntax( ScriptMacroTemplate template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
 
 		private static List<string> GenerateMacrosFromEntries( ScriptMacroTemplate[] templates, ScriptEntry entry )
 		{
@@ -68,12 +83,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ TemplateFindTags.Tag, entry.Identities[ 0 ].Tag },
 			};
 
-			var macro = ApplyFindAndReplaceToTemplate( template, fields )
-					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
-					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
-					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+			var macroFindString = ApplyFindAndReplaceToTemplate( template.TemplateFindString, template.FindAndReplace, fields );
+			var macroReplaceString = ApplyFindAndReplaceToTemplate( template.TemplateReplaceString, template.FindAndReplace, fields );
 
-			return macro;
+			template.TemplateFindString = macroFindString;
+			template.TemplateReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
+
+			return ConvertTemplateToAutoHotkeySyntax( template );
 		}
 	}
 }
