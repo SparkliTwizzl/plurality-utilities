@@ -5,7 +5,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
+		<AssemblyName>$(SolutionName)</AssemblyName>
 		<RootNamespace>$(SolutionName).$(MSBuildProjectName)</RootNamespace>
 		<ApplicationIcon>app.ico</ApplicationIcon>
 	</PropertyGroup>

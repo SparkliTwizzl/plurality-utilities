@@ -10,17 +10,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	[TestClass]
 	public class ScriptGeneratorTests
 	{
-		public struct TestData
+		public readonly struct TestData
 		{
-			public static ScriptEntry[] Entries => new[]
+			public static ScriptEntry[] EntryList => new[]
 			{
 				new ScriptEntry(),
 			};
-			public static string[] Templates => new[]
+			public static ScriptMacroTemplate[] TemplateList => new[]
 			{
-				"template",
+				new ScriptMacroTemplate()
+				{
+					TemplateFindString = "template-find",
+					TemplateReplaceString = "template-replace",
+				}
 			};
-			public static ScriptInput Input => new( ModuleOptions, Entries, Templates, Macros );
+			public static ScriptInput Input => new( ModuleOptions, EntryList, TemplateList, Macros );
 			public static string[] Macros => new[]
 			{
 				"macro",
@@ -115,7 +119,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			generator = new( TestData.Input );
+			generator = new();
 		}
 
 
@@ -123,7 +127,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var outputFile = $@"{TestDirectories.TestOutputDirectory}\{nameof( ScriptGenerator )}_{nameof( Generate_Test_Success )}.ahk";
-			generator!.Generate( outputFile );
+			generator!.Generate( TestData.Input, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;
 			var actual = File.ReadAllLines( outputFile );

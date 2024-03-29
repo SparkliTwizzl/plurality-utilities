@@ -1,6 +1,6 @@
-﻿using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.Info;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
+﻿using Petrichor.Common.Utilities;
+using Petrichor.ShortcutScriptGeneration.Containers;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
@@ -18,52 +18,76 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static List<string> GenerateMacrosFromEntries( string[] templates, ScriptEntry entry )
+		private static string ApplyFindAndReplaceToTemplate( string templateString, Dictionary<string, string> findAndReplace, Dictionary<string, string> fields )
+		{
+			var macro = templateString;
+			foreach ( var findTag in TemplateFindTags.LookUpTable )
+			{
+				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
+			}
+			foreach ( var pair in findAndReplace )
+			{
+				macro = macro.Replace( pair.Key, pair.Value );
+			}
+			return macro
+					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
+					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+		}
+
+		private static string ApplyTextCaseToMacro( string macro, string textCase ) => textCase switch
+		{
+			TemplateTextCases.FirstCaps => macro.ToFirstCaps(),
+			TemplateTextCases.Lower => macro.ToLower(),
+			TemplateTextCases.Unchanged => macro,
+			TemplateTextCases.Upper => macro.ToUpper(),
+			_ => macro,
+		};
+
+		private static string ConvertTemplateToAutoHotkeySyntax( ScriptMacroTemplate template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
+
+		private static List<string> GenerateMacrosFromEntries( ScriptMacroTemplate[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
-			foreach ( var identity in entry.Identities.ToList())
+			foreach ( var identity in entry.Identities.ToList() )
 			{
-				var batch = new ScriptEntry( entry );
-				batch.Identities.Clear();
-				batch.Identities.Add( identity );
-				macros.AddRange( GenerateMacrosFromIdentity( templates, batch ) );
+				macros.AddRange( GenerateMacrosFromIdentity( templates, identity, entry ) );
 			}
 			return macros;
 		}
 
-		private static List<string> GenerateMacrosFromIdentity( string[] templates, ScriptEntry entry )
+		private static List<string> GenerateMacrosFromIdentity( ScriptMacroTemplate[] templates, ScriptIdentity identity, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var template in templates )
 			{
-				macros.Add( GenerateMacroFromTemplate( template, entry ) );
+				macros.Add( GenerateMacroFromTemplate( template, identity, entry ) );
 			}
 			return macros;
 		}
 
-		private static string GenerateMacroFromTemplate( string template, ScriptEntry entry )
+		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptIdentity identity, ScriptEntry entry )
 		{
-			var macro = template;
 			var fields = new Dictionary<string, string>()
 			{
-				{ ShortcutScriptGenerationSyntax.TemplateFindColorString, entry.Color },
-				{ ShortcutScriptGenerationSyntax.TemplateFindDecorationString, entry.Decoration },
-				{ ShortcutScriptGenerationSyntax.TemplateFindIDString, entry.ID },
-				{ ShortcutScriptGenerationSyntax.TemplateFindNameString, entry.Identities[ 0 ].Name },
-				{ ShortcutScriptGenerationSyntax.TemplateFindLastNameString, entry.LastIdentity.Name },
-				{ ShortcutScriptGenerationSyntax.TemplateFindLastTagString, entry.LastIdentity.Tag },
-				{ ShortcutScriptGenerationSyntax.TemplateFindPronounString, entry.Pronoun },
-				{ ShortcutScriptGenerationSyntax.TemplateFindTagString, entry.Identities[ 0 ].Tag },
-			 };
-			foreach ( var findString in ScriptTemplateFindStrings.LookUpTable )
-			{
-				macro = macro.Replace( $"{findString}", fields[ findString ] )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar}",
-						ShortcutScriptGenerationSyntax.TemplateFindStringOpenChar.ToString() )
-					.Replace( $"\\{ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar}",
-						ShortcutScriptGenerationSyntax.TemplateFindStringCloseChar.ToString() );
-			}
-			return macro;
+				{ TemplateFindTags.Color, entry.Color },
+				{ TemplateFindTags.Decoration, entry.Decoration },
+				{ TemplateFindTags.ID, entry.ID },
+				{ TemplateFindTags.Name, identity.Name },
+				{ TemplateFindTags.LastName, entry.LastIdentity.Name },
+				{ TemplateFindTags.LastTag, entry.LastIdentity.Tag },
+				{ TemplateFindTags.Pronoun, entry.Pronoun },
+				{ TemplateFindTags.Tag, identity.Tag },
+			};
+
+			var macroFindString = ApplyFindAndReplaceToTemplate( template.TemplateFindString, template.FindAndReplace, fields );
+			var macroReplaceString = ApplyFindAndReplaceToTemplate( template.TemplateReplaceString, template.FindAndReplace, fields );
+
+			var modifiedTemplate = new ScriptMacroTemplate();
+			modifiedTemplate.TemplateFindString = macroFindString;
+			modifiedTemplate.TemplateReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
+
+			return ConvertTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
 	}
 }

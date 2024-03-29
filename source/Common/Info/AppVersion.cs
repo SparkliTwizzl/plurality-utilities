@@ -1,8 +1,13 @@
-﻿namespace Petrichor.Common.Info
+﻿using Petrichor.Common.Utilities;
+using Petrichor.Logging;
+using System.Data;
+
+
+namespace Petrichor.Common.Info
 {
 	public static class AppVersion
 	{
-		private static string AnyVersion => "*";
+		private const string AnyVersion = "*";
 
 
 		public static string Current =>
@@ -12,11 +17,11 @@
 			ReleaseAppVersion;
 #endif
 		public static string DevelopmentAppVersion => $"{ReleaseAppVersion}{DevelopmentAppVersionSuffix}";
-		public static string DevelopmentAppVersionSuffix => "-dev";
-		public static string Major => "0";
-		public static string Minor => "9";
-		public static string Patch => "1";
-		public static string Preview => "";
+		public const string DevelopmentAppVersionSuffix = "-dev";
+		public const string Major = "0";
+		public const string Minor = "10";
+		public const string Patch = "0";
+		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
 		public static string[] SupportedMajorVersions => new[]
 		{
@@ -59,6 +64,21 @@
 			var isPatchSupported = SupportedPatchVersions.Contains( patch );
 			var isPreviewSupported = SupportedPreviewVersions.Contains( preview );
 			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
+		}
+
+		public static void RejectUnsupportedVersions( string version, int? lineNumber = null )
+		{
+			if ( string.IsNullOrEmpty( version ) )
+			{
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version cannot be blank." ), lineNumber );
+			}
+
+			if ( !IsVersionSupported( version ) )
+			{
+				ExceptionLogger.LogAndThrow( new VersionNotFoundException( $"Version \"{version}\" is not supported by {AppInfo.AppNameAndVersion}." ), lineNumber );
+			}
+
+			Log.Info( $"Version \"{version}\" is compatible with {AppInfo.AppNameAndVersion}." );
 		}
 	}
 }

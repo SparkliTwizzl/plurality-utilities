@@ -1,46 +1,59 @@
-﻿using Petrichor.Common.Info;
+﻿using Petrichor.Common.Syntax;
 
 namespace Petrichor.Common.Containers
 {
 	public class StringToken
 	{
-		public string Name { get; set; } = string.Empty;
+		public int LineNumber { get; set; } = 0;
+		public string Key { get; set; } = string.Empty;
+		public string RawLine { get; set; } = string.Empty;
 		public string Value { get; set; } = string.Empty;
 
 
 		public StringToken() { }
-
 		public StringToken( StringToken other )
 		{
-			Name = other.Name;
+			LineNumber = other.LineNumber;
+			Key = other.Key;
+			RawLine = other.RawLine;
 			Value = other.Value;
 		}
-
-		public StringToken( string rawToken ) => SplitAndStoreRawToken( rawToken.Trim() );
-
-
-		private void SplitAndStoreRawToken( string rawToken )
+		public StringToken( string line )
 		{
-			var lineCommentTokenIndex = rawToken.IndexOf( CommonSyntax.LineCommentToken );
-			var doesTokenContainLineComment = lineCommentTokenIndex > -1;
+			RawLine = line;
+			GetTokenDataFromLine( RawLine );
+		}
+		public StringToken( IndexedString line )
+		{
+			LineNumber = line.LineNumber;
+			RawLine = line.Value;
+			GetTokenDataFromLine( RawLine );
+		}
+
+
+		private void GetTokenDataFromLine( string rawLine )
+		{
+			var line = rawLine.Trim();
+			var lineCommentTokenIndex = line.IndexOf( Tokens.LineComment.Key );
+			var doesTokenContainLineComment = lineCommentTokenIndex >= 0;
 			if ( doesTokenContainLineComment )
 			{
-				rawToken = rawToken[ ..lineCommentTokenIndex ];
+				line = line[ ..lineCommentTokenIndex ];
 			}
 
-			var nameEndsAt = rawToken.IndexOf( ':' );
+			var nameEndsAt = line.IndexOf( ':' );
 
-			var doesTokenContainNoValue = nameEndsAt < 0;
-			if ( doesTokenContainNoValue )
+			var doesTokenContainAValue = nameEndsAt >= 0;
+			if ( !doesTokenContainAValue )
 			{
-				Name = rawToken.Trim();
+				Key = line.Trim();
 				return;
 			}
 
-			Name = rawToken[ 0..nameEndsAt ].Trim();
+			Key = line[ ..nameEndsAt ].Trim();
 
 			var valueStartsAt = nameEndsAt + 1;
-			Value = rawToken[ valueStartsAt.. ].Trim();
+			Value = line[ valueStartsAt.. ].Trim();
 		}
 	}
 }

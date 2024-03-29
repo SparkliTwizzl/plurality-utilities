@@ -1,81 +1,104 @@
-#: top-level line comment
+// top-level line comment
 
-metadata: #: inline comment in region name
+metadata: // inline comment in region name
 {
-	#: line comment in metadata region body
-	minimum-version: 0.9 #: inline comment in metadata region body
+	// line comment in metadata region body
+	minimum-version: 0.10 // inline comment in metadata region body
+	command: generateTextShortcutScript
+	{
+		output-file: ../../../../_test/_output/_integrationtest/
+		log-mode: all
+		log-file: ../../../../_test/_log/_integrationtest/
+	}
 }
 
 module-options:
 {
-	#: line comment in module options region body
-	default-icon: ../_input/IconDefault.ico #: inline comment in module options region body
+	// line comment in module options region body
+	default-icon: ../_input/IconDefault.ico // inline comment in module options region body
 	suspend-icon: "../_input/IconSuspend.ico"
 	reload-shortcut: [tab] [and] r
 	suspend-shortcut: [win]s
 }
 
-entries:
+entry-list:
 {
-	#: line comment before entries in entries region body
-	entry: #: inline comment in entries region body
+	// line comment before entry-list in entry-list region body
+	entry: 1 // inline comment in entry-list region body
 	{
-		#: line comment in entry region body
-		id: 1234 #: inline comment in entry region body
-		last-name: Smith @s
+		// line comment in entry region body
+		id: 1234 // inline comment in entry region body
 		name: Sam @sm
 		name: Sammy @smy
+		last-name: Smith @s
 		pronoun: they/them
-		color: black
+		color: green
 		decoration: -> a person
 	}
 	
-	entry:
+	entry: 2
 	{
 		id: 4321
-		name: ALEX @AX
+		name: tesT casE @tc
 	}
 }
 
-templates:
+template-list:
 {
+	// line comment in template-list region body
 	
-	#: line comment in templates region body
-	
-	template: --[tag][last-tag] :: ` \[[id]\] [name] [last-name] ([pronoun]) [decoration] ` #: inline comment in templates region body
-	
+	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	{
+		find: { findmetoo, findme }
+		replace: { foundyoutoo, foundyou }
+	}
+	template: [tag]-first-caps :: [name]
+	{
+		text-case: firstCaps
+	}
+	template: [tag]-lower :: [name]
+	{
+		text-case: lower
+	}
+	template: [tag]-unchanged :: [name]
+	{
+		text-case: unchanged
+	}
+	template: [tag]-upper :: [name]
+	{
+		text-case: upper
+	}
 	template: [tag] :: [name]
-	
 	template: [tag][last-tag] :: [name] [last-name]
-	
 	template: `[tag] :: `[name]
-	
 	template: ~[tag] :: ~[name]
-	
 	template: ![tag] :: ![name]
-	
 	template: @[tag] :: @[name]
-	
 	template: #[tag] :: #[name]
-	
 	template: $[tag] :: $[name]
-	
 	template: %[tag] :: ^[name]
-	
 	template: &[tag] :: &[name]
-	
 	template: *[tag] :: *[name]
-	
 	template: ([tag] :: ([name]
-	
 	template: )[tag] :: )[name]
-	
 	template: -[tag] :: -[name]
-	
 	template: _[tag] :: _[name]
-	
 	template: =[tag] :: =[name]
-	
 	template: +[tag] :: +[name]
-	
+	template: \[[tag] :: \[[name]
+	template: {[tag] :: {[name]
+	template: \][tag] :: \][name]
+	template: }[tag] :: }[name]
+	template: \\[tag] :: \\[name]
+	template: |[tag] :: |[name]
+	template: ;[tag] :: ;[name]
+	template: :[tag] :: :[name]
+	template: '[tag] :: '[name]
+	template: "[tag] :: "[name]
+	template: ,[tag] :: ,[name]
+	template: <[tag] :: <[name]
+	template: .[tag] :: .[name]
+	template: >[tag] :: >[name]
+	template: /[tag] :: /[name]
+	template: ?[tag] :: ?[name]
 }
