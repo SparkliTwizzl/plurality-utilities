@@ -103,6 +103,7 @@ namespace Petrichor.App.Utilities
 				{
 					{ ShortcutScriptGeneration.Syntax.Tokens.Find, TemplateHandler.FindTokenHandler },
 					{ ShortcutScriptGeneration.Syntax.Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
+					{ ShortcutScriptGeneration.Syntax.Tokens.TextCase, TemplateHandler.TextCaseTokenHandler },
 				},
 				PostParseHandler = ( ScriptMacroTemplate template ) =>
 				{
