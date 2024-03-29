@@ -49,6 +49,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string TemplateReplaceTag
 				=> $"{Common.Syntax.ControlSequences.FindTagOpen}{TemplateReplaceTagValue}{Common.Syntax.ControlSequences.FindTagClose}";
 			public static string TemplateReplaceTagValue => Tokens.Name.Key;
+			public const string TemplateTextCase = TemplateTextCases.Upper;
 			public static string TemplateToken_DanglingEscapeCharacter
 				=> $"{Tokens.Template.Qualify()} {TemplateFindString} {ControlSequences.TemplateFindReplaceDivider} {TemplateReplaceString} {Common.Syntax.ControlSequences.Escape}";
 			public static string TemplateToken_InvalidFindTag
@@ -68,10 +69,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string TemplateToken_Valid
 				=> $"{Tokens.Template.Qualify()} {TemplateFindString} {ControlSequences.TemplateFindReplaceDivider} {TemplateReplaceString} {Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagOpen}text{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagClose}";
 			public static string TemplateTriggerString => "~";
-			public static ScriptMacroTemplate TemplateWithTemplateString => new()
-			{
-				TemplateString = $"::{TemplateFindString}::{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
-			};
 			public static ScriptMacroTemplate TemplateWithEmptyFindAndReplace => new();
 			public static ScriptMacroTemplate TemplateWithFindAndReplace => new()
 			{
@@ -81,6 +78,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				FindAndReplace = FindAndReplace_KeysOnly,
 			};
+			public static ScriptMacroTemplate TemplateWithTemplateString => new()
+			{
+				TemplateString = $"::{TemplateFindString}::{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
+			};
+			public static ScriptMacroTemplate TemplateWithTextCase => new()
+			{
+				TextCase = TemplateTextCase,
+			};
+			public static string TextCaseToken_NoValue => $"{Tokens.TextCase.Qualify()}";
+			public static string TextCaseToken_UnrecognizedValue => $"{Tokens.TextCase.Qualify()} invalid";
+			public static string TextCaseToken_Valid => $"{Tokens.TextCase.Qualify()} {TemplateTextCase}";
 			public const int TokenStartIndex = 0;
 		}
 
@@ -206,6 +214,42 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.TemplateToken_NoReplaceString ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.TemplateToken_NoReplaceTagClose ) };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.TemplateToken_NoReplaceTagOpen ) };
+			}
+		}
+
+
+		[TestMethod]
+		[DynamicData( nameof( TextCaseTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
+		public void TextCaseTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ScriptMacroTemplate> expected )
+		{
+			var actual = TemplateHandler.TextCaseTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
+			Assert.AreEqual( expected, actual );
+		}
+
+		public static IEnumerable<object[]> TextCaseTokenHandler_Test_Success_Data
+		{
+			get
+			{
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.TextCaseToken_Valid ), new ProcessedRegionData<ScriptMacroTemplate>( TestData.TemplateWithTextCase ) };
+			}
+		}
+
+
+		[TestMethod]
+		[ExpectedException( typeof( TokenValueException ) )]
+		[DynamicData( nameof( TextCaseTokenHandler_Test_Throws_TokenValueExeception_Data ), DynamicDataSourceType.Property )]
+		public void TextCaseTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData )
+		{
+			Log.Info( $"input: {regionData[ 0 ]}" );
+			_ = TemplateHandler.TextCaseTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
+		}
+
+		public static IEnumerable<object[]> TextCaseTokenHandler_Test_Throws_TokenValueExeception_Data
+		{
+			get
+			{
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.TextCaseToken_NoValue ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.TextCaseToken_UnrecognizedValue ) };
 			}
 		}
 	}
