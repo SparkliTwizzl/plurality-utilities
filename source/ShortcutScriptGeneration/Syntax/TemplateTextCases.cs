@@ -10,7 +10,6 @@
 
 		public static string[] LookUpTable => new[]
 		{
-			Default,
 			FirstCaps,
 			Lower,
 			Unchanged,
