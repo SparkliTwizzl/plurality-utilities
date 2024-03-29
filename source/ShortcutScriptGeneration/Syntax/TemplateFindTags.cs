@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public readonly struct TemplateFindStrings
+	public readonly struct TemplateFindTags
 	{
 		public static string Color => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Color.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Decoration => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Decoration.Key}{Common.Syntax.ControlSequences.FindTagClose}";
@@ -10,5 +10,17 @@
 		public static string LastTag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.LastTag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Pronoun => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Pronoun.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 		public static string Tag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Tag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
+
+		public static string[] LookUpTable => new[]
+		{
+			Color,
+			Decoration,
+			ID,
+			Name,
+			LastName,
+			LastTag,
+			Pronoun,
+			Tag,
+		};
 	}
 }

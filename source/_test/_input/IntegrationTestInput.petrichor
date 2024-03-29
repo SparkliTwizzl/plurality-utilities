@@ -39,7 +39,7 @@ entry-list:
 	entry: 2
 	{
 		id: 4321
-		name: ALEX @AX
+		name: tesT casE @tc
 	}
 }
 
@@ -51,6 +51,22 @@ template-list:
 	{
 		find: { findmetoo, findme }
 		replace: { foundyoutoo, foundyou }
+	}
+	template: [tag]-first-caps :: [name]
+	{
+		text-case: firstCaps
+	}
+	template: [tag]-lower :: [name]
+	{
+		text-case: lower
+	}
+	template: [tag]-unchanged :: [name]
+	{
+		text-case: unchanged
+	}
+	template: [tag]-upper :: [name]
+	{
+		text-case: upper
 	}
 	template: [tag] :: [name]
 	template: [tag][last-tag] :: [name] [last-name]

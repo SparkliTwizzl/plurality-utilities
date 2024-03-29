@@ -2,7 +2,6 @@
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
-using Petrichor.ShortcutScriptGeneration.LookUpTables;
 using Petrichor.ShortcutScriptGeneration.Syntax;
 using System.Text;
 
@@ -84,10 +83,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static class TemplateParseHandler
 		{
-			public static string ParseTemplateString( StringToken token )
+			public static ScriptMacroTemplate ParseTemplateString( StringToken token, ScriptMacroTemplate result )
 			{
-				var rawHotstring = ConvertTemplateToAutoHotkeySyntax( token.Value, token.LineNumber );
-				var sanitizedHotstring = SanitizeHotstring( rawHotstring );
+				ValidateTemplateStructure( token );
+				var sanitizedHotstring = SanitizeHotstring( token.Value );
 
 				var template = new StringBuilder();
 				for ( var i = 0 ; i < sanitizedHotstring.Length ; ++i )
@@ -129,24 +128,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						_ = template.Append( c );
 					}
 				}
-				return template.ToString();
+
+				var components = template.ToString().Split( ControlSequences.TemplateFindReplaceDivider );
+				result.TemplateFindString = components[ 0 ].Trim();
+				result.TemplateReplaceString = components[ 1 ].Trim();
+				return result;
 			}
 
 
-			private static string ConvertTemplateToAutoHotkeySyntax( string template, int lineNumber )
+			private static void ValidateTemplateStructure( StringToken token )
 			{
-				var components = template.Split( ControlSequences.TemplateFindReplaceDivider );
+				var components = token.Value.Split( ControlSequences.TemplateFindReplaceDivider );
 				var doesFindStringExist = components[ 0 ]?.Length > 0;
 				var doesReplaceStringExist = components[ 1 ]?.Length > 0;
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
 				if ( !isTemplateInValidFormat )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" token's value is not a valid template string." ), lineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" token's value is not a valid template string." ), token.LineNumber );
 				}
-
-				var findString = components[ 0 ].Trim();
-				var replaceString = components[ 1 ].Trim();
-				return $"::{findString}::{replaceString}";
 			}
 
 			private static string ExtractFindTagFromLine( string line, int lineNumber )
@@ -192,10 +191,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			private static void ValidateFindTagValue( string findTag, int lineNumber )
 			{
-				if ( !ScriptTemplateFindStrings.LookUpTable.Contains( findTag ) )
+				if ( !TemplateFindTags.LookUpTable.Contains( findTag ) )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template string contains an unrecognized \"find\" tag value ( \"{findTag}\" )." ), lineNumber );
 				}
+			}
+		}
+
+
+		private static class TextCaseParseHandler
+		{
+			public static string ParseTextCase( StringToken token )
+			{
+				if ( token.Value == string.Empty )
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token values cannot be blank." ), token.LineNumber );
+				}
+
+				if ( !TemplateTextCases.LookUpTable.Contains( token.Value ) )
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's value was not recognized." ), token.LineNumber );
+				}
+
+				return token.Value;
 			}
 		}
 
@@ -264,7 +282,26 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public static ProcessedRegionData<ScriptMacroTemplate> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			result.TemplateString = TemplateParseHandler.ParseTemplateString( token );
+			result = TemplateParseHandler.ParseTemplateString( token, result );
+			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+		}
+
+		/// <summary>
+		/// Converts <see cref="Tokens.TextCase"/> token values into text case converstion modes.
+		/// </summary>
+		/// <param name="regionData">Untrimmed input data.</param>
+		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
+		/// <param name="result">Existing result to modify and return.</param>
+		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
+		///
+		/// <exception cref="TokenValueException">
+		/// Thrown when a token's value has no body.
+		/// Thrown when a token's value is not recognized.
+		/// </exception>
+		public static ProcessedRegionData<ScriptMacroTemplate> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		{
+			var token = new StringToken( regionData[ tokenStartIndex ] );
+			result.TextCase = TextCaseParseHandler.ParseTextCase( token );
 			return new ProcessedRegionData<ScriptMacroTemplate>( result );
 		}
 	}
