@@ -51,45 +51,43 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macros = new List<string>();
 			foreach ( var identity in entry.Identities.ToList() )
 			{
-				var batch = new ScriptEntry( entry );
-				batch.Identities.Clear();
-				batch.Identities.Add( identity );
-				macros.AddRange( GenerateMacrosFromIdentity( templates, batch ) );
+				macros.AddRange( GenerateMacrosFromIdentity( templates, identity, entry ) );
 			}
 			return macros;
 		}
 
-		private static List<string> GenerateMacrosFromIdentity( ScriptMacroTemplate[] templates, ScriptEntry entry )
+		private static List<string> GenerateMacrosFromIdentity( ScriptMacroTemplate[] templates, ScriptIdentity identity, ScriptEntry entry )
 		{
 			var macros = new List<string>();
 			foreach ( var template in templates )
 			{
-				macros.Add( GenerateMacroFromTemplate( template, entry ) );
+				macros.Add( GenerateMacroFromTemplate( template, identity, entry ) );
 			}
 			return macros;
 		}
 
-		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptEntry entry )
+		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptIdentity identity, ScriptEntry entry )
 		{
 			var fields = new Dictionary<string, string>()
 			{
 				{ TemplateFindTags.Color, entry.Color },
 				{ TemplateFindTags.Decoration, entry.Decoration },
 				{ TemplateFindTags.ID, entry.ID },
-				{ TemplateFindTags.Name, entry.Identities[ 0 ].Name },
+				{ TemplateFindTags.Name, identity.Name },
 				{ TemplateFindTags.LastName, entry.LastIdentity.Name },
 				{ TemplateFindTags.LastTag, entry.LastIdentity.Tag },
 				{ TemplateFindTags.Pronoun, entry.Pronoun },
-				{ TemplateFindTags.Tag, entry.Identities[ 0 ].Tag },
+				{ TemplateFindTags.Tag, identity.Tag },
 			};
 
 			var macroFindString = ApplyFindAndReplaceToTemplate( template.TemplateFindString, template.FindAndReplace, fields );
 			var macroReplaceString = ApplyFindAndReplaceToTemplate( template.TemplateReplaceString, template.FindAndReplace, fields );
 
-			template.TemplateFindString = macroFindString;
-			template.TemplateReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
+			var modifiedTemplate = new ScriptMacroTemplate();
+			modifiedTemplate.TemplateFindString = macroFindString;
+			modifiedTemplate.TemplateReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
 
-			return ConvertTemplateToAutoHotkeySyntax( template );
+			return ConvertTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
 	}
 }

@@ -39,7 +39,7 @@ entry-list:
 	entry: 2
 	{
 		id: 4321
-		name: test case @tc
+		name: tesT casE @tc
 	}
 }
 
