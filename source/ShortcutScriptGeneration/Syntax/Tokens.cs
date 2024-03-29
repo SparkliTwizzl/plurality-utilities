@@ -100,6 +100,11 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 			MaxAllowed = 1,
 			MinRequired = 1,
 		};
+		public static DataToken TextCase => new()
+		{
+			Key = "text-case",
+			MaxAllowed = 1,
+		};
 
 
 		public static Dictionary<string, DataToken> LookUpTable => new()

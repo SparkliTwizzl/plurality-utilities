@@ -199,6 +199,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
+		private static class TextCaseParseHandler
+		{
+			public static string ParseTextCase( StringToken token )
+			{
+				if ( token.Value == string.Empty )
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token values cannot be blank." ), token.LineNumber );
+				}
+
+				if ( !TemplateTextCases.LookUpTable.Contains( token.Value ) )
+				{
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's value was not recognized." ), token.LineNumber );
+				}
+
+				return token.Value;
+			}
+		}
+
+
 		/// <summary>
 		/// Converts <see cref="Tokens.Find"/> token values into find-and-replace dictionary keys.
 		/// </summary>
@@ -264,6 +283,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.TemplateString = TemplateParseHandler.ParseTemplateString( token );
+			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+		}
+
+		/// <summary>
+		/// Converts <see cref="Tokens.TextCase"/> token values into text case converstion modes.
+		/// </summary>
+		/// <param name="regionData">Untrimmed input data.</param>
+		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
+		/// <param name="result">Existing result to modify and return.</param>
+		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
+		///
+		/// <exception cref="TokenValueException">
+		/// Thrown when a token's value has no body.
+		/// Thrown when a token's value is not recognized.
+		/// </exception>
+		public static ProcessedRegionData<ScriptMacroTemplate> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		{
+			var token = new StringToken( regionData[ tokenStartIndex ] );
+			result.TextCase = TextCaseParseHandler.ParseTextCase( token );
 			return new ProcessedRegionData<ScriptMacroTemplate>( result );
 		}
 	}
