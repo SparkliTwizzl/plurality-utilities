@@ -17,6 +17,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
+		private static string ApplyFindAndReplaceToTemplate( ScriptMacroTemplate template, Dictionary<string, string> fields )
+		{
+			var macro = template.TemplateString;
+			foreach ( var findTag in TemplateFindTags.LookUpTable )
+			{
+				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
+			}
+			foreach ( var findAndReplace in template.FindAndReplace )
+			{
+				macro = macro.Replace( findAndReplace.Key, findAndReplace.Value );
+			}
+			return macro;
+		}
+
 		private static List<string> GenerateMacrosFromEntries( ScriptMacroTemplate[] templates, ScriptEntry entry )
 		{
 			var macros = new List<string>();
@@ -42,7 +56,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptEntry entry )
 		{
-			var macro = template.TemplateString;
 			var fields = new Dictionary<string, string>()
 			{
 				{ TemplateFindTags.Color, entry.Color },
@@ -55,20 +68,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ TemplateFindTags.Tag, entry.Identities[ 0 ].Tag },
 			};
 
-			foreach ( var findTag in TemplateFindTags.LookUpTable )
-			{
-				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
-			}
-
-			foreach ( var findAndReplace in template.FindAndReplace )
-			{
-				macro = macro.Replace( findAndReplace.Key, findAndReplace.Value );
-			}
-
-			return macro
+			var macro = ApplyFindAndReplaceToTemplate( template, fields )
 					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
 					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
 					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+
+			return macro;
 		}
 	}
 }
