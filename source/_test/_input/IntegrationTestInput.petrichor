@@ -49,8 +49,21 @@ template-list:
 	
 	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
 	{
+		text-case: unchanged
 		find: { findmetoo, findme }
 		replace: { foundyoutoo, foundyou }
+	}
+	template: [tag]-lower :: [name]
+	{
+		text-case: lower
+	}
+	template: [tag]-upper :: [name]
+	{
+		text-case: upper
+	}
+	template: [tag]-first-caps :: [name]
+	{
+		text-case: firstCaps
 	}
 	template: [tag] :: [name]
 	template: [tag][last-tag] :: [name] [last-name]
