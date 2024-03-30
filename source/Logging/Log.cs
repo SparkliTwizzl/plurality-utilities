@@ -36,8 +36,6 @@ namespace Petrichor.Logging
 			Foreground = ConsoleColor.Cyan,
 			Background = ConsoleColor.DarkBlue,
 		};
-		private static readonly string DefaultLogDirectory = $@"{AppContext.BaseDirectory}\_log";
-		private static readonly string DefaultLogFileName = $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
 		private static readonly ColorScheme ErrorColorScheme = new()
 		{
 			Foreground = ConsoleColor.White,
@@ -70,8 +68,6 @@ namespace Petrichor.Logging
 			Background = ConsoleColor.DarkMagenta,
 		};
 
-		private static string LogDirectory { get; set; } = DefaultLogDirectory;
-		private static string LogFileName { get; set; } = DefaultLogFileName;
 		private static string LogFilePath { get; set; } = string.Empty;
 		private static List<FormattedMessage> MessageBuffer { get; set; } = new();
 
@@ -84,10 +80,9 @@ namespace Petrichor.Logging
 		public static bool IsBufferingEnabled { get; private set; } = false;
 
 
-		public static void CreateLogFile( string file )
+		public static void CreateLogFile( string filePath )
 		{
-			SetLogFilePath( file );
-			_ = Directory.CreateDirectory( LogDirectory );
+			LogFilePath = filePath;
 			File.Create( LogFilePath ).Close();
 			Info( $"Created log file \"{LogFilePath}\"." );
 		}
@@ -231,23 +226,6 @@ namespace Petrichor.Logging
 
 		private static string AddTimestampToMessage( string message = "" )
 			=> $"[{DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}] {message}";
-
-		private static void SetLogFilePath( string file )
-		{
-			LogDirectory = Path.GetDirectoryName( file ) ?? string.Empty;
-			if ( LogDirectory == string.Empty )
-			{
-				LogDirectory = DefaultLogDirectory;
-			}
-
-			LogFileName = Path.GetFileName( file ) ?? string.Empty;
-			if ( LogFileName == string.Empty )
-			{
-				LogFileName = DefaultLogFileName;
-			}
-
-			LogFilePath = Path.Combine( LogDirectory, LogFileName );
-		}
 
 		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
 		{

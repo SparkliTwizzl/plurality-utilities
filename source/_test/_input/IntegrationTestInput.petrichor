@@ -6,9 +6,9 @@ metadata: // inline comment in region name
 	minimum-version: 0.10 // inline comment in metadata region body
 	command: generateTextShortcutScript
 	{
-		output-file: ../../../../_test/_output/_integrationtest/
+		output-file: "../../../../_test/_output/_integrationtest/"
 		log-mode: all
-		log-file: ../../../../_test/_log/_integrationtest/
+		log-file: "../../../../_test/_log/_integrationtest/"
 	}
 }
 
@@ -33,7 +33,7 @@ entry-list:
 		last-name: Smith @s
 		pronoun: they/them
 		color: green
-		decoration: -> a person
+		decoration: \// a person // inline comment on same line as escaped comment sequence
 	}
 	
 	entry: 2

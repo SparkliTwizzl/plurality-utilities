@@ -33,27 +33,43 @@ namespace Petrichor.Common.Containers
 
 		private void GetTokenDataFromLine( string rawLine )
 		{
-			var line = rawLine.Trim();
-			var lineCommentTokenIndex = line.IndexOf( Tokens.LineComment.Key );
-			var doesTokenContainLineComment = lineCommentTokenIndex >= 0;
-			if ( doesTokenContainLineComment )
-			{
-				line = line[ ..lineCommentTokenIndex ];
-			}
-
+			var line = TrimLineCommentFromLine( rawLine.Trim() );
 			var nameEndsAt = line.IndexOf( ':' );
-
 			var doesTokenContainAValue = nameEndsAt >= 0;
 			if ( !doesTokenContainAValue )
 			{
 				Key = line.Trim();
 				return;
 			}
-
 			Key = line[ ..nameEndsAt ].Trim();
-
 			var valueStartsAt = nameEndsAt + 1;
 			Value = line[ valueStartsAt.. ].Trim();
+		}
+
+		private static string TrimLineCommentFromLine( string line )
+		{
+			var lineCommentIndex = line.IndexOf( Tokens.LineComment.Key );
+			var doesContainLineComment = lineCommentIndex >= 0;
+			if ( !doesContainLineComment )
+			{
+				return line;
+			}
+
+			var escapeSequenceLength = ControlSequences.Escape.ToString().Length;
+			var isLineCommentEscaped = ( lineCommentIndex >= escapeSequenceLength )
+				&& ( line[ lineCommentIndex - escapeSequenceLength ] == ControlSequences.Escape );
+
+			if ( !isLineCommentEscaped )
+			{
+				return line[ ..lineCommentIndex ];
+			}
+
+			var firstPartEndIndex = lineCommentIndex - escapeSequenceLength;
+			var firstPart = line[ ..firstPartEndIndex ];
+			var secondPartStartIndex = lineCommentIndex + ControlSequences.LineComment.Length;
+			var secondPart = TrimLineCommentFromLine( line[ secondPartStartIndex.. ] );
+			var processedLine = $"{firstPart}{ControlSequences.LineComment}{secondPart}";
+			return processedLine.Trim();
 		}
 	}
 }

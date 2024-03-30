@@ -10,6 +10,7 @@
 		public const string FindTagCloseStandin = "&clsqb";
 		public const char FindTagOpen = '[';
 		public const string FindTagOpenStandin = "&opsqb";
+		public const string LineComment = "//";
 		public const char TokenValueDivider = ':';
 	}
 }

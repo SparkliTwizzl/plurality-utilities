@@ -4,12 +4,18 @@ using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.CommandLine;
+using System.Text;
 
 
 namespace Petrichor.App.Utilities
 {
 	public static class CommandLineHandler
 	{
+		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\_log";
+		private static string DefaultLogFileName => $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
+
+
+
 		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.None;
 
 
@@ -144,6 +150,16 @@ namespace Petrichor.App.Utilities
 					{ Common.Syntax.Tokens.LogMode, commandOptionTokenHandler },
 					{ Common.Syntax.Tokens.OutputFile, commandOptionTokenHandler },
 				},
+				PostParseHandler = ( ModuleCommand result ) =>
+				{
+					var optionListStringBuilder = new StringBuilder();
+					foreach ( var option in result.Options )
+					{
+						_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}" );
+					}
+					Log.Info( $"Command to run: \"{result.Name}{optionListStringBuilder}\"" );
+					return result;
+				},
 			};
 
 			return new DataRegionParser<ModuleCommand>( parserDescriptor );
@@ -232,7 +248,9 @@ namespace Petrichor.App.Utilities
 
 				if ( Log.IsLoggingToFileEnabled )
 				{
-					Log.CreateLogFile( logFileArgument );
+					var filePathHandler = new FilePathHandler( DefaultLogDirectory, DefaultLogFileName );
+					filePathHandler.SetFile( logFileArgument );
+					Log.CreateLogFile( filePathHandler.FilePath );
 				}
 			} );
 

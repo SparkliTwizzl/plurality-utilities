@@ -1,6 +1,6 @@
 <div align="center"><image width="200" src="./branding/logo.png"></div>
 <h1 align="center">Petrichor</h1>
-<h3 align="center">Version 0.10</h3>
+<h3 align="center">Version 0.10.1</h3>
 <h4 align="center">/ˈpɛtrɪˌkɔːr/ (noun) The scent of damp earth, particularly after rain.</h4>
 
 <div align="center">Part of the <a href="https://github.com/SparkliTwizzl/trioxichor">Trioxichor project</a>.</div>
@@ -108,18 +108,19 @@ parent-region:
 
 ### 4.1.2 - Blank lines and comments
 
-The token `//` starts a comment which continues to the end of the line. The comment token is the only token which can be on the same line as other data.
-
 Blank lines are ignored.
+The sequence `//` starts a comment which continues to the end of the line and will be ignored.
+Comments can be [escaped](#413---escape-characters) to make Petrichor treat them as regular text.
 
 **Example:**
 
 ```petrichor
-// this is a comment. this line will be ignored. the following line is blank, and will also be ignored.
+// This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
 
 region:
 {
-    token: value // this is an inline comment. everything after "//" will be ignored.
+    token: value // This is an inline comment. Everything after "//" will be ignored.
+    token: value \// This is an escaped comment and is part of the value. // This is a non-escaped comment and will be ignored.
 }
 ```
 
@@ -132,8 +133,8 @@ Backslash `\` is treated as an "escape character" in some cases. It is used to d
 **Example:**
 
 ```petrichor
-do-something: @blah // this hypothetical token treats @ as a special character and changes it.
-do-something: \@blah // but in this case, it will be left as-is, since the @ is escaped.
+do-something: @to-this // This example token treats @ as a special character and performs operations on it.
+do-something: \@but-not-to-this // But in this case, it will be treated as literal text, since the @ is escaped, and no operations will be performed on it.
 ```
 
 ---
@@ -186,12 +187,12 @@ To use [command options](#432---command-options), add a region body to the token
 ```petrichor
 metadata:
 {
-	minimum-version: {version number}
-	command: commandName
-	{
-		command-option-1: value1
-		command-option-2: value2
-	}
+    minimum-version: {version number}
+    command: commandName
+    {
+        command-option-1: value1
+        command-option-2: value2
+    }
 }
 ```
 ```
@@ -203,7 +204,7 @@ This is equivalent to the following:
 ```petrichor
 metadata:
 {
-	minimum-version: {version number}
+    minimum-version: {version number}
 }
 ```
 ```
@@ -258,12 +259,12 @@ Input file contents:
 ```petrichor
 metadata
 {
-	minimum-version: {version number}
-	command: commandName
-	{
-		command-option-1: value1
-		command-option-2: value2
-	}
+    minimum-version: {version number}
+    command: commandName
+    {
+        command-option-1: value1
+        command-option-2: value2
+    }
 }
 ```
 
@@ -684,10 +685,10 @@ If this is not followed, the generated script wont work correctly, even though P
 template-list:
 {
     template: [find string] :: ` [replace string] ` // no optional features are used, so no region body is needed
-	template: [find string] :: [replace string] // optional features are used, so a region body is needed
-	{
-		// optional feature tokens go here
-	}
+    template: [find string] :: [replace string] // optional features are used, so a region body is needed
+    {
+        // optional feature tokens go here
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -801,11 +802,11 @@ A `find` token can be present without a paired `replace` token, but this will ca
 ```petrichor
 template-list:
 {
-	template: [find string] :: [replace string] custom find 1, custom find 2
-	{
-		find: { custom find 1, custom find 2 } // These are the "find" keys.
-		replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
-	}
+    template: [find string] :: [replace string] custom find 1, custom find 2
+    {
+        find: { custom find 1, custom find 2 } // These are the "find" keys.
+        replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -832,22 +833,22 @@ Allowed values are:
 ```petrichor
 template-list:
 {
-	template: [find string] :: [replace String]
-	{
-		text-case: unchanged
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: upper
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: lower
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: firstCaps
-	}
+    template: [find string] :: [replace String]
+    {
+        text-case: unchanged
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: upper
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: lower
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: firstCaps
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -929,29 +930,31 @@ This command supports the following options:
 
 ---
 
-# 6 - Using the script generated by Petrichor
+### 5.1.3 - Using the script generated by Petrichor
+
+Petrichor text shortcut scripts are AutoHotkey scripts. Petrichor itself cannot run them.
 
 ---
 
-## 6.1 - Install AutoHotkey
+#### 5.1.3.1 - Install AutoHotkey
 
-Before you can do anything with your script, you need to install AutoHotkey. Download and install AutoHotkey v2 [here](https://www.autohotkey.com) and install it, then continue.
+Before you can do anything with your script, you need to install AutoHotkey. Download and install [AutoHotkey v2](https://www.autohotkey.com), then continue.
 
 ---
 
-## 6.2 - Running the script
+#### 5.1.3.2 - Running the script
 
 Either double-click the .ahk file or right click on it and click "run script" in the dropdown menu.
 
 ---
 
-## 6.3 - Methods to launch the script automatically
+#### 5.1.3.3 - Methods to launch the script automatically
 
 If you get sick of launching a script manually, there are a few options.
 
 ---
 
-### 6.3.1 - Windows Startup shortcut (RECOMMENDED)
+##### 5.1.3.3.1 - Windows Startup shortcut (RECOMMENDED)
 
 This is the simplest method. It's not totally reliable, but it works the majority of the time. Occasionally a script will launch successfully, but not show up in the taskbar tray. If that bothers you, just relaunch the script manually.
 
@@ -965,7 +968,7 @@ Here's how to do it:
 
 ---
 
-### 6.3.2 - Task Scheduler
+##### 5.1.3.3.2 - Task Scheduler
 
 Wi've found this method to be less reliable than the Windows Startup method, but it does work more often than not. It's also kind of a pain to set up. Wi recommend using the Windows Startup method over this one, unless that method doesnt work for you.
 
@@ -973,7 +976,7 @@ You can follow the directions [here](https://windowsloop.com/run-autohotkey-scri
 
 ---
 
-### 6.3.3 - Registry (NOT RECOMMENDED)
+##### 5.1.3.3.3 - Registry (NOT RECOMMENDED)
 
 **DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING.**
 **Editing the registry can brick your computer if you're not careful.**
@@ -983,15 +986,15 @@ Wi strongly recommend using one of the other methods above, unless all of them d
 Also, wi havent personally tested this method, so wi dont know how reliable it is, but it probably should work about the same as the other two?
 
 1. Open the Registry Editor. There are two days to do this:
-	- Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
-	- Open the Start menu and search for either `regedit` or `Registry Editor`.
+    - Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
+    - Open the Start menu and search for either `regedit` or `Registry Editor`.
 2. Navigate to `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`.
 3. Add a new String key. Name it however you prefer.
 4. Edit the value of the new string key and put in `"@:\path\to\autohotkey\version\file.exe" "@:\path\to\script\file.ahk"`, using the filepaths of your AutoHotkey installation and your script file.
 
 ---
 
-# 7 - I think i found a bug / I have an idea for the project
+# 6 - I think i found a bug / I have an idea for the project
 
 Report bugs and make suggestions here: [GitHub issues board](https://github.com/SparkliTwizzl/plurality-utilities/issues)
 

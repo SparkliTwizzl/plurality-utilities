@@ -26,6 +26,25 @@ namespace Petrichor.Common.Utilities
 			return builder.ToString();
 		}
 
+		public static string TrimQuotes( this string input )
+		{
+			var startsWithQuote = input.StartsWith( '"' );
+			var endsWithQuote = input.EndsWith( '"' );
+			if ( startsWithQuote && endsWithQuote )
+			{
+				return input[ 1..( input.Length - 1 ) ];
+			}
+			if ( startsWithQuote )
+			{
+				return input[ 1.. ];
+			}
+			if ( endsWithQuote )
+			{
+				return input[ ..( input.Length - 1 ) ];
+			}
+			return input;
+		}
+
 		public static string WrapInQuotes( this string input )
 		{
 			var startsWithQuote = input.StartsWith( '"' );
