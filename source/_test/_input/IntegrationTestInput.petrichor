@@ -3,7 +3,7 @@
 metadata: // inline comment in region name
 {
 	// line comment in metadata region body
-	minimum-version: 0.10 // inline comment in metadata region body
+	minimum-version: 0.11 // inline comment in metadata region body
 	command: generateTextShortcutScript
 	{
 		output-file: "../../../../_test/_output/_integrationtest/"
