@@ -8,7 +8,7 @@ metadata: // inline comment in region name
 	{
 		output-file: ../../../../_test/_output/_integrationtest/
 		log-mode: all
-		log-file: ../../../../_test/_log/_integrationtest/
+		log-file: "../../../../_test/_log/_integrationtest/"
 	}
 }
 
