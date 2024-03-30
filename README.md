@@ -108,18 +108,19 @@ parent-region:
 
 ### 4.1.2 - Blank lines and comments
 
-The token `//` starts a comment which continues to the end of the line. The comment token is the only token which can be on the same line as other data.
-
 Blank lines are ignored.
+The sequence `//` starts a comment which continues to the end of the line and will be ignored.
+Comments can be [escaped](#413---escape-characters) to make Petrichor treat them as regular text.
 
 **Example:**
 
 ```petrichor
-// this is a comment. this line will be ignored. the following line is blank, and will also be ignored.
+// This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
 
 region:
 {
-    token: value // this is an inline comment. everything after "//" will be ignored.
+    token: value // This is an inline comment. Everything after "//" will be ignored.
+    token: value \// This is an escaped comment and is part of the value. // This is a non-escaped comment and will be ignored.
 }
 ```
 
@@ -132,8 +133,8 @@ Backslash `\` is treated as an "escape character" in some cases. It is used to d
 **Example:**
 
 ```petrichor
-do-something: @blah // this hypothetical token treats @ as a special character and changes it.
-do-something: \@blah // but in this case, it will be left as-is, since the @ is escaped.
+do-something: @to-this // This example token treats @ as a special character and performs operations on it.
+do-something: \@but-not-to-this // But in this case, it will be treated as literal text, since the @ is escaped, and no operations will be performed on it.
 ```
 
 ---
@@ -186,12 +187,12 @@ To use [command options](#432---command-options), add a region body to the token
 ```petrichor
 metadata:
 {
-	minimum-version: {version number}
-	command: commandName
-	{
-		command-option-1: value1
-		command-option-2: value2
-	}
+    minimum-version: {version number}
+    command: commandName
+    {
+        command-option-1: value1
+        command-option-2: value2
+    }
 }
 ```
 ```
@@ -203,7 +204,7 @@ This is equivalent to the following:
 ```petrichor
 metadata:
 {
-	minimum-version: {version number}
+    minimum-version: {version number}
 }
 ```
 ```
@@ -258,12 +259,12 @@ Input file contents:
 ```petrichor
 metadata
 {
-	minimum-version: {version number}
-	command: commandName
-	{
-		command-option-1: value1
-		command-option-2: value2
-	}
+    minimum-version: {version number}
+    command: commandName
+    {
+        command-option-1: value1
+        command-option-2: value2
+    }
 }
 ```
 
@@ -684,10 +685,10 @@ If this is not followed, the generated script wont work correctly, even though P
 template-list:
 {
     template: [find string] :: ` [replace string] ` // no optional features are used, so no region body is needed
-	template: [find string] :: [replace string] // optional features are used, so a region body is needed
-	{
-		// optional feature tokens go here
-	}
+    template: [find string] :: [replace string] // optional features are used, so a region body is needed
+    {
+        // optional feature tokens go here
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -801,11 +802,11 @@ A `find` token can be present without a paired `replace` token, but this will ca
 ```petrichor
 template-list:
 {
-	template: [find string] :: [replace string] custom find 1, custom find 2
-	{
-		find: { custom find 1, custom find 2 } // These are the "find" keys.
-		replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
-	}
+    template: [find string] :: [replace string] custom find 1, custom find 2
+    {
+        find: { custom find 1, custom find 2 } // These are the "find" keys.
+        replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -832,22 +833,22 @@ Allowed values are:
 ```petrichor
 template-list:
 {
-	template: [find string] :: [replace String]
-	{
-		text-case: unchanged
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: upper
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: lower
-	}
-	template: [find string] :: [replace String]
-	{
-		text-case: firstCaps
-	}
+    template: [find string] :: [replace String]
+    {
+        text-case: unchanged
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: upper
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: lower
+    }
+    template: [find string] :: [replace String]
+    {
+        text-case: firstCaps
+    }
 }
 
 // MACROS GENERATED FROM INPUT:
@@ -985,8 +986,8 @@ Wi strongly recommend using one of the other methods above, unless all of them d
 Also, wi havent personally tested this method, so wi dont know how reliable it is, but it probably should work about the same as the other two?
 
 1. Open the Registry Editor. There are two days to do this:
-	- Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
-	- Open the Start menu and search for either `regedit` or `Registry Editor`.
+    - Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
+    - Open the Start menu and search for either `regedit` or `Registry Editor`.
 2. Navigate to `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`.
 3. Add a new String key. Name it however you prefer.
 4. Edit the value of the new string key and put in `"@:\path\to\autohotkey\version\file.exe" "@:\path\to\script\file.ahk"`, using the filepaths of your AutoHotkey installation and your script file.

@@ -21,7 +21,7 @@ namespace Petrichor.Common.Syntax
 		};
 		public static DataToken LineComment => new()
 		{
-			Key = "//",
+			Key = ControlSequences.LineComment,
 		};
 		public static DataToken LogFile => new()
 		{
