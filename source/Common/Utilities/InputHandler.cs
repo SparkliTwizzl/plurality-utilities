@@ -28,9 +28,9 @@ namespace Petrichor.Common.Utilities
 
 		public List<IndexedString> ProcessFile( string file )
 		{
-			var directory = Path.GetDirectoryName( file ) ?? DefaultInputDirectory;
-			var fileName = Path.GetFileName( file ) ?? DefaultInputFileName;
-			var filePath = Path.Combine( directory, fileName );
+			var filePathHandler = new FilePathHandler( DefaultInputDirectory, DefaultInputFileName );
+			filePathHandler.SetFile( file );
+			var filePath = filePathHandler.FilePath;
 
 			var taskMessage = $"Read input file \"{filePath}\"";
 			Log.Start( taskMessage );
