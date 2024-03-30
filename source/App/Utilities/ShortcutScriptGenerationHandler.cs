@@ -4,6 +4,7 @@ using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
+using Petrichor.ShortcutScriptGeneration.Syntax;
 using Petrichor.ShortcutScriptGeneration.Utilities;
 
 
@@ -32,15 +33,15 @@ namespace Petrichor.App.Utilities
 		{
 			var parserDescriptor = new DataRegionParserDescriptor<ScriptEntry>()
 			{
-				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.Entry,
+				RegionToken = Tokens.Entry,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Color, EntryHandler.ColorTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.Decoration, EntryHandler.DecorationTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.ID, EntryHandler.IDTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.Name, EntryHandler.NameTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.LastName, EntryHandler.LastNameTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.Pronoun, EntryHandler.PronounTokenHandler },
+					{ Tokens.Color, EntryHandler.ColorTokenHandler },
+					{ Tokens.Decoration, EntryHandler.DecorationTokenHandler },
+					{ Tokens.ID, EntryHandler.IDTokenHandler },
+					{ Tokens.Name, EntryHandler.NameTokenHandler },
+					{ Tokens.LastName, EntryHandler.LastNameTokenHandler },
+					{ Tokens.Pronoun, EntryHandler.PronounTokenHandler },
 				},
 			};
 
@@ -62,14 +63,14 @@ namespace Petrichor.App.Utilities
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptEntry>>()
 			{
-				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.EntryList,
+				RegionToken = Tokens.EntryList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Entry, entryTokenHandler },
+					{ Tokens.Entry, entryTokenHandler },
 				},
 				PostParseHandler = ( List<ScriptEntry> entries ) =>
 				{
-					Log.Info( $"Parsed {entries.Count} \"{ShortcutScriptGeneration.Syntax.Tokens.Entry.Key}\" tokens." );
+					Log.Info( $"Parsed {entries.Count} \"{Tokens.Entry.Key}\" tokens." );
 					return entries;
 				},
 			};
@@ -81,13 +82,13 @@ namespace Petrichor.App.Utilities
 		{
 			var parserDescriptor = new DataRegionParserDescriptor<ScriptModuleOptions>()
 			{
-				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.ModuleOptions,
+				RegionToken = Tokens.ModuleOptions,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.DefaultIcon, ModuleOptionsHandler.DefaultIconTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.ReloadShortcut, ModuleOptionsHandler.ReloadShortcutTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.SuspendIcon, ModuleOptionsHandler.SuspendIconTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.SuspendShortcut, ModuleOptionsHandler.SuspendShortcutTokenHandler },
+					{ Tokens.DefaultIcon, ModuleOptionsHandler.DefaultIconTokenHandler },
+					{ Tokens.ReloadShortcut, ModuleOptionsHandler.ReloadShortcutTokenHandler },
+					{ Tokens.SuspendIcon, ModuleOptionsHandler.SuspendIconTokenHandler },
+					{ Tokens.SuspendShortcut, ModuleOptionsHandler.SuspendShortcutTokenHandler },
 				},
 			};
 
@@ -98,15 +99,19 @@ namespace Petrichor.App.Utilities
 		{
 			var parserDescriptor = new DataRegionParserDescriptor<ScriptMacroTemplate>()
 			{
-				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.Template,
+				RegionToken = Tokens.Template,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Find, TemplateHandler.FindTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
-					{ ShortcutScriptGeneration.Syntax.Tokens.TextCase, TemplateHandler.TextCaseTokenHandler },
+					{ Tokens.Find, TemplateHandler.FindTokenHandler },
+					{ Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
+					{ Tokens.TextCase, TemplateHandler.TextCaseTokenHandler },
 				},
 				PostParseHandler = ( ScriptMacroTemplate template ) =>
 				{
+					if ( template.TextCase != TemplateTextCases.Default )
+					{
+						Log.Info( $"Text case: {template.TextCase}." );
+					}
 					if ( template.FindAndReplace.Count > 0 )
 					{
 						Log.Info( $"Parsed {template.FindAndReplace.Count} find-and-replace pairs." );
@@ -129,7 +134,7 @@ namespace Petrichor.App.Utilities
 				return new ProcessedRegionData<ScriptMacroTemplate>( result );
 			};
 
-			parser.AddTokenHandler( ShortcutScriptGeneration.Syntax.Tokens.Template, templateTokenHandler );
+			parser.AddTokenHandler( Tokens.Template, templateTokenHandler );
 			return parser;
 		}
 
@@ -148,14 +153,14 @@ namespace Petrichor.App.Utilities
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptMacroTemplate>>()
 			{
-				RegionToken = ShortcutScriptGeneration.Syntax.Tokens.TemplateList,
+				RegionToken = Tokens.TemplateList,
 				TokenHandlers = new()
 				{
-					{ ShortcutScriptGeneration.Syntax.Tokens.Template, templateTokenHandler },
+					{ Tokens.Template, templateTokenHandler },
 				},
 				PostParseHandler = ( List<ScriptMacroTemplate> templates ) =>
 				{
-					Log.Info( $"Parsed {templates.Count} \"{ShortcutScriptGeneration.Syntax.Tokens.Template.Key}\" tokens." );
+					Log.Info( $"Parsed {templates.Count} \"{Tokens.Template.Key}\" tokens." );
 					return templates;
 				},
 			};
