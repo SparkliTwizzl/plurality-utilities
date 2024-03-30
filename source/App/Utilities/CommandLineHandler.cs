@@ -4,6 +4,7 @@ using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.CommandLine;
+using System.Text;
 
 
 namespace Petrichor.App.Utilities
@@ -143,6 +144,16 @@ namespace Petrichor.App.Utilities
 					{ Common.Syntax.Tokens.LogFile, commandOptionTokenHandler },
 					{ Common.Syntax.Tokens.LogMode, commandOptionTokenHandler },
 					{ Common.Syntax.Tokens.OutputFile, commandOptionTokenHandler },
+				},
+				PostParseHandler = ( ModuleCommand result ) =>
+				{
+					var optionListStringBuilder = new StringBuilder();
+					foreach ( var option in result.Options )
+					{
+						_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}");
+					}
+					Log.Info( $"Command to run: \"{result.Name}{optionListStringBuilder}\"" );
+					return result;
 				},
 			};
 
