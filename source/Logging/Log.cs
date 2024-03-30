@@ -17,7 +17,7 @@ namespace Petrichor.Logging
 		public struct ColorScheme
 		{
 			public ConsoleColor Background { get; set; } = ConsoleColor.Black;
-			public ConsoleColor Foreground { get; set; } = ConsoleColor.White;
+			public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
 
 
 			public ColorScheme() { }
@@ -43,8 +43,7 @@ namespace Petrichor.Logging
 		};
 		private static readonly ColorScheme FinishColorScheme = new()
 		{
-			Foreground = ConsoleColor.Green,
-			Background = ConsoleColor.Black,
+			Foreground = ConsoleColor.DarkGreen,
 		};
 		private const int FormattedMessagePaddingAmount = 10;
 		private static readonly ColorScheme ImportantColorScheme = new()
@@ -54,13 +53,11 @@ namespace Petrichor.Logging
 		};
 		private static readonly ColorScheme InfoColorScheme = new()
 		{
-			Foreground = ConsoleColor.Gray,
-			Background = ConsoleColor.Black,
+			Foreground = ConsoleColor.DarkGray,
 		};
 		private static readonly ColorScheme StartColorScheme = new()
 		{
-			Foreground = ConsoleColor.Cyan,
-			Background = ConsoleColor.Black,
+			Foreground = ConsoleColor.DarkCyan,
 		};
 		private static readonly ColorScheme WarningColorScheme = new()
 		{
