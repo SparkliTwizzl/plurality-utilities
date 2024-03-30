@@ -11,7 +11,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	public class ScriptGenerator
 	{
 		private static readonly string DefaultOutputDirectory = ProjectDirectories.OutputDirectory;
-		private const string DefaultOutputFileName = "output";
+		private static readonly string DefaultOutputFileName = $"output.{OutputFileExtension}";
 		private const string OutputFileExtension = "ahk";
 
 
@@ -23,26 +23,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public void Generate( ScriptInput input, string outputFile )
 		{
 			Input = input;
+			var filePathHandler = new FilePathHandler( DefaultOutputDirectory, DefaultOutputFileName );
+			filePathHandler.SetFile( outputFile );
+			var filePath = Path.ChangeExtension( filePathHandler.FilePath, OutputFileExtension );
 
-			var directory = Path.GetDirectoryName( outputFile ) ?? string.Empty;
-			if ( directory == string.Empty )
-			{
-				directory = DefaultOutputDirectory;
-			}
-
-			var fileName = Path.GetFileNameWithoutExtension( outputFile ) ?? string.Empty;
-			if ( fileName == string.Empty )
-			{
-				fileName = DefaultOutputFileName;
-			}
-			var filePath = $"{Path.Combine( directory, fileName )}.{OutputFileExtension}";
-
-			 var taskMessage = $"Generate output file \"{filePath}\"";
+			var taskMessage = $"Generate output file \"{filePath}\"";
 			Log.Start( taskMessage );
 
 			try
 			{
-				CreateOutputFile( directory, filePath );
+				CreateOutputFile( filePath );
 			}
 			catch ( Exception exception )
 			{
@@ -53,9 +43,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			Log.Finish( taskMessage );
 		}
 
-		private void CreateOutputFile( string directory, string filePath )
+
+		private void CreateOutputFile( string filePath )
 		{
-			_ = Directory.CreateDirectory( directory );
 			var file = File.Create( filePath );
 			WriteHeaderToFile( file );
 			WriteMacrosToFile( file );

@@ -11,6 +11,11 @@ namespace Petrichor.App.Utilities
 {
 	public static class CommandLineHandler
 	{
+		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\_log";
+		private static string DefaultLogFileName => $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
+
+
+
 		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.None;
 
 
@@ -150,7 +155,7 @@ namespace Petrichor.App.Utilities
 					var optionListStringBuilder = new StringBuilder();
 					foreach ( var option in result.Options )
 					{
-						_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}");
+						_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}" );
 					}
 					Log.Info( $"Command to run: \"{result.Name}{optionListStringBuilder}\"" );
 					return result;
@@ -243,7 +248,9 @@ namespace Petrichor.App.Utilities
 
 				if ( Log.IsLoggingToFileEnabled )
 				{
-					Log.CreateLogFile( logFileArgument );
+					var filePathHandler = new FilePathHandler( DefaultLogDirectory, DefaultLogFileName );
+					filePathHandler.SetFile( logFileArgument );
+					Log.CreateLogFile( filePathHandler.FilePath );
 				}
 			} );
 
