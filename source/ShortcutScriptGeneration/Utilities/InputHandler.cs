@@ -30,25 +30,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private DataRegionParser<ScriptInput> CreateRegionParser()
 		{
 			var entryListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
-				{
-					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-					result.Entries = EntryListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-					return new ProcessedRegionData<ScriptInput>( value: result, bodySize: EntryListRegionParser.LinesParsed );
-				};
+			{
+				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
+				result.Entries = EntryListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: EntryListRegionParser.LinesParsed );
+			};
 
 			var moduleOptionsTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
-					{
-						var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-						result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
-						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ModuleOptionsRegionParser.LinesParsed );
-					};
+			{
+				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
+				result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ModuleOptionsRegionParser.LinesParsed );
+			};
 
 			var shortcutListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
-					{
-						var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-						result = ShortcutListRegionParser.Parse( dataTrimmedToRegion );
-						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ShortcutListRegionParser.LinesParsed );
-					};
+			{
+				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
+				result = ShortcutListRegionParser.Parse( dataTrimmedToRegion );
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ShortcutListRegionParser.LinesParsed );
+			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<ScriptInput>()
 			{

@@ -91,7 +91,7 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 		};
 		public static DataToken Shortcut => new()
 		{
-			Key = "shortcut-list",
+			Key = "shortcut",
 		};
 		public static DataToken ShortcutList => new()
 		{

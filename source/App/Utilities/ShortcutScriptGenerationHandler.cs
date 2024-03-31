@@ -163,8 +163,8 @@ namespace Petrichor.App.Utilities
 				},
 				PostParseHandler = ( ScriptInput result ) =>
 				{
-					Log.Info( $"Parsed {result.Shortcuts.Length} \"{Tokens.Shortcut}\" tokens." );
-					Log.Info( $"Parsed {result.ShortcutTemplates.Length} \"{Tokens.ShortcutTemplate}\" tokens." );
+					Log.Info( $"Parsed {result.Shortcuts.Length} \"{Tokens.Shortcut.Key}\" tokens." );
+					Log.Info( $"Parsed {result.ShortcutTemplates.Length} \"{Tokens.ShortcutTemplate.Key}\" tokens." );
 					return result;
 				},
 			};

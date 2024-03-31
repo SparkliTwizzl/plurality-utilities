@@ -52,8 +52,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private static string ConvertShortcutToAutoHotkeySyntax( string shortcut )
 		{
 			var parts = shortcut.Split( ControlSequences.ShortcutFindReplaceDivider );
-			var find = parts[ 0 ];
-			var replace = parts[ 1 ];
+			var find = parts[ 0 ].Trim();
+			var replace = parts[ 1 ].Trim();
 			return $"::{find}::{replace}";
 		}
 
