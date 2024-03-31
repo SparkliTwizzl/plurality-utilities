@@ -213,7 +213,10 @@ namespace Petrichor.Logging
 		/// <param name="message">Line of text to write to log.</param>
 		/// <param name="colorScheme">Colors to apply to message in console.</param>
 		public static void WriteLine( string message = "", ColorScheme? colorScheme = null )
-			=> Write( $"{message}\n", colorScheme );
+		{
+			Write( message, colorScheme );
+			Write( "\n" );
+		}
 
 		/// <summary>
 		/// Write a timestamped line of text to log.
@@ -273,6 +276,7 @@ namespace Petrichor.Logging
 				return;
 			}
 			var formattedMessage = colorScheme?.Apply( message ) ?? message;
+			Console.ResetColor();
 			Console.Write( formattedMessage );
 		}
 
