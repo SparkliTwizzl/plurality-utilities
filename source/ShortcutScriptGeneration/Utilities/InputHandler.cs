@@ -9,17 +9,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		private IDataRegionParser<List<ScriptEntry>> EntryListRegionParser { get; set; }
 		private IDataRegionParser<ScriptInput> FileRegionParser { get; set; }
-		private IMacroGenerator MacroGenerator { get; set; }
 		private IDataRegionParser<ScriptModuleOptions> ModuleOptionsRegionParser { get; set; }
-		private IDataRegionParser<List<ScriptMacroTemplate>> TemplateListRegionParser { get; set; }
+		private IShortcutGenerator ShortcutGenerator { get; set; }
+		private IDataRegionParser<List<ScriptShortcutData>> ShortcutListRegionParser { get; set; }
 
 
-		public InputHandler( IDataRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IDataRegionParser<List<ScriptEntry>> entryListRegionParser, IDataRegionParser<List<ScriptMacroTemplate>> templateListRegionParser, IMacroGenerator macroGenerator )
+		public InputHandler( IDataRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IDataRegionParser<List<ScriptEntry>> entryListRegionParser, IDataRegionParser<List<ScriptShortcutData>> templateListRegionParser, IShortcutGenerator shortcutGenerator )
 		{
 			EntryListRegionParser = entryListRegionParser;
-			MacroGenerator = macroGenerator;
 			ModuleOptionsRegionParser = moduleOptionsRegionParser;
-			TemplateListRegionParser = templateListRegionParser;
+			ShortcutGenerator = shortcutGenerator;
+			ShortcutListRegionParser = templateListRegionParser;
 			FileRegionParser = CreateRegionParser();
 		}
 
@@ -46,13 +46,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var templateListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 					{
 						var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-						result.Templates = TemplateListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: TemplateListRegionParser.LinesParsed );
+						result.ShortcutTemplates = ShortcutListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
+						return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ShortcutListRegionParser.LinesParsed );
 					};
 
 			var postParseHandler = ( ScriptInput result ) =>
 				{
-					result.Macros = MacroGenerator.Generate( result );
+					result = ShortcutGenerator.GenerateAndStoreShortcuts( result );
 					return result;
 				};
 
@@ -67,7 +67,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{
 					{ Syntax.Tokens.EntryList, entryListTokenHandler },
 					{ Syntax.Tokens.ModuleOptions, moduleOptionsTokenHandler },
-					{ Syntax.Tokens.TemplateList, templateListTokenHandler },
+					{ Syntax.Tokens.ShortcutList, templateListTokenHandler },
 				},
 				PostParseHandler = postParseHandler,
 			};

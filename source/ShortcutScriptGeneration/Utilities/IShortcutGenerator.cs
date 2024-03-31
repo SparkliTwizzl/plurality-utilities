@@ -2,8 +2,8 @@
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public interface IMacroGenerator
+	public interface IShortcutGenerator
 	{
-		string[] Generate( ScriptInput input );
+		ScriptInput GenerateAndStoreShortcuts( ScriptInput input );
 	}
 }

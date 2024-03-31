@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public static class TemplateHandler
+	public static class ShortcutHandler
 	{
 		private static class FindAndReplaceParseHandler
 		{
@@ -27,7 +27,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				if ( result.Count < 1 )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" region has a \"{token.Key}\" token, but is missing a corresponding \"{Tokens.Find}\" token." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.ShortcutTemplate.Key}\" region has a \"{token.Key}\" token, but is missing a corresponding \"{Tokens.Find}\" token." ), token.LineNumber );
 				}
 
 				var items = ExtractItemsFromBody( token );
@@ -81,11 +81,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static class TemplateParseHandler
+		private static class ShortcutParseHandler
 		{
-			public static ScriptMacroTemplate ParseTemplateString( StringToken token, ScriptMacroTemplate result )
+			public static ScriptShortcutData ParseTemplateString( StringToken token, ScriptShortcutData result )
 			{
-				ValidateTemplateStructure( token );
+				ValidateShortcutStructure( token );
 				var sanitizedHotstring = SanitizeHotstring( token.Value );
 
 				var template = new StringBuilder();
@@ -129,24 +129,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				var components = template.ToString().Split( ControlSequences.TemplateFindReplaceDivider );
+				var components = template.ToString().Split( ControlSequences.ShortcutFindReplaceDivider );
 				result.TemplateFindString = components[ 0 ].Trim();
 				result.TemplateReplaceString = components[ 1 ].Trim();
 				return result;
 			}
 
-
-			private static void ValidateTemplateStructure( StringToken token )
+			public static void ValidateShortcutStructure( StringToken token )
 			{
-				var components = token.Value.Split( ControlSequences.TemplateFindReplaceDivider );
+				var components = token.Value.Split( ControlSequences.ShortcutFindReplaceDivider );
 				var doesFindStringExist = components[ 0 ]?.Length > 0;
 				var doesReplaceStringExist = components[ 1 ]?.Length > 0;
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
 				if ( !isTemplateInValidFormat )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.Template.Key}\" token's value is not a valid template string." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's value is not a valid shortcut string." ), token.LineNumber );
 				}
 			}
+
 
 			private static string ExtractFindTagFromLine( string line, int lineNumber )
 			{
@@ -232,11 +232,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's body has no region close character.
 		/// Thrown when a token's body contains blank items.
 		/// </exception>
-		public static ProcessedRegionData<ScriptMacroTemplate> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		public static ProcessedRegionData<ScriptShortcutData> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseFindKeys( token );
-			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+			return new ProcessedRegionData<ScriptShortcutData>( result );
 		}
 
 		/// <summary>
@@ -256,15 +256,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's body contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// Thrown when a token's body contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// </exception>
-		public static ProcessedRegionData<ScriptMacroTemplate> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		public static ProcessedRegionData<ScriptShortcutData> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseReplaceValues( token, result.FindAndReplace );
-			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+			return new ProcessedRegionData<ScriptShortcutData>( result );
 		}
 
 		/// <summary>
-		/// Converts <see cref="Tokens.Template"/> token values into Petrichor template strings and stores them in the provided container.
+		/// Stores <see cref="Tokens.Shortcut"/> token values in the provided container.
 		/// </summary>
 		/// <param name="regionData">Untrimmed input data.</param>
 		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
@@ -272,18 +272,40 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// <returns>Modified <paramref name="result"/> with converted template string.</returns>
 		///
 		/// <exception cref="TokenValueException">
-		/// Thrown when token's value is not a valid template string.
-		/// Thrown when token's value contains a dangling escape character.
-		/// Thrown when token's value contains a malformed "find" tag:
+		/// Thrown when a token's value is not a valid template string.
+		/// </exception>
+		public static ProcessedRegionData<List<ScriptShortcutData>> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, List<ScriptShortcutData> result )
+		{
+			var token = new StringToken( regionData[ tokenStartIndex ] );
+			ShortcutParseHandler.ValidateShortcutStructure( token );
+			result.Add( new( shortcutString: token.Value ) );
+			return new ProcessedRegionData<List<ScriptShortcutData>>()
+			{
+				Value = result,
+			};
+		}
+
+		/// <summary>
+		/// Converts <see cref="Tokens.ShortcutTemplate"/> token values into Petrichor template strings and stores them in the provided container.
+		/// </summary>
+		/// <param name="regionData">Untrimmed input data.</param>
+		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
+		/// <param name="result">Existing result to modify and return.</param>
+		/// <returns>Modified <paramref name="result"/> with converted template string.</returns>
+		///
+		/// <exception cref="TokenValueException">
+		/// Thrown when a token's value is not a valid template string.
+		/// Thrown when a token's value contains a dangling escape character.
+		/// Thrown when a token's value contains a malformed "find" tag:
 		/// - Mismatched tag open character.
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
 		/// </exception>
-		public static ProcessedRegionData<ScriptMacroTemplate> TemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		public static ProcessedRegionData<ScriptShortcutData> ShortcutTemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
-			result = TemplateParseHandler.ParseTemplateString( token, result );
-			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+			result = ShortcutParseHandler.ParseTemplateString( token, result );
+			return new ProcessedRegionData<ScriptShortcutData>( result );
 		}
 
 		/// <summary>
@@ -298,11 +320,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's value is not recognized.
 		/// </exception>
-		public static ProcessedRegionData<ScriptMacroTemplate> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result )
+		public static ProcessedRegionData<ScriptShortcutData> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.TextCase = TextCaseParseHandler.ParseTextCase( token );
-			return new ProcessedRegionData<ScriptMacroTemplate>( result );
+			return new ProcessedRegionData<ScriptShortcutData>( result );
 		}
 	}
 }
