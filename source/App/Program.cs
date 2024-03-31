@@ -28,6 +28,7 @@ namespace Petrichor.App
 				Log.Error( $"Error occurred during execution: {exception.Message}" );
 				Log.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 			}
+			LogFormatVisualizer.ShowTestMessagesInDebug();
 
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
