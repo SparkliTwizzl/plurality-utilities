@@ -12,6 +12,7 @@ metadata: // inline comment in region name
 	}
 }
 
+
 module-options:
 {
 	// line comment in module options region body
@@ -20,6 +21,68 @@ module-options:
 	reload-shortcut: [tab] [and] r
 	suspend-shortcut: [win]s
 }
+
+
+shortcut-list:
+{
+	// line comment in template-list region body
+	
+	shortcut: find :: replace
+	shortcut-template: [tag] :: [name]
+	shortcut-template: `[tag] :: `[name]
+	shortcut-template: ~[tag] :: ~[name]
+	shortcut-template: ![tag] :: ![name]
+	shortcut-template: @[tag] :: @[name]
+	shortcut-template: #[tag] :: #[name]
+	shortcut-template: $[tag] :: $[name]
+	shortcut-template: %[tag] :: ^[name]
+	shortcut-template: &[tag] :: &[name]
+	shortcut-template: *[tag] :: *[name]
+	shortcut-template: ([tag] :: ([name]
+	shortcut-template: )[tag] :: )[name]
+	shortcut-template: -[tag] :: -[name]
+	shortcut-template: _[tag] :: _[name]
+	shortcut-template: =[tag] :: =[name]
+	shortcut-template: +[tag] :: +[name]
+	shortcut-template: \[[tag] :: \[[name]
+	shortcut-template: {[tag] :: {[name]
+	shortcut-template: \][tag] :: \][name]
+	shortcut-template: }[tag] :: }[name]
+	shortcut-template: \\[tag] :: \\[name]
+	shortcut-template: |[tag] :: |[name]
+	shortcut-template: ;[tag] :: ;[name]
+	shortcut-template: :[tag] :: :[name]
+	shortcut-template: '[tag] :: '[name]
+	shortcut-template: "[tag] :: "[name]
+	shortcut-template: ,[tag] :: ,[name]
+	shortcut-template: <[tag] :: <[name]
+	shortcut-template: .[tag] :: .[name]
+	shortcut-template: >[tag] :: >[name]
+	shortcut-template: /[tag] :: /[name]
+	shortcut-template: ?[tag] :: ?[name]
+	shortcut-template: [tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	{
+		find: { findmetoo, findme }
+		replace: { foundyoutoo, foundyou }
+	}
+	shortcut-template: [tag]-first-caps :: [name]
+	{
+		text-case: firstCaps
+	}
+	shortcut-template: [tag]-lower :: [name]
+	{
+		text-case: lower
+	}
+	shortcut-template: [tag]-unchanged :: [name]
+	{
+		text-case: unchanged
+	}
+	shortcut-template: [tag]-upper :: [name]
+	{
+		text-case: upper
+	}
+}
+
 
 entry-list:
 {
@@ -41,64 +104,4 @@ entry-list:
 		id: 4321
 		name: tesT casE @tc
 	}
-}
-
-template-list:
-{
-	// line comment in template-list region body
-	
-	template: --[tag][last-tag] :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
-	{
-		find: { findmetoo, findme }
-		replace: { foundyoutoo, foundyou }
-	}
-	template: [tag]-first-caps :: [name]
-	{
-		text-case: firstCaps
-	}
-	template: [tag]-lower :: [name]
-	{
-		text-case: lower
-	}
-	template: [tag]-unchanged :: [name]
-	{
-		text-case: unchanged
-	}
-	template: [tag]-upper :: [name]
-	{
-		text-case: upper
-	}
-	template: [tag] :: [name]
-	template: [tag][last-tag] :: [name] [last-name]
-	template: `[tag] :: `[name]
-	template: ~[tag] :: ~[name]
-	template: ![tag] :: ![name]
-	template: @[tag] :: @[name]
-	template: #[tag] :: #[name]
-	template: $[tag] :: $[name]
-	template: %[tag] :: ^[name]
-	template: &[tag] :: &[name]
-	template: *[tag] :: *[name]
-	template: ([tag] :: ([name]
-	template: )[tag] :: )[name]
-	template: -[tag] :: -[name]
-	template: _[tag] :: _[name]
-	template: =[tag] :: =[name]
-	template: +[tag] :: +[name]
-	template: \[[tag] :: \[[name]
-	template: {[tag] :: {[name]
-	template: \][tag] :: \][name]
-	template: }[tag] :: }[name]
-	template: \\[tag] :: \\[name]
-	template: |[tag] :: |[name]
-	template: ;[tag] :: ;[name]
-	template: :[tag] :: :[name]
-	template: '[tag] :: '[name]
-	template: "[tag] :: "[name]
-	template: ,[tag] :: ,[name]
-	template: <[tag] :: <[name]
-	template: .[tag] :: .[name]
-	template: >[tag] :: >[name]
-	template: /[tag] :: /[name]
-	template: ?[tag] :: ?[name]
 }

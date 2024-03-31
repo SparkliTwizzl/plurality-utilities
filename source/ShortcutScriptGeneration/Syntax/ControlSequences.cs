@@ -2,6 +2,6 @@
 {
 	public readonly struct ControlSequences
 	{
-		public const string TemplateFindReplaceDivider = "::";
+		public const string ShortcutFindReplaceDivider = "::";
 	}
 }

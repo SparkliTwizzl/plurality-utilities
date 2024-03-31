@@ -3,25 +3,25 @@
 	public sealed class ScriptInput : IEquatable<ScriptInput>
 	{
 		public ScriptEntry[] Entries { get; set; } = Array.Empty<ScriptEntry>();
-		public string[] Macros { get; set; } = Array.Empty<string>();
 		public ScriptModuleOptions ModuleOptions { get; set; } = new();
-		public ScriptMacroTemplate[] Templates { get; set; } = Array.Empty<ScriptMacroTemplate>();
+		public string[] Shortcuts { get; set; } = Array.Empty<string>();
+		public ScriptShortcutData[] ShortcutTemplates { get; set; } = Array.Empty<ScriptShortcutData>();
 
 
 		public ScriptInput() { }
-		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, ScriptMacroTemplate[] templates, string[]? macros = null )
+		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, ScriptShortcutData[] templates, string[]? shortcuts = null )
 		{
 			Entries = entries;
-			Macros = macros ?? Array.Empty<string>();
 			ModuleOptions = moduleOptions;
-			Templates = templates;
+			Shortcuts = shortcuts ?? Array.Empty<string>();
+			ShortcutTemplates = templates;
 		}
 		public ScriptInput( ScriptInput other)
 		{
 			Entries = other.Entries;
-			Macros = other.Macros;
 			ModuleOptions = other.ModuleOptions;
-			Templates = other.Templates;
+			Shortcuts = other.Shortcuts;
+			ShortcutTemplates = other.ShortcutTemplates;
 		}
 
 
@@ -44,9 +44,9 @@
 			{
 				return false;
 			}
-			return Entries.SequenceEqual( other.Entries ) && Macros.SequenceEqual( other.Macros ) && ModuleOptions.Equals( other.ModuleOptions ) && Templates.SequenceEqual( other.Templates );
+			return Entries.SequenceEqual( other.Entries ) && Shortcuts.SequenceEqual( other.Shortcuts ) && ModuleOptions.Equals( other.ModuleOptions ) && ShortcutTemplates.SequenceEqual( other.ShortcutTemplates );
 		}
 
-		public override int GetHashCode() => Entries.GetHashCode() ^ Macros.GetHashCode() ^ ModuleOptions.GetHashCode() ^ Templates.GetHashCode();
+		public override int GetHashCode() => Entries.GetHashCode() ^ ModuleOptions.GetHashCode() ^ Shortcuts.GetHashCode() ^ ShortcutTemplates.GetHashCode();
 	}
 }
