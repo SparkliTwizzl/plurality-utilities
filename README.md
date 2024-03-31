@@ -167,9 +167,9 @@ Major and minor version must be specified. If patch or patch and preview version
 **Example:**
 
 ```petrichor
-minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4
-minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version
-minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version
+minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
+minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
+minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
 ```
 
 ---
@@ -653,55 +653,78 @@ module-options:
 
 ---
 
-#### 5.1.1.2 - Template list region (REQUIRED)
+#### 5.1.1.2 - Shortcut list region (REQUIRED)
 
-This region defines the structure of generated macros. It must come after the entry list region.
-
-Templates define the structure of AutoHotkey macros to create from entries. There is no limit to how many templates can be used.
+This region defines the text shortcuts to be generated.
+Standard or templated shortcuts can be defined.
+Templated shortcuts define the structure of shortcuts to create from entries.
 
 ---
 
-##### 5.1.1.2.1 - Template region (REQUIRED)
+##### 5.1.1.2.1 - Shortcut tokens (OPTIONAL)
 
-This region defines a template to create macros from. At least one this token must be present. If no optional features are used, the region body can be omitted.
+This token defines a standard plaintext shortcut.
+Standard shortcuts are defined by tokens with the name `shortcut`.
+Shortcuts can use special AutoHotkey behavior if written correctly. Consult AutoHotkey documentation to learn how to do this.
 
-Templates are defined by tokens with the name `template` and a valid AutoHotkey hotstring. Consult AutoHotkey documentation if you do not know how to write one. A basic overview is provided here.
+All shortcuts must start with a "find" text string, then `::`, then a "replace" text string.
+**NOTE:** You cannot use `::` in a "find" string due to the way AutoHotkey hotstrings work. Petrichor will allow it, but the shortcuts it generates will not work.
+These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the "find" and/or "replace" strings.
 
-All templates must start with a `find` text string, then `::`, then a `replace` text string.
+**Example:**
 
-**NOTE:** You cannot use `::` in a `find` string due to the way AutoHotkey hotstrings work. Petrichor will allow it, but the macros it generates will not work.
+```petrichor
+shortcut-list:
+{
+    shortcut: [find string] :: ` [replace string] `
+}
 
-These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the `find` and/or `replace` strings.
+// SHORTCUTS GENERATED FROM INPUT:
 
-Use [marker strings](#511211---template-marker-strings) to define how templates should be applied to entries.
+// Standard shorcuts will only be written to the output file once.
+::[find string]::` [replace string] ` // This is a standard shortcut. The [find string] and [replace string] will be inserted into the output file unaltered.
+```
 
-Templates support [custom find and replace dictionaries](#511212---find-and-replace-tokens). 
+---
+
+##### 5.1.1.2.2 - Shortcut template region (OPTIONAL)
+
+This region defines a template to create shortcuts from.
+Templated shortcuts are defined by tokens with the name `shortcut-template`.
+
+All shortcuts must start with a "find" text string, then `::`, then a "replace" text string.
+**NOTE:** You cannot use `::` in a "find" string due to the way AutoHotkey hotstrings work. Petrichor will allow it, but the shortcuts it generates will not work.
+These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by inserting a backtick `` ` `` at the start or end of the "find" and/or "replace" strings.
+
+Use [marker strings](#511221---template-marker-strings) to define how templates should be applied to entries.
+Templates support [custom find and replace dictionaries](#511222---find-and-replace-tokens). 
 
 If this is not followed, the generated script wont work correctly, even though Petrichor will run without errors.
 
 **Example:**
 
 ```petrichor
-template-list:
+shortcut-list:
 {
-    template: [find string] :: ` [replace string] ` // no optional features are used, so no region body is needed
-    template: [find string] :: [replace string] // optional features are used, so a region body is needed
+    shortcut-template: [find string] :: ` [replace string] ` // No optional features are used, so no region body is needed.
+    shortcut-template: [find string] :: [replace string] // Optional features are used, so a region body is needed.
     {
-        // optional feature tokens go here
+        // optional feature tokens go here.
     }
 }
 
-// MACROS GENERATED FROM INPUT:
+// SHORTCUTS GENERATED FROM INPUT:
 
-::[find string]::` [replace string] ` // this is a standard template
-::[find string]::[replace string] // optional features will be applied to this template
+// One copy of these shortcuts will be generated for every entry. Any template markers in the [find string] or [replace string] will be replaced with entry data.
+::[find string]::` [replace string] ` // This is a standard template. No extra processing will be done to it.
+::[find string]::[replace string] // Optional features will be applied to this template.
 ```
 
 ---
 
-###### 5.1.1.2.1.1 - Template marker strings
+###### 5.1.1.2.2.1 - Template marker strings
 
-Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate macros.
+Certain symbols will be replaced by fields from entries in the input file by default. This is how templates are able to be used to generate shortcuts.
 
 If no marker strings are present, a template will be inserted into the output file with no changes for every `name` token present in the input file. This technically will not break the script, but it is not recommended.
 
@@ -737,12 +760,12 @@ entry-list:
     }
 }
 
-template-list:
+shortcut-list:
 {
-    template:  [tag][last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
+    shortcut-template:  [tag][last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
 }
 
-// MACROS GENERATED FROM INPUT:
+// shortcutS GENERATED FROM INPUT:
 
 ::sms::1234 - Sam Smith (they/them) | {-- a person} | #89abcd
 ::smys::1234 - Sammy Smith (they/them) | {-- a person} | #89abcd
@@ -767,12 +790,12 @@ entry-list:
     }
 }
 
-template-list:
+shortcut-list:
 {
-    template: [tag][tag] :: [name] | {[name] [decoration]}
+    shortcut-template: [tag][tag] :: [name] | {[name] [decoration]}
 }
 
-// MACROS GENERATED FROM INPUT:
+// shortcutS GENERATED FROM INPUT:
 
 ::smsm::Sam (they/them) | [Sam is a person]
 ::smysmy::Sammy (they/them) | [Sammy is a person]
@@ -780,7 +803,7 @@ template-list:
 
 ---
 
-###### 5.1.1.2.1.2 - Find and replace tokens (OPTIONAL)
+###### 5.1.1.2.2.2 - Find and replace tokens (OPTIONAL)
 
 These tokens are used to define custom find-and-replace pairs for a template.
 
@@ -800,26 +823,26 @@ A `find` token can be present without a paired `replace` token, but this will ca
 **Example:**
 
 ```petrichor
-template-list:
+shortcut-list:
 {
-    template: [find string] :: [replace string] custom find 1, custom find 2
+    shortcut-template: [find string] :: [replace string] custom find 1, custom find 2
     {
         find: { custom find 1, custom find 2 } // These are the "find" keys.
         replace: { replace 1, replace 2 } // These are the corresponding "replace" values.
     }
 }
 
-// MACROS GENERATED FROM INPUT:
+// shortcutS GENERATED FROM INPUT:
 
 ::[find string]::[replace string] replace 1, replace 2 // If the "find" keys are present in the [replace string] values for an entry, they will be replaced as well.
 ```
 
 ---
 
-###### 5.1.1.2.1.2 - Text Case tokens (OPTIONAL)
+###### 5.1.1.2.2.2 - Text Case tokens (OPTIONAL)
 
 These tokens are used to change the text case of a template's "replace" string.
-Case conversion is applied after [custom find-and-replace pairs](#511212---find-and-replace-tokens).
+Case conversion is applied after [custom find-and-replace pairs](#511222---find-and-replace-tokens).
 
 Text case is defined by a token with the name `text-case`.
 Allowed values are:
@@ -831,27 +854,27 @@ Allowed values are:
 **Example:**
 
 ```petrichor
-template-list:
+shortcut-list:
 {
-    template: [find string] :: [replace String]
+    shortcut-template: [find string] :: [replace String]
     {
         text-case: unchanged
     }
-    template: [find string] :: [replace String]
+    shortcut-template: [find string] :: [replace String]
     {
         text-case: upper
     }
-    template: [find string] :: [replace String]
+    shortcut-template: [find string] :: [replace String]
     {
         text-case: lower
     }
-    template: [find string] :: [replace String]
+    shortcut-template: [find string] :: [replace String]
     {
         text-case: firstCaps
     }
 }
 
-// MACROS GENERATED FROM INPUT:
+// shortcutS GENERATED FROM INPUT:
 
 ::[find string]::[replace String]
 ::[find string]::[REPLACE STRING]
@@ -863,15 +886,15 @@ template-list:
 
 #### 5.1.1.3 - Entry list region (REQUIRED)
 
-This region defines the entries to be converted into macros.
+This region defines the entries to be converted into shortcuts.
 
-Each entry is an `entry` region which defines a set of values to create shortcut macros from. There is no limit to how many entries the `entry-list` region can contain.
+Each entry is an `entry` region which defines a set of values to create shortcut shortcuts from. There is no limit to how many entries the `entry-list` region can contain.
 
 ---
 
 ##### 5.1.1.3.1 - Entry regions (OPTIONAL)
 
-This region defines a set of data to apply macro templates to. At least one of this region must be present.
+This region defines a set of data to apply shortcut templates to. At least one of this region must be present.
 
 Entry regions are made up several token types. There are different restrictions and requirements for each type.
 
