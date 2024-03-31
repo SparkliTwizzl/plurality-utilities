@@ -5,9 +5,9 @@ using Petrichor.ShortcutScriptGeneration.Syntax;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ShortcutGenerator : IShortcutGenerator
+	public class ShortcutProcessor : IShortcutProcessor
 	{
-		public ScriptInput GenerateAndStoreShortcuts( ScriptInput input )
+		public ScriptInput ProcessAndStoreShortcuts( ScriptInput input )
 		{
 			var shortcuts = new List<string>();
 			foreach ( var rawShortcut in input.Shortcuts )

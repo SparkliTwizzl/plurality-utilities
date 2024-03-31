@@ -9,7 +9,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 {
 	[TestClass]
-	public class ShortcutGeneratorTests
+	public class ShortcutProcessorTests
 	{
 		public readonly struct TestData
 		{
@@ -130,7 +130,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutGenerator? generator;
+		public ShortcutProcessor? generator;
 
 
 		[TestInitialize]
@@ -145,7 +145,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Shortcuts;
-			var input = generator!.GenerateAndStoreShortcuts( TestData.Input );
+			var input = generator!.ProcessAndStoreShortcuts( TestData.Input );
 			var actual = input.Shortcuts;
 
 			Log.Info( "expected:" );

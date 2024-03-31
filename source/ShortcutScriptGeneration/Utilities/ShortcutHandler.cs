@@ -274,12 +274,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value is not a valid template string.
 		/// </exception>
-		public static ProcessedRegionData<List<ScriptShortcutData>> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, List<ScriptShortcutData> result )
+		public static ProcessedRegionData<ScriptInput> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptInput result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			ShortcutParseHandler.ValidateShortcutStructure( token );
-			result.Add( new( shortcutString: token.Value ) );
-			return new ProcessedRegionData<List<ScriptShortcutData>>()
+			var shortcuts = result.Shortcuts.ToList();
+			shortcuts.Add( token.Value );
+			result.Shortcuts = shortcuts.ToArray();
+			return new ProcessedRegionData<ScriptInput>()
 			{
 				Value = result,
 			};

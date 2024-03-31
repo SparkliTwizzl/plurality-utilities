@@ -138,20 +138,22 @@ namespace Petrichor.App.Utilities
 			return parser;
 		}
 
-		private static DataRegionParser<List<ScriptShortcutData>> CreateShortcutListRegionParser()
+		private static DataRegionParser<ScriptInput> CreateShortcutListRegionParser()
 		{
 			var shortcutTemplateRegionParser = CreateShortcutTemplateRegionParser();
 
-			var shortcutTemplateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptShortcutData> result ) =>
+			var shortcutTemplateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptInput result ) =>
 			{
 				shortcutTemplateRegionParser.Reset();
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
 				var template = shortcutTemplateRegionParser.Parse( dataTrimmedToRegion );
-				result.Add( template );
-				return new ProcessedRegionData<List<ScriptShortcutData>>( value: result, bodySize: shortcutTemplateRegionParser.LinesParsed - 1 );
+				var templates = result.ShortcutTemplates.ToList();
+				templates.Add( template );
+				result.ShortcutTemplates = templates.ToArray();
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: shortcutTemplateRegionParser.LinesParsed - 1 );
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptShortcutData>>()
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptInput>()
 			{
 				RegionToken = Tokens.ShortcutList,
 				TokenHandlers = new()
@@ -159,14 +161,15 @@ namespace Petrichor.App.Utilities
 					{ Tokens.Shortcut, ShortcutHandler.ShortcutTokenHandler },
 					{ Tokens.ShortcutTemplate, shortcutTemplateTokenHandler },
 				},
-				PostParseHandler = ( List<ScriptShortcutData> result ) =>
+				PostParseHandler = ( ScriptInput result ) =>
 				{
-					Log.Info( $"Parsed {result.Count} \"{Tokens.ShortcutTemplate.Key}\" tokens." );
+					Log.Info( $"Parsed {result.Shortcuts.Length} \"{Tokens.Shortcut}\" tokens." );
+					Log.Info( $"Parsed {result.ShortcutTemplates.Length} \"{Tokens.ShortcutTemplate}\" tokens." );
 					return result;
 				},
 			};
 
-			return new DataRegionParser<List<ScriptShortcutData>>( parserDescriptor );
+			return new DataRegionParser<ScriptInput>( parserDescriptor );
 		}
 
 		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
@@ -176,8 +179,8 @@ namespace Petrichor.App.Utilities
 				var inputHandler = new ShortcutScriptGeneration.Utilities.InputHandler(
 					moduleOptionsRegionParser: CreateModuleOptionsRegionParser(),
 					entryListRegionParser: CreateEntryListRegionParser(),
-					templateListRegionParser: CreateShortcutListRegionParser(),
-					shortcutGenerator: new ShortcutGenerator() );
+					shortcutListRegionParser: CreateShortcutListRegionParser(),
+					shortcutGenerator: new ShortcutProcessor() );
 				var input = inputHandler.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}
