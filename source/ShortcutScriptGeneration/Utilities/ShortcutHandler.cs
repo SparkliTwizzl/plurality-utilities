@@ -138,8 +138,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			public static void ValidateShortcutStructure( StringToken token )
 			{
 				var components = token.Value.Split( ControlSequences.ShortcutFindReplaceDivider );
-				var doesFindStringExist = components[ 0 ]?.Length > 0;
-				var doesReplaceStringExist = components[ 1 ]?.Length > 0;
+				var doesFindStringExist = ( components.Length > 0 ) && ( components[ 0 ]?.Length > 0 );
+				var doesReplaceStringExist = ( components.Length > 1 ) && ( components[ 1 ]?.Length > 0 );
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
 				if ( !isTemplateInValidFormat )
 				{
