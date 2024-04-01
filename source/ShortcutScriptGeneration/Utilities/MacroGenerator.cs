@@ -18,21 +18,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		}
 
 
-		private static string ApplyFindAndReplaceToTemplate( string templateString, Dictionary<string, string> findAndReplace, Dictionary<string, string> fields )
+		private static string ApplyEntryDataToTemplate( string templateString, Dictionary<string, string> fields )
 		{
 			var macro = templateString;
 			foreach ( var findTag in TemplateFindTags.LookUpTable )
 			{
 				macro = macro.Replace( $"{findTag}", fields[ findTag ] );
 			}
+			return macro;
+		}
+
+		private static string ApplyFindAndReplaceToTemplate( string templateString, Dictionary<string, string> findAndReplace )
+		{
+			var macro = templateString;
 			foreach ( var pair in findAndReplace )
 			{
 				macro = macro.Replace( pair.Key, pair.Value );
 			}
-			return macro
-					.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
-					.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
-					.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+			return macro;
 		}
 
 		private static string ApplyTextCaseToMacro( string macro, string textCase ) => textCase switch
@@ -80,14 +83,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				{ TemplateFindTags.Tag, identity.Tag },
 			};
 
-			var macroFindString = ApplyFindAndReplaceToTemplate( template.TemplateFindString, template.FindAndReplace, fields );
-			var macroReplaceString = ApplyFindAndReplaceToTemplate( template.TemplateReplaceString, template.FindAndReplace, fields );
+			var macroFindString = ApplyEntryDataToTemplate( template.TemplateFindString, fields );
+			macroFindString = ReplaceStandinSequencesInMacro( macroFindString );
 
-			var modifiedTemplate = new ScriptMacroTemplate();
-			modifiedTemplate.TemplateFindString = macroFindString;
-			modifiedTemplate.TemplateReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
+			var macroReplaceString = ApplyEntryDataToTemplate( template.TemplateReplaceString, fields );
+			macroReplaceString = ApplyFindAndReplaceToTemplate( macroReplaceString, template.FindAndReplace );
+			macroReplaceString = ReplaceStandinSequencesInMacro( macroReplaceString );
+			macroReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
 
+			var modifiedTemplate = new ScriptMacroTemplate()
+			{
+				TemplateFindString = macroFindString,
+				TemplateReplaceString = macroReplaceString,
+			};
 			return ConvertTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
+
+		private static string ReplaceStandinSequencesInMacro( string macro ) => macro
+			.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
+			.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
+			.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
 	}
 }
