@@ -1,0 +1,4 @@
+site_name: Petrichor User Guide
+nav:
+    - Home: index.md
+    - License: license.md
