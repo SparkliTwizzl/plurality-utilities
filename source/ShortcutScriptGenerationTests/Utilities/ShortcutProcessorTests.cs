@@ -130,14 +130,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		}
 
 
-		public ShortcutProcessor? generator;
+		public ShortcutProcessor? shortcutProcessor;
 
 
 		[TestInitialize]
 		public void Setup()
 		{
 			TestUtilities.InitializeLoggingForTests();
-			generator = new();
+			shortcutProcessor = new();
 		}
 
 
@@ -145,7 +145,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Shortcuts;
-			var input = generator!.ProcessAndStoreShortcuts( TestData.Input );
+			var input = shortcutProcessor!.ProcessAndStoreShortcuts( TestData.Input );
 			var actual = input.Shortcuts;
 
 			Log.Info( "expected:" );
