@@ -6,5 +6,6 @@ _output/
 _results/
 bin/
 obj/
+site/
 
 *.log
