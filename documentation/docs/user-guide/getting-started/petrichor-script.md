@@ -6,14 +6,14 @@ title: Petrichor Script - Getting started
 <h1 align="center">Petrichor Script</h1>
 
 
-# Syntax
+## Syntax
 
 Petrichor Script is made up of data tokens, which may be nested.
 
 Petrichor Script files use the extension `.petrichor` or `.ptcr`.
 
 ---
-## Data tokens
+### Data tokens
 
 All data in Petrichor input files is in the form of data tokens, or just "tokens".
 
@@ -22,7 +22,7 @@ Some tokens are required and some are optional.
 Some tokens can have a body containing subtokens.
 
 ---
-### Data token structure
+#### Data token structure
 
 Every token consists of a name and a value, separated by a color ( `:` ).
 
@@ -41,7 +41,7 @@ token-name:Token   value.
 ```
 
 ---
-### Token bodies
+#### Token bodies
 
 Some tokens can have a body containing subtokens.
 
@@ -64,7 +64,7 @@ parent-token-name:
 ```
 
 ---
-## Blank lines and comments
+### Blank lines and comments
 
 Blank lines are ignored.
 
@@ -82,7 +82,7 @@ token: value \// This is an escaped comment and is part of the value. // But thi
 ```
 
 ---
-## Escape characters
+### Escape characters
 
 Backslash `\` is treated as an "escape character" in some cases. It is used to disable the normal function of special characters. An escape character can be applied to another escape character in order to make the scond one print literally.
 
@@ -95,14 +95,14 @@ do-something: \\@to-this-too // Here, the escape character is escaped, so the @ 
 ```
 
 ---
-# Supported tokens
+## Supported tokens
 
 These tokens are universal to all input files.
 
 Individual modules use non-universal tokens. Consult a module's documentation to see the tokens it supports.
 
 ---
-## Metadata token
+### Metadata token
 
 (REQUIRED)
 
@@ -113,7 +113,7 @@ It must be the first token in the file regardless of what module is used.
 Its value will be ignored.
 
 ---
-### Minimum version token
+#### Minimum version token
 
 (REQUIRED)
 
@@ -134,7 +134,7 @@ minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview v
 ```
 
 ---
-### Command token
+#### Command token
 
 (OPTIONAL)
 
@@ -173,7 +173,7 @@ metadata:
 ```
 
 ---
-## Module options region
+### Module options region
 
 (OPTIONAL)
 
@@ -184,7 +184,7 @@ Each module that supports this region will have its own version of it.
 See the relevant module's documentation for more information.
 
 ---
-## Module-specific tokens
+### Module-specific tokens
 
 Modules have unique tokens that are specific to their functions.
 

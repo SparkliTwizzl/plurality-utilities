@@ -7,7 +7,7 @@ title: Command usage - Getting started
 
 
 ---
-# Commands
+## Commands
 
 Petrichor modules each have a corresponding command to trigger them.
 
@@ -15,7 +15,7 @@ These can be given as command line arguments, or they can be [put into your inpu
 
 
 ---
-## Default command
+### Default command
 
 You can run Petrichor without passing it a command if you put the command in your input file and pass the input file as an argument when you run it.
 
@@ -25,7 +25,7 @@ If no arguments are provided, you will be prompted to use the `--help` option to
 
 
 ---
-## Command options
+### Command options
 
 Commands can have their behavior modified with options.
 
@@ -33,7 +33,7 @@ Some commands have unique options.
 
 
 ---
-### Input file option
+#### Input file option
 
 (OPTIONAL)
 
@@ -76,7 +76,7 @@ Petrichor will look for `[path]\inputFile.txt`.
 
 
 ---
-### Output file option
+#### Output file option
 
 (OPTIONAL)
 
@@ -118,7 +118,7 @@ Petrichor Script:  output-file : "[path]\outputFile"
 Petrichor will generate the file `[path]\outputFile.[extension]`.
 
 ---
-### Log mode option
+#### Log mode option
 
 (OPTIONAL)
 
@@ -142,7 +142,7 @@ Petrichor Script:  log-file : [all | fileOnly | consoleOnly | none]
 ```
 
 ---
-### Log file option
+#### Log file option
 
 (OPTIONAL)
 
@@ -181,7 +181,7 @@ Petrichor will generate the file `[path]\logFile.txt`.
 
 
 ---
-# Running Petrichor via terminal
+## Running Petrichor via terminal
 
 Call the executable ( `.exe` file ) via a terminal (command prompt) to run it.
 
@@ -195,7 +195,7 @@ If you run Petrichor with no arguments, it will prompt you to use the `--help` o
 
 
 ---
-# Running Petrichor via Batch file
+## Running Petrichor via Batch file
 
 If preferred, you can create a Batch file ( `.bat` file ) to run Petrichor for you.
 
@@ -242,7 +242,7 @@ start Petrichor\Petrichor.exe [path]\inputFile.txt
 
 
 ---
-# Relative file paths
+## Relative file paths
 
 If you dont like having to get the full path for files, you can use relative paths instead.
 
@@ -266,14 +266,14 @@ PATH:
 
 ---
 
-# A note about slashes in file paths
+## A note about slashes in file paths
 
 On Windows, backslashes ( `\` ) and forward slashes ( `/` ) both work the same way. Use whichever you prefer to.
 
 **NOTE:** They are not equivalent to each other in Petrichor Script.
 
 ---
-# Adding Petrichor to Windows PATH environment variable
+## Adding Petrichor to Windows PATH environment variable
 
 In order to run Petrichor without needing to navigate to its install folder or put its full install path into the terminal, you can add its install path to the Windows PATH environment variable.
 

@@ -4,6 +4,7 @@ copyright: Copyright (c) 2024 SparkliTwizzl. Licensed under AEL-NC-AT 1.1.
 repo_url: https://github.com/sparklitwizzl/petrichor
 use_directory_urls: false
 nav:
+    - index.md
     - 'Getting started':
         - user-guide/getting-started/overview.md
         - user-guide/getting-started/petrichor-script.md
@@ -17,3 +18,14 @@ nav:
     - About:
         - about/release-notes.md
         - about/license.md
+theme:
+    name: material
+    favicon: assets/logo.png
+    logo: assets/logo.png
+    features:
+        - header.autohide
+        - search.highlight
+        - search.share
+        - search.suggest
+plugins:
+    - search
