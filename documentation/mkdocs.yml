@@ -1,10 +1,10 @@
-site_name: Petrichor User Guide
+site_name: Petrichor 0.11.0
 nav:
     - Home: index.md
     - 'User guide':
         - Overview: user-guide/overview.md
         - 'Petrichor Script': user-guide/petrichor-script.md
-        - 'Command syntax': user-guide/command-syntax.md
+        - 'Command usage': user-guide/command-usage.md
         - 'Text Shortcut Script Generation Module':
             - 'Text Shortcut Script Generation overview': user-guide/text-shortcut-script-generation-module/overview.md
             - 'Input syntax': user-guide/text-shortcut-script-generation-module/input-syntax.md

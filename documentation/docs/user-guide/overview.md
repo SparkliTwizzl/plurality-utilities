@@ -2,21 +2,20 @@
 
 Petrichor uses input files written with Petrichor Script. See [documentation](petrichor-script.md) for how to use it.
 
-
-
+---
 # Command syntax
 
 Petrichor is run from the command line. See [documentation](command-syntax.md) for how to do so.
 
 
-
+---
 # Modules
 
 Petrichor consists of modules for various utilities.
 
 Each module has unique input and command syntax following a common structure.
 
-
+---
 ## [Text Shortcut Script Generation](text-shortcut-script-generation-module/overview.md)
 
 This module allows you to generate a text shortcut script (aka "find and replace" script) with a Petrichor input file.
