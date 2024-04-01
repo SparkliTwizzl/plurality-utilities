@@ -3,7 +3,8 @@ short_title: Overview
 title: Overview - Text Shortcut Script Generation module
 ---
 
-<h1 align="center">Text Shortcut Script Generation module</h1>
+<h1 align="center">Overview</h1>
+<h2 align="center">Text Shortcut Script Generation module</h2>
 
 # Purpose
 
@@ -19,13 +20,13 @@ The main benefit is to reduce typing without needing to rely on copy-and-pasting
 
 The scripts that this module generates are AutoHotkey v2 scripts. In order to run them, you will need to install [AutoHotkey](https://www.autohotkey.com).
 
-# Input syntax
+# Petrichor Script
 
 See [documentation](petrichor-script.md) for Petrichor Script input syntax.
 
 # Command usage
 
-See [documentation](command.md) for command syntax and usage.
+See [documentation](command-usage.md) for command syntax and usage.
 
 # Running output scripts
 

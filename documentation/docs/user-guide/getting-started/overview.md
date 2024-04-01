@@ -23,7 +23,7 @@ Petrichor consists of modules for various utilities.
 Each module has unique input and command syntax following a common structure.
 
 ---
-## [Text Shortcut Script Generation](text-shortcut-script-generation-module/overview.md)
+## [Text Shortcut Script Generation](../modules/text-shortcut-script-generation/overview.md)
 
 This module allows you to generate a text shortcut script (aka "find and replace" script) with a Petrichor Script input file.
 

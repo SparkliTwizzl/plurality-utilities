@@ -8,11 +8,12 @@ nav:
         - user-guide/getting-started/overview.md
         - user-guide/getting-started/petrichor-script.md
         - user-guide/getting-started/command-usage.md
-    - 'Text Shortcut Script Generation module':
-        - user-guide/text-shortcut-script-generation-module/overview.md
-        - user-guide/text-shortcut-script-generation-module/petrichor-script.md
-        - user-guide/text-shortcut-script-generation-module/command.md
-        - user-guide/text-shortcut-script-generation-module/running-output-scripts.md
+    - Modules:
+        - 'Text Shortcut Script Generation module':
+            - user-guide/modules/text-shortcut-script-generation/overview.md
+            - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
+            - user-guide/modules/text-shortcut-script-generation/command.md
+            - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
     - About:
         - about/release-notes.md
         - about/license.md
