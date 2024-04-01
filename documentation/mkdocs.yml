@@ -1,4 +1,14 @@
 site_name: Petrichor User Guide
 nav:
     - Home: index.md
-    - License: license.md
+    - 'User guide':
+        - Overview: user-guide/overview.md
+        - 'Petrichor Script': user-guide/petrichor-script.md
+        - 'Command syntax': user-guide/command-syntax.md
+        - 'Text Shortcut Script Generation Module':
+            - 'Text Shortcut Script Generation overview': user-guide/text-shortcut-script-generation-module/overview.md
+            - 'Input syntax': user-guide/text-shortcut-script-generation-module/input-syntax.md
+            - 'Command syntax': user-guide/text-shortcut-script-generation-module/command-syntax.md
+            - 'Running output scripts': user-guide/text-shortcut-script-generation-module/running-output-scripts.md
+    - About:
+        - License: about/license.md
