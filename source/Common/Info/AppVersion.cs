@@ -34,6 +34,8 @@ namespace Petrichor.Common.Info
 		public static string[] SupportedPatchVersions => new[]
 		{
 			Patch,
+			"0",
+			"1",
 			AnyVersion,
 		};
 		public static string[] SupportedPreviewVersions => new[]
