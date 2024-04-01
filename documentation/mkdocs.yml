@@ -11,4 +11,5 @@ nav:
             - 'Command syntax': user-guide/text-shortcut-script-generation-module/command-syntax.md
             - 'Running output scripts': user-guide/text-shortcut-script-generation-module/running-output-scripts.md
     - About:
+        - 'Release notes': about/release-notes.md
         - License: about/license.md
