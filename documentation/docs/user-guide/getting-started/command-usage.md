@@ -4,6 +4,7 @@ title: Command usage - Getting started
 ---
 
 <h1 align="center">Command usage</h1>
+<h2 align="center"><a href="./index.html">Getting started</a></h2>
 
 
 ---

@@ -4,7 +4,7 @@ title: Running output scripts - Text Shortcut Script Generation module
 ---
 
 <h1 align="center">Running output scripts</h1>
-<h2 align="center"><a href="./overview.html">Text Shortcut Script Generation module</a></h2>
+<h2 align="center"><a href="./index.html">Text Shortcut Script Generation module</a></h2>
 
 
 ---

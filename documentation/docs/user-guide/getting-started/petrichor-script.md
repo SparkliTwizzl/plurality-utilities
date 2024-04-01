@@ -4,6 +4,7 @@ title: Petrichor Script - Getting started
 ---
 
 <h1 align="center">Petrichor Script</h1>
+<h2 align="center"><a href="./index.html">Getting started</a></h2>
 
 
 ## Syntax
