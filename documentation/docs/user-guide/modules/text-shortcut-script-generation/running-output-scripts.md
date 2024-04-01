@@ -47,14 +47,19 @@ Once you've done these steps, you can run the `.bat` file by double clicking it.
 	- example batch file.bat
 	- inputFile.txt
 ```
-```batch title="example batch file.bat (Command in command line arguments)"
-start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
-start outputFile.ahk
-```
-```batch title="example batch file.bat (Command in input file)"
-start /wait Petrichor\Petrichor.exe ..\inputFile.txt
-start outputFile.ahk
-```
+=== "Command in command line arguments"
+
+	```batch title="example batch file.bat"
+	start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
+	start outputFile.ahk
+	```
+
+=== "Command in input file"
+
+	```batch title="example batch file.bat"
+	start /wait Petrichor\Petrichor.exe ..\inputFile.txt
+	start outputFile.ahk
+	```
 
 ---
 ## Launching scripts automatically on startup

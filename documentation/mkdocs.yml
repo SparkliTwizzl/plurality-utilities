@@ -18,6 +18,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 extra:
   social:
@@ -51,6 +53,7 @@ theme:
     repo: fontawesome/brands/github
 
   features:
+    - content.tabs.link
     - header.autohide
     - navigation.indexes
     - navigation.tabs

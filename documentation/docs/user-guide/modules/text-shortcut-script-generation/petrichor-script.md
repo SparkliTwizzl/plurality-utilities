@@ -233,33 +233,66 @@ Allowed values:
 - firstCaps (First Capitals Case)
 
 **Example:**
-```petrichor title="Input file"
-shortcut-list:
-{
-    shortcut-template: [hotstring] :: [replacement STRING]
-    {
-        text-case: unchanged
-    }
-    shortcut-template: [hotstring] :: [replacement STRING]
-    {
-        text-case: upper
-    }
-    shortcut-template: [hotstring] :: [replacement STRING]
-    {
-        text-case: lower
-    }
-    shortcut-template: [hotstring] :: [replacement STRING]
-    {
-        text-case: firstCaps
-    }
-}
-```
-```txt title="Shortcuts generated from input"
-::[hotstring]::[replacement STRING]
-::[hotstring]::[REPLACEMENT STRING]
-::[hotstring]::[replacement string]
-::[hotstring]::[Replacement String]
-```
+
+=== "unchanged"
+
+	```petrichor title="Input file"
+	shortcut-list:
+	{
+		shortcut-template: [hotstring] :: [replacement STRING]
+		{
+			text-case: unchanged
+		}
+	}
+	```
+	```txt title="Shortcuts generated from input"
+	::[hotstring]::[replacement STRING]
+	```
+
+=== "upper"
+
+	```petrichor title="Input file"
+	shortcut-list:
+	{
+		shortcut-template: [hotstring] :: [replacement STRING]
+		{
+			text-case: upper
+		}
+	}
+	```
+	```txt title="Shortcuts generated from input"
+	::[hotstring]::[REPLACEMENT STRING]
+	```
+
+=== "lower"
+
+	```petrichor title="Input file"
+	shortcut-list:
+	{
+		shortcut-template: [hotstring] :: [replacement STRING]
+		{
+			text-case: lower
+		}
+	}
+	```
+	```txt title="Shortcuts generated from input"
+	::[hotstring]::[replacement string]
+	```
+
+=== "firstCaps"
+
+	```petrichor title="Input file"
+	shortcut-list:
+	{
+		shortcut-template: [hotstring] :: [replacement STRING]
+		{
+			text-case: firstCaps
+		}
+	}
+	```
+	```txt title="Shortcuts generated from input"
+	::[hotstring]::[Replacement String]
+	```
 
 
 ---
