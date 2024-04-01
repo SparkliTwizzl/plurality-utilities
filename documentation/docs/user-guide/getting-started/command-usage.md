@@ -240,50 +240,6 @@ IN FILE `example batch file.bat`:
 start Petrichor\Petrichor.exe [path]\inputFile.txt
 ```
 
-You can make a batch script wait for Petrichor to finish running and launch the output script automatically.
-
-1. Create a batch script using the steps above.
-2. After the `start` keyword, add `/wait`. This will cause the batch script to wait until Petrichor is closed before continuing.
-3. Add a new line to the batch script, and enter `start [path/script.ahk]`.
-4. Save the batch file.
-
-Once you've done these steps, you can run the `.bat` file by double clicking it. Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set, wait until it closes, then launch the output script.
-
-**NOTE:** If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
-
-**Example (Command in command line arguments):**
-
-FOLDER CONTENTS:
-```
-- parent\
-	- Petrichor\
-		- Petrichor.exe
-	- example batch file.bat
-	- inputFile.txt
-```
-IN FILE `example batch file.bat`:
-```batch
-start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
-start outputFile.ahk
-```
-
-**Example (Command in input file):**
-
-FOLDER CONTENTS:
-```
-- parent\
-	- Petrichor\
-		- Petrichor.exe
-	- example batch file.bat
-	- inputFile.txt
-	- outputFile.ahk (will be generated after running)
-```
-IN FILE `example batch file.bat`:
-```batch
-start /wait Petrichor\Petrichor.exe ..\inputFile.txt
-start outputFile.ahk
-```
-
 
 ---
 # Relative file paths

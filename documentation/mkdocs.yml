@@ -12,7 +12,7 @@ nav:
         - 'Text Shortcut Script Generation module':
             - user-guide/modules/text-shortcut-script-generation/overview.md
             - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
-            - user-guide/modules/text-shortcut-script-generation/command.md
+            - user-guide/modules/text-shortcut-script-generation/command-usage.md
             - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
     - About:
         - about/release-notes.md
