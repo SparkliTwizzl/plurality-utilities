@@ -22,3 +22,5 @@ Petrichor is run from the command line. See [documentation](command-usage.md) fo
 Petrichor consists of modules for various utilities.
 
 Each module has unique input and command syntax following a common structure.
+
+See [documentation](../modules/index.md) for more information.

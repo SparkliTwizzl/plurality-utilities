@@ -28,6 +28,7 @@ extra:
 
 plugins:
   - mike:
+  - offline:
   - search:
 
 theme:
