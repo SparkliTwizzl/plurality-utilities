@@ -139,7 +139,7 @@ minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview v
 
 (OPTIONAL)
 
-The `command` token allows you to specify the [command to run](command-syntax.md) in your input file, and Petrichor will handle it automatically when run with the input file.
+The `command` token allows you to specify the [command to run](command-usage.md) in your input file, and Petrichor will handle it automatically when run with the input file.
 
 Set the token's value to the name of the command to be run.
 

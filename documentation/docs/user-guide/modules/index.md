@@ -6,7 +6,7 @@ title: Modules
 <h1 align="center"><a href="../getting-started/index.html#modules">Modules</a></h1>
 
 ---
-## [Text Shortcut Script Generation](../modules/text-shortcut-script-generation/overview.md)
+## [Text Shortcut Script Generation](../modules/text-shortcut-script-generation/index.md)
 
 This module allows you to generate a text shortcut script (aka "find and replace" script) with a Petrichor Script input file.
 
