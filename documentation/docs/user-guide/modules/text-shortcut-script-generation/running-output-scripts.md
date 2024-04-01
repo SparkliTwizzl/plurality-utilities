@@ -70,3 +70,52 @@ IN FILE `example batch file.bat`:
 start /wait Petrichor\Petrichor.exe ..\inputFile.txt
 start outputFile.ahk
 ```
+
+---
+## Launching scripts automatically on startup
+
+There are a few options to launch scripts automatically when Windows logs in.
+
+---
+### Windows Startup shortcut
+
+(RECOMMENDED)
+
+This is the simplest method.
+
+It is not totally reliable, but it works the majority of the time.
+
+1. Right-click the script in File Explorer.
+2. Click `Create shortcut` in the dropdown menu.
+3. Press `Win+R` to open the Windows Run dialog.
+4. Type `shell:startup` into the dialog, then click OK.
+5. The Startup folder will open. Copy the shortcut you created in step 2 into it.
+
+---
+### Task Scheduler
+
+This method is be less reliable than the Windows Startup method, but it does work more often than not.
+
+It is kind of a pain to set up.
+
+Using the Windows Startup method is recommended over this one, unless that method doesnt work for you.
+
+Follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-windows-startup/) to set it up.
+
+---
+### Registry
+
+(NOT RECOMMENDED)
+
+**DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING.**
+
+**Editing the registry can brick your computer if you're not careful.**
+
+It is strongly reecommended to use one of the other methods above, unless all of them dont work for you.
+
+1. Open the Registry Editor. There are two days to do this:
+    - Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
+    - Open the Start menu and search for either `regedit` or `Registry Editor`.
+2. Navigate to `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`.
+3. Add a new String key. Name it however you prefer.
+4. Edit the value of the new string key and put in `"@:\path\to\autohotkey\version\file.exe" "@:\path\to\script\file.ahk"`, using the filepaths of your AutoHotkey installation and your script file.

@@ -5,6 +5,11 @@ repo_url: https://github.com/sparklitwizzl/petrichor
 repo_name: sparklitwizzl/petrichor
 use_directory_urls: false
 
+plugins:
+  - mike:
+  - offline:
+  - search:
+
 extra:
   social:
     - icon: fontawesome/brands/discord
@@ -25,11 +30,6 @@ extra:
 
   version:
     provider: mike
-
-plugins:
-  - mike:
-  - offline:
-  - search:
 
 theme:
   name: material
@@ -68,7 +68,7 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: brown
+      primary: grey
       accent: indigo
       toggle:
         icon: material/lightbulb
@@ -77,7 +77,7 @@ theme:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: brown
+      primary: grey
       accent: light blue
       toggle:
         icon: material/lightbulb-outline
@@ -91,7 +91,7 @@ nav:
     - user-guide/getting-started/petrichor-script.md
     - user-guide/getting-started/command-usage.md
 
-  - Modules:
+  - 'Modules':
     - user-guide/modules/index.md
 
     - 'Text Shortcut Script Generation':
@@ -100,6 +100,6 @@ nav:
       - user-guide/modules/text-shortcut-script-generation/command-usage.md
       - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
 
-  - About:
+  - 'About':
     - about/release-notes.md
     - about/license.md
