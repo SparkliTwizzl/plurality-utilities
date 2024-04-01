@@ -1,3 +1,8 @@
+---
+short_title: Command usage
+title: Command usage - Getting started
+---
+
 <h1 align="center">Command usage</h1>
 
 
@@ -281,7 +286,7 @@ start outputFile.ahk
 
 
 ---
-## Relative file paths
+# Relative file paths
 
 If you dont like having to get the full path for files, you can use relative paths instead.
 
@@ -305,14 +310,14 @@ PATH:
 
 ---
 
-## A note about slashes in file paths
+# A note about slashes in file paths
 
 On Windows, backslashes ( `\` ) and forward slashes ( `/` ) both work the same way. Use whichever you prefer to.
 
 **NOTE:** They are not equivalent to each other in Petrichor Script.
 
 ---
-## Adding Petrichor to Windows PATH environment variable
+# Adding Petrichor to Windows PATH environment variable
 
 In order to run Petrichor without needing to navigate to its install folder or put its full install path into the terminal, you can add its install path to the Windows PATH environment variable.
 

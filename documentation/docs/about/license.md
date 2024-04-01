@@ -1,3 +1,8 @@
+---
+short_title: License
+title: License
+---
+
 <h1 align="center">Petrichor</h1>
 <h3 align="center">Copyright (c) 2024 SparkliTwizzl</h3>
 

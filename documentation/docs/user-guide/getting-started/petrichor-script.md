@@ -1,3 +1,8 @@
+---
+short_title: Petrichor Script
+title: Petrichor Script - Getting started
+---
+
 <h1 align="center">Petrichor Script</h1>
 
 

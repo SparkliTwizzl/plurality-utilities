@@ -1,15 +1,18 @@
 site_name: Petrichor 0.11.0
+site_author: SparkliTwizzl
+copyright: Copyright (c) 2024 SparkliTwizzl. Licensed under AEL-NC-AT 1.1.
+repo_url: https://github.com/sparklitwizzl/petrichor
+use_directory_urls: false
 nav:
-    - Home: index.md
-    - 'User guide':
-        - Overview: user-guide/overview.md
-        - 'Petrichor Script': user-guide/petrichor-script.md
-        - 'Command usage': user-guide/command-usage.md
-        - 'Text Shortcut Script Generation Module':
-            - 'Text Shortcut Script Generation overview': user-guide/text-shortcut-script-generation-module/overview.md
-            - 'Input syntax': user-guide/text-shortcut-script-generation-module/input-syntax.md
-            - 'Command syntax': user-guide/text-shortcut-script-generation-module/command-syntax.md
-            - 'Running output scripts': user-guide/text-shortcut-script-generation-module/running-output-scripts.md
+    - 'Getting started':
+        - user-guide/getting-started/overview.md
+        - user-guide/getting-started/petrichor-script.md
+        - user-guide/getting-started/command-usage.md
+    - 'Text Shortcut Script Generation module':
+        - user-guide/text-shortcut-script-generation-module/overview.md
+        - user-guide/text-shortcut-script-generation-module/petrichor-script.md
+        - user-guide/text-shortcut-script-generation-module/command.md
+        - user-guide/text-shortcut-script-generation-module/running-output-scripts.md
     - About:
-        - 'Release notes': about/release-notes.md
-        - License: about/license.md
+        - about/release-notes.md
+        - about/license.md
