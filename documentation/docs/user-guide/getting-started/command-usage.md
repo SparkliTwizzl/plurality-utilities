@@ -54,26 +54,28 @@ If you only provide the directory, `input.petrichor` will be used as the file na
 
 If you only provide the file name, `[install path]\Petrichor\` will be used as the directory.
 
-**Example (File name only, default directory):**
-```txt
+**Examples:**
+
+```txt title="File name only, default directory"
 Command line:      Petrichor.exe commandName --inputFile "inputFile.txt"
 Petrichor Script:  input-file : "inputFile.txt"
-```
-Petrichor will look for `[install path]\Petrichor\inputFile.txt`.
 
-**Example (Directory only, default file name):**
-```txt
+Petrichor will look for "[install path]\Petrichor\inputFile.txt".
+```
+
+```txt title="Directory only, default file name"
 Command line:      Petrichor.exe commandName --inputFile "[path]\"
 Petrichor Script:  input-file : "[path]\"
-```
-Petrichor will look for `[path]\input.petrichor`.
 
-**Example (Full file path):**
-```txt
+Petrichor will look for "[path]\input.petrichor".
+```
+
+```txt  title="Full file path"
 Command line:      Petrichor.exe commandName --inputFile "[path]\inputFile.txt"
 Petrichor Script:  input-file : "[path]\inputFile.txt"
+
+Petrichor will look for "[path]\inputFile.txt".
 ```
-Petrichor will look for `[path]\inputFile.txt`.
 
 
 ---
@@ -97,26 +99,28 @@ If you only provide the directory, `output.[extension]` will be used as the file
 
 If you only provide the file name, `[install path]\Petrichor\_output\` will be used as the directory.
 
-**Example (File name only, default directory):**
-```txt
+**Examples:**
+
+```txt title="File name only, default directory"
 Command line:      Petrichor.exe commandName --outputFile "outputFile"
 Petrichor Script:  output-file : "outputFile"
-```
-Petrichor will generate the file `[install path]\Petrichor\_output\outputFile.[extension]`.
 
-**Example (Directory only, default file name):**
-```txt
+Petrichor will generate the file "[install path]\Petrichor\_output\outputFile.[extension]".
+```
+
+```txt title="Directory only, default file name"
 Command line:      Petrichor.exe commandName --outputFile "[path]\output\"
 Petrichor Script:  output-file : "[path]\output\"
-```
-Petrichor will generate the file `[path]\output\output.[extension]`.
 
-**Example (Full file path):**
-```txt
+Petrichor will generate the file "[path]\output\output.[extension]".
+```
+
+```txt title="Full file path"
 Command line:      Petrichor.exe commandName --outputFile "[path]\outputFile"
 Petrichor Script:  output-file : "[path]\outputFile"
+
+Petrichor will generate the file "[path]\outputFile.[extension]".
 ```
-Petrichor will generate the file `[path]\outputFile.[extension]`.
 
 ---
 #### Log mode option
@@ -159,26 +163,27 @@ A file extension is not required and will be overridden if specified.
 
 **NOTE:** Log file will only be created if logging to file is enabled.
 
-**Example (File name only, default directory):**
-```txt
+**Examples:**
+```txt title="File name only, default directory"
 Command line:      Petrichor.exe comandName --logFile "logFile.txt"
 Petrichor Script:  log-file : "logFile.txt"
-```
-Petrichor will generate the file `[install path]\_log\logFile.txt`.
 
-**Example (Directory only, default file name):**
-```txt
+Petrichor will generate the file "[install path]\_log\logFile.txt".
+```
+
+```txt title="Directory only, default file name"
 Command line:      Petrichor.exe commandName --logFile "[path]/"
 Petrichor Script:  log-file : [path]/"
-```
-Petrichor will generate the file `[path]\[default log file name].log`.
 
-**Example: (Full file path):**
-```txt
+Petrichor will generate the file "[path]\[default log file name].log".
+```
+
+```txt title="Full file path"
 Command line:      Petrichor.exe commandName --logFile "[path]\logFile.txt"
 Petrichor Script:  log-file : "[path]/logFile.txt"
+
+Petrichor will generate the file "[path]\logFile.txt".
 ```
-Petrichor will generate the file `[path]\logFile.txt`.
 
 
 ---
@@ -211,33 +216,19 @@ Once you've done these steps, you can run the `.bat` file by double clicking it.
 
 Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set.
 
-**Example (Command in command line arguments):**
+**Examples:**
 
-FOLDER CONTENTS:
-```
+```txt title="Folder contents"
 - parent\
 	- Petrichor\
 		- Petrichor.exe
 	- example batch file.bat
 	- inputFile.txt
 ```
-IN FILE `example batch file.bat`:
-```batch
+```batch title="example batch file.bat (Command in command line arguments)"
 start Petrichor\Petrichor.exe commandName --inputFile [path]\inputFile.txt
 ```
-
-**Example (Command in input file):**
-
-FOLDER CONTENTS:
-```
-- parent\
-	- Petrichor\
-		- Petrichor.exe
-	- example batch file.bat
-	- inputFile.txt
-```
-IN FILE `example batch file.bat`:
-```batch
+```batch title="example batch file.bat (Command in input file)"
 start Petrichor\Petrichor.exe [path]\inputFile.txt
 ```
 
@@ -251,16 +242,14 @@ If you dont like having to get the full path for files, you can use relative pat
 
 **Example:**
 
-FOLDER CONTENTS:
-```
+```txt title="Folder contents"
 - folder/
 	- subfolder/
 		- you are here.txt
 		- example a.txt
 	- example b.txt
 ```
-PATH:
-```
+```txt title="Relative paths and equivalent absolute paths"
 "./example a.txt" -> "folder\subfolder\example a.txt"
 "../example b.txt" -> "folder\example b.txt"
 ```

@@ -38,35 +38,20 @@ Once you've done these steps, you can run the `.bat` file by double clicking it.
 
 **NOTE:** If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
 
-**Example (Command in command line arguments):**
+**Example:**
 
-FOLDER CONTENTS:
-```
+``` title="Folder contents"
 - parent\
 	- Petrichor\
 		- Petrichor.exe
 	- example batch file.bat
 	- inputFile.txt
 ```
-IN FILE `example batch file.bat`:
-```batch
+```batch title="example batch file.bat (Command in command line arguments)"
 start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
 start outputFile.ahk
 ```
-
-**Example (Command in input file):**
-
-FOLDER CONTENTS:
-```
-- parent\
-	- Petrichor\
-		- Petrichor.exe
-	- example batch file.bat
-	- inputFile.txt
-	- outputFile.ahk (will be generated after running)
-```
-IN FILE `example batch file.bat`:
-```batch
+```batch title="example batch file.bat (Command in input file)"
 start /wait Petrichor\Petrichor.exe ..\inputFile.txt
 start outputFile.ahk
 ```

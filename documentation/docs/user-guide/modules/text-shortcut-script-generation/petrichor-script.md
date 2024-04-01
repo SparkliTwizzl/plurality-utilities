@@ -130,15 +130,13 @@ Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `:
 These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks `` ` ``.
 
 **Example:**
-```petrichor
+```petrichor title="Input file"
 shortcut-list:
 {
     shortcut: [hotstring] :: ` [replacement string] `
 }
 ```
-
-SHORTCUTS GENERATED FROM INPUT:
-```txt
+```txt title="Shortcuts generated from input"
 ::[hotstring]::` [replacement string] ` // This is a standard shortcut. The [hotstring] and [replacement string] will be inserted into the output file unaltered.
 ```
 
@@ -173,15 +171,13 @@ If no subtokens are used, this token does not need a body.
 
 **Example:**
 
-```petrichor
+```petrichor title="Input file"
 shortcut-list:
 {
     shortcut-template: [tag] [last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
 }
 ```
-
-SHORTCUTS GENERATED FROM INPUT:
-```txt
+```txt title="Shortcuts generated from input"
 ::sm smt::1234 - Sam Smith (they/them) | {a person} | #123456
 ::jo brn::5678 - Joe Brown (they/them) | {another person person} | #789abc
 ```
@@ -207,7 +203,7 @@ The lists cannot contain blank items, and they must contain the same number of i
 `find` tokens can be present without a matching `replace` token. This will cause all the `find` keys to be simply removed from a template.
 
 **Example:**
-```petrichor
+```petrichor title="Input file"
 shortcut-list:
 {
     shortcut-template: [hotstring] :: [replacement string] custom find 1, custom find 2
@@ -217,9 +213,7 @@ shortcut-list:
     }
 }
 ```
-
-SHORTCUTS GENERATED FROM INPUT:
-```txt
+```txt title="Shortcuts generated from input"
 ::[hotstring]::[replacement string] replace 1, replace 2 // If the `find` keys are present in `[field]` values within the [replacement string], they will be replaced there as well.
 ```
 
@@ -239,7 +233,7 @@ Allowed values:
 - firstCaps (First Capitals Case)
 
 **Example:**
-```petrichor
+```petrichor title="Input file"
 shortcut-list:
 {
     shortcut-template: [hotstring] :: [replacement STRING]
@@ -260,9 +254,7 @@ shortcut-list:
     }
 }
 ```
-
-SHORTCUTS GENERATED FROM INPUT:
-```txt
+```txt title="Shortcuts generated from input"
 ::[hotstring]::[replacement STRING]
 ::[hotstring]::[REPLACEMENT STRING]
 ::[hotstring]::[replacement string]

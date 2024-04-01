@@ -22,13 +22,10 @@ This command supports the following options:
 
 **Example:**
 
-Command line:
-```powershell
+```powershell title="Command line"
 [install path]\Petrichor> Petrichor.exe generateTextShortcutScript --inputFile [file] --outputFile [file] --logMode [mode] --logFile [file]
 ```
-
-Petrichor Script:
-```petrichor
+```petrichor title="Petrichor Script"
 metadata:
 {
 	command: generateTextShortcutScript
