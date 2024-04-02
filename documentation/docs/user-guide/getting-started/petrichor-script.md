@@ -33,13 +33,13 @@ Whitespace within these parts matters, however.
 
 Token names are always in `lower-kebab-case`.
 
-**Example (The first two tokens are identical to Petrichor, the third is different.):**
+???+ example
 
-```petrichor
- token-name : Token value. 
-token-name:Token value.
-token-name:Token   value.
-```
+	```petrichor title="The first two tokens are identical to Petrichor, the third is different."
+	 token-name : Token value. 
+	token-name:Token value.
+	token-name:Token   value.
+	```
 
 ---
 #### Token bodies
@@ -52,17 +52,17 @@ Tokens within a token body can also have bodies.
 
 The contents of the token's body can be indented for readability if desired, but it is not required.
 
-**Example:**
+???+ example
 
-```petrichor
-parent-token-name:
-{
-	child-token-1-name: Value.
+	```petrichor
+	parent-token-name:
 	{
-		child-token-2-name: Value.
+		child-token-1-name: Value.
+		{
+			child-token-2-name: Value.
+		}
 	}
-}
-```
+	```
 
 ---
 ### Blank lines and comments
@@ -73,27 +73,27 @@ The sequence `//` starts a comment which continues to the end of the line and wi
 
 Comments can be [escaped](#escape-characters) to make Petrichor treat them as regular text.
 
-**Example:**
+???+ example
 
-```petrichor
-// This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
+	```petrichor
+	// This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
 
-token: value // This is an inline comment. Everything after "//" will be ignored.
-token: value \// This is an escaped comment and is part of the value. // But this is a non-escaped comment and will be ignored.
-```
+	token: value // This is an inline comment. Everything after "//" will be ignored.
+	token: value \// This is an escaped comment and is part of the value. // But this is a non-escaped comment and will be ignored.
+	```
 
 ---
 ### Escape characters
 
 Backslash `\` is treated as an "escape character" in some cases. It is used to disable the normal function of special characters. An escape character can be applied to another escape character in order to make the scond one print literally.
 
-**Example:**
+???+ example
 
-```petrichor
-do-something: @to-this // This example token treats @ as a special character and performs operations on it.
-do-something: \@but-not-to-this // In this case, the @ will be treated as literal text and no operations will be performed on it.
-do-something: \\@to-this-too // Here, the escape character is escaped, so the @ is not escaped and will be treated as a special character.
-```
+	```petrichor
+	do-something: @to-this // This example token treats @ as a special character and performs operations on it.
+	do-something: \@but-not-to-this // In this case, the @ will be treated as literal text and no operations will be performed on it.
+	do-something: \\@to-this-too // Here, the escape character is escaped. The @ is not escaped and will be treated as a special character.
+	```
 
 ---
 ## Supported tokens
@@ -126,13 +126,13 @@ Major and minor version must be specified.
 
 If patch or patch and preview versions are blank, they are assumed to be any version.
 
-**Example:**
+???+ example
 
-```petrichor
-minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
-minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
-minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
-```
+	```petrichor
+	minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
+	minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
+	minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
+	```
 
 ---
 #### Command token
@@ -145,44 +145,44 @@ Set the token's value to the name of the command to be run.
 
 To use command options, add a body to the token and put subtokens into it, converting the command options' names to `kebab-case` and setting the tokens' values to the command option values.
 
-**Example:**
+???+ example
 
-```petrichor
-metadata:
-{
-	minimum-version: [version number]
-	command: commandName
+	```petrichor title="Input"
+	metadata:
 	{
-		command-option-1: value1
-		command-option-2: value2
+		minimum-version: [version number]
+		command: commandName
+		{
+			command-option-1: value1
+			command-option-2: value2
+		}
 	}
-}
-```
-```powershell
-[install path]\Petrichor> Petrichor.exe input.txt
-```
+	```
+	```powershell title="Command line"
+	[install path]\Petrichor> Petrichor.exe input.txt
+	```
 
-This is equivalent to the following:
-```petrichor
-metadata:
-{
-	minimum-version: [version number]
-}
-```
-```powershell
-[install path]\Petrichor> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
-```
+	This is equivalent to the following:
+	```petrichor title="Input"
+	metadata:
+	{
+		minimum-version: [version number]
+	}
+	```
+	```powershell title="Command line"
+	[install path]\Petrichor> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
+	```
 
 ---
 ### Module options region
 
 (OPTIONAL)
 
-The optional `module-options` token allows you to configure module-specific options, if supported by a module.
+The `module-options` token allows you to configure module-specific options, if supported by a module.
 
-Each module that supports this region will have its own version of it.
+!!! note
 
-See the relevant module's documentation for more information.
+	Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
 
 ---
 ### Module-specific tokens

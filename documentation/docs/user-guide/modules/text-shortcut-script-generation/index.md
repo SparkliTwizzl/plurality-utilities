@@ -24,7 +24,7 @@ See [documentation](petrichor-script.md) for Petrichor Script input syntax.
 
 See [documentation](command-usage.md) for command syntax and usage.
 
---
+---
 ## Running output scripts
 
 See [documentation](running-output-scripts.md) for running text shortcut scripts.

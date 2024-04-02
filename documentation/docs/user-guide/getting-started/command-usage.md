@@ -354,7 +354,7 @@ If you dont like having to get the full path for files, you can use relative pat
 
 ## A note about slashes in file paths
 
-On Windows, backslashes ( `\` ) and forward slashes ( `/` ) both work the same way. Use whichever you prefer to.
+On Windows, backslashes ( `\` ) and forward slashes ( `/` ) both work the same way in file paths. Use whichever you prefer to.
 
 !!! warning
 
