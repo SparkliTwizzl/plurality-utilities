@@ -20,25 +20,25 @@ This command supports the following options:
 - [Log file](../../getting-started/command-usage.html#log-file-option)
 
 
-**Example:**
+???+ example
 
-=== "Command line"
+	=== "Command line"
 
-	```powershell
-	[install path]\Petrichor> Petrichor.exe generateTextShortcutScript --inputFile [file] --outputFile [file] --logMode [mode] --logFile [file]
-	```
+		```powershell
+		[install path]> Petrichor.exe generateTextShortcutScript --inputFile [file] --outputFile [file] --logMode [mode] --logFile [file]
+		```
 
-=== "Petrichor Script"
+	=== "Petrichor Script"
 
-	```petrichor
-	metadata:
-	{
-		command: generateTextShortcutScript
+		```petrichor
+		metadata:
 		{
-			// input-file: implict
-			output-file: [file]
-			log-mode: [mode]
-			log-file: [file]
+			command: generateTextShortcutScript
+			{
+				// input-file: implict
+				output-file: [file]
+				log-mode: [mode]
+				log-file: [file]
+			}
 		}
-	}
-	```
+		```

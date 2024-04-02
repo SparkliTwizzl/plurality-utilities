@@ -36,23 +36,25 @@ Some commands have unique options.
 ---
 #### Input file option
 
-(OPTIONAL)
-
 Command line syntax: `--inputFile [argument]`
 
 Petrichor Script syntax: `input-file : [argument]`
 
 The `input file` option allows you to specify the input file directory and/or name.
 
-If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
-
-You must include the file extension if you provide a file name.
-
 [Relative file paths](#relative-file-paths) can be used.
 
 If you only provide the directory, `input.petrichor` will be used as the file name.
 
-If you only provide the file name, `[install path]\Petrichor\` will be used as the directory.
+If you only provide the file name, `[install path]\` will be used as the directory.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+
+	You must include the file extension if you provide a file name.
 
 ???+ example
 
@@ -63,7 +65,7 @@ If you only provide the file name, `[install path]\Petrichor\` will be used as t
 			```txt
 			Petrichor.exe commandName --inputFile "inputFile.txt"
 			```
-			Petrichor will look for "[install path]\Petrichor\inputFile.txt".
+			Petrichor will look for "[install path]\inputFile.txt".
 
 		=== "Directory only, default file name"
 
@@ -86,7 +88,7 @@ If you only provide the file name, `[install path]\Petrichor\` will be used as t
 			```txt
 			input-file : "inputFile.txt"
 			```
-			Petrichor will look for "[install path]\Petrichor\inputFile.txt".
+			Petrichor will look for "[install path]\inputFile.txt".
 
 		=== "Directory only, default file name"
 
@@ -106,23 +108,26 @@ If you only provide the file name, `[install path]\Petrichor\` will be used as t
 ---
 #### Output file option
 
-(OPTIONAL)
-
 Command line syntax: `--outputFile [argument]`
 
 Petrichor script syntax: `output-file : [argument]`
 
-The `output file` option the output file directory and/or name for commands which generate files.
-
-If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
-
-A file extension may or may not be required. In some cases it may be overridden by a module.
+The `output file` option allows you to specify the output file directory and/or name for commands which generate files.
 
 [Relative file paths](#relative-file-paths) can be used.
 
 If you only provide the directory, `output.[extension]` will be used as the file name.
 
-If you only provide the file name, `[install path]\Petrichor\_output\` will be used as the directory.
+If you only provide the file name, `[install path]\_output\` will be used as the directory.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+
+	A file extension may or may not be required. In some cases it may be overridden by a module.
+
 
 ???+ example
 
@@ -133,7 +138,7 @@ If you only provide the file name, `[install path]\Petrichor\_output\` will be u
 			```txt
 			Petrichor.exe commandName --outputFile "outputFile"
 			```
-			Petrichor will generate the file "[install path]\Petrichor\_output\outputFile.[extension]".
+			Petrichor will generate the file "[install path]\_output\outputFile.[extension]".
 
 		=== "Directory only, default file name"
 
@@ -156,7 +161,7 @@ If you only provide the file name, `[install path]\Petrichor\_output\` will be u
 			```txt
 			output-file : "outputFile"
 			```
-			Petrichor will generate the file "[install path]\Petrichor\_output\outputFile.[extension]".
+			Petrichor will generate the file "[install path]\_output\outputFile.[extension]".
 
 		=== "Directory only, default file name"
 
@@ -176,8 +181,6 @@ If you only provide the file name, `[install path]\Petrichor\_output\` will be u
 ---
 #### Log mode option
 
-(OPTIONAL)
-
 Command line syntax: `--logMode [argument]`
 
 Petrichor Script syntax: `log-mode : [argument]`
@@ -190,6 +193,10 @@ Allowed values:
 - `fileOnly` - Send logs only to log file.
 - `consoleOnly` - Send logs only to console output.
 - `none` - Disable logging.
+
+???+ important "Restrictions"
+
+	OPTIONAL
 
 ???+ example
 
@@ -208,21 +215,23 @@ Allowed values:
 ---
 #### Log file option
 
-(OPTIONAL)
-
 Command line syntax: `--logFile [argument]`
 
 Petrichor Script syntax: `log-file : [argument]`
 
 The `log file` option is used to specify the file name and/or directory to generate log files at.
 
-If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
-
-A file extension is not required and will be overridden if specified.
-
 !!! note
 
-	Log file will only be created if logging to file is enabled.
+	Log file will only be created if [logging to file is enabled](#log-mode-option).
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+
+	A file extension is not required and will be overridden if specified.
 
 ???+ example
 
@@ -302,7 +311,7 @@ Once you've done these steps, you can run the `.bat` file by double clicking it.
 
 Assuming the `.bat` file was made correctly, it will run Petrichor with all the arguments you set.
 
-!!! note
+!!! warning
 
 	[Relative paths](#relative-file-paths) are relative to the batch script by default. If they are used in Petrichor commands, they must be relative to Petrichor.exe instead, unless you [add Petrichor to your PATH environment variable](#adding-petrichor-to-windows-path-environment-variable).
 

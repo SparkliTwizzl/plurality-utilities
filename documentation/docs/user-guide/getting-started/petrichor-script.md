@@ -105,18 +105,22 @@ Individual modules use non-universal tokens. Consult a module's documentation to
 ---
 ### Metadata token
 
-(REQUIRED)
-
 The `metadata` token's body contains information necessary for Petrichor to run.
 
 It must be the first token in the file regardless of what module is used.
 
-Its value will be ignored.
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Minimum required: 1
+
+	Maximum allowed: 1
+
+	Must be first token in input file.
 
 ---
 #### Minimum version token
-
-(REQUIRED)
 
 The `minimum-version` token specifies the minimum Petrichor version required in order to parse the file.
 
@@ -125,6 +129,16 @@ Version numbers are in the format `major.minor.patch.preview`.
 Major and minor version must be specified.
 
 If patch or patch and preview versions are blank, they are assumed to be any version.
+
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Minimum required: 1
+
+	Maximum allowed: 1
+
+	Must be in `metadata` token body.
 
 ???+ example
 
@@ -137,13 +151,19 @@ If patch or patch and preview versions are blank, they are assumed to be any ver
 ---
 #### Command token
 
-(OPTIONAL)
-
 The `command` token allows you to specify the [command to run](command-usage.md) in your input file, and Petrichor will handle it automatically when run with the input file.
 
 Set the token's value to the name of the command to be run.
 
 To use command options, add a body to the token and put subtokens into it, converting the command options' names to `kebab-case` and setting the tokens' values to the command option values.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `metadata` token body.
 
 ???+ example
 
@@ -159,7 +179,7 @@ To use command options, add a body to the token and put subtokens into it, conve
 	}
 	```
 	```powershell title="Command line"
-	[install path]\Petrichor> Petrichor.exe input.txt
+	[install path]> Petrichor.exe input.txt
 	```
 
 	This is equivalent to the following:
@@ -170,19 +190,25 @@ To use command options, add a body to the token and put subtokens into it, conve
 	}
 	```
 	```powershell title="Command line"
-	[install path]\Petrichor> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
+	[install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
 	```
 
 ---
 ### Module options region
-
-(OPTIONAL)
 
 The `module-options` token allows you to configure module-specific options, if supported by a module.
 
 !!! note
 
 	Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must come after `metadata` token.
 
 ---
 ### Module-specific tokens

@@ -169,8 +169,6 @@ Shortcuts are defined via subtokens within this token's body.
 ---
 ### Shortcut tokens
 
-**OPTIONAL**
-
 The `shortcut` token defines a plaintext shortcut.
 
 These tokens' values can use AutoHotkey special behavior if written correctly. Consult AutoHotkey documentation to learn more about this.
@@ -260,8 +258,6 @@ If no subtokens are used, this token does not need a body.
 ---
 #### Find and replace tokens
 
-**OPTIONAL**
-
 The `find` and `replace` token pair defines a custom find-and-replace dictionary for a `shortcut-template` token.
 
 The find-and-replace dictionary is only applied to the template's replacement string.
@@ -270,15 +266,17 @@ It is applied after `[field]` tags are populated with data, and therefore can mo
 
 `Find keys` and `replace values` are defined in comma-separated lists surrounded by curly brackets ( `{` / `}` ).
 
-The lists cannot contain blank items, and they must contain the same number of items as each other.
+The `find` and `replace` lists cannot contain blank items.
 
-`replace` tokens must be paired with a matching `find` token, and must come after it.
-
-`find` tokens can be present without a matching `replace` token. This will cause all the `find` keys to be simply removed from a template.
+The `find` and `replace` lists must contain the same number of items as each other.
 
 !!! note
 
 	`Find keys` are case-sensitive.
+
+!!! note
+
+	If a `find` token does not have a matching `replace` token, all the `find` keys will just be removed from the template.
 
 ???+ important "Find token restrictions"
 
@@ -296,6 +294,8 @@ The lists cannot contain blank items, and they must contain the same number of i
 	Maximum allowed: 1
 
 	Must be in `shortcut-template` token body.
+
+	Must be paired with `find` token.
 
 	Must come after `find` token.
 
@@ -477,8 +477,6 @@ The `color` token defines a value for the `[color]` field tag in [templated shor
 ---
 #### Decoration tokens
 
-**OPTIONAL**
-
 The `decoration` token defines a value for the `[decoration]` field tag in [templated shortcuts](#shortcut-template-tokens).
 
 ???+ important "Restrictions"
@@ -568,7 +566,7 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
 
 
 ---
-### Example of all module tokens
+### Full usage example
 
 ???+ example
 
