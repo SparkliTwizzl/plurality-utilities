@@ -8,6 +8,7 @@ use_directory_urls: false
 plugins:
   - mike:
   - offline:
+  - pygments:
   - search:
 
 extra_css:

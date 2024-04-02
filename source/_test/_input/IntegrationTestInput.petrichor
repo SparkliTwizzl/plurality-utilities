@@ -16,10 +16,10 @@ metadata: // inline comment in region name
 module-options:
 {
 	// line comment in module options region body
-	default-icon: ../_input/IconDefault.ico // inline comment in module options region body
+	default-icon:../_input/IconDefault.ico // inline comment in module options region body
 	suspend-icon: "../_input/IconSuspend.ico"
-	reload-shortcut: [tab] [and] r
-	suspend-shortcut: [win]s
+	reload-shortcut : [tab] [and] r
+	suspend-shortcut :[win]s
 }
 
 
@@ -45,15 +45,15 @@ shortcut-list:
 	shortcut-template: =[tag] :: =[name]
 	shortcut-template: +[tag] :: +[name]
 	shortcut-template: \[[tag] :: \[[name]
-	shortcut-template: {[tag] :: {[name]
+	shortcut-template: \{[tag] :: \{[name]
 	shortcut-template: \][tag] :: \][name]
-	shortcut-template: }[tag] :: }[name]
+	shortcut-template: \}[tag] :: \}[name]
 	shortcut-template: \\[tag] :: \\[name]
 	shortcut-template: |[tag] :: |[name]
 	shortcut-template: ;[tag] :: ;[name]
 	shortcut-template: :[tag] :: :[name]
 	shortcut-template: '[tag] :: '[name]
-	shortcut-template: "[tag] :: "[name]
+	shortcut-template: \"[tag] :: \"[name]
 	shortcut-template: ,[tag] :: ,[name]
 	shortcut-template: <[tag] :: <[name]
 	shortcut-template: .[tag] :: .[name]
