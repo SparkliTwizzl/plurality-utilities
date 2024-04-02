@@ -10,22 +10,23 @@ title: Petrichor Script - Text Shortcut Script Generation module
 ---
 ## Module options token
 
+This module's variant of the [module options token](../../getting-started/petrichor-script.html#module-options-token) supports the following tokens.
+
+- [Default icon](#default-icon-and-suspend-icon-tokens)
+- [Suspend icon](#default-icon-and-suspend-icon-tokens)
+- [Reload shortcut](#reload-shortcut-and-suspend-shortcut-tokens)
+- [Suspend shortcut](#reload-shortcut-and-suspend-shortcut-tokens)
+
 ???+ important "Restrictions"
 
 	OPTIONAL
-
-	Minumum required: 0
 
 	Maximum allowed: 1
 
 	Must come after `metadata` token.
 
-This module's variant of the [module options token](../../getting-started/petrichor-script.html#module-options-token) supports the following tokens.
-
 ---
 ### Default icon and suspend icon tokens
-
-**OPTIONAL**
 
 These tokens allow you to specify file paths to custom icons for a text shortcut script.
 
@@ -35,7 +36,17 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 
 [Relative file paths](../../getting-started/command-usage.html#relative-file-paths) can be used.
 
-**IMPORTANT NOTE:** If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
+!!! warning
+
+	If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `module-options` token body.
 
 ???+ example
 
@@ -51,8 +62,6 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 ---
 ### Reload shortcut and suspend shortcut tokens
 
-**OPTIONAL**
-
 These tokens allow you to set keyboard shortcuts to control the operation of a script.
 
 The `reload-shortcut` token sets a keyboard shortcut to reload a script.
@@ -60,6 +69,14 @@ The `reload-shortcut` token sets a keyboard shortcut to reload a script.
 The `suspend-shortcut` token sets a keyboard shortcut to suspend and resume a script.
 
 These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplicity, Petrichor supports a [find-and-replace table](#control-shortcut-find-and-replace-table) of common modifier keys.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `module-options` token body.
 
 ???+ example
 
@@ -77,35 +94,35 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
 Petrichor supports the following tags in [script control shortcuts](#reload-shortcut-and-suspend-shortcut-tokens).
 
-| Full tag        | Short tag | Encodes for |
-| --------------- | --------- | ----------- |
-| [windows]       | [win]     | Windows key
-| [alt]           |           | Either Alt key
-| [left-alt]      | [lalt]    | Left Alt key
-| [right-alt]     | [ralt]    | Right Alt key
-| [control]       | [ctrl]    | Either Control key
-| [left-control]  | [lctrl]   | Left Control key
-| [right-control] | [rctrl]   | Right Control key
-| [shift]         |           | Either Shift key
-| [left-shift]    | [lshift]  | Left Shift key
-| [right-shift]   | [rshift]  | Right Shift key
-| [and]           |           | &
-| [alt-graph]     | [altgr]   | AltGr (AltGraph) key
-| [wildcard]      | [wild]    | *
-| [passthrough]   | [tilde]   | ~
-| [send]          |           | $
-| [tab]           |           | Tab key
-| [caps-lock]     | [caps]    | CapsLock key
-| [enter]         |           | Enter key
-| [backspace]     | [bksp]    | Backspace key
-| [insert]        | [ins]     | Insert key
-| [delete]        | [del]     | Delete key
-| [home]          |           | Home key
-| [end]           |           | End key
-| [page-up]       | [pgup]    | PageUp key
-| [page-down]     | [pgdn]    | PageDown key
-| \\[              |           | [
-| \\]              |           | ]
+| Tag             | Alias     | Encodes for       | Key / symbol name                     |
+| --------------- | --------- | ----------------- | ------------------------------------- |
+| [windows]       | [win]     | ++win++           | Windows key                           |
+| [alt]           |           | ++alt++           | Alt key (either)                      |
+| [left-alt]      | [lalt]    | ++lalt++          | Left Alt key                          |
+| [right-alt]     | [ralt]    | ++ralt++          | Right Alt key                         |
+| [control]       | [ctrl]    | ++ctrl++          | Control key (either)                  |
+| [left-control]  | [lctrl]   | ++lctrl++         | Left Control key                      |
+| [right-control] | [rctrl]   | ++rctrl++         | Right Control key                     |
+| [shift]         |           | ++shift++         | Shift key (either)                    |
+| [left-shift]    | [lshift]  | ++lshift++        | Left Shift key                        |
+| [right-shift]   | [rshift]  | ++rshift++        | Right Shift key                       |
+| [and]           |           | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
+| [alt-graph]     | [altgr]   | ++altgr++         | AltGraph key                          |
+| [wildcard]      | [wild]    | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
+| [passthrough]   | [tilde]   | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
+| [send]          |           | ++"$"++           | AutoHotkey send (Dollar sign)         |
+| [tab]           |           | ++tab++           | Tab key                               |
+| [caps-lock]     | [caps]    | ++caps-lock++     | CapsLock key                          |
+| [enter]         |           | ++enter++         | Enter key                             |
+| [backspace]     | [bksp]    | ++backspace++     | Backspace key                         |
+| [insert]        | [ins]     | ++ins++           | Insert key                            |
+| [delete]        | [del]     | ++del++           | Delete key                            |
+| [end]           |           | ++end++           | End key                               |
+| [home]          |           | ++home++          | Home key                              |
+| [page-up]       | [pgup]    | ++page-up++       | PageUp key                            |
+| [page-down]     | [pgdn]    | ++page-dn++       | PageDown key                          |
+| \\[             |           | ++bracket-left++  | Left square bracket                   |
+| \\]             |           | ++bracket-right++ | Right square bracket                  |
 
 !!! note
 
@@ -125,11 +142,28 @@ Petrichor supports the following tags in [script control shortcuts](#reload-shor
 ---
 ## Shortcut list token
 
-**REQUIRED**
-
 This token defines the text shortcuts to be generated.
 
 Shortcuts are defined via subtokens within this token's body.
+
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Mininum required: 1
+
+	Maximum allowed: 1
+
+	Must come after `metadata` token.
+
+???+ example
+
+	```petrichor
+	shortcut-list:
+	{
+		// Shortcuts go here.
+	}
+	```
 
 
 ---
@@ -143,9 +177,21 @@ These tokens' values can use AutoHotkey special behavior if written correctly. C
 
 Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `::` ), and a replacement string.
 
-**NOTE:** You cannot use `::` in a "find" string due to the way AutoHotkey hotstrings work. Petrichor will allow it, but the shortcuts it generates will not work.
+!!! warning
+
+	You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
+
+	Petrichor will allow you to do it, but the generated shortcuts will not work.
 
 These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks `` ` ``.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	No restrictions on number of instances that can be present.
+
+	Must be in `shortcut-list` token body.
 
 ???+ example
 
@@ -155,15 +201,14 @@ These components can have whitespace between them, but note that this whitespace
 		shortcut: [hotstring] :: ` [replacement string] `
 	}
 	```
-	```txt title="Shortcuts generated from input"
-	::[hotstring]::` [replacement string] ` // This is a standard shortcut. The [hotstring] and [replacement string] will be inserted into the output file unaltered.
+	```autohotkey title="Shortcuts generated from input"
+	; This is a standard shortcut. The [hotstring] and [replacement string] will be inserted into the output file unaltered.
+	::[hotstring]::` [replacement string] `
 	```
 
 
 ---
 ### Shortcut template tokens
-
-**OPTIONAL**
 
 The `shortcut-template` token defines a templated shortcut.
 
@@ -182,11 +227,21 @@ Supported fields:
 - `[pronoun]`
 - `[tag]`
 
-**NOTE:** By default, you cannot use the `[` or `]` symbols in a template string. Use [escape characters](../../getting-started/command-usage.html#escape-characters) to circumvent this.
+!!! note
+
+	By default, you cannot use the `[` or `]` symbols in a template. Use [escape characters](../../getting-started/command-usage.html#escape-characters) to circumvent this.
 
 Additional features are supported via subtokens.
 
 If no subtokens are used, this token does not need a body.
+
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	No restrictions on number of instances that can be present.
+
+	Must be in `shortcut-list` token body.
 
 ???+ example
 
@@ -196,7 +251,7 @@ If no subtokens are used, this token does not need a body.
 		shortcut-template: [tag] [last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
 	}
 	```
-	```txt title="Shortcuts generated from input"
+	```autohotkey title="Shortcuts generated from input"
 	::sm smt::1234 - Sam Smith (they/them) | {a person} | #123456
 	::jo brn::5678 - Joe Brown (they/them) | {another person person} | #789abc
 	```
@@ -221,20 +276,44 @@ The lists cannot contain blank items, and they must contain the same number of i
 
 `find` tokens can be present without a matching `replace` token. This will cause all the `find` keys to be simply removed from a template.
 
+!!! note
+
+	`Find keys` are case-sensitive.
+
+???+ important "Find token restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `shortcut-template` token body.
+
+
+???+ important "Replace token restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `shortcut-template` token body.
+
+	Must come after `find` token.
+
+
 ???+ example
 
 	```petrichor title="Input"
 	shortcut-list:
 	{
-		shortcut-template: [hotstring] :: [replacement string] custom find 1, custom find 2
+		shortcut-template: [hotstring] :: [replacement string] custom find 1, custom find 2, Custom find 2
 		{
 			find: { custom find 1, custom find 2 } // These are the `find keys`.
 			replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
 		}
 	}
 	```
-	```txt title="Shortcuts generated from input"
-	::[hotstring]::[replacement string] replace 1, replace 2
+	```autohotkey title="Shortcuts generated from input"
+	::[hotstring]::[replacement string] replace 1, replace 2, Custom find 2
 	```
 	If the `find keys` are present in `[field]` values within the `replacement string`, they will be replaced there as well.
 
@@ -253,6 +332,14 @@ Allowed values:
 - lower (lower case)
 - firstCaps (First Capitals Case)
 
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `shortcut-template` token body.
+
 ???+ example
 
 	=== "unchanged"
@@ -266,7 +353,7 @@ Allowed values:
 			}
 		}
 		```
-		```txt title="Shortcuts generated from input"
+		```autohotkey title="Shortcuts generated from input"
 		::[hotstring]::[replacement STRING]
 		```
 
@@ -281,7 +368,7 @@ Allowed values:
 			}
 		}
 		```
-		```txt title="Shortcuts generated from input"
+		```autohotkey title="Shortcuts generated from input"
 		::[hotstring]::[REPLACEMENT STRING]
 		```
 
@@ -296,7 +383,7 @@ Allowed values:
 			}
 		}
 		```
-		```txt title="Shortcuts generated from input"
+		```autohotkey title="Shortcuts generated from input"
 		::[hotstring]::[replacement string]
 		```
 
@@ -311,7 +398,7 @@ Allowed values:
 			}
 		}
 		```
-		```txt title="Shortcuts generated from input"
+		```autohotkey title="Shortcuts generated from input"
 		::[hotstring]::[Replacement String]
 		```
 
@@ -319,26 +406,32 @@ Allowed values:
 ---
 ## Entry list token
 
-**REQUIRED**
-
 The `entry-list` token defines entries to populated templated shortcuts with.
 
 This token's body contains subtokens defining each entry.
+
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Minimum required: 1
+
+	Maximum allowed: 1
+
+	Must come after `metadata` token.
 
 ???+ example
 
 	```petrichor
 	entry-list:
 	{
-		// Entry subtokens go here.
+		// Entries go here.
 	}
 	```
 
 
 ---
 ### Entry tokens
-
-**OPTIONAL**
 
 The `entry` token defines a set of data to populate a templated shortcut with.
 
@@ -350,12 +443,20 @@ These subtokens correspond to the `[field]` tags in [templated shortcuts](#short
 
 **NOTE:** All token values *should* be unique, even though Petrichor wont take issue with it. If a value is repeated, the AutoHotkey script generated from the input data will misbehave in unpredictable ways.
 
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	No restrictions on number of instances that can be present.
+
+	Must be in `entry-list` token body.
+
 ???+ example
 
 	```petrichor
 	entry: Notes about entry.
 	{
-		// Entry data subtokens go here.
+		// Entry data goes here.
 	}
 	```
 
@@ -363,12 +464,15 @@ These subtokens correspond to the `[field]` tags in [templated shortcuts](#short
 ---
 #### Color tokens
 
-**OPTIONAL**
-
 The `color` token defines a value for the `[color]` field tag in [templated shortcuts](#shortcut-template-tokens).
 
-At most 1 can be present in an `entry` token's body.
+???+ important "Restrictions"
 
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `entry` token body.
 
 ---
 #### Decoration tokens
@@ -377,27 +481,35 @@ At most 1 can be present in an `entry` token's body.
 
 The `decoration` token defines a value for the `[decoration]` field tag in [templated shortcuts](#shortcut-template-tokens).
 
-At most 1 can be present in an `entry` token's body.
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `entry` token body.
 
 
 ---
 #### ID tokens
 
-**REQUIRED**
-
 The `id` token defines a value for the `[id]` field tag in [templated shortcuts](#shortcut-template-tokens).
 
-Exactly 1 must be present in an `entry` token's body.
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Minimum required: 1
+
+	Maximum allowed: 1
+
+	Must be in `entry` token body.
 
 
 ---
 #### Name tokens
 
-**REQUIRED**
-
 The `name` token defines values for the `[name]` and `[tag]` field tags in [templated shortcuts](#shortcut-template-tokens).
-
-At least 1 must be present in an `entry` token's body.
 
 A shortcut will be generated from each template for each `name` token in an entry.
 
@@ -407,6 +519,13 @@ The `[name]` field value can be any non-blank string that does not contain an at
 
 The `[tag]` field value can be any string that does not contain whitespace.
 
+???+ important "Restrictions"
+
+	REQUIRED
+
+	Minimum required: 1
+
+	Must be in `entry` token body.
 
 ???+ example
 
@@ -421,23 +540,32 @@ The `[tag]` field value can be any string that does not contain whitespace.
 ---
 #### Last name tokens
 
-**OPTIONAL**
-
 The `last-name` token defines values for the `[last-name]` and `[last-tag]` field tags in [templated shortcuts](#shortcut-template-tokens).
 
-At most 1 can be present in an `entry` token's body.
+`last-name` tokens have the same structure as [`name` tokens](#name-tokens).
 
-`last-name` tokens have the same structural requirements as [`name` tokens](#name-tokens).
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `entry` token body.
 
 
 ---
 #### Pronoun tokens
 
-**OPTIONAL**
-
 The `pronoun` token defines a value for the `[pronoun]` field tag in [templated shortcuts](#shortcut-template-tokens).
 
-At most 1 can be present in an `entry` token's body.
+???+ important "Restrictions"
+
+	OPTIONAL
+
+	Maximum allowed: 1
+
+	Must be in `entry` token body.
+
 
 ---
 ### Example of all module tokens
@@ -447,16 +575,18 @@ At most 1 can be present in an `entry` token's body.
 	```petrichor title="Input"
 	metadata:
 	{
-		// Metadata tokens go here.
+		// Metadata goes here.
 	}
+
 
 	module-options:
 	{
-		default-icon: [file path].ico
-		suspend-icon: [file path].ico
+		default-icon: [file path]
+		suspend-icon: [file path]
 		reload-shortcut: [shortcut]
 		suspend-shortcut: [shortcut]
 	}
+
 
 	shortcut-list:
 	{
@@ -469,6 +599,7 @@ At most 1 can be present in an `entry` token's body.
 		}
 	}
 
+
 	entry-list:
 	{
 		entry: A
@@ -476,7 +607,7 @@ At most 1 can be present in an `entry` token's body.
 			id: idValueA
 			color: colorValueA
 			decoration: decorationValueA
-			pronoun: pronounValueA
+			pronoun: pronounValueA THIS THAT
 			last-name: last name value A @lastTagValueA
 			name: name value A 1 @tagValueA1
 			name: name value A 2 @tagValueA2
@@ -487,17 +618,17 @@ At most 1 can be present in an `entry` token's body.
 			id: idValueB
 			color: colorValueB
 			decoration: decorationValueB
-			pronoun: pronounValueB
+			pronoun: pronounValueB this that
 			last-name: last name value B @lastTagValueB
 			name: name value B 1 @tagValueB1
 			name: name value B 2 @tagValueB2
 		}
 	}
 	```
-	```txt title="Shortcuts generated from input"
+	```autohotkey title="Shortcuts generated from input"
 	::replaceme::withme
-	::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea)
-	::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea)
-	::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb)
-	::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb)
+	::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea This That)
+	::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea This That)
+	::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb These Those)
+	::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb These Those)
 	```
