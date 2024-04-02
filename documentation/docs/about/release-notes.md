@@ -12,33 +12,38 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Change license to AEL-NC-AT 1.1.
-- Overhaul user guide.
+!!! abstract "General"
 
-### Text Shortcut Script Generation module
-- Change `template-list` token to `shortcut-list`.
-- Change `template` token to `shortcut-template`.
-- Change console logging colors via [Pastel](https://github.com/silkfire/Pastel).
-- Add non-templated shortcuts.
+	- Change license to AEL-NC-AT 1.1.
+	- Overhaul user guide.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+	- Change `template-list` token to `shortcut-list`.
+	- Change `template` token to `shortcut-template`.
+	- Change console logging colors via [Pastel](https://github.com/silkfire/Pastel).
+	- Add non-templated shortcuts.
 
 
 ---
 ## 0.10.2
 
-### Bugfixes
-- Fix 201 - custom template find and replace is applied to template find strings.
+!!! bug "Bugfixes"
+
+	- Fix 201 - custom template find and replace is applied to template find strings.
 
 
 ---
 ## 0.10.1
 
-### Bugfixes
-- Fix 187 - escaping comments does not work.
-- Fix 188 - command file option values in quotes are parsed incorrectly.
+!!! bug "Bugfixes"
 
-### General
-- Add missing log info messages.
+	- Fix 187 - escaping comments does not work.
+	- Fix 188 - command file option values in quotes are parsed incorrectly.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+	- Add missing log info messages.
 
 
 ---
@@ -48,28 +53,32 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Change license to AEL-NC-AT 1.0.
-- Change logo.
-- Change line comment start sequence from `#:` to `//`.
-- Add `command` token to allow putting commands and command options in input files.
-- Add input file line numbers to log messages.
-- Set window title.
+!!! abstract "General"
 
-### Text Shortcut Script Generation module
-- Add default behavior for `output file` and `log file` command options.
-- Add support for changing text case of templates.
-- Add support for custom find-and-replace dictionaries in templates.
+	- Change license to AEL-NC-AT 1.0.
+	- Change logo.
+	- Change line comment start sequence from `#:` to `//`.
+	- Add `command` token to allow putting commands and command options in input files.
+	- Add input file line numbers to log messages.
+	- Set window title.
 
-### Bugfixes
-- Fix 165 - escaped escape characters are incorrectly removed.
+!!! abstract "Text Shortcut Script Generation module"
+
+	- Add default behavior for `output file` and `log file` command options.
+	- Add support for changing text case of templates.
+	- Add support for custom find-and-replace dictionaries in templates.
+
+!!! bug "Bugfixes"
+
+	- Fix 165 - escaped escape characters are incorrectly removed.
 
 
 ---
 ## 0.9.1
 
-### Bugfixes
-- Fix 157 - templates region is parsed multiple times and fails.
+!!! bug "Bugfixes"
+
+	- Fix 157 - templates region is parsed multiple times and fails.
 
 
 ---
@@ -79,22 +88,24 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Change logo.
-- Change `metadata` token to `module-options`.
-- Add new `metadata` token for other purposes.
-- Add support for line comments in input files.
-- Update and improve documentation.
-- Improve logging.
+!!! abstract "General"
 
-### Text Shortcut Script Generation module
-- Change command from `generateAHKShortcutScript` to `generateTextShortcutScript`.
-- Add find-and-replace table to simplify syntax for `reload-shortcut` and `suspend-shortcut` token values.
-- Simplify `template` token structure.
-- Add `id` token to `entry` token body.
-- Add `last-name` token to `entry` token body.
-- Add `color` token to `entry` token body.
-- Add methods to automatically launch shortcut scripts to documentation.
+	- Change logo.
+	- Change `metadata` token to `module-options`.
+	- Add new `metadata` token for other purposes.
+	- Add support for line comments in input files.
+	- Update and improve documentation.
+	- Improve logging.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+	- Change command from `generateAHKShortcutScript` to `generateTextShortcutScript`.
+	- Add find-and-replace table to simplify syntax for `reload-shortcut` and `suspend-shortcut` token values.
+	- Simplify `template` token structure.
+	- Add `id` token to `entry` token body.
+	- Add `last-name` token to `entry` token body.
+	- Add `color` token to `entry` token body.
+	- Add methods to automatically launch shortcut scripts to documentation.
 
 
 ---
@@ -104,18 +115,20 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Rename project from `PluralityUtilities` to `Petrichor`.
-- Add icon.
-- Add command line option to specify log file.
-- Improve logging.
+!!! abstract "General"
 
-### AutoHotkey Shortcut Script Generation module
-- Change output script language from `AutoHotkey v1` to `AutoHotkey v2`.
-- Combine input and template files into a single input file.
-- Add "generated by" message to output file headers.
-- Add support for custom `default` and `suspend` icons.
-- Add support for `reload` and `suspend` keyboard shortcuts.
+	- Rename project from `PluralityUtilities` to `Petrichor`.
+	- Add icon.
+	- Add command line option to specify log file.
+	- Improve logging.
+
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+	- Change output script language from `AutoHotkey v1` to `AutoHotkey v2`.
+	- Combine input and template files into a single input file.
+	- Add "generated by" message to output file headers.
+	- Add support for custom `default` and `suspend` icons.
+	- Add support for `reload` and `suspend` keyboard shortcuts.
 
 
 ---
@@ -125,11 +138,13 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Ignore blank lines in input files.
+!!! abstract "General"
 
-### AutoHotkey Shortcut Script Generation module
-- Add byte-order mark to output file headers.
+	- Ignore blank lines in input files.
+
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+	- Add byte-order mark to output file headers.
 
 
 ---
@@ -139,14 +154,14 @@ title: Release notes
 ---
 ## 0.6.0
 
-### Bugfixes
-- Fix 31 - results portion of example in section 4.2.5 of documentation should not have backslashes.
+!!! bug "Bugfixes"
 
-### General
+	- Fix 31 - results portion of example in section 4.2.5 of documentation should not have backslashes.
 
-### AutoHotkey Shortcut Script Generation module
-- Add note about using escape characters on backslashes and update example in documentation.
-- Add SingleInstance AutoHotkey parameter to output scripts.
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+	- Add note about using escape characters on backslashes and update example in documentation.
+	- Add SingleInstance AutoHotkey parameter to output scripts.
 
 
 ---
@@ -156,14 +171,16 @@ title: Release notes
 
 	This version has breaking changes and is not backward-compatible.
 
-### General
-- Add unit tests.
-- Add documentation.
+!!! abstract "General"
 
-### AutoHotkey Shortcut Script Generation module
-- Replace hard-coded templates with user-provided template file.
-- Remove `.akf` file extension restriction for input files.
-- Add support for escape characters in templates.
+	- Add unit tests.
+	- Add documentation.
+
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+	- Replace hard-coded templates with user-provided template file.
+	- Remove `.akf` file extension restriction for input files.
+	- Add support for escape characters in templates.
 
 
 ---
@@ -181,4 +198,6 @@ title: Release notes
 ---
 ## 0.1.0
 
-Initial release.
+!!! abstract "General"
+
+	- Initial release.
