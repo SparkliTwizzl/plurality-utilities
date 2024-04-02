@@ -21,3 +21,6 @@ class PetrichorScriptLexer(RegexLexer):
 			(r'.', Text),
 		]
 	}
+
+
+__all__ = ['PetrichorScriptLexer']

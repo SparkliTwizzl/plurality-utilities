@@ -1,9 +1,9 @@
 ---
-short_title: Release notes
-title: Release notes
+short_title: Changelog
+title: Changelog
 ---
 
-<h1 align="center">Release notes</h1>
+<h1 align="center">Changelog</h1>
 
 ---
 ## 0.11.0
