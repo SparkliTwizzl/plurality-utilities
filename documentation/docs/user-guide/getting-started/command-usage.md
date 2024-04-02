@@ -26,6 +26,14 @@ If no arguments are provided, you will be prompted to use the `--help` option to
 
 
 ---
+### Module commands
+
+Modules have unique command syntax and supported options.
+
+See the relevant module's documentation for more information.
+
+
+---
 ### Command options
 
 Commands can have their behavior modified with options.

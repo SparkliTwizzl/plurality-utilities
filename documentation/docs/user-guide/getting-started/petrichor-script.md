@@ -119,6 +119,15 @@ It must be the first token in the file regardless of what module is used.
 
 	Must be first token in input file.
 
+???+ example
+
+	```petrichor
+	metadata:
+	{
+		// Metadata goes here.
+	}
+	```
+
 ---
 #### Minimum version token
 
@@ -209,6 +218,15 @@ The `module-options` token allows you to configure module-specific options, if s
 	Maximum allowed: 1
 
 	Must come after `metadata` token.
+	
+???+ example
+
+	```petrichor
+	module-options:
+	{
+		// Supported tokens depend on module in use.
+	}
+	```
 
 ---
 ### Module-specific tokens

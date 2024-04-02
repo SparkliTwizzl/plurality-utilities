@@ -25,6 +25,15 @@ This module's variant of the [module options token](../../getting-started/petric
 
 	Must come after `metadata` token.
 
+???+ example
+
+	```petrichor
+	module-options:
+	{
+		// Module-specific options go here.
+	}
+	```
+
 ---
 ### Default icon and suspend icon tokens
 
@@ -54,7 +63,7 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 	module-options:
 	{
 		default-icon: [path]/default.ico
-		suspend-icon: ./[suspend].ico
+		suspend-icon: ./suspend_icon.png
 	}
 	```
 
@@ -175,13 +184,13 @@ These tokens' values can use AutoHotkey special behavior if written correctly. C
 
 Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `::` ), and a replacement string.
 
+These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks `` ` ``.
+
 !!! warning
 
 	You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
 
 	Petrichor will allow you to do it, but the generated shortcuts will not work.
-
-These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks `` ` ``.
 
 ???+ important "Restrictions"
 
@@ -225,13 +234,19 @@ Supported fields:
 - `[pronoun]`
 - `[tag]`
 
+Additional features are supported via subtokens.
+
+If no subtokens are used, this token does not need a body.
+
 !!! note
 
 	By default, you cannot use the `[` or `]` symbols in a template. Use [escape characters](../../getting-started/command-usage.html#escape-characters) to circumvent this.
 
-Additional features are supported via subtokens.
+!!! warning
 
-If no subtokens are used, this token does not need a body.
+	You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
+
+	Petrichor will allow you to do it, but the generated shortcuts will not work.
 
 ???+ important "Restrictions"
 
