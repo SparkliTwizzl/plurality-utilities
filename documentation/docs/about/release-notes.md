@@ -36,14 +36,14 @@ title: Release notes
 ---
 ## 0.10.1
 
+!!! abstract "Text Shortcut Script Generation module"
+
+	- Add missing log info messages.
+
 !!! bug "Bugfixes"
 
 	- Fix 187 - escaping comments does not work.
 	- Fix 188 - command file option values in quotes are parsed incorrectly.
-
-!!! abstract "Text Shortcut Script Generation module"
-
-	- Add missing log info messages.
 
 
 ---
@@ -154,14 +154,14 @@ title: Release notes
 ---
 ## 0.6.0
 
-!!! bug "Bugfixes"
-
-	- Fix 31 - results portion of example in section 4.2.5 of documentation should not have backslashes.
-
 !!! abstract "AutoHotkey Shortcut Script Generation module"
 
 	- Add note about using escape characters on backslashes and update example in documentation.
 	- Add SingleInstance AutoHotkey parameter to output scripts.
+
+!!! bug "Bugfixes"
+
+	- Fix 31 - results portion of example in section 4.2.5 of documentation should not have backslashes.
 
 
 ---
