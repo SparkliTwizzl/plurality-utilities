@@ -81,7 +81,7 @@ There are a few options to launch scripts automatically when Windows logs in.
 
 1. Right-click the script in File Explorer.
 2. Click `Create shortcut` in the dropdown menu.
-3. Press `Win+R` to open the Windows Run dialog.
+3. Press `Win+R` to open the Windows Run dialog. You can also open the Start Menu and search for `Run`.
 4. Type `shell:startup` into the dialog, then click OK.
 5. The Startup folder will open. Copy the shortcut you created in step 2 into it.
 
@@ -92,7 +92,7 @@ There are a few options to launch scripts automatically when Windows logs in.
 
 	This method is somewhat unreliable.
 
-	It is also tedious and awkward to set up.
+	It is also tedious and awkward to set up, and easy to break.
 
 The Windows Startup method is easier and more reliable.
 
@@ -105,7 +105,9 @@ Follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-wi
 
 !!! important "Strongly not recommended"
 
-	It is strongly reecommended to use one of the other methods above, unless all of them dont work for you.
+	It is strongly reecommended to use one of the other methods above.
+
+	Only use this method if no other method works.
 
 !!! danger
 
@@ -117,6 +119,10 @@ Follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-wi
 1. Open the Registry Editor. There are two days to do this:
     - Press `Win+R` to open the Run dialog, type in `regedit`, then click OK.
     - Open the Start menu and search for either `regedit` or `Registry Editor`.
-2. Navigate to `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`.
-3. Add a new String key. Name it however you prefer.
-4. Edit the value of the new string key and put in `"@:\path\to\autohotkey\version\file.exe" "@:\path\to\script\file.ahk"`, using the filepaths of your AutoHotkey installation and your script file.
+2. Back up your registry before making edits.
+    1. Click the `File` button in the toolbar.
+    2. Click `Export` in the dropdown menu.
+    3. Enter a file name and save the file somewhere you will remember.
+3. Navigate to `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`.
+4. Add a new String key. Name it however you prefer.
+5. Edit the value of the new string key and put in `"@:\path\to\autohotkey\version\file.exe" "@:\path\to\script\file.ahk"`, using the filepaths of your AutoHotkey installation and your script file.
