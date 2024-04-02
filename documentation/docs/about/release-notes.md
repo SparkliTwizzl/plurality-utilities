@@ -8,18 +8,19 @@ title: Release notes
 ---
 ## 0.11.0
 
-### Notes
-This version has breaking changes and is not backward-compatible.
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Change license to AEL-NC-AT 1.1.
 - Overhaul user guide.
 
 ### Text Shortcut Script Generation module
-- Add non-templated shortcuts.
 - Change `template-list` token to `shortcut-list`.
 - Change `template` token to `shortcut-template`.
 - Change console logging colors via [Pastel](https://github.com/silkfire/Pastel).
+- Add non-templated shortcuts.
 
 
 ---
@@ -37,14 +38,15 @@ This version has breaking changes and is not backward-compatible.
 - Fix 188 - command file option values in quotes are parsed incorrectly.
 
 ### General
-- Add missing info log messages.
+- Add missing log info messages.
 
 
 ---
 ## 0.10.0
 
-### Notes
-This version has breaking changes and is not backward-compatible.
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Change license to AEL-NC-AT 1.0.
@@ -73,8 +75,9 @@ This version has breaking changes and is not backward-compatible.
 ---
 ## 0.9.0
 
-### Notes
-This version has breaking changes and is not backward-compatible.
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Change logo.
@@ -97,8 +100,9 @@ This version has breaking changes and is not backward-compatible.
 ---
 ## 0.8.0
 
-### Notes
-This version has breaking changes and is not backward-compatible.
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Rename project from `PluralityUtilities` to `Petrichor`.
@@ -117,8 +121,9 @@ This version has breaking changes and is not backward-compatible.
 ---
 ## 0.7.0
 
-### Notes
-This version has breaking changes and is not backward-compatible.
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Ignore blank lines in input files.
@@ -146,6 +151,10 @@ This version has breaking changes and is not backward-compatible.
 
 ---
 ## 0.5.0
+
+!!! important
+
+	This version has breaking changes and is not backward-compatible.
 
 ### General
 - Add unit tests.
