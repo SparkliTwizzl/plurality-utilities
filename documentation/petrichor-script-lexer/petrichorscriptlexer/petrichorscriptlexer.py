@@ -1,5 +1,8 @@
-from pygments.lexer import *
+from pygments.lexer import RegexLexer, bygroups
 from pygments.token import *
+
+
+__all__ = ('PetrichorScriptLexer')
 
 
 class PetrichorScriptLexer(RegexLexer):
@@ -21,6 +24,3 @@ class PetrichorScriptLexer(RegexLexer):
 			(r'.', Text),
 		]
 	}
-
-
-__all__ = ['PetrichorScriptLexer']

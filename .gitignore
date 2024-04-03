@@ -7,5 +7,6 @@ _results/
 bin/
 obj/
 site/
+venv/
 
 *.log
