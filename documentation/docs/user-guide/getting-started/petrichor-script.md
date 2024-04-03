@@ -179,7 +179,7 @@ To use command options, add a body to the token and put subtokens into it, conve
 	```petrichor title="Input"
 	metadata:
 	{
-		minimum-version: [version number]
+		minimum-version: <version number>
 		command: commandName
 		{
 			command-option-1: value1
@@ -195,7 +195,7 @@ To use command options, add a body to the token and put subtokens into it, conve
 	```petrichor title="Input"
 	metadata:
 	{
-		minimum-version: [version number]
+		minimum-version: <version number>
 	}
 	```
 	```powershell title="Command line"

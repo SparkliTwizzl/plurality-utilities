@@ -35,10 +35,10 @@ This command supports the following options:
 		{
 			command: generateTextShortcutScript
 			{
-				// input-file: implict
-				output-file: [file]
-				log-mode: [mode]
-				log-file: [file]
+				// input-file: Implict when command is in input file.
+				output-file: <file>
+				log-mode: <mode>
+				log-file: <file>
 			}
 		}
 		```

@@ -62,7 +62,7 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 	```petrichor
 	module-options:
 	{
-		default-icon: [path]/default.ico
+		default-icon: <path>/default.ico
 		suspend-icon: ./suspend_icon.png
 	}
 	```
@@ -92,8 +92,8 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 	```petrichor
 	module-options:
 	{
-		reload-shortcut: #r // Windows key + R
-		suspend-shortcut: !s // Alt key + S
+		reload-shortcut: <shortcut>
+		suspend-shortcut: <shortcut>
 	}
 	```
 
@@ -103,35 +103,35 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
 Petrichor supports the following tags in [script control shortcuts](#reload-shortcut-and-suspend-shortcut-tokens).
 
-| Tag             | Alias     | Encodes for       | Key / symbol name                     |
-| --------------- | --------- | ----------------- | ------------------------------------- |
-| [windows]       | [win]     | ++win++           | Windows key                           |
-| [alt]           |           | ++alt++           | Alt key (either)                      |
-| [left-alt]      | [lalt]    | ++lalt++          | Left Alt key                          |
-| [right-alt]     | [ralt]    | ++ralt++          | Right Alt key                         |
-| [control]       | [ctrl]    | ++ctrl++          | Control key (either)                  |
-| [left-control]  | [lctrl]   | ++lctrl++         | Left Control key                      |
-| [right-control] | [rctrl]   | ++rctrl++         | Right Control key                     |
-| [shift]         |           | ++shift++         | Shift key (either)                    |
-| [left-shift]    | [lshift]  | ++lshift++        | Left Shift key                        |
-| [right-shift]   | [rshift]  | ++rshift++        | Right Shift key                       |
-| [and]           |           | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
-| [alt-graph]     | [altgr]   | ++altgr++         | AltGraph key                          |
-| [wildcard]      | [wild]    | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
-| [passthrough]   | [tilde]   | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
-| [send]          |           | ++"$"++           | AutoHotkey send (Dollar sign)         |
-| [tab]           |           | ++tab++           | Tab key                               |
-| [caps-lock]     | [caps]    | ++caps-lock++     | CapsLock key                          |
-| [enter]         |           | ++enter++         | Enter key                             |
-| [backspace]     | [bksp]    | ++backspace++     | Backspace key                         |
-| [insert]        | [ins]     | ++ins++           | Insert key                            |
-| [delete]        | [del]     | ++del++           | Delete key                            |
-| [end]           |           | ++end++           | End key                               |
-| [home]          |           | ++home++          | Home key                              |
-| [page-up]       | [pgup]    | ++page-up++       | PageUp key                            |
-| [page-down]     | [pgdn]    | ++page-dn++       | PageDown key                          |
-| \\[             |           | ++bracket-left++  | Left square bracket                   |
-| \\]             |           | ++bracket-right++ | Right square bracket                  |
+| Tag                      | Alias              | Encodes for       | Key / symbol name                     |
+| ------------------------ | ------------------ | ----------------- | ------------------------------------- |
+| `#!ptcr [windows]`       | `#!ptcr [win]`     | ++win++           | Windows key                           |
+| `#!ptcr [alt]`           |                    | ++alt++           | Alt key                               |
+| `#!ptcr [left-alt]`      | `#!ptcr [lalt]`    | ++lalt++          | Left Alt key                          |
+| `#!ptcr [right-alt]`     | `#!ptcr [ralt]`    | ++ralt++          | Right Alt key                         |
+| `#!ptcr [control]`       | `#!ptcr [ctrl]`    | ++ctrl++          | Control key                           |
+| `#!ptcr [left-control]`  | `#!ptcr [lctrl]`   | ++lctrl++         | Left Control key                      |
+| `#!ptcr [right-control]` | `#!ptcr [rctrl]`   | ++rctrl++         | Right Control key                     |
+| `#!ptcr [shift]`         |                    | ++shift++         | Shift key                             |
+| `#!ptcr [left-shift]`    | `#!ptcr [lshift]`  | ++lshift++        | Left Shift key                        |
+| `#!ptcr [right-shift]`   | `#!ptcr [rshift]`  | ++rshift++        | Right Shift key                       |
+| `#!ptcr [and]`           |                    | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
+| `#!ptcr [alt-graph]`     | `#!ptcr [altgr]`   | ++altgr++         | AltGraph key                          |
+| `#!ptcr [wildcard]`      | `#!ptcr [wild]`    | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
+| `#!ptcr [passthrough]`   | `#!ptcr [tilde]`   | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
+| `#!ptcr [send]`          |                    | ++"$"++           | AutoHotkey send (Dollar sign)         |
+| `#!ptcr [tab]`           |                    | ++tab++           | Tab key                               |
+| `#!ptcr [caps-lock]`     | `#!ptcr [caps]`    | ++caps-lock++     | CapsLock key                          |
+| `#!ptcr [enter]`         |                    | ++enter++         | Enter key                             |
+| `#!ptcr [backspace]`     | `#!ptcr [bksp]`    | ++backspace++     | Backspace key                         |
+| `#!ptcr [insert]`        | `#!ptcr [ins]`     | ++ins++           | Insert key                            |
+| `#!ptcr [delete]`        | `#!ptcr [del]`     | ++del++           | Delete key                            |
+| `#!ptcr [end]`           |                    | ++end++           | End key                               |
+| `#!ptcr [home]`          |                    | ++home++          | Home key                              |
+| `#!ptcr [page-up]`       | `#!ptcr [pgup]`    | ++page-up++       | PageUp key                            |
+| `#!ptcr [page-down]`     | `#!ptcr [pgdn]`    | ++page-dn++       | PageDown key                          |
+| `#!ptcr \[`              |                    | ++bracket-left++  | Left square bracket                   |
+| `#!ptcr \]`              |                    | ++bracket-right++ | Right square bracket                  |
 
 !!! note
 
@@ -205,12 +205,12 @@ These components can have whitespace between them, but note that this whitespace
 	```petrichor title="Input"
 	shortcut-list:
 	{
-		shortcut: [hotstring] :: ` [replacement string] `
+		shortcut: <hotstring> :: ` <replacement string> `
 	}
 	```
 	```autohotkey title="Shortcuts generated from input"
-	; This is a standard shortcut. The [hotstring] and [replacement string] will be inserted into the output file unaltered.
-	::[hotstring]::` [replacement string] `
+	; This is a standard shortcut. The <hotstring> and <replacement string> will be inserted into the output file unaltered.
+	::<hotstring>::` <replacement string> `
 	```
 
 
@@ -320,7 +320,7 @@ The `find` and `replace` lists must contain the same number of items as each oth
 	```petrichor title="Input"
 	shortcut-list:
 	{
-		shortcut-template: [hotstring] :: [replacement string] custom find 1, custom find 2, Custom find 2
+		shortcut-template: <hotstring> :: <replacement string> custom find 1, custom find 2, Custom find 2
 		{
 			find: { custom find 1, custom find 2 } // These are the `find keys`.
 			replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
@@ -328,9 +328,9 @@ The `find` and `replace` lists must contain the same number of items as each oth
 	}
 	```
 	```autohotkey title="Shortcuts generated from input"
-	::[hotstring]::[replacement string] replace 1, replace 2, Custom find 2
+	::<hotstring>::<replacement string> replace 1, replace 2, Custom find 2
 	```
-	If the `find keys` are present in `[field]` values within the `replacement string`, they will be replaced there as well.
+	If the `find keys` are present in `[field]` values within the `<replacement string>`, they will be replaced there as well.
 
 
 ---
@@ -362,14 +362,14 @@ Allowed values:
 		```petrichor title="Input"
 		shortcut-list:
 		{
-			shortcut-template: [hotstring] :: [replacement STRING]
+			shortcut-template: <hotstring> :: <replacement STRING>
 			{
 				text-case: unchanged
 			}
 		}
 		```
 		```autohotkey title="Shortcuts generated from input"
-		::[hotstring]::[replacement STRING]
+		::<hotstring>::<replacement STRING>
 		```
 
 	=== "upper"
@@ -377,14 +377,14 @@ Allowed values:
 		```petrichor title="Input"
 		shortcut-list:
 		{
-			shortcut-template: [hotstring] :: [replacement STRING]
+			shortcut-template: <hotstring> :: <replacement STRING>
 			{
 				text-case: upper
 			}
 		}
 		```
 		```autohotkey title="Shortcuts generated from input"
-		::[hotstring]::[REPLACEMENT STRING]
+		::<hotstring>::<REPLACEMENT STRING>
 		```
 
 	=== "lower"
@@ -392,14 +392,14 @@ Allowed values:
 		```petrichor title="Input"
 		shortcut-list:
 		{
-			shortcut-template: [hotstring] :: [replacement STRING]
+			shortcut-template: <hotstring> :: <replacement STRING>
 			{
 				text-case: lower
 			}
 		}
 		```
 		```autohotkey title="Shortcuts generated from input"
-		::[hotstring]::[replacement string]
+		::<hotstring>::<replacement string>
 		```
 
 	=== "firstCaps"
@@ -407,14 +407,14 @@ Allowed values:
 		```petrichor title="Input"
 		shortcut-list:
 		{
-			shortcut-template: [hotstring] :: [replacement STRING]
+			shortcut-template: <hotstring> :: <replacement STRING>
 			{
 				text-case: firstCaps
 			}
 		}
 		```
 		```autohotkey title="Shortcuts generated from input"
-		::[hotstring]::[Replacement String]
+		::<hotstring>::<Replacement String>
 		```
 
 
@@ -594,10 +594,10 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
 
 	module-options:
 	{
-		default-icon: [file path]
-		suspend-icon: [file path]
-		reload-shortcut: [shortcut]
-		suspend-shortcut: [shortcut]
+		default-icon: <file path>
+		suspend-icon: <file path>
+		reload-shortcut: <shortcut>
+		suspend-shortcut: <shortcut>
 	}
 
 
