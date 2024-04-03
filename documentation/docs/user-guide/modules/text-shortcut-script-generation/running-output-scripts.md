@@ -42,30 +42,30 @@ Once you've done these steps, you can run the `.bat` file by double clicking it.
 
 !!! note
 
-	If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
+    If Petrichor fails to generate a new script, any existing version of the output script will be launched instead.
 
 ???+ example
 
-	``` title="Folder contents"
-	- parent\
-		- Petrichor\
-			- Petrichor.exe
-		- example batch file.bat
-		- inputFile.txt
-	```
-	=== "Command in command line arguments"
+    ``` title="Folder contents"
+    - parent\
+        - Petrichor\
+            - Petrichor.exe
+        - example batch file.bat
+        - inputFile.txt
+    ```
+    === "Command in command line arguments"
 
-		```batch title="example batch file.bat"
-		start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
-		start outputFile.ahk
-		```
+        ```batch title="example batch file.bat"
+        start /wait Petrichor\Petrichor.exe commandName --inputFile ..\inputFile.txt
+        start outputFile.ahk
+        ```
 
-	=== "Command in input file"
+    === "Command in input file"
 
-		```batch title="example batch file.bat"
-		start /wait Petrichor\Petrichor.exe ..\inputFile.txt
-		start outputFile.ahk
-		```
+        ```batch title="example batch file.bat"
+        start /wait Petrichor\Petrichor.exe ..\inputFile.txt
+        start outputFile.ahk
+        ```
 
 ---
 ## Launching scripts automatically on startup
@@ -77,7 +77,7 @@ There are a few options to launch scripts automatically when Windows logs in.
 
 !!! important "Recommended"
 
-	This is the simplest and most reliable method.
+    This is the simplest and most reliable method.
 
 1. Right-click the script in File Explorer.
 2. Click `Create shortcut` in the dropdown menu.
@@ -90,9 +90,9 @@ There are a few options to launch scripts automatically when Windows logs in.
 
 !!! important "Not recommended"
 
-	This method is somewhat unreliable.
+    This method is somewhat unreliable.
 
-	It is also tedious and awkward to set up, and easy to break.
+    It is also tedious and awkward to set up, and easy to break.
 
 The Windows Startup method is easier and more reliable.
 
@@ -105,15 +105,15 @@ Follow the directions [here](https://windowsloop.com/run-autohotkey-script-at-wi
 
 !!! important "Strongly not recommended"
 
-	It is strongly reecommended to use one of the other methods above.
+    It is strongly reecommended to use one of the other methods above.
 
-	Only use this method if no other method works.
+    Only use this method if no other method works.
 
 !!! danger
 
-	DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
+    DO NOT DO THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
-	Editing the registry can brick your computer if you're not careful.
+    Editing the registry can brick your computer if you're not careful.
 
 
 1. Open the Registry Editor. There are two days to do this:

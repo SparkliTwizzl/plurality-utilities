@@ -35,11 +35,11 @@ Token names are always in `lower-kebab-case`.
 
 ???+ example
 
-	```petrichor title="The first two tokens are identical to Petrichor, the third is different."
-	 token-name : Token value. 
-	token-name:Token value.
-	token-name:Token   value.
-	```
+    ```petrichor title="The first two tokens are identical to Petrichor, the third is different."
+     token-name : Token value. 
+    token-name:Token value.
+    token-name:Token   value.
+    ```
 
 ---
 #### Token bodies
@@ -54,15 +54,15 @@ The contents of the token's body can be indented for readability if desired, but
 
 ???+ example
 
-	```petrichor
-	parent-token-name:
-	{
-		child-token-1-name: Value.
-		{
-			child-token-2-name: Value.
-		}
-	}
-	```
+    ```petrichor
+    parent-token-name:
+    {
+        child-token-1-name: Value.
+        {
+            child-token-2-name: Value.
+        }
+    }
+    ```
 
 ---
 ### Blank lines and comments
@@ -75,12 +75,12 @@ Comments can be [escaped](#escape-characters) to make Petrichor treat them as re
 
 ???+ example
 
-	```petrichor
-	// This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
+    ```petrichor
+    // This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
 
-	token: value // This is an inline comment. Everything after "//" will be ignored.
-	token: value \// This is an escaped comment and is part of the value. // But this is a non-escaped comment and will be ignored.
-	```
+    token: value // This is an inline comment. Everything after "//" will be ignored.
+    token: value \// This is an escaped comment and is part of the value. // But this is a non-escaped comment and will be ignored.
+    ```
 
 ---
 ### Escape characters
@@ -89,11 +89,11 @@ Backslash `\` is treated as an "escape character" in some cases. It is used to d
 
 ???+ example
 
-	```petrichor
-	do-something: @to-this // This example token treats @ as a special character and performs operations on it.
-	do-something: \@but-not-to-this // In this case, the @ will be treated as literal text and no operations will be performed on it.
-	do-something: \\@to-this-too // Here, the escape character is escaped. The @ is not escaped and will be treated as a special character.
-	```
+    ```petrichor
+    do-something: @to-this // This example token treats @ as a special character and performs operations on it.
+    do-something: \@but-not-to-this // In this case, the @ will be treated as literal text and no operations will be performed on it.
+    do-something: \\@to-this-too // Here, the escape character is escaped. The @ is not escaped and will be treated as a special character.
+    ```
 
 ---
 ## Supported tokens
@@ -111,22 +111,22 @@ It must be the first token in the file regardless of what module is used.
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Minimum required: 1
+    Minimum required: 1
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be first token in input file.
+    Must be first token in input file.
 
 ???+ example
 
-	```petrichor
-	metadata:
-	{
-		// Metadata goes here.
-	}
-	```
+    ```petrichor
+    metadata:
+    {
+        // Metadata goes here.
+    }
+    ```
 
 ---
 #### Minimum version token
@@ -141,21 +141,21 @@ If patch or patch and preview versions are blank, they are assumed to be any ver
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Minimum required: 1
+    Minimum required: 1
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `metadata` token body.
+    Must be in `metadata` token body.
 
 ???+ example
 
-	```petrichor
-	minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
-	minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
-	minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
-	```
+    ```petrichor
+    minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
+    minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
+    minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
+    ```
 
 ---
 #### Command token
@@ -168,39 +168,39 @@ To use command options, add a body to the token and put subtokens into it, conve
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `metadata` token body.
+    Must be in `metadata` token body.
 
 ???+ example
 
-	```petrichor title="Input"
-	metadata:
-	{
-		minimum-version: <version number>
-		command: commandName
-		{
-			command-option-1: value1
-			command-option-2: value2
-		}
-	}
-	```
-	```powershell title="Command line"
-	[install path]> Petrichor.exe input.txt
-	```
+    ```petrichor title="Input"
+    metadata:
+    {
+        minimum-version: <version number>
+        command: commandName
+        {
+            command-option-1: value1
+            command-option-2: value2
+        }
+    }
+    ```
+    ```powershell title="Command line"
+    [install path]> Petrichor.exe input.txt
+    ```
 
-	This is equivalent to the following:
-	```petrichor title="Input"
-	metadata:
-	{
-		minimum-version: <version number>
-	}
-	```
-	```powershell title="Command line"
-	[install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
-	```
+    This is equivalent to the following:
+    ```petrichor title="Input"
+    metadata:
+    {
+        minimum-version: <version number>
+    }
+    ```
+    ```powershell title="Command line"
+    [install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
+    ```
 
 ---
 ### Module options region
@@ -209,24 +209,24 @@ The `module-options` token allows you to configure module-specific options, if s
 
 !!! note
 
-	Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
+    Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must come after `metadata` token.
-	
+    Must come after `metadata` token.
+    
 ???+ example
 
-	```petrichor
-	module-options:
-	{
-		// Supported tokens depend on module in use.
-	}
-	```
+    ```petrichor
+    module-options:
+    {
+        // Supported tokens depend on module in use.
+    }
+    ```
 
 ---
 ### Module-specific tokens

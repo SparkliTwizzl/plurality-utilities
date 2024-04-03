@@ -22,23 +22,23 @@ This command supports the following options:
 
 ???+ example
 
-	=== "Command line"
+    === "Command line"
 
-		```powershell
-		[install path]> Petrichor.exe generateTextShortcutScript --inputFile [file] --outputFile [file] --logMode [mode] --logFile [file]
-		```
+        ```powershell
+        [install path]> Petrichor.exe generateTextShortcutScript --inputFile [file] --outputFile [file] --logMode [mode] --logFile [file]
+        ```
 
-	=== "Petrichor Script"
+    === "Petrichor Script"
 
-		```petrichor
-		metadata:
-		{
-			command: generateTextShortcutScript
-			{
-				// input-file: Implict when command is in input file.
-				output-file: <file>
-				log-mode: <mode>
-				log-file: <file>
-			}
-		}
-		```
+        ```petrichor
+        metadata:
+        {
+            command: generateTextShortcutScript
+            {
+                // input-file: Implict when command is in input file.
+                output-file: <file>
+                log-mode: <mode>
+                log-file: <file>
+            }
+        }
+        ```

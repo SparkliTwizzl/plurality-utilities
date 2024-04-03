@@ -58,59 +58,59 @@ If you only provide the file name, `{install path}\` will be used as the directo
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+    If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
 
-	You must include the file extension if you provide a file name.
+    You must include the file extension if you provide a file name.
 
 ???+ example
 
-	=== "Command line"
+    === "Command line"
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			Petrichor.exe commandName --inputFile "inputFile.txt"
-			```
-			Petrichor will look for "{install path}\inputFile.txt".
+            ```txt
+            Petrichor.exe commandName --inputFile "inputFile.txt"
+            ```
+            Petrichor will look for "{install path}\inputFile.txt".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			Petrichor.exe commandName --inputFile "{path}\"
-			```
-			Petrichor will look for "{path}\input.petrichor".
+            ```txt
+            Petrichor.exe commandName --inputFile "{path}\"
+            ```
+            Petrichor will look for "{path}\input.petrichor".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			Petrichor.exe commandName --inputFile "{path}\inputFile.txt"
-			```
-			Petrichor will look for "{path}\inputFile.txt".
+            ```txt
+            Petrichor.exe commandName --inputFile "{path}\inputFile.txt"
+            ```
+            Petrichor will look for "{path}\inputFile.txt".
 
-	=== "Petrichor script"
+    === "Petrichor script"
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			input-file : "inputFile.txt"
-			```
-			Petrichor will look for "{install path}\inputFile.txt".
+            ```txt
+            input-file : "inputFile.txt"
+            ```
+            Petrichor will look for "{install path}\inputFile.txt".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			input-file : "{path}\"
-			```
-			Petrichor will look for "{path}\input.petrichor".
+            ```txt
+            input-file : "{path}\"
+            ```
+            Petrichor will look for "{path}\input.petrichor".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			input-file : "{path}\inputFile.txt"
-			```
-			Petrichor will look for "{path}\inputFile.txt".
+            ```txt
+            input-file : "{path}\inputFile.txt"
+            ```
+            Petrichor will look for "{path}\inputFile.txt".
 
 
 ---
@@ -130,60 +130,60 @@ If you only provide the file name, `{install path}\_output\` will be used as the
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+    If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
 
-	A file extension may or may not be required. In some cases it may be overridden by a module.
+    A file extension may or may not be required. In some cases it may be overridden by a module.
 
 
 ???+ example
 
-	=== "Command line"
+    === "Command line"
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			Petrichor.exe commandName --outputFile "outputFile"
-			```
-			Petrichor will generate the file "{install path}\_output\outputFile.{extension}".
+            ```txt
+            Petrichor.exe commandName --outputFile "outputFile"
+            ```
+            Petrichor will generate the file "{install path}\_output\outputFile.{extension}".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			Petrichor.exe commandName --outputFile "{path}\output\"
-			```
-			Petrichor will generate the file "{path}\output\output.{extension}".
+            ```txt
+            Petrichor.exe commandName --outputFile "{path}\output\"
+            ```
+            Petrichor will generate the file "{path}\output\output.{extension}".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			Petrichor.exe commandName --outputFile "{path}\outputFile"
-			```
-			Petrichor will generate the file "{path}\outputFile.{extension}".
+            ```txt
+            Petrichor.exe commandName --outputFile "{path}\outputFile"
+            ```
+            Petrichor will generate the file "{path}\outputFile.{extension}".
 
-	=== "Petrichor script"
+    === "Petrichor script"
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			output-file : "outputFile"
-			```
-			Petrichor will generate the file "{install path}\_output\outputFile.{extension}".
+            ```txt
+            output-file : "outputFile"
+            ```
+            Petrichor will generate the file "{install path}\_output\outputFile.{extension}".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			output-file : "{path}\output\"
-			```
-			Petrichor will generate the file "{path}\output\output.{extension}".
+            ```txt
+            output-file : "{path}\output\"
+            ```
+            Petrichor will generate the file "{path}\output\output.{extension}".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			output-file : "{path}\outputFile"
-			```
-			Petrichor will generate the file "{path}\outputFile.{extension}".
+            ```txt
+            output-file : "{path}\outputFile"
+            ```
+            Petrichor will generate the file "{path}\outputFile.{extension}".
 
 
 ---
@@ -204,21 +204,21 @@ Allowed values:
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
 ???+ example
 
-	=== "Command line"
+    === "Command line"
 
-		```txt
-		Petrichor.exe comandName --logMode {all | fileOnly | consoleOnly | none}
-		```
+        ```txt
+        Petrichor.exe comandName --logMode {all | fileOnly | consoleOnly | none}
+        ```
 
-	=== "Petrichor Script"
+    === "Petrichor Script"
 
-		```txt
-		log-file : {all | fileOnly | consoleOnly | none}
-		```
+        ```txt
+        log-file : {all | fileOnly | consoleOnly | none}
+        ```
 
 ---
 #### Log file option
@@ -231,63 +231,63 @@ The `log file` option is used to specify the file name and/or directory to gener
 
 !!! note
 
-	Log file will only be created if [logging to file is enabled](#log-mode-option).
+    Log file will only be created if [logging to file is enabled](#log-mode-option).
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+    If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
 
-	A file extension is not required and will be overridden if specified.
+    A file extension is not required and will be overridden if specified.
 
 ???+ example
 
-	=== "Command line "
+    === "Command line "
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			Petrichor.exe comandName --logFile "logFile.txt"
-			```
-			Petrichor will generate the file "{install path}\_log\logFile.txt".
+            ```txt
+            Petrichor.exe comandName --logFile "logFile.txt"
+            ```
+            Petrichor will generate the file "{install path}\_log\logFile.txt".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			Petrichor.exe commandName --logFile "{path}/"
-			```
-			Petrichor will generate the file "{path}\{default log file name}.log".
+            ```txt
+            Petrichor.exe commandName --logFile "{path}/"
+            ```
+            Petrichor will generate the file "{path}\{default log file name}.log".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			Petrichor.exe commandName --logFile "{path}\logFile.txt"
-			```
-			Petrichor will generate the file "{path}\logFile.txt".
+            ```txt
+            Petrichor.exe commandName --logFile "{path}\logFile.txt"
+            ```
+            Petrichor will generate the file "{path}\logFile.txt".
 
-	=== "Petrichor script"
+    === "Petrichor script"
 
-		=== "File name only, default directory"
+        === "File name only, default directory"
 
-			```txt
-			log-file : "logFile.txt"
-			```
-			Petrichor will generate the file "{install path}\_log\logFile.txt".
+            ```txt
+            log-file : "logFile.txt"
+            ```
+            Petrichor will generate the file "{install path}\_log\logFile.txt".
 
-		=== "Directory only, default file name"
+        === "Directory only, default file name"
 
-			```txt
-			log-file : {path}/"
-			```
-			Petrichor will generate the file "{path}\{default log file name}.log".
+            ```txt
+            log-file : {path}/"
+            ```
+            Petrichor will generate the file "{path}\{default log file name}.log".
 
-		=== "Full file path"
+        === "Full file path"
 
-			```txt
-			log-file : "{path}/logFile.txt"
-			```
-			Petrichor will generate the file "{path}\logFile.txt".
+            ```txt
+            log-file : "{path}/logFile.txt"
+            ```
+            Petrichor will generate the file "{path}\logFile.txt".
 
 
 ---
@@ -299,9 +299,9 @@ If you run Petrichor with no arguments, it will prompt you to use the `--help` o
 
 ???+ example
 
-	```powershell
-	[install path]> Petrichor.exe --help
-	```
+    ```powershell
+    [install path]> Petrichor.exe --help
+    ```
 
 
 ---
@@ -310,7 +310,7 @@ If you run Petrichor with no arguments, it will prompt you to use the `--help` o
 If preferred, you can create a Batch file ( `.bat` file ) to run Petrichor for you.
 
 1. Make a new text file, name it whatever you want, and change its extension to `.bat`.
-	-  You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
+    -  You can also open it in a text editor such as Notepad and use `save as → Batch file` to do the same thing.
 2. Open the file in a text editor program, such as Notepad.
 3. Type `start {install path}/Petrichor.exe]`, followed by command usage as shown above.
 4. Save the batch file.
@@ -321,29 +321,29 @@ Assuming the `.bat` file was made correctly, it will run Petrichor with all the 
 
 !!! warning
 
-	[Relative paths](#relative-file-paths) are relative to the batch script by default. If they are used in Petrichor commands, they must be relative to Petrichor.exe instead, unless you [add Petrichor to your PATH environment variable](#adding-petrichor-to-windows-path-environment-variable).
+    [Relative paths](#relative-file-paths) are relative to the batch script by default. If they are used in Petrichor commands, they must be relative to Petrichor.exe instead, unless you [add Petrichor to your PATH environment variable](#adding-petrichor-to-windows-path-environment-variable).
 
 ???+ example
 
-	```txt title="Folder contents"
-	- parent\
-		- Petrichor\
-			- Petrichor.exe
-		- example batch file.bat
-		- inputFile.txt
-	```
+    ```txt title="Folder contents"
+    - parent\
+        - Petrichor\
+            - Petrichor.exe
+        - example batch file.bat
+        - inputFile.txt
+    ```
 
-	=== "Command in command line arguments"
+    === "Command in command line arguments"
 
-		```batch title="example batch file.bat"
-		start Petrichor\Petrichor.exe commandName --inputFile {path}\inputFile.txt
-		```
+        ```batch title="example batch file.bat"
+        start Petrichor\Petrichor.exe commandName --inputFile {path}\inputFile.txt
+        ```
 
-	=== "Command in input file"
+    === "Command in input file"
 
-		```batch title="example batch file.bat"
-		start Petrichor\Petrichor.exe {path}\inputFile.txt
-		```
+        ```batch title="example batch file.bat"
+        start Petrichor\Petrichor.exe {path}\inputFile.txt
+        ```
 
 
 ---
@@ -355,17 +355,17 @@ If you dont like having to get the full path for files, you can use relative pat
 
 ???+ example
 
-	```txt title="Folder contents"
-	- folder/
-		- subfolder/
-			- you are here.txt
-			- example a.txt
-		- example b.txt
-	```
-	```txt title="Relative paths and equivalent absolute paths"
-	"./example a.txt" -> "folder\subfolder\example a.txt"
-	"../example b.txt" -> "folder\example b.txt"
-	```
+    ```txt title="Folder contents"
+    - folder/
+        - subfolder/
+            - you are here.txt
+            - example a.txt
+        - example b.txt
+    ```
+    ```txt title="Relative paths and equivalent absolute paths"
+    "./example a.txt" -> "folder\subfolder\example a.txt"
+    "../example b.txt" -> "folder\example b.txt"
+    ```
 
 ---
 
@@ -375,7 +375,7 @@ On Windows, backslashes ( `\` ) and forward slashes ( `/` ) both work the same w
 
 !!! warning
 
-	Backslashes and forward slashes are not equivalent to each other in Petrichor Script.
+    Backslashes and forward slashes are not equivalent to each other in Petrichor Script.
 
 ---
 ## Adding Petrichor to Windows PATH environment variable
@@ -398,14 +398,14 @@ Once you do the above steps, you will be able to run Petrichor in a terminal dir
 
 ???+ example
 
-	=== "Without Petrichor in PATH variable"
+    === "Without Petrichor in PATH variable"
 
-		```txt
-		C:\path\to\install\folder\Petrichor.exe commandName
-		```
+        ```txt
+        C:\path\to\install\folder\Petrichor.exe commandName
+        ```
 
-	=== "With Petrichor in PATH variable"
+    === "With Petrichor in PATH variable"
 
-		```txt
-		Petrichor.exe commandName
-		```
+        ```txt
+        Petrichor.exe commandName
+        ```

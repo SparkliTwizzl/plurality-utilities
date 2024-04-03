@@ -19,20 +19,20 @@ This module's variant of the [module options token](../../getting-started/petric
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must come after `metadata` token.
+    Must come after `metadata` token.
 
 ???+ example
 
-	```petrichor
-	module-options:
-	{
-		// Module-specific options go here.
-	}
-	```
+    ```petrichor
+    module-options:
+    {
+        // Module-specific options go here.
+    }
+    ```
 
 ---
 ### Default icon and suspend icon tokens
@@ -47,25 +47,25 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 
 !!! warning
 
-	If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
+    If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `module-options` token body.
+    Must be in `module-options` token body.
 
 ???+ example
 
-	```petrichor
-	module-options:
-	{
-		default-icon: <path>/default.ico
-		suspend-icon: ./suspend_icon.png
-	}
-	```
+    ```petrichor
+    module-options:
+    {
+        default-icon: <path>/default.ico
+        suspend-icon: ./suspend_icon.png
+    }
+    ```
 
 
 ---
@@ -81,21 +81,21 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `module-options` token body.
+    Must be in `module-options` token body.
 
 ???+ example
 
-	```petrichor
-	module-options:
-	{
-		reload-shortcut: <shortcut>
-		suspend-shortcut: <shortcut>
-	}
-	```
+    ```petrichor
+    module-options:
+    {
+        reload-shortcut: <shortcut>
+        suspend-shortcut: <shortcut>
+    }
+    ```
 
 
 ---
@@ -135,17 +135,17 @@ Petrichor supports the following tags in [script control shortcuts](#reload-shor
 
 !!! note
 
-	`\[` and `\]` make use of [escape characters](../../getting-started/petrichor-script.html#escape-characters).
+    `\[` and `\]` make use of [escape characters](../../getting-started/petrichor-script.html#escape-characters).
 
 ???+ example
 
-	```petrichor
-	module-options:
-	{
-		reload-shortcut: [win]r // Windows key + R
-		suspend-shortcut: \[win\]s // [win]s
-	}
-	```
+    ```petrichor
+    module-options:
+    {
+        reload-shortcut: [win]r // Windows key + R
+        suspend-shortcut: \[win\]s // [win]s
+    }
+    ```
 
 
 ---
@@ -157,22 +157,22 @@ Shortcuts are defined via subtokens within this token's body.
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Mininum required: 1
+    Mininum required: 1
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must come after `metadata` token.
+    Must come after `metadata` token.
 
 ???+ example
 
-	```petrichor
-	shortcut-list:
-	{
-		// Shortcuts go here.
-	}
-	```
+    ```petrichor
+    shortcut-list:
+    {
+        // Shortcuts go here.
+    }
+    ```
 
 
 ---
@@ -188,30 +188,30 @@ These components can have whitespace between them, but note that this whitespace
 
 !!! warning
 
-	You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
+    You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
 
-	Petrichor will allow you to do it, but the generated shortcuts will not work.
+    Petrichor will allow you to do it, but the generated shortcuts will not work.
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	No restrictions on number of instances that can be present.
+    No restrictions on number of instances that can be present.
 
-	Must be in `shortcut-list` token body.
+    Must be in `shortcut-list` token body.
 
 ???+ example
 
-	```petrichor title="Input"
-	shortcut-list:
-	{
-		shortcut: <hotstring> :: ` <replacement string> `
-	}
-	```
-	```autohotkey title="Shortcuts generated from input"
-	; This is a standard shortcut. The <hotstring> and <replacement string> will be inserted into the output file unaltered.
-	::<hotstring>::` <replacement string> `
-	```
+    ```petrichor title="Input"
+    shortcut-list:
+    {
+        shortcut: <hotstring> :: ` <replacement string> `
+    }
+    ```
+    ```autohotkey title="Shortcuts generated from input"
+    ; This is a standard shortcut. The <hotstring> and <replacement string> will be inserted into the output file unaltered.
+    ::<hotstring>::` <replacement string> `
+    ```
 
 
 ---
@@ -240,34 +240,34 @@ If no subtokens are used, this token does not need a body.
 
 !!! note
 
-	By default, you cannot use the `[` or `]` symbols in a template. Use [escape characters](../../getting-started/command-usage.html#escape-characters) to circumvent this.
+    By default, you cannot use the `[` or `]` symbols in a template. Use [escape characters](../../getting-started/command-usage.html#escape-characters) to circumvent this.
 
 !!! warning
 
-	You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
+    You cannot use `::` in a hotstring due to the way AutoHotkey hotstrings work.
 
-	Petrichor will allow you to do it, but the generated shortcuts will not work.
+    Petrichor will allow you to do it, but the generated shortcuts will not work.
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	No restrictions on number of instances that can be present.
+    No restrictions on number of instances that can be present.
 
-	Must be in `shortcut-list` token body.
+    Must be in `shortcut-list` token body.
 
 ???+ example
 
-	```petrichor title="Input"
-	shortcut-list:
-	{
-		shortcut-template: [tag] [last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
-	}
-	```
-	```autohotkey title="Shortcuts generated from input"
-	::sm smt::1234 - Sam Smith (they/them) | {a person} | #123456
-	::jo brn::5678 - Joe Brown (they/them) | {another person person} | #789abc
-	```
+    ```petrichor title="Input"
+    shortcut-list:
+    {
+        shortcut-template: [tag] [last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
+    }
+    ```
+    ```autohotkey title="Shortcuts generated from input"
+    ::sm smt::1234 - Sam Smith (they/them) | {a person} | #123456
+    ::jo brn::5678 - Joe Brown (they/them) | {another person person} | #789abc
+    ```
 
 
 ---
@@ -287,50 +287,50 @@ The `find` and `replace` lists must contain the same number of items as each oth
 
 !!! note
 
-	`Find keys` are case-sensitive.
+    `Find keys` are case-sensitive.
 
 !!! note
 
-	If a `find` token does not have a matching `replace` token, all the `find` keys will just be removed from the template.
+    If a `find` token does not have a matching `replace` token, all the `find` keys will just be removed from the template.
 
 ???+ important "Find token restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `shortcut-template` token body.
+    Must be in `shortcut-template` token body.
 
 
 ???+ important "Replace token restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `shortcut-template` token body.
+    Must be in `shortcut-template` token body.
 
-	Must be paired with `find` token.
+    Must be paired with `find` token.
 
-	Must come after `find` token.
+    Must come after `find` token.
 
 
 ???+ example
 
-	```petrichor title="Input"
-	shortcut-list:
-	{
-		shortcut-template: <hotstring> :: <replacement string> custom find 1, custom find 2, Custom find 2
-		{
-			find: { custom find 1, custom find 2 } // These are the `find keys`.
-			replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
-		}
-	}
-	```
-	```autohotkey title="Shortcuts generated from input"
-	::<hotstring>::<replacement string> replace 1, replace 2, Custom find 2
-	```
-	If the `find keys` are present in `[field]` values within the `<replacement string>`, they will be replaced there as well.
+    ```petrichor title="Input"
+    shortcut-list:
+    {
+        shortcut-template: <hotstring> :: <replacement string> custom find 1, custom find 2, Custom find 2
+        {
+            find: { custom find 1, custom find 2 } // These are the `find keys`.
+            replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
+        }
+    }
+    ```
+    ```autohotkey title="Shortcuts generated from input"
+    ::<hotstring>::<replacement string> replace 1, replace 2, Custom find 2
+    ```
+    If the `find keys` are present in `[field]` values within the `<replacement string>`, they will be replaced there as well.
 
 
 ---
@@ -349,73 +349,73 @@ Allowed values:
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `shortcut-template` token body.
+    Must be in `shortcut-template` token body.
 
 ???+ example
 
-	=== "unchanged"
+    === "unchanged"
 
-		```petrichor title="Input"
-		shortcut-list:
-		{
-			shortcut-template: <hotstring> :: <replacement STRING>
-			{
-				text-case: unchanged
-			}
-		}
-		```
-		```autohotkey title="Shortcuts generated from input"
-		::<hotstring>::<replacement STRING>
-		```
+        ```petrichor title="Input"
+        shortcut-list:
+        {
+            shortcut-template: <hotstring> :: <replacement STRING>
+            {
+                text-case: unchanged
+            }
+        }
+        ```
+        ```autohotkey title="Shortcuts generated from input"
+        ::<hotstring>::<replacement STRING>
+        ```
 
-	=== "upper"
+    === "upper"
 
-		```petrichor title="Input"
-		shortcut-list:
-		{
-			shortcut-template: <hotstring> :: <replacement STRING>
-			{
-				text-case: upper
-			}
-		}
-		```
-		```autohotkey title="Shortcuts generated from input"
-		::<hotstring>::<REPLACEMENT STRING>
-		```
+        ```petrichor title="Input"
+        shortcut-list:
+        {
+            shortcut-template: <hotstring> :: <replacement STRING>
+            {
+                text-case: upper
+            }
+        }
+        ```
+        ```autohotkey title="Shortcuts generated from input"
+        ::<hotstring>::<REPLACEMENT STRING>
+        ```
 
-	=== "lower"
+    === "lower"
 
-		```petrichor title="Input"
-		shortcut-list:
-		{
-			shortcut-template: <hotstring> :: <replacement STRING>
-			{
-				text-case: lower
-			}
-		}
-		```
-		```autohotkey title="Shortcuts generated from input"
-		::<hotstring>::<replacement string>
-		```
+        ```petrichor title="Input"
+        shortcut-list:
+        {
+            shortcut-template: <hotstring> :: <replacement STRING>
+            {
+                text-case: lower
+            }
+        }
+        ```
+        ```autohotkey title="Shortcuts generated from input"
+        ::<hotstring>::<replacement string>
+        ```
 
-	=== "firstCaps"
+    === "firstCaps"
 
-		```petrichor title="Input"
-		shortcut-list:
-		{
-			shortcut-template: <hotstring> :: <replacement STRING>
-			{
-				text-case: firstCaps
-			}
-		}
-		```
-		```autohotkey title="Shortcuts generated from input"
-		::<hotstring>::<Replacement String>
-		```
+        ```petrichor title="Input"
+        shortcut-list:
+        {
+            shortcut-template: <hotstring> :: <replacement STRING>
+            {
+                text-case: firstCaps
+            }
+        }
+        ```
+        ```autohotkey title="Shortcuts generated from input"
+        ::<hotstring>::<Replacement String>
+        ```
 
 
 ---
@@ -427,22 +427,22 @@ This token's body contains subtokens defining each entry.
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Minimum required: 1
+    Minimum required: 1
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must come after `metadata` token.
+    Must come after `metadata` token.
 
 ???+ example
 
-	```petrichor
-	entry-list:
-	{
-		// Entries go here.
-	}
-	```
+    ```petrichor
+    entry-list:
+    {
+        // Entries go here.
+    }
+    ```
 
 
 ---
@@ -460,20 +460,20 @@ These subtokens correspond to the `[field]` tags in [templated shortcuts](#short
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	No restrictions on number of instances that can be present.
+    No restrictions on number of instances that can be present.
 
-	Must be in `entry-list` token body.
+    Must be in `entry-list` token body.
 
 ???+ example
 
-	```petrichor
-	entry: Notes about entry.
-	{
-		// Entry data goes here.
-	}
-	```
+    ```petrichor
+    entry: Notes about entry.
+    {
+        // Entry data goes here.
+    }
+    ```
 
 
 ---
@@ -483,11 +483,11 @@ The `color` token defines a value for the `[color]` field tag in [templated shor
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 ---
 #### Decoration tokens
@@ -496,11 +496,11 @@ The `decoration` token defines a value for the `[decoration]` field tag in [temp
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 
 ---
@@ -510,13 +510,13 @@ The `id` token defines a value for the `[id]` field tag in [templated shortcuts]
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Minimum required: 1
+    Minimum required: 1
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 
 ---
@@ -534,20 +534,20 @@ The `[tag]` field value can be any string that does not contain whitespace.
 
 ???+ important "Restrictions"
 
-	REQUIRED
+    REQUIRED
 
-	Minimum required: 1
+    Minimum required: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 ???+ example
 
-	```petrichor
-	entry:
-	{
-		name: name string @tagstring
-	}
-	```
+    ```petrichor
+    entry:
+    {
+        name: name string @tagstring
+    }
+    ```
 
 
 ---
@@ -559,11 +559,11 @@ The `last-name` token defines values for the `[last-name]` and `[last-tag]` fiel
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 
 ---
@@ -573,11 +573,11 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
 
 ???+ important "Restrictions"
 
-	OPTIONAL
+    OPTIONAL
 
-	Maximum allowed: 1
+    Maximum allowed: 1
 
-	Must be in `entry` token body.
+    Must be in `entry` token body.
 
 
 ---
@@ -585,63 +585,63 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
 
 ???+ example
 
-	```petrichor title="Input"
-	metadata:
-	{
-		// Metadata goes here.
-	}
+    ```petrichor title="Input"
+    metadata:
+    {
+        // Metadata goes here.
+    }
 
 
-	module-options:
-	{
-		default-icon: <file path>
-		suspend-icon: <file path>
-		reload-shortcut: <shortcut>
-		suspend-shortcut: <shortcut>
-	}
+    module-options:
+    {
+        default-icon: <file path>
+        suspend-icon: <file path>
+        reload-shortcut: <shortcut>
+        suspend-shortcut: <shortcut>
+    }
 
 
-	shortcut-list:
-	{
-		shortcut: replaceme :: withme
-		shortcut-template: [tag] :: [name] [last-name] ([pronoun])
-		{
-			find: { this, that }
-			replace: { these, those }
-			text-case: firstCaps
-		}
-	}
+    shortcut-list:
+    {
+        shortcut: replaceme :: withme
+        shortcut-template: [tag] :: [name] [last-name] ([pronoun])
+        {
+            find: { this, that }
+            replace: { these, those }
+            text-case: firstCaps
+        }
+    }
 
 
-	entry-list:
-	{
-		entry: A
-		{
-			id: idValueA
-			color: colorValueA
-			decoration: decorationValueA
-			pronoun: pronounValueA THIS THAT
-			last-name: last name value A @lastTagValueA
-			name: name value A 1 @tagValueA1
-			name: name value A 2 @tagValueA2
-		}
+    entry-list:
+    {
+        entry: A
+        {
+            id: idValueA
+            color: colorValueA
+            decoration: decorationValueA
+            pronoun: pronounValueA THIS THAT
+            last-name: last name value A @lastTagValueA
+            name: name value A 1 @tagValueA1
+            name: name value A 2 @tagValueA2
+        }
 
-		entry: B
-		{
-			id: idValueB
-			color: colorValueB
-			decoration: decorationValueB
-			pronoun: pronounValueB this that
-			last-name: last name value B @lastTagValueB
-			name: name value B 1 @tagValueB1
-			name: name value B 2 @tagValueB2
-		}
-	}
-	```
-	```autohotkey title="Shortcuts generated from input"
-	::replaceme::withme
-	::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea This That)
-	::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea This That)
-	::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb These Those)
-	::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb These Those)
-	```
+        entry: B
+        {
+            id: idValueB
+            color: colorValueB
+            decoration: decorationValueB
+            pronoun: pronounValueB this that
+            last-name: last name value B @lastTagValueB
+            name: name value B 1 @tagValueB1
+            name: name value B 2 @tagValueB2
+        }
+    }
+    ```
+    ```autohotkey title="Shortcuts generated from input"
+    ::replaceme::withme
+    ::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea This That)
+    ::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea This That)
+    ::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb These Those)
+    ::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb These Those)
+    ```
