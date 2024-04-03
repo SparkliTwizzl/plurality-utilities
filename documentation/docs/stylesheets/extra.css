@@ -7,15 +7,15 @@
   /* "important" admonition */
   .md-typeset .admonition.important,
   .md-typeset details.important {
-  border-color: rgb(255, 220, 0);
+  border-color: rgb(224, 192, 0);
   }
   .md-typeset .important > .admonition-title,
   .md-typeset .important > summary {
-  background-color: rgba(52, 50, 19, 0.65);
+  background-color: rgba(180, 154, 0, 0.1);
   }
   .md-typeset .important > .admonition-title::before,
   .md-typeset .important > summary::before {
-  background-color: rgb(255, 220, 0);
+  background-color: rgb(224, 192, 0);
   -webkit-mask-image: var(--md-admonition-icon--important);
       mask-image: var(--md-admonition-icon--important);
   }
