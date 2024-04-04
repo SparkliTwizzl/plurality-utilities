@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "petrichor-script-lexer"
-description = "A custom RegexLexer for Petrichor Script"
-version = "0.11.0"
+description = "A custom RegexLexer for Petrichor Script."
+version = "0.11.1"
 authors = [
     { name = "SparkliTwizzl", email = "github@sparklitwizzl.com" }
 ]
@@ -18,7 +18,7 @@ classifiers = [
 dependencies = ["pygments"]
 
 [project.entry-points."pygments.lexers"]
-commandlexer = "petrichorscriptlexer.petrichorscriptlexer:PetrichorScriptLexer"
+petrichorscriptlexer = "petrichorscriptlexer.petrichorscriptlexer:PetrichorScriptLexer"
 
 [project.urls]
 Repository = "https://github.com/sparklitwizzl/petrichor"
