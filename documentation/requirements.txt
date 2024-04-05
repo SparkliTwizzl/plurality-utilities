@@ -1,0 +1,6 @@
+mike
+mkdocs
+mkdocs-material
+petrichor-script-lexer == 1.0.1
+pymdown-extensions
+
