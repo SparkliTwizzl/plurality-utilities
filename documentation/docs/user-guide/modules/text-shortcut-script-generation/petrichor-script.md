@@ -4,7 +4,7 @@ title: Petrichor Script - Text Shortcut Script Generation - Modules
 ---
 
 <h1 align="center">Petrichor Script</h1>
-<h2 align="center"><a href="./index.html">Text Shortcut Script Generation module</a></h2>
+<h2 align="center"><a href="./index.html">Text Shortcut Script Generation</a></h2>
 
 
 ---
