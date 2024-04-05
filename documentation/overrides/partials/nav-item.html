@@ -7,15 +7,13 @@
     {% endif %}
 
     <!-- Navigation link title -->
-    {% if nav_item.is_page and nav_item.meta.short_title %}
-        <span class="md-ellipsis">
+    <span class="md-ellipsis">
+        {% if nav_item.is_page and nav_item.meta.short_title %}
             {{ nav_item.meta.short_title }}
-        </span>
-    {% else %}
-        <span class="md-ellipsis">
+        {% else %}
             {{ ref.title }}
-        </span>
-    {% endif %}
+        {% endif %}
+    </span>
 
     <!-- Navigation link status -->
     {% if nav_item.is_page and nav_item.meta.status %}
