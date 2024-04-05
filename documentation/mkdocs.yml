@@ -4,6 +4,7 @@ copyright: Copyright &copy; 2024 SparkliTwizzl. Licensed under AEL-NC-AT 1.1.
 repo_url: https://github.com/sparklitwizzl/petrichor
 repo_name: sparklitwizzl/petrichor
 use_directory_urls: false
+site_url: https://sparklitwizzl.github.io/petrichor
 
 plugins:
   - mike:
@@ -63,6 +64,9 @@ theme:
     - content.tabs.link
     - header.autohide
     - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
