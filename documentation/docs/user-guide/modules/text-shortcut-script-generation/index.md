@@ -3,7 +3,8 @@ short_title: Text Shortcut Script Generation
 title: Text Shortcut Script Generation - Modules
 ---
 
-<h1 align="center">Text Shortcut Script Generation module</h1>
+<h1 align="center">Text Shortcut Script Generation</h1>
+<h2 align="center"><a href="../index.html">Modules</a></h2>
 
 ---
 ## Purpose
