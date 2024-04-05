@@ -50,6 +50,10 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 
 [Relative file paths](../../getting-started/command-usage.html#relative-file-paths) can be used.
 
+!!! note
+
+    File paths can be surrounded with quotes, but they do not need to be.
+
 !!! warning
 
     If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
@@ -68,7 +72,7 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
     module-options:
     {
         default-icon: <path>/default.ico
-        suspend-icon: ./suspend_icon.png
+        suspend-icon: "./suspend_icon.png"
     }
     ```
 
