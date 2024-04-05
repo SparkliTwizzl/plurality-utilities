@@ -21,12 +21,13 @@ title: Changelog - About
 
     - Change `template-list` token to `shortcut-list`.
     - Change `template` token to `shortcut-template`.
+    - Change shortcut structure to `#!ptcr <hotstring> >> <replacement string>`.
     - Change control shortcut find-and-replace table.
         - Change main and alias tags for `&`, `[`, and `]`.
         - Change alias tag for `*`.
         - Add alias tag for `$`.
     - Change console logging colors via [Pastel](https://github.com/silkfire/Pastel).
-    - Add non-templated shortcuts.
+    - Add plaintext shortcuts.
 
 
 ---

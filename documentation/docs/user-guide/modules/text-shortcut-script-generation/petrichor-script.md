@@ -50,6 +50,10 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 
 [Relative file paths](../../getting-started/command-usage.html#relative-file-paths) can be used.
 
+!!! note
+
+    File paths can be surrounded with quotes, but they do not need to be.
+
 !!! warning
 
     If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.
@@ -68,7 +72,7 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
     module-options:
     {
         default-icon: <path>/default.ico
-        suspend-icon: ./suspend_icon.png
+        suspend-icon: "./suspend_icon.png"
     }
     ```
 
@@ -190,7 +194,7 @@ The `shortcut` token defines a plaintext shortcut.
 
 This token's values can use AutoHotkey special behavior if written correctly. Consult AutoHotkey documentation to learn more about this.
 
-Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `::` ), and a replacement string.
+Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 right-angle brackets ( `>>` ), and a replacement string.
 
 !!! note
 
@@ -219,7 +223,7 @@ Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `:
     ```petrichor title="Input"
     shortcut-list:
     {
-        shortcut: <hotstring> :: ` <replacement string> `
+        shortcut: <hotstring> >> ` <replacement string> `
     }
     ```
     ```autohotkey title="Shortcuts generated from input"
@@ -277,7 +281,7 @@ If no subtokens are used, this token does not need a body.
     ```petrichor title="Input"
     shortcut-list:
     {
-        shortcut-template: [tag] [last-tag] :: [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
+        shortcut-template: [tag] [last-tag] >> [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
     }
     ```
     ```autohotkey title="Shortcuts generated from input"
@@ -334,12 +338,12 @@ The `find` and `replace` lists must contain the same number of items as each oth
     ```petrichor title="Input"
     shortcut-list:
     {
-        shortcut-template: <hotstring> :: <replacement string> custom find 1, custom find 2, Custom find 2
+        shortcut-template: <hotstring> >> <replacement string> custom find 1, custom find 2, Custom find 2
         {
             find: { custom find 1, custom find 2 } // These are the `find keys`.
             replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
         }
-        shortcut-template: <hotstring> :: <replacement string> custom remove 1, custom remove 2, Custom remove 2
+        shortcut-template: <hotstring> >> <replacement string> custom remove 1, custom remove 2, Custom remove 2
         {
             find: { custom remove 1, custom remove 2 } // These `find keys` will be removed, since there are no `replace values` for them.
         }
@@ -381,7 +385,7 @@ Allowed values:
         ```petrichor title="Input"
         shortcut-list:
         {
-            shortcut-template: <hotstring> :: <replacement STRING>
+            shortcut-template: <hotstring> >> <replacement STRING>
             {
                 text-case: unchanged
             }
@@ -396,7 +400,7 @@ Allowed values:
         ```petrichor title="Input"
         shortcut-list:
         {
-            shortcut-template: <hotstring> :: <replacement STRING>
+            shortcut-template: <hotstring> >> <replacement STRING>
             {
                 text-case: upper
             }
@@ -411,7 +415,7 @@ Allowed values:
         ```petrichor title="Input"
         shortcut-list:
         {
-            shortcut-template: <hotstring> :: <replacement STRING>
+            shortcut-template: <hotstring> >> <replacement STRING>
             {
                 text-case: lower
             }
@@ -426,7 +430,7 @@ Allowed values:
         ```petrichor title="Input"
         shortcut-list:
         {
-            shortcut-template: <hotstring> :: <replacement STRING>
+            shortcut-template: <hotstring> >> <replacement STRING>
             {
                 text-case: firstCaps
             }
@@ -677,8 +681,8 @@ The `pronoun` token defines a value for the `#!ptcr [pronoun]` field tag in [tem
 
     shortcut-list:
     {
-        shortcut: replaceme :: withme
-        shortcut-template: [tag] :: [name] [last-name] ([pronoun]) [decoration]
+        shortcut: replaceme >> withme
+        shortcut-template: [tag] >> [name] [last-name] ([pronoun]) [decoration]
         {
             find: { this, that }
             replace: { these, those }
