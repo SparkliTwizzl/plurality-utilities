@@ -20,31 +20,43 @@ All data in Petrichor input files is in the form of data tokens, or just "tokens
 
 Some tokens are required and some are optional.
 
-Some tokens can have a body containing subtokens.
+Every token consists of a name and a value, separated by a colon ( `:` ).
 
----
-#### Data token structure
+Token names are in `lower-kebab-case`.
 
-Every token consists of a name and a value, separated by a color ( `:` ).
+Token names can contain numbers, but cannot start with them.
 
-Whitespace between and around these parts is ignored.
+!!! note
 
-Whitespace within these parts matters, however.
-
-Token names are always in `lower-kebab-case`.
+    Whitespace around token names and values is ignored.
 
 ???+ example
 
-    ```petrichor title="The first two tokens are identical to Petrichor, the third is different."
+    ```petrichor title="Valid token names"
+    tokenname: Value.
+    token-name: Value.
+    token-name-3: Value.
+    ```
+    
+    ```petrichor title="Invalid token names"
+    TokenName: Value.
+    token_name: Value.
+    3-token-name: Value.
+    ```
+
+    ```petrichor title="Whitespace"
+    // These tokens are identical to Petrichor.
      token-name : Token value. 
     token-name:Token value.
+    
+    // This token is different than the first two.
     token-name:Token   value.
     ```
 
 ---
 #### Token bodies
 
-Some tokens can have a body containing subtokens.
+Some tokens can have a body containing other tokens.
 
 These consist of a token (which may or may not require a value), then the body, which is surrounded by curly brackets ( `{` `}` ).
 
@@ -65,6 +77,31 @@ The contents of the token's body can be indented for readability if desired, but
     ```
 
 ---
+### Escape characters
+
+Backslash ( `\` ) is treated as an "escape character".
+
+It is used to disable (aka "escape") the normal function of special characters and make them be treated as literal text instead.
+
+!!! tip
+
+    You can escape an escape character.
+
+???+ example
+
+    ```petrichor
+    // This example token treats @ as a special character and performs operations on it.
+    do-something: @to-this
+
+    // In this case, the @ will be treated as literal text and no operations will be performed on it.
+    do-something: \@but-not-to-this
+
+    // Here, the escape character is escaped and treated as a literal backslash ( \ ) character.
+    // The @ is not escaped and will be treated as a special character like normal.
+    do-something: \\@to-this-too
+    ```
+
+---
 ### Blank lines and comments
 
 Blank lines are ignored.
@@ -76,38 +113,26 @@ Comments can be [escaped](#escape-characters) to make Petrichor treat them as re
 ???+ example
 
     ```petrichor
-    // This is a comment. This line will be ignored. The following line is blank, and will also be ignored.
+    // This is a comment. This line will be ignored.
+    // The following line is blank, and will also be ignored.
 
     token: value // This is an inline comment. Everything after "//" will be ignored.
-    token: value \// This is an escaped comment and is part of the value. // But this is a non-escaped comment and will be ignored.
+    token: value \// This is part of the value. // But this is a comment and will be ignored.
     ```
 
 ---
-### Escape characters
+## Universal tokens
 
-Backslash `\` is treated as an "escape character" in some cases. It is used to disable the normal function of special characters. An escape character can be applied to another escape character in order to make the scond one print literally.
+These tokens are universal to all modules.
 
-???+ example
+Modules may support different (non-universal) contents within a universal token's body.
 
-    ```petrichor
-    do-something: @to-this // This example token treats @ as a special character and performs operations on it.
-    do-something: \@but-not-to-this // In this case, the @ will be treated as literal text and no operations will be performed on it.
-    do-something: \\@to-this-too // Here, the escape character is escaped. The @ is not escaped and will be treated as a special character.
-    ```
-
----
-## Supported tokens
-
-These tokens are universal to all input files.
-
-Individual modules use non-universal tokens. Consult a module's documentation to see the tokens it supports.
+Consult a module's documentation for more information.
 
 ---
 ### Metadata token
 
 The `metadata` token's body contains information necessary for Petrichor to run.
-
-It must be the first token in the file regardless of what module is used.
 
 ???+ important "Restrictions"
 
@@ -126,6 +151,8 @@ It must be the first token in the file regardless of what module is used.
     {
         // Metadata goes here.
     }
+
+    // All other tokens go here.
     ```
 
 ---
@@ -135,9 +162,19 @@ The `minimum-version` token specifies the minimum Petrichor version required in 
 
 Version numbers are in the format `major.minor.patch.preview`.
 
-Major and minor version must be specified.
+`Major` and `minor` version must be specified.
 
-If patch or patch and preview versions are blank, they are assumed to be any version.
+!!! info
+
+    If `patch` version or `patch` and `preview` versions are blank, they are assumed to be any version.
+
+!!! warning
+
+    The `patch` version cannot be blank if the `preview` version is specified.
+
+!!! tip
+
+    Set this token's value to the minimum Petrichor version required to handle your input file.
 
 ???+ important "Restrictions"
 
@@ -147,14 +184,36 @@ If patch or patch and preview versions are blank, they are assumed to be any ver
 
     Maximum allowed: 1
 
-    Must be in `metadata` token body.
+    Must be in [`metadata`](#metadata-token) token body.
 
 ???+ example
 
-    ```petrichor
-    minimum-version: 1.2.3.pre-4 // Major version 1, minor version 2, patch version 3, preview version pre-4.
-    minimum-version: 1.2.3 // Major version 1, minor version 2, patch version 3, any preview version.
-    minimum-version: 1.2 // Major version 1, minor version 2, any patch or preview version.
+    ```petrichor title="Major version 1, minor version 2, patch version 3, preview version pre-4"
+    metadata:
+    {
+        minimum-version: 1.2.3.pre-4
+    }
+    ```
+
+    ```petrichor title="Major version 1, minor version 2, patch version 3, any preview version"
+    metadata:
+    {
+        minimum-version: 1.2.3
+    }
+    ```
+
+    ```petrichor title="Major version 1, minor version 2, any patch or preview version"
+    metadata:
+    {
+        minimum-version: 1.2
+    }
+    ```
+
+    ```petrichor title="(NOT ALLOWED) Major version 1, minor version 2, blank patch version, preview version pre-4"
+    metadata:
+    {
+        minimum-version: 1.2..pre-4 // This is not allowed by Petrichor.
+    }
     ```
 
 ---
@@ -164,7 +223,15 @@ The `command` token allows you to specify the [command to run](command-usage.md)
 
 Set the token's value to the name of the command to be run.
 
-To use command options, add a body to the token and put subtokens into it, converting the command options' names to `kebab-case` and setting the tokens' values to the command option values.
+To use command options, add a body to the token and put subtokens into it, converting the command options into [token names](#data-tokens) and setting the tokens' values to the command option arguments.
+
+!!! tip
+
+    Setting module commands with this token may be easier than command line arguments if you are not comfortable with using terminals.
+
+!!! tip
+
+    Using this token allows you to run Petrichor by simply dragging-and-dropping the input file onto `Petrichor.exe`.
 
 ???+ important "Restrictions"
 
@@ -172,7 +239,7 @@ To use command options, add a body to the token and put subtokens into it, conve
 
     Maximum allowed: 1
 
-    Must be in `metadata` token body.
+    Must be in [`metadata`](#metadata-token) token body.
 
 ???+ example
 
@@ -182,8 +249,8 @@ To use command options, add a body to the token and put subtokens into it, conve
         minimum-version: <version number>
         command: commandName
         {
-            command-option-1: value1
-            command-option-2: value2
+            command-option-1: "argument 1"
+            command-option-2: "argument 2"
         }
     }
     ```
@@ -199,17 +266,19 @@ To use command options, add a body to the token and put subtokens into it, conve
     }
     ```
     ```powershell title="Command line"
-    [install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 value1 --commandOption2 value2
+    [install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 "argument 1" --commandOption2 "argument 2"
     ```
 
 ---
-### Module options region
+### Module options token
 
 The `module-options` token allows you to configure module-specific options, if supported by a module.
 
 !!! note
 
-    Each module that supports this region will have its own version of it. See the relevant module's documentation for more information.
+    Each module that supports this token will have its own version of it.
+    
+    See the relevant module's documentation for more information.
 
 ???+ important "Restrictions"
 
@@ -217,11 +286,16 @@ The `module-options` token allows you to configure module-specific options, if s
 
     Maximum allowed: 1
 
-    Must come after `metadata` token.
+    Must come after [`metadata`](#metadata-token) token.
     
 ???+ example
 
     ```petrichor
+    metadata:
+    {
+        // Metadata goes here.
+    }
+
     module-options:
     {
         // Supported tokens depend on module in use.

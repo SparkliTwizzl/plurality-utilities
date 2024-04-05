@@ -23,11 +23,16 @@ This module's variant of the [module options token](../../getting-started/petric
 
     Maximum allowed: 1
 
-    Must come after `metadata` token.
+    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
 
 ???+ example
 
     ```petrichor
+    metadata:
+    {
+        // Metadata goes here.
+    }
+
     module-options:
     {
         // Module-specific options go here.
@@ -103,39 +108,39 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
 Petrichor supports the following tags in [script control shortcuts](#reload-shortcut-and-suspend-shortcut-tokens).
 
-| Tag                      | Alias              | Encodes for       | Key / symbol name                     |
-| ------------------------ | ------------------ | ----------------- | ------------------------------------- |
-| `#!ptcr [windows]`       | `#!ptcr [win]`     | ++win++           | Windows key                           |
-| `#!ptcr [alt]`           |                    | ++alt++           | Alt key                               |
-| `#!ptcr [left-alt]`      | `#!ptcr [lalt]`    | ++lalt++          | Left Alt key                          |
-| `#!ptcr [right-alt]`     | `#!ptcr [ralt]`    | ++ralt++          | Right Alt key                         |
-| `#!ptcr [control]`       | `#!ptcr [ctrl]`    | ++ctrl++          | Control key                           |
-| `#!ptcr [left-control]`  | `#!ptcr [lctrl]`   | ++lctrl++         | Left Control key                      |
-| `#!ptcr [right-control]` | `#!ptcr [rctrl]`   | ++rctrl++         | Right Control key                     |
-| `#!ptcr [shift]`         |                    | ++shift++         | Shift key                             |
-| `#!ptcr [left-shift]`    | `#!ptcr [lshift]`  | ++lshift++        | Left Shift key                        |
-| `#!ptcr [right-shift]`   | `#!ptcr [rshift]`  | ++rshift++        | Right Shift key                       |
-| `#!ptcr [and]`           |                    | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
-| `#!ptcr [alt-graph]`     | `#!ptcr [altgr]`   | ++altgr++         | AltGraph key                          |
-| `#!ptcr [wildcard]`      | `#!ptcr [wild]`    | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
-| `#!ptcr [passthrough]`   | `#!ptcr [tilde]`   | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
-| `#!ptcr [send]`          |                    | ++"$"++           | AutoHotkey send (Dollar sign)         |
-| `#!ptcr [tab]`           |                    | ++tab++           | Tab key                               |
-| `#!ptcr [caps-lock]`     | `#!ptcr [caps]`    | ++caps-lock++     | CapsLock key                          |
-| `#!ptcr [enter]`         |                    | ++enter++         | Enter key                             |
-| `#!ptcr [backspace]`     | `#!ptcr [bksp]`    | ++backspace++     | Backspace key                         |
-| `#!ptcr [insert]`        | `#!ptcr [ins]`     | ++ins++           | Insert key                            |
-| `#!ptcr [delete]`        | `#!ptcr [del]`     | ++del++           | Delete key                            |
-| `#!ptcr [end]`           |                    | ++end++           | End key                               |
-| `#!ptcr [home]`          |                    | ++home++          | Home key                              |
-| `#!ptcr [page-up]`       | `#!ptcr [pgup]`    | ++page-up++       | PageUp key                            |
-| `#!ptcr [page-down]`     | `#!ptcr [pgdn]`    | ++page-dn++       | PageDown key                          |
-| `#!ptcr \[`              |                    | ++bracket-left++  | Left square bracket                   |
-| `#!ptcr \]`              |                    | ++bracket-right++ | Right square bracket                  |
+| Tag                      | Alias             | Encodes for       | Key / symbol name                     |
+| ------------------------ | ----------------- | ----------------- | ------------------------------------- |
+| `#!ptcr [windows]`       | `#!ptcr [win]`    | ++win++           | Windows key                           |
+| `#!ptcr [alt]`           |                   | ++alt++           | Alt key                               |
+| `#!ptcr [left-alt]`      | `#!ptcr [lalt]`   | ++lalt++          | Left Alt key                          |
+| `#!ptcr [right-alt]`     | `#!ptcr [ralt]`   | ++ralt++          | Right Alt key                         |
+| `#!ptcr [control]`       | `#!ptcr [ctrl]`   | ++ctrl++          | Control key                           |
+| `#!ptcr [left-control]`  | `#!ptcr [lctrl]`  | ++lctrl++         | Left Control key                      |
+| `#!ptcr [right-control]` | `#!ptcr [rctrl]`  | ++rctrl++         | Right Control key                     |
+| `#!ptcr [shift]`         |                   | ++shift++         | Shift key                             |
+| `#!ptcr [left-shift]`    | `#!ptcr [lshift]` | ++lshift++        | Left Shift key                        |
+| `#!ptcr [right-shift]`   | `#!ptcr [rshift]` | ++rshift++        | Right Shift key                       |
+| `#!ptcr [and]`           |                   | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
+| `#!ptcr [alt-graph]`     | `#!ptcr [altgr]`  | ++altgr++         | AltGraph key                          |
+| `#!ptcr [wildcard]`      | `#!ptcr [wild]`   | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
+| `#!ptcr [passthrough]`   | `#!ptcr [tilde]`  | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
+| `#!ptcr [send]`          |                   | ++"$"++           | AutoHotkey send (Dollar sign)         |
+| `#!ptcr [tab]`           |                   | ++tab++           | Tab key                               |
+| `#!ptcr [caps-lock]`     | `#!ptcr [caps]`   | ++caps-lock++     | CapsLock key                          |
+| `#!ptcr [enter]`         |                   | ++enter++         | Enter key                             |
+| `#!ptcr [backspace]`     | `#!ptcr [bksp]`   | ++backspace++     | Backspace key                         |
+| `#!ptcr [insert]`        | `#!ptcr [ins]`    | ++ins++           | Insert key                            |
+| `#!ptcr [delete]`        | `#!ptcr [del]`    | ++del++           | Delete key                            |
+| `#!ptcr [end]`           |                   | ++end++           | End key                               |
+| `#!ptcr [home]`          |                   | ++home++          | Home key                              |
+| `#!ptcr [page-up]`       | `#!ptcr [pgup]`   | ++page-up++       | PageUp key                            |
+| `#!ptcr [page-down]`     | `#!ptcr [pgdn]`   | ++page-dn++       | PageDown key                          |
+| `#!ptcr \[`              |                   | ++bracket-left++  | Left square bracket                   |
+| `#!ptcr \]`              |                   | ++bracket-right++ | Right square bracket                  |
 
 !!! note
 
-    `\[` and `\]` make use of [escape characters](../../getting-started/petrichor-script.html#escape-characters).
+    `#!ptcr \[` and `#!ptcr \]` make use of [escape characters](../../getting-started/petrichor-script.html#escape-characters).
 
 ???+ example
 
@@ -163,7 +168,7 @@ Shortcuts are defined via subtokens within this token's body.
 
     Maximum allowed: 1
 
-    Must come after `metadata` token.
+    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
 
 ???+ example
 
@@ -279,7 +284,7 @@ The find-and-replace dictionary is only applied to the template's replacement st
 
 It is applied after `[field]` tags are populated with data, and therefore can modify that data.
 
-`Find keys` and `replace values` are defined in comma-separated lists surrounded by curly brackets ( `{` / `}` ).
+`Find keys` and `replace values` are defined in comma-separated lists surrounded by curly brackets ( `{` `}` ).
 
 The `find` and `replace` lists cannot contain blank items.
 
@@ -433,7 +438,7 @@ This token's body contains subtokens defining each entry.
 
     Maximum allowed: 1
 
-    Must come after `metadata` token.
+    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
 
 ???+ example
 

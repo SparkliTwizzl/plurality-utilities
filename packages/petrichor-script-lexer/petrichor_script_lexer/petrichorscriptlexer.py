@@ -7,7 +7,7 @@ __all__ = ('PetrichorScriptLexer')
 
 class PetrichorScriptLexer(RegexLexer):
 	name = 'PetrichorScript'
-	aliases = ['petrichor']
+	aliases = ['petrichor','ptcr']
 	filenames = ['*.petrichor','*.ptcr']
 
 	tokens = {
