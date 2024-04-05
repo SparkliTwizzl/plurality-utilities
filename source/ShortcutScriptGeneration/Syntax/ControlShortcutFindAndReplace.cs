@@ -1,6 +1,6 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public static class HotstringFindAndReplace
+	public static class ControlShortcutFindAndReplace
 	{
 		public static Dictionary<string, string> LookUpTable => new()
 		{
@@ -22,14 +22,16 @@
 			{ "[lshift]", "<+" },
 			{ "[right-shift]", ">+" },
 			{ "[rshift]", ">+" },
+			{ "[combine]", "&" },
 			{ "[and]", "&" },
 			{ "[alt-graph]", "<^>!" },
 			{ "[altgr]", "<^>!" },
 			{ "[wildcard]", "*" },
-			{ "[wild]", "*" },
+			{ "[asterisk]", "*" },
 			{ "[passthrough]", "~" },
 			{ "[tilde]", "~" },
 			{ "[send]", "$" },
+			{ "[dollar]", "$" },
 			{ "[tab]", "Tab" },
 			{ "[caps-lock]", "CapsLock" },
 			{ "[caps]", "CapsLock" },
@@ -46,6 +48,8 @@
 			{ "[pgup]", "PageUp" },
 			{ "[page-down]", "PageDown" },
 			{ "[pgdn]", "PageDown" },
+			{ "[open-braacket]", "[" },
+			{ "[close-bracket]", "]" },
 		};
 	}
 }

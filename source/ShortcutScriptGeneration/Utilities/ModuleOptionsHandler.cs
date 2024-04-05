@@ -48,7 +48,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static string ReplaceFieldsInScriptControlHotstring( string hotstring )
 		{
-			foreach ( var findTag in HotstringFindAndReplace.LookUpTable )
+			foreach ( var findTag in ControlShortcutFindAndReplace.LookUpTable )
 			{
 				var find = findTag.Key;
 				var replace = findTag.Value;
