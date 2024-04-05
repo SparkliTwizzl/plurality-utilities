@@ -108,35 +108,35 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
 Petrichor supports the following tags in [script control shortcuts](#reload-shortcut-and-suspend-shortcut-tokens).
 
-| Tag                      | Alias             | Encodes for       | Key / symbol name                     |
-| ------------------------ | ----------------- | ----------------- | ------------------------------------- |
-| `#!ptcr [windows]`       | `#!ptcr [win]`    | ++win++           | Windows key                           |
-| `#!ptcr [alt]`           |                   | ++alt++           | Alt key                               |
-| `#!ptcr [left-alt]`      | `#!ptcr [lalt]`   | ++lalt++          | Left Alt key                          |
-| `#!ptcr [right-alt]`     | `#!ptcr [ralt]`   | ++ralt++          | Right Alt key                         |
-| `#!ptcr [control]`       | `#!ptcr [ctrl]`   | ++ctrl++          | Control key                           |
-| `#!ptcr [left-control]`  | `#!ptcr [lctrl]`  | ++lctrl++         | Left Control key                      |
-| `#!ptcr [right-control]` | `#!ptcr [rctrl]`  | ++rctrl++         | Right Control key                     |
-| `#!ptcr [shift]`         |                   | ++shift++         | Shift key                             |
-| `#!ptcr [left-shift]`    | `#!ptcr [lshift]` | ++lshift++        | Left Shift key                        |
-| `#!ptcr [right-shift]`   | `#!ptcr [rshift]` | ++rshift++        | Right Shift key                       |
-| `#!ptcr [and]`           |                   | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
-| `#!ptcr [alt-graph]`     | `#!ptcr [altgr]`  | ++altgr++         | AltGraph key                          |
-| `#!ptcr [wildcard]`      | `#!ptcr [wild]`   | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
-| `#!ptcr [passthrough]`   | `#!ptcr [tilde]`  | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
-| `#!ptcr [send]`          |                   | ++"$"++           | AutoHotkey send (Dollar sign)         |
-| `#!ptcr [tab]`           |                   | ++tab++           | Tab key                               |
-| `#!ptcr [caps-lock]`     | `#!ptcr [caps]`   | ++caps-lock++     | CapsLock key                          |
-| `#!ptcr [enter]`         |                   | ++enter++         | Enter key                             |
-| `#!ptcr [backspace]`     | `#!ptcr [bksp]`   | ++backspace++     | Backspace key                         |
-| `#!ptcr [insert]`        | `#!ptcr [ins]`    | ++ins++           | Insert key                            |
-| `#!ptcr [delete]`        | `#!ptcr [del]`    | ++del++           | Delete key                            |
-| `#!ptcr [end]`           |                   | ++end++           | End key                               |
-| `#!ptcr [home]`          |                   | ++home++          | Home key                              |
-| `#!ptcr [page-up]`       | `#!ptcr [pgup]`   | ++page-up++       | PageUp key                            |
-| `#!ptcr [page-down]`     | `#!ptcr [pgdn]`   | ++page-dn++       | PageDown key                          |
-| `#!ptcr \[`              |                   | ++bracket-left++  | Left square bracket                   |
-| `#!ptcr \]`              |                   | ++bracket-right++ | Right square bracket                  |
+| Tag                      | Alias               | Encodes for       | Key / symbol name                     |
+| ------------------------ | ------------------- | ----------------- | ------------------------------------- |
+| `#!ptcr [windows]`       | `#!ptcr [win]`      | ++win++           | Windows key                           |
+| `#!ptcr [alt]`           |                     | ++alt++           | Alt key                               |
+| `#!ptcr [left-alt]`      | `#!ptcr [lalt]`     | ++lalt++          | Left Alt key                          |
+| `#!ptcr [right-alt]`     | `#!ptcr [ralt]`     | ++ralt++          | Right Alt key                         |
+| `#!ptcr [control]`       | `#!ptcr [ctrl]`     | ++ctrl++          | Control key                           |
+| `#!ptcr [left-control]`  | `#!ptcr [lctrl]`    | ++lctrl++         | Left Control key                      |
+| `#!ptcr [right-control]` | `#!ptcr [rctrl]`    | ++rctrl++         | Right Control key                     |
+| `#!ptcr [shift]`         |                     | ++shift++         | Shift key                             |
+| `#!ptcr [left-shift]`    | `#!ptcr [lshift]`   | ++lshift++        | Left Shift key                        |
+| `#!ptcr [right-shift]`   | `#!ptcr [rshift]`   | ++rshift++        | Right Shift key                       |
+| `#!ptcr [combine]`       | `#!ptcr [and]`      | ++"&"++           | AutoHotkey combine (Ampersand symbol) |
+| `#!ptcr [alt-graph]`     | `#!ptcr [altgr]`    | ++altgr++         | AltGraph key                          |
+| `#!ptcr [wildcard]`      | `#!ptcr [asterisk]` | ++"*"++           | AutoHotkey wildcard (Asterisk symbol) |
+| `#!ptcr [passthrough]`   | `#!ptcr [tilde]`    | ++tilde++         | AutoHotkey passthrough (Tilde symbol) |
+| `#!ptcr [send]`          | `#!ptcr [dollar]`   | ++"$"++           | AutoHotkey send (Dollar sign)         |
+| `#!ptcr [tab]`           |                     | ++tab++           | Tab key                               |
+| `#!ptcr [caps-lock]`     | `#!ptcr [caps]`     | ++caps-lock++     | CapsLock key                          |
+| `#!ptcr [enter]`         |                     | ++enter++         | Enter key                             |
+| `#!ptcr [backspace]`     | `#!ptcr [bksp]`     | ++backspace++     | Backspace key                         |
+| `#!ptcr [insert]`        | `#!ptcr [ins]`      | ++ins++           | Insert key                            |
+| `#!ptcr [delete]`        | `#!ptcr [del]`      | ++del++           | Delete key                            |
+| `#!ptcr [end]`           |                     | ++end++           | End key                               |
+| `#!ptcr [home]`          |                     | ++home++          | Home key                              |
+| `#!ptcr [page-up]`       | `#!ptcr [pgup]`     | ++page-up++       | PageUp key                            |
+| `#!ptcr [page-down]`     | `#!ptcr [pgdn]`     | ++page-dn++       | PageDown key                          |
+| `#!ptcr [open-bracket]`  | `#!ptcr \[`         | ++bracket-left++  | Left square bracket                   |
+| `#!ptcr [close-bracket]` | `#!ptcr \]`         | ++bracket-right++ | Right square bracket                  |
 
 !!! note
 
