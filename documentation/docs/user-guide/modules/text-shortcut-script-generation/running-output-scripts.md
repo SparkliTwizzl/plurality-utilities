@@ -1,6 +1,6 @@
 ---
 short_title: Running output scripts
-title: Running output scripts - Text Shortcut Script Generation module
+title: Running output scripts - Text Shortcut Script Generation - Modules
 ---
 
 <h1 align="center">Running output scripts</h1>

@@ -1,6 +1,6 @@
 ---
-short_title: Text Shortcut Script Generation module
-title: Text Shortcut Script Generation module
+short_title: Text Shortcut Script Generation
+title: Text Shortcut Script Generation - Modules
 ---
 
 <h1 align="center">Text Shortcut Script Generation module</h1>

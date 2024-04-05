@@ -1,6 +1,6 @@
 ---
 short_title: Changelog
-title: Changelog
+title: Changelog - About
 ---
 
 <h1 align="center">Changelog</h1>

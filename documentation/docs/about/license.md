@@ -1,6 +1,6 @@
 ---
 short_title: License
-title: License
+title: License - About
 ---
 
 <h1 align="center">Petrichor</h1>

@@ -1,6 +1,6 @@
 ---
 short_title: Command usage
-title: Command usage - Text Shortcut Script Generation module
+title: Command usage - Text Shortcut Script Generation - Modules
 ---
 
 <h1 align="center">Command usage</h1>
