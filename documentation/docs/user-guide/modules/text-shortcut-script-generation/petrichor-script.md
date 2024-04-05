@@ -23,7 +23,7 @@ This module's variant of the [module options token](../../getting-started/petric
 
     Maximum allowed: 1
 
-    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
+    Must come after [`metadata`](../../getting-started/petrichor-script.html#metadata-token) token.
 
 ???+ example
 
@@ -60,7 +60,7 @@ The `suspend-icon` token sets the file path of the icon shown when a script is s
 
     Maximum allowed: 1
 
-    Must be in `module-options` token body.
+    Must be in [`module-options`](#module-options-token) token body.
 
 ???+ example
 
@@ -90,7 +90,7 @@ These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplic
 
     Maximum allowed: 1
 
-    Must be in `module-options` token body.
+    Must be in [`module-options`](#module-options-token) token body.
 
 ???+ example
 
@@ -156,9 +156,7 @@ Petrichor supports the following tags in [script control shortcuts](#reload-shor
 ---
 ## Shortcut list token
 
-This token defines the text shortcuts to be generated.
-
-Shortcuts are defined via subtokens within this token's body.
+This token contains definitions for the text shortcuts to be generated.
 
 ???+ important "Restrictions"
 
@@ -168,11 +166,16 @@ Shortcuts are defined via subtokens within this token's body.
 
     Maximum allowed: 1
 
-    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
+    Must come after [`metadata`](../../getting-started/petrichor-script.html#metadata-token) token.
 
 ???+ example
 
     ```petrichor
+    metadata:
+    {
+        // Metadata goes here.
+    }
+
     shortcut-list:
     {
         // Shortcuts go here.
@@ -181,15 +184,19 @@ Shortcuts are defined via subtokens within this token's body.
 
 
 ---
-### Shortcut tokens
+### Shortcut token
 
 The `shortcut` token defines a plaintext shortcut.
 
-These tokens' values can use AutoHotkey special behavior if written correctly. Consult AutoHotkey documentation to learn more about this.
+This token's values can use AutoHotkey special behavior if written correctly. Consult AutoHotkey documentation to learn more about this.
 
 Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 colons ( `::` ), and a replacement string.
 
-These components can have whitespace between them, but note that this whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks `` ` ``.
+!!! note
+
+    These components can have whitespace between them.
+
+    This whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks ( `` ` `` ).
 
 !!! warning
 
@@ -197,13 +204,15 @@ These components can have whitespace between them, but note that this whitespace
 
     Petrichor will allow you to do it, but the generated shortcuts will not work.
 
+    [Escaping](../../getting-started/petrichor-script.html#escape-characters) the characters will not fix this.
+
 ???+ important "Restrictions"
 
     OPTIONAL
 
     No restrictions on number of instances that can be present.
 
-    Must be in `shortcut-list` token body.
+    Must be in [`shortcut-list`](#shortcut-list-token) token body.
 
 ???+ example
 
@@ -220,24 +229,24 @@ These components can have whitespace between them, but note that this whitespace
 
 
 ---
-### Shortcut template tokens
+### Shortcut template token
 
 The `shortcut-template` token defines a templated shortcut.
 
-It behaves the same way as the [shortcut token](#shortcut-tokens), but with additional features.
+It behaves the same way as the [shortcut token](#shortcut-token), but with additional features.
 
-Shortcuts will be generated from the template, filling in `[field]` tags with user-provided data.
+Shortcuts will be generated from the template, filling in `#!ptcr [field]` tags with user-provided data.
 
 Supported fields:
 
-- `[color]`
-- `[decoration]`
-- `[id]`
-- `[name]`
-- `[last-name]`
-- `[last-tag]`
-- `[pronoun]`
-- `[tag]`
+- `#!ptcr [color]`
+- `#!ptcr [decoration]`
+- `#!ptcr [id]`
+- `#!ptcr [name]`
+- `#!ptcr [last-name]`
+- `#!ptcr [last-tag]`
+- `#!ptcr [pronoun]`
+- `#!ptcr [tag]`
 
 Additional features are supported via subtokens.
 
@@ -253,13 +262,15 @@ If no subtokens are used, this token does not need a body.
 
     Petrichor will allow you to do it, but the generated shortcuts will not work.
 
+    [Escaping](../../getting-started/petrichor-script.html#escape-characters) the characters will not fix this.
+
 ???+ important "Restrictions"
 
     OPTIONAL
 
     No restrictions on number of instances that can be present.
 
-    Must be in `shortcut-list` token body.
+    Must be in [`shortcut-list`](#shortcut-list-token) token body.
 
 ???+ example
 
@@ -282,7 +293,7 @@ The `find` and `replace` token pair defines a custom find-and-replace dictionary
 
 The find-and-replace dictionary is only applied to the template's replacement string.
 
-It is applied after `[field]` tags are populated with data, and therefore can modify that data.
+It is applied after `#!ptcr [field]` tags are populated with data, and therefore can modify that data.
 
 `Find keys` and `replace values` are defined in comma-separated lists surrounded by curly brackets ( `{` `}` ).
 
@@ -304,7 +315,7 @@ The `find` and `replace` lists must contain the same number of items as each oth
 
     Maximum allowed: 1
 
-    Must be in `shortcut-template` token body.
+    Must be in [`shortcut-template`](#shortcut-template-token) token body.
 
 
 ???+ important "Replace token restrictions"
@@ -313,9 +324,7 @@ The `find` and `replace` lists must contain the same number of items as each oth
 
     Maximum allowed: 1
 
-    Must be in `shortcut-template` token body.
-
-    Must be paired with `find` token.
+    Must be in [`shortcut-template`](#shortcut-template-token) token body.
 
     Must come after `find` token.
 
@@ -330,20 +339,25 @@ The `find` and `replace` lists must contain the same number of items as each oth
             find: { custom find 1, custom find 2 } // These are the `find keys`.
             replace: { replace 1, replace 2 } // These are the corresponding `replace values`.
         }
+        shortcut-template: <hotstring> :: <replacement string> custom remove 1, custom remove 2, Custom remove 2
+        {
+            find: { custom remove 1, custom remove 2 } // These `find keys` will be removed, since there are no `replace values` for them.
+        }
     }
     ```
     ```autohotkey title="Shortcuts generated from input"
     ::<hotstring>::<replacement string> replace 1, replace 2, Custom find 2
+    ::<hotstring>::<replacement string> , , Custom remove 2
     ```
-    If the `find keys` are present in `[field]` values within the `<replacement string>`, they will be replaced there as well.
+    If the `find keys` are present in `#!ptcr [field]` values within the `<replacement string>`, they will be replaced there as well.
 
 
 ---
-## Text case tokens
+## Text case token
 
 The `text-case` token is used to change the text case of a shortcut after it is generated from a template.
 
-Case conversion is applied after `[field]` tags are populated and [find-and-replace dictionaries](#find-and-replace-tokens) are applied.
+Case conversion is applied after `#!ptcr [field]` tags are populated and [find-and-replace dictionaries](#find-and-replace-tokens) are applied.
 
 Allowed values:
 
@@ -358,7 +372,7 @@ Allowed values:
 
     Maximum allowed: 1
 
-    Must be in `shortcut-template` token body.
+    Must be in [`shortcut-template`](#shortcut-template-token) token body.
 
 ???+ example
 
@@ -426,9 +440,7 @@ Allowed values:
 ---
 ## Entry list token
 
-The `entry-list` token defines entries to populated templated shortcuts with.
-
-This token's body contains subtokens defining each entry.
+The `entry-list` token contains entries to apply to templated shortcuts.
 
 ???+ important "Restrictions"
 
@@ -438,11 +450,16 @@ This token's body contains subtokens defining each entry.
 
     Maximum allowed: 1
 
-    Must come after [`metadata` token](../../getting-started/petrichor-script.html#metadata-token).
+    Must come after [`metadata`](../../getting-started/petrichor-script.html#metadata-token) token.
 
 ???+ example
 
     ```petrichor
+    metadata:
+    {
+        // Metadata goes here.
+    }
+
     entry-list:
     {
         // Entries go here.
@@ -451,7 +468,7 @@ This token's body contains subtokens defining each entry.
 
 
 ---
-### Entry tokens
+### Entry token
 
 The `entry` token defines a set of data to populate a templated shortcut with.
 
@@ -459,9 +476,13 @@ This token's value is ignored, but will show up in logs. You can put notes into 
 
 This token's body contains subtokens defining its data.
 
-These subtokens correspond to the `[field]` tags in [templated shortcuts](#shortcut-template-tokens).
+These subtokens correspond to the `#!ptcr [field]` tags in [templated shortcuts](#shortcut-template-token).
 
-**NOTE:** All token values *should* be unique, even though Petrichor wont take issue with it. If a value is repeated, the AutoHotkey script generated from the input data will misbehave in unpredictable ways.
+!!! warning
+
+    All token values should be unique, even though Petrichor wont take issue with it.
+
+    If a value is repeated, the script generated from the input data can misbehave in unpredictable ways.
 
 ???+ important "Restrictions"
 
@@ -469,35 +490,25 @@ These subtokens correspond to the `[field]` tags in [templated shortcuts](#short
 
     No restrictions on number of instances that can be present.
 
-    Must be in `entry-list` token body.
+    Must be in [`entry-list`](#entry-list-token) token body.
 
 ???+ example
 
     ```petrichor
-    entry: Notes about entry.
+    entry-list:
     {
-        // Entry data goes here.
+        entry: Notes about entry.
+        {
+            // Entry data goes here.
+        }
     }
     ```
 
 
 ---
-#### Color tokens
+#### Color token
 
-The `color` token defines a value for the `[color]` field tag in [templated shortcuts](#shortcut-template-tokens).
-
-???+ important "Restrictions"
-
-    OPTIONAL
-
-    Maximum allowed: 1
-
-    Must be in `entry` token body.
-
----
-#### Decoration tokens
-
-The `decoration` token defines a value for the `[decoration]` field tag in [templated shortcuts](#shortcut-template-tokens).
+The `color` token defines a value for the `#!ptcr [color]` field tag in [templated shortcuts](#shortcut-template-token).
 
 ???+ important "Restrictions"
 
@@ -505,13 +516,44 @@ The `decoration` token defines a value for the `[decoration]` field tag in [temp
 
     Maximum allowed: 1
 
-    Must be in `entry` token body.
+    Must be in [`entry`](#entry-token) token body.
+
+???+ example
+
+    ```petrichor
+    entry:
+    {
+        color: <value>
+    }
+    ```
+
+---
+#### Decoration token
+
+The `decoration` token defines a value for the `#!ptcr [decoration]` field tag in [templated shortcuts](#shortcut-template-token).
+
+???+ important "Restrictions"
+
+    OPTIONAL
+
+    Maximum allowed: 1
+
+    Must be in [`entry`](#entry-token) token body.
+
+???+ example
+
+    ```petrichor
+    entry:
+    {
+        decoration: <value>
+    }
+    ```
 
 
 ---
-#### ID tokens
+#### ID token
 
-The `id` token defines a value for the `[id]` field tag in [templated shortcuts](#shortcut-template-tokens).
+The `id` token defines a value for the `#!ptcr [id]` field tag in [templated shortcuts](#shortcut-template-token).
 
 ???+ important "Restrictions"
 
@@ -521,21 +563,30 @@ The `id` token defines a value for the `[id]` field tag in [templated shortcuts]
 
     Maximum allowed: 1
 
-    Must be in `entry` token body.
+    Must be in [`entry`](#entry-token) token body.
+
+???+ example
+
+    ```petrichor
+    entry:
+    {
+        id: <value>
+    }
+    ```
 
 
 ---
-#### Name tokens
+#### Name token
 
-The `name` token defines values for the `[name]` and `[tag]` field tags in [templated shortcuts](#shortcut-template-tokens).
+The `name` token defines values for the `#!ptcr [name]` and `#!ptcr [tag]` field tags in [templated shortcuts](#shortcut-template-token).
 
 A shortcut will be generated from each template for each `name` token in an entry.
 
-`name` token values must consist of a `[name]` field and a `[tag]` field, separated by an at-sign ( `@` ).
+`Name` token values must consist of a `#!ptcr [name]` and `#!ptcr [tag]` field, separated by an at-sign ( `@` ).
 
-The `[name]` field value can be any non-blank string that does not contain an at-sign ( `@` ).
+The `#!ptcr [name]` field value can be any non-blank string that does not contain an at-sign ( `@` ).
 
-The `[tag]` field value can be any string that does not contain whitespace.
+The `#!ptcr [tag]` field value can be any string that does not contain whitespace.
 
 ???+ important "Restrictions"
 
@@ -543,7 +594,7 @@ The `[tag]` field value can be any string that does not contain whitespace.
 
     Minimum required: 1
 
-    Must be in `entry` token body.
+    Must be in [`entry`](#entry-token) token body.
 
 ???+ example
 
@@ -556,11 +607,11 @@ The `[tag]` field value can be any string that does not contain whitespace.
 
 
 ---
-#### Last name tokens
+#### Last name token
 
-The `last-name` token defines values for the `[last-name]` and `[last-tag]` field tags in [templated shortcuts](#shortcut-template-tokens).
+The `last-name` token defines values for the `#!ptcr [last-name]` and `#!ptcr [last-tag]` field tags in [templated shortcuts](#shortcut-template-token).
 
-`last-name` tokens have the same structure as [`name` tokens](#name-tokens).
+The `last-name` token has the same structure as the [`name`](#name-token) token.
 
 ???+ important "Restrictions"
 
@@ -568,13 +619,22 @@ The `last-name` token defines values for the `[last-name]` and `[last-tag]` fiel
 
     Maximum allowed: 1
 
-    Must be in `entry` token body.
+    Must be in [`entry`](#entry-token) token body.
+
+???+ example
+
+    ```petrichor
+    entry:
+    {
+        last-name: name string @tagstring
+    }
+    ```
 
 
 ---
-#### Pronoun tokens
+#### Pronoun token
 
-The `pronoun` token defines a value for the `[pronoun]` field tag in [templated shortcuts](#shortcut-template-tokens).
+The `pronoun` token defines a value for the `#!ptcr [pronoun]` field tag in [templated shortcuts](#shortcut-template-token).
 
 ???+ important "Restrictions"
 
@@ -582,7 +642,16 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
 
     Maximum allowed: 1
 
-    Must be in `entry` token body.
+    Must be in [`entry`](#entry-token) token body.
+
+???+ example
+
+    ```petrichor
+    entry:
+    {
+        pronoun: <value>
+    }
+    ```
 
 
 ---
@@ -609,7 +678,7 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
     shortcut-list:
     {
         shortcut: replaceme :: withme
-        shortcut-template: [tag] :: [name] [last-name] ([pronoun])
+        shortcut-template: [tag] :: [name] [last-name] ([pronoun]) [decoration]
         {
             find: { this, that }
             replace: { these, those }
@@ -623,30 +692,30 @@ The `pronoun` token defines a value for the `[pronoun]` field tag in [templated 
         entry: A
         {
             id: idValueA
-            color: colorValueA
-            decoration: decorationValueA
-            pronoun: pronounValueA THIS THAT
             last-name: last name value A @lastTagValueA
             name: name value A 1 @tagValueA1
             name: name value A 2 @tagValueA2
+            pronoun: pronounValueA this
+            decoration: decorationValueA that
+            color: colorValueA
         }
 
         entry: B
         {
             id: idValueB
-            color: colorValueB
-            decoration: decorationValueB
-            pronoun: pronounValueB this that
             last-name: last name value B @lastTagValueB
             name: name value B 1 @tagValueB1
             name: name value B 2 @tagValueB2
+            pronoun: pronounValueB THIS
+            decoration: decorationValueB THAT
+            color: colorValueB
         }
     }
     ```
     ```autohotkey title="Shortcuts generated from input"
     ::replaceme::withme
-    ::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea This That)
-    ::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea This That)
-    ::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb These Those)
-    ::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb These Those)
+    ::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea These) Decorationvaluea Those
+    ::tagValueA2::Name Value A 2 Last Name Value A (Pronounvaluea These) Decorationvaluea Those
+    ::tagValueB1::Name Value B 1 Last Name Value B (Pronounvalueb This) Decorationvalueb That
+    ::tagValueB2::Name Value B 2 Last Name Value B (Pronounvalueb This) Decorationvalueb That
     ```
