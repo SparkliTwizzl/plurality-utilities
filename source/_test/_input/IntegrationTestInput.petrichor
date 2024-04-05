@@ -27,57 +27,57 @@ shortcut-list:
 {
 	// line comment in template-list region body
 	
-	shortcut: find :: replace
-	shortcut-template: [tag] :: [name]
-	shortcut-template: `[tag] :: `[name]
-	shortcut-template: ~[tag] :: ~[name]
-	shortcut-template: ![tag] :: ![name]
-	shortcut-template: @[tag] :: @[name]
-	shortcut-template: #[tag] :: #[name]
-	shortcut-template: $[tag] :: $[name]
-	shortcut-template: %[tag] :: ^[name]
-	shortcut-template: &[tag] :: &[name]
-	shortcut-template: *[tag] :: *[name]
-	shortcut-template: ([tag] :: ([name]
-	shortcut-template: )[tag] :: )[name]
-	shortcut-template: -[tag] :: -[name]
-	shortcut-template: _[tag] :: _[name]
-	shortcut-template: =[tag] :: =[name]
-	shortcut-template: +[tag] :: +[name]
-	shortcut-template: \[[tag] :: \[[name]
-	shortcut-template: \{[tag] :: \{[name]
-	shortcut-template: \][tag] :: \][name]
-	shortcut-template: \}[tag] :: \}[name]
-	shortcut-template: \\[tag] :: \\[name]
-	shortcut-template: |[tag] :: |[name]
-	shortcut-template: ;[tag] :: ;[name]
-	shortcut-template: :[tag] :: :[name]
-	shortcut-template: '[tag] :: '[name]
-	shortcut-template: \"[tag] :: \"[name]
-	shortcut-template: ,[tag] :: ,[name]
-	shortcut-template: <[tag] :: <[name]
-	shortcut-template: .[tag] :: .[name]
-	shortcut-template: >[tag] :: >[name]
-	shortcut-template: /[tag] :: /[name]
-	shortcut-template: ?[tag] :: ?[name]
-	shortcut-template: [tag][last-tag] findme findmetoo :: ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	shortcut: find >> replace
+	shortcut-template: [tag] >> [name]
+	shortcut-template: `[tag] >> `[name]
+	shortcut-template: ~[tag] >> ~[name]
+	shortcut-template: ![tag] >> ![name]
+	shortcut-template: @[tag] >> @[name]
+	shortcut-template: #[tag] >> #[name]
+	shortcut-template: $[tag] >> $[name]
+	shortcut-template: %[tag] >> ^[name]
+	shortcut-template: &[tag] >> &[name]
+	shortcut-template: *[tag] >> *[name]
+	shortcut-template: ([tag] >> ([name]
+	shortcut-template: )[tag] >> )[name]
+	shortcut-template: -[tag] >> -[name]
+	shortcut-template: _[tag] >> _[name]
+	shortcut-template: =[tag] >> =[name]
+	shortcut-template: +[tag] >> +[name]
+	shortcut-template: \[[tag] >> \[[name]
+	shortcut-template: \{[tag] >> \{[name]
+	shortcut-template: \][tag] >> \][name]
+	shortcut-template: \}[tag] >> \}[name]
+	shortcut-template: \\[tag] >> \\[name]
+	shortcut-template: |[tag] >> |[name]
+	shortcut-template: ;[tag] >> ;[name]
+	shortcut-template: :[tag] >> :[name]
+	shortcut-template: '[tag] >> '[name]
+	shortcut-template: \"[tag] >> \"[name]
+	shortcut-template: ,[tag] >> ,[name]
+	shortcut-template: <[tag] >> <[name]
+	shortcut-template: .[tag] >> .[name]
+	shortcut-template: >[tag] >> >[name]
+	shortcut-template: /[tag] >> /[name]
+	shortcut-template: ?[tag] >> ?[name]
+	shortcut-template: [tag][last-tag] findme findmetoo >> ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
 	{
 		find: { findmetoo, findme }
 		replace: { foundyoutoo, foundyou }
 	}
-	shortcut-template: [tag]-first-caps :: [name]
+	shortcut-template: [tag]-first-caps >> [name]
 	{
 		text-case: firstCaps
 	}
-	shortcut-template: [tag]-lower :: [name]
+	shortcut-template: [tag]-lower >> [name]
 	{
 		text-case: lower
 	}
-	shortcut-template: [tag]-unchanged :: [name]
+	shortcut-template: [tag]-unchanged >> [name]
 	{
 		text-case: unchanged
 	}
-	shortcut-template: [tag]-upper :: [name]
+	shortcut-template: [tag]-upper >> [name]
 	{
 		text-case: upper
 	}
