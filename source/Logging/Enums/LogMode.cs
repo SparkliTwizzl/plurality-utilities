@@ -3,6 +3,7 @@
 	public enum LogMode
 	{
 		None,
+		Test,
 		ConsoleOnly,
 		FileOnly,
 		All,

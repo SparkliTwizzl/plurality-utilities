@@ -24,7 +24,15 @@ namespace Petrichor.Logging
 			public ColorScheme() { }
 
 
-			public readonly string Apply( string line ) => line.Pastel( Foreground ).PastelBg( Background );
+			public readonly string Apply( string line )
+			{
+				if ( IsInTestMode )
+				{
+					return line;
+				}
+
+				return line.Pastel( Foreground ).PastelBg( Background );
+			}
 		}
 
 
@@ -71,9 +79,10 @@ namespace Petrichor.Logging
 		public static LogMode ActiveMode { get; private set; } = LogMode.All;
 		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
 		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
-		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.ConsoleOnly or LogMode.All;
-		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.FileOnly or LogMode.All;
+		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.Test or LogMode.ConsoleOnly or LogMode.All;
+		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.Test or LogMode.FileOnly or LogMode.All;
 		public static bool IsBufferingEnabled { get; private set; } = false;
+		public static bool IsInTestMode => ActiveMode is LogMode.Test;
 
 
 		public static void CreateLogFile( string filePath )
@@ -123,8 +132,15 @@ namespace Petrichor.Logging
 		public static void EnableAllLogDestinations()
 		{
 			ActiveMode = LogMode.All;
-			Info( "Enabled logging to console." );
-			Info( "Enabled logging to file." );
+			Info( "Enabled all log destinations." );
+		}
+
+		public static void EnableTestMode()
+		{
+			ActiveMode = LogMode.Test;
+			Info( "Enabled test mode." );
+			Info( "Enabled all log destinations." );
+			Info( "Disabled log color schemes." );
 		}
 
 		/// <summary>
