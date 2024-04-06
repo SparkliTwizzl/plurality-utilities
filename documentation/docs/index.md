@@ -11,7 +11,7 @@ title: Home
 
 ---
 <h1 align="center">PluralityUtilities</h1>
-<h2 align="center">version 0.6 - 2023-05-13</h2>
+<h2 align="center">version 0.7 - 2023-07-24</h2>
 
 !!! important
 

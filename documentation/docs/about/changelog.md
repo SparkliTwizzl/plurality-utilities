@@ -7,6 +7,18 @@ title: Changelog - About
 
 
 ---
+## 0.7.0
+
+!!! abstract "General"
+
+    - Ignore blank lines in input files.
+
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+    - Add byte-order mark to output file headers.
+
+
+---
 ## 0.6.1
 
 !!! abstract "General"
