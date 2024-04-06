@@ -107,3 +107,6 @@ theme:
 
 nav:
   - index.md
+
+  - About:
+    - about/changelog.md
