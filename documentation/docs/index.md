@@ -11,7 +11,7 @@ title: Home
 
 ---
 <h1 align="center">PluralityUtilities</h1>
-<h2 align="center">version 0.5 - 2023-01-06</h2>
+<h2 align="center">version 0.6 - 2023-05-13</h2>
 
 !!! important
 
@@ -56,7 +56,7 @@ In order to get a useful result from the tool, there are four main steps:
 
 Each entry represents a person and must contain at least one identity (a name paired with a tag).
 
-To write an entry, start with an open curly brace `('{')` on one line and a close curly brace `('}')` on another, with nothing else on those lines.
+To write an entry, start with an open curly brace `{` on one line and a close curly brace `}` on another, with nothing else on those lines.
 
 ???+ example
 
@@ -74,7 +74,7 @@ Fields are identified by marker symbols:
 
 - `#name#`
     - Name fields are a sub-field of identity fields (see below).
-    - Name fields must be surrounded on both sides by hash symbols `('#')`.
+    - Name fields must be surrounded on both sides by hash symbols `#`.
     - Note that this means that name fields cannot contain hash symbols.
 - `@tag`
     - Tag fields are a sub-field of identity fields (see below).
@@ -147,9 +147,9 @@ In order for PluralityUtilities to know what format(s) you want the macros in yo
 
 #### 4.2.1 - Templates must use the same basic structure in order for the generated script to work.
 
-All templates have to start with two colons `("::")`, a string of text including an at sign `('@')` representing the tag, then two more colons `("::")`.
+All templates have to start with two colons `::`, a string of text including an at sign `@` representing the tag, then two more colons `::`.
 
-The tag string can be anything you want, as long as it contains at least one at sign `('@')` and no spaces. Additional text is optional.
+The tag string can be anything you want, as long as it contains at least one at sign `@` and no spaces. Additional text is optional.
 
 If this is not followed, the generated script wont work, even though PluralityUtilities will run without errors.
 

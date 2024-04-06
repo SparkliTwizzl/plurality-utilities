@@ -7,6 +7,27 @@ title: Changelog - About
 
 
 ---
+## 0.6.1
+
+!!! abstract "General"
+
+    - Update documentation (forgotten in previous version).
+
+
+---
+## 0.6.0
+
+!!! abstract "AutoHotkey Shortcut Script Generation module"
+
+    - Add note about using escape characters on backslashes and update example in documentation.
+    - Add SingleInstance AutoHotkey parameter to output scripts.
+
+!!! bug "Bugfixes"
+
+    - Fix 31 - results portion of example in section 4.2.5 of documentation should not have backslashes.
+
+
+---
 ## 0.5.0
 
 !!! important
