@@ -7,6 +7,33 @@ title: Changelog - About
 
 
 ---
+## 0.10.0
+
+!!! important
+
+    This version has breaking changes and is not backward-compatible.
+
+!!! abstract "General"
+
+    - Change license to AEL-NC-AT 1.0.
+    - Change logo.
+    - Change line comment start sequence from `#:` to `//`.
+    - Add `command` token to allow putting commands and command options in input files.
+    - Add input file line numbers to log messages.
+    - Set window title.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+    - Add default behavior for `output file` and `log file` command options.
+    - Add support for changing text case of templates.
+    - Add support for custom find-and-replace dictionaries in templates.
+
+!!! bug "Bugfixes"
+
+    - Fix 165 - escaped escape characters are incorrectly removed.
+
+
+---
 ## 0.9.1
 
 !!! bug "Bugfixes"
