@@ -47,7 +47,7 @@ namespace Petrichor.App.Utilities
 				{
 					try
 					{
-						var inputHandler = new InputHandler( CreateMetadataRegionParser() );
+						var inputHandler = new InputHandler( metadataRegionParser: CreateMetadataRegionParser() );
 						var data = inputHandler.ProcessFile( inputFilePath ).ToArray();
 						CommandToRun.Data = data;
 						var logMode = CommandToRun.Options[ CommandOptions.ShortcutScriptOptionLogMode ];
@@ -123,7 +123,7 @@ namespace Petrichor.App.Utilities
 			return shortcutScriptCommand;
 		}
 
-		private static DataRegionParser<ModuleCommand> CreateCommandRegionParser()
+		private static TokenBodyParser<ModuleCommand> CreateCommandRegionParser()
 		{
 			var commandTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
 			{
@@ -162,10 +162,10 @@ namespace Petrichor.App.Utilities
 				},
 			};
 
-			return new DataRegionParser<ModuleCommand>( parserDescriptor );
+			return new TokenBodyParser<ModuleCommand>( parserDescriptor );
 		}
 
-		private static DataRegionParser<List<IndexedString>> CreateMetadataRegionParser()
+		private static TokenBodyParser<List<IndexedString>> CreateMetadataRegionParser()
 		{
 			var commandRegionParser = CreateCommandRegionParser();
 
@@ -179,9 +179,9 @@ namespace Petrichor.App.Utilities
 
 			var commandTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<IndexedString> result ) =>
 			{
-				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
+				var dataTrimmedToToken = regionData[ tokenStartIndex.. ];
 				CommandToRun = ModuleCommand.Some;
-				var command = commandRegionParser.Parse( dataTrimmedToRegion );
+				var command = commandRegionParser.Parse( dataTrimmedToToken );
 				RejectConflictingModuleCommands( command );
 				CommandToRun = command;
 				return new ProcessedRegionData<List<IndexedString>>( value: result, bodySize: commandRegionParser.LinesParsed - 1 );
@@ -197,7 +197,7 @@ namespace Petrichor.App.Utilities
 				},
 			};
 
-			return new DataRegionParser<List<IndexedString>>( parserDescriptor );
+			return new TokenBodyParser<List<IndexedString>>( parserDescriptor );
 		}
 
 		private static bool WereArgumentsProvided( string[] arguments )

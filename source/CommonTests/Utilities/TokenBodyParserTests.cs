@@ -8,7 +8,7 @@ using Petrichor.TestShared.Utilities;
 namespace Petrichor.Common.Utilities.Tests
 {
 	[TestClass]
-	public class DataRegionParserTests
+	public class TokenBodyParserTests
 	{
 		public readonly struct TestData
 		{
@@ -17,7 +17,7 @@ namespace Petrichor.Common.Utilities.Tests
 				RegionToken = RegionToken,
 				TokenHandlers = new()
 				{
-					{ TestToken, IDataRegionParser<IndexedString>.InertHandler },
+					{ TestToken, ITokenBodyParser<IndexedString>.InertHandler },
 				},
 			};
 			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexRawStrings( new[]
@@ -69,7 +69,7 @@ namespace Petrichor.Common.Utilities.Tests
 			} );
 			public static DataToken RegionToken => new()
 			{
-				Key = nameof( DataRegionParserTests ),
+				Key = nameof( TokenBodyParserTests ),
 			};
 			public static DataToken TestToken => new()
 			{
@@ -81,7 +81,7 @@ namespace Petrichor.Common.Utilities.Tests
 		}
 
 
-		public DataRegionParser<IndexedString>? parser;
+		public TokenBodyParser<IndexedString>? parser;
 
 
 		[TestInitialize]

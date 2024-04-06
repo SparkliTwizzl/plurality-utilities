@@ -9,14 +9,14 @@ namespace Petrichor.Common.Utilities
 		private const string DefaultInputDirectory = @".\";
 		private const string DefaultInputFileName = "input.petrichor";
 
-		private IDataRegionParser<List<IndexedString>> FileRegionParser { get; set; }
-		private IDataRegionParser<List<IndexedString>> MetadataRegionParser { get; set; }
+		private ITokenBodyParser<List<IndexedString>> FileRegionParser { get; set; }
+		private ITokenBodyParser<List<IndexedString>> MetadataRegionParser { get; set; }
 
 
 		public ModuleCommand ActiveCommand { get; private set; } = ModuleCommand.None;
 
 
-		public InputHandler( IDataRegionParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
+		public InputHandler( ITokenBodyParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
 		{
 			ActiveCommand = command ?? ModuleCommand.None;
 			MetadataRegionParser = metadataRegionParser;
@@ -52,13 +52,13 @@ namespace Petrichor.Common.Utilities
 		}
 
 
-		private DataRegionParser<List<IndexedString>> CreateRegionParser()
+		private TokenBodyParser<List<IndexedString>> CreateRegionParser()
 		{
 			var metadataTokenHandler = ( IndexedString[] regionData, int regionStartIndex, List<IndexedString> result ) =>
 				{
-					var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-					_ = MetadataRegionParser.Parse( dataTrimmedToRegion );
-					var remainingData = dataTrimmedToRegion[ MetadataRegionParser.LinesParsed.. ].ToList();
+					var dataTrimmedToToken = regionData[ regionStartIndex.. ];
+					_ = MetadataRegionParser.Parse( dataTrimmedToToken );
+					var remainingData = dataTrimmedToToken[ MetadataRegionParser.LinesParsed.. ].ToList();
 					FileRegionParser.CancelParsing();
 					return new ProcessedRegionData<List<IndexedString>>( value: remainingData, bodySize: MetadataRegionParser.LinesParsed );
 				};
@@ -75,7 +75,7 @@ namespace Petrichor.Common.Utilities
 				},
 			};
 
-			var parser = new DataRegionParser<List<IndexedString>>( parserDescriptor );
+			var parser = new TokenBodyParser<List<IndexedString>>( parserDescriptor );
 			return parser;
 		}
 	}
