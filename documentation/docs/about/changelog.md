@@ -7,6 +7,14 @@ title: Changelog - About
 
 
 ---
+## 0.10.2
+
+!!! bug "Bugfixes"
+
+    - Fix 201 - custom template find and replace is applied to template find strings.
+
+
+---
 ## 0.10.1
 
 !!! abstract "Text Shortcut Script Generation module"
