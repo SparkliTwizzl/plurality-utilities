@@ -5,6 +5,30 @@ title: Changelog - About
 
 <h1 align="center">Changelog</h1>
 
+---
+## 0.11.0
+
+!!! important
+
+    This version has breaking changes and is not backward-compatible.
+
+!!! abstract "General"
+
+    - Change license to AEL-NC-AT 1.1.
+    - Overhaul user guide.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+    - Change `template-list` token to `shortcut-list`.
+    - Change `template` token to `shortcut-template`.
+    - Change shortcut structure to `#!ptcr <hotstring> >> <replacement string>`.
+    - Change control shortcut find-and-replace table.
+        - Change main and alias tags for `&`, `[`, and `]`.
+        - Change alias tag for `*`.
+        - Add alias tag for `$`.
+    - Change console logging colors via [Pastel](https://github.com/silkfire/Pastel).
+    - Add plaintext shortcuts.
+
 
 ---
 ## 0.10.2
@@ -115,6 +139,10 @@ title: Changelog - About
 ---
 ## 0.7.0
 
+!!! important
+
+    This version has breaking changes and is not backward-compatible.
+
 !!! abstract "General"
 
     - Ignore blank lines in input files.
@@ -126,10 +154,6 @@ title: Changelog - About
 
 ---
 ## 0.6.1
-
-!!! abstract "General"
-
-    - Update documentation (forgotten in previous version).
 
 
 ---

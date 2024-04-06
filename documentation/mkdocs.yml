@@ -108,5 +108,20 @@ theme:
 nav:
   - index.md
 
-  - About:
+  - 'Getting started':
+    - user-guide/getting-started/index.md
+    - user-guide/getting-started/petrichor-script.md
+    - user-guide/getting-started/command-usage.md
+
+  - 'Modules':
+    - user-guide/modules/index.md
+
+    - 'Text Shortcut Script Generation':
+      - user-guide/modules/text-shortcut-script-generation/index.md
+      - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
+      - user-guide/modules/text-shortcut-script-generation/command-usage.md
+      - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
+
+  - 'About':
     - about/changelog.md
+    - about/license.md
