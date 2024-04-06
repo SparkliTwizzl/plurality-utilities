@@ -11,7 +11,7 @@ title: Home
 
 ---
 <h1 align="center">Petrichor</h1>
-<h2 align="center">Version 0.9</h2>
+<h2 align="center">Version 0.9.1</h2>
 
 !!! important
 

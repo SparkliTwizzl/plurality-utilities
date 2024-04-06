@@ -7,6 +7,14 @@ title: Changelog - About
 
 
 ---
+## 0.9.1
+
+!!! bug "Bugfixes"
+
+    - Fix 157 - templates region is parsed multiple times and fails.
+
+
+---
 ## 0.9.0
 
 !!! important
