@@ -7,6 +7,19 @@ title: Changelog - About
 
 
 ---
+## 0.10.1
+
+!!! abstract "Text Shortcut Script Generation module"
+
+    - Add missing log info messages.
+
+!!! bug "Bugfixes"
+
+    - Fix 187 - escaping comments does not work.
+    - Fix 188 - command file option values in quotes are parsed incorrectly.
+
+
+---
 ## 0.10.0
 
 !!! important
