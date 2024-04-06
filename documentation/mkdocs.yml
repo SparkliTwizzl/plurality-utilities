@@ -8,7 +8,6 @@ site_url: https://sparklitwizzl.github.io/petrichor/
 
 plugins:
   - mike:
-  - offline:
   - search:
 
 extra_css:
@@ -17,6 +16,12 @@ extra_css:
 markdown_extensions:
   - admonition
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - overrides/.icons
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -31,21 +36,25 @@ markdown_extensions:
 
 extra:
   social:
+    - icon: kofi
+      link: https://ko-fi.com/sparklitwizzl
+      name: SparkliTwizzl on Ko-fi
+
     - icon: fontawesome/brands/discord
-      name: SparkliTwizzl on Discord
       link: https://discord.gg/JReqBYtYpg
+      name: SparkliTwizzl on Discord
 
     - icon: fontawesome/brands/github
-      name: SparkliTwizzl on GitHub
       link: https://github.com/sparklitwizzl
+      name: SparkliTwizzl on GitHub
 
     - icon: fontawesome/brands/twitch
-      name: SparkliTwizzl on Twitch
       link: https://twitch.tv/sparklitwizzl
+      name: SparkliTwizzl on Twitch
 
     - icon: fontawesome/brands/youtube
-      name: SparkliTwizzl on YouTube
       link: https://youtube.com/@sparklitwizzl
+      name: SparkliTwizzl on YouTube
 
   version:
     provider: mike
