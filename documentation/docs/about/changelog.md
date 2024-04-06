@@ -5,6 +5,16 @@ title: Changelog - About
 
 <h1 align="center">Changelog</h1>
 
+
+---
+## 0.11.1
+
+!!! bug "Bugfixes"
+
+    - Fix 212 - custom icons do not work.
+    - Fix 213 - reload and suspend hotkeys do not work.
+
+
 ---
 ## 0.11.0
 

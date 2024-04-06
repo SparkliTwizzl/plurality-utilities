@@ -5,7 +5,7 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class DataRegionParser<T> : IDataRegionParser<T> where T : class, new()
+	public class TokenBodyParser<T> : ITokenBodyParser<T> where T : class, new()
 	{
 		private const int DefaultIndentLevel = 0;
 		private const int DefaultLinesParsed = 0;
@@ -14,7 +14,7 @@ namespace Petrichor.Common.Utilities
 		private int IndentLevel { get; set; } = 0;
 		private bool IsParsingFinished { get; set; } = false;
 		private Func<T, T> PostParseHandler { get; set; } = ( T result ) => result;
-		private Func<T> PreParseHandler { get; set; } = () => new T();
+		private Func<T, T> PreParseHandler { get; set; } = ( T input ) => new T();
 		private int RegionStartLineNumber { get; set; } = -1;
 		private Dictionary<string, Func<IndexedString[], int, T, ProcessedRegionData<T>>> TokenHandlers { get; set; } = new();
 
@@ -26,8 +26,8 @@ namespace Petrichor.Common.Utilities
 		public Dictionary<string, int> TokenInstancesParsed { get; private set; } = new();
 
 
-		public DataRegionParser() { }
-		public DataRegionParser( DataRegionParserDescriptor<T> descriptor )
+		public TokenBodyParser() { }
+		public TokenBodyParser( DataRegionParserDescriptor<T> descriptor )
 		{
 			PostParseHandler = descriptor.PostParseHandler;
 			PreParseHandler = descriptor.PreParseHandler;
@@ -40,7 +40,7 @@ namespace Petrichor.Common.Utilities
 
 		public void CancelParsing() => IsParsingFinished = true;
 
-		public T Parse( IndexedString[] regionData )
+		public T Parse( IndexedString[] regionData, T? input = null )
 		{
 			var token = new StringToken( regionData[ 0 ] );
 			RegionStartLineNumber = token.LineNumber;
@@ -50,7 +50,7 @@ namespace Petrichor.Common.Utilities
 
 			TryAddDefaultControlTokenHandlers();
 			PopulateTokenInstanceCountKeys();
-			var result = PreParseHandler();
+			var result = PreParseHandler( input ?? new T() );
 			result = ParseAllTokens( regionData, result );
 			ValidateIndentLevel();
 			ValidateTokenInstanceCounts();
@@ -163,10 +163,10 @@ namespace Petrichor.Common.Utilities
 				return new ProcessedRegionData<T>( result );
 			};
 
-			_ = TokenHandlers.TryAdd( Tokens.BlankLine.Key, IDataRegionParser<T>.InertHandler );
+			_ = TokenHandlers.TryAdd( Tokens.BlankLine.Key, ITokenBodyParser<T>.InertHandler );
 			_ = TokenHandlers.TryAdd( Tokens.RegionClose.Key, regionCloseTokenHandler );
 			_ = TokenHandlers.TryAdd( Tokens.RegionOpen.Key, regionOpenTokenHandler );
-			_ = TokenHandlers.TryAdd( RegionToken.Key, IDataRegionParser<T>.InertHandler ); // this removes the need to offset the token start index in handlers to skip the region name token
+			_ = TokenHandlers.TryAdd( RegionToken.Key, ITokenBodyParser<T>.InertHandler ); // this removes the need to offset the token start index in handlers to skip the region name token
 		}
 
 		private void ValidateIndentLevel()

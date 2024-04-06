@@ -7,47 +7,47 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class InputHandler
 	{
-		private IDataRegionParser<List<ScriptEntry>> EntryListRegionParser { get; set; }
-		private IDataRegionParser<ScriptInput> FileRegionParser { get; set; }
-		private IDataRegionParser<ScriptModuleOptions> ModuleOptionsRegionParser { get; set; }
+		private ITokenBodyParser<List<ScriptEntry>> EntryListParser { get; set; }
+		private ITokenBodyParser<ScriptInput> FileParser { get; set; }
+		private ITokenBodyParser<ScriptModuleOptions> ModuleOptionsParser { get; set; }
 		private IShortcutProcessor ShortcutProcessor { get; set; }
-		private IDataRegionParser<ScriptInput> ShortcutListRegionParser { get; set; }
+		private ITokenBodyParser<ScriptInput> ShortcutListParser { get; set; }
 
 
-		public InputHandler( IDataRegionParser<ScriptModuleOptions> moduleOptionsRegionParser, IDataRegionParser<List<ScriptEntry>> entryListRegionParser, IDataRegionParser<ScriptInput> shortcutListRegionParser, IShortcutProcessor shortcutGenerator )
+		public InputHandler( ITokenBodyParser<ScriptModuleOptions> moduleOptionsParser, ITokenBodyParser<List<ScriptEntry>> entryListParser, ITokenBodyParser<ScriptInput> shortcutListParser, IShortcutProcessor shortcutGenerator )
 		{
-			EntryListRegionParser = entryListRegionParser;
-			ModuleOptionsRegionParser = moduleOptionsRegionParser;
+			EntryListParser = entryListParser;
+			ModuleOptionsParser = moduleOptionsParser;
 			ShortcutProcessor = shortcutGenerator;
-			ShortcutListRegionParser = shortcutListRegionParser;
-			FileRegionParser = CreateRegionParser();
+			ShortcutListParser = shortcutListParser;
+			FileParser = CreateParser();
 		}
 
 
-		public ScriptInput ParseRegionData( IndexedString[] regionData ) => FileRegionParser.Parse( regionData );
+		public ScriptInput ParseFileData( IndexedString[] regionData ) => FileParser.Parse( regionData );
 
 
-		private DataRegionParser<ScriptInput> CreateRegionParser()
+		private TokenBodyParser<ScriptInput> CreateParser()
 		{
 			var entryListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 			{
-				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-				result.Entries = EntryListRegionParser.Parse( dataTrimmedToRegion ).ToArray();
-				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: EntryListRegionParser.LinesParsed );
+				var dataTrimmedToToken = regionData[ regionStartIndex.. ];
+				result.Entries = EntryListParser.Parse( dataTrimmedToToken ).ToArray();
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: EntryListParser.LinesParsed );
 			};
 
 			var moduleOptionsTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 			{
-				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-				result.ModuleOptions = ModuleOptionsRegionParser.Parse( dataTrimmedToRegion );
-				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ModuleOptionsRegionParser.LinesParsed );
+				var dataTrimmedToToken = regionData[ regionStartIndex.. ];
+				result.ModuleOptions = ModuleOptionsParser.Parse( dataTrimmedToToken );
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ModuleOptionsParser.LinesParsed );
 			};
 
 			var shortcutListTokenHandler = ( IndexedString[] regionData, int regionStartIndex, ScriptInput result ) =>
 			{
-				var dataTrimmedToRegion = regionData[ regionStartIndex.. ];
-				result = ShortcutListRegionParser.Parse( dataTrimmedToRegion );
-				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ShortcutListRegionParser.LinesParsed );
+				var dataTrimmedToToken = regionData[ regionStartIndex.. ];
+				result = ShortcutListParser.Parse( dataTrimmedToToken, result );
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: ShortcutListParser.LinesParsed );
 			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<ScriptInput>()
@@ -69,7 +69,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				},
 			};
 
-			return new DataRegionParser<ScriptInput>( parserDescriptor );
+			return new TokenBodyParser<ScriptInput>( parserDescriptor );
 		}
 	}
 }

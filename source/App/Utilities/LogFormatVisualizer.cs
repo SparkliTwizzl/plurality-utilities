@@ -1,4 +1,7 @@
-﻿namespace Petrichor.App.Utilities
+﻿using Petrichor.Logging;
+
+
+namespace Petrichor.App.Utilities
 {
 	public static class LogFormatVisualizer
 	{
