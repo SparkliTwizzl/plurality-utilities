@@ -1,0 +1,2493 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SparkliTwizzl">
+      
+      
+        <link rel="canonical" href="https://sparklitwizzl.github.io/petrichor/0.11.1/user-guide/modules/text-shortcut-script-generation/petrichor-script.html">
+      
+      
+        <link rel="prev" href="index.html">
+      
+      
+        <link rel="next" href="command-usage.html">
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Petrichor Script - Text Shortcut Script Generation - Modules - Petrichor</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="https://unpkg.com/iframe-worker/shim"></script>
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-options-token" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../../../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="Petrichor" class="md-header__button md-logo" aria-label="Petrichor" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Petrichor
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Petrichor Script - Text Shortcut Script Generation - Modules
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="deep-orange"  aria-label="Switch to system preference""  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference"" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sparklitwizzl/petrichor/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sparklitwizzl/petrichor
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../index.html" class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  Modules
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../about/changelog.html" class="md-tabs__link">
+          
+  
+    
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="Petrichor" class="md-nav__button md-logo" aria-label="Petrichor" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Petrichor
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sparklitwizzl/petrichor/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sparklitwizzl/petrichor
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="../../../index.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Home
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+    
+      
+      
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+
+        <!-- Determine all nested items that are index pages -->
+        
+        
+            
+                
+                    
+                
+            
+                
+            
+                
+            
+        
+
+        <!-- Navigation tabs -->
+        
+
+            <!-- Render 1st level active item as section -->
+            
+
+            <!-- Navigation tabs + sections -->
+            
+
+                <!-- Render 2nd level items with nested items as sections -->
+                
+            
+
+        <!-- Navigation sections -->
+        
+
+        <!-- Navigation pruning -->
+        
+
+        <!-- Nested navigation item -->
+        <li class="md-nav__item md-nav__item--nested">
+            
+                
+
+                <!-- Determine checked and indeterminate state -->
+                
+
+                <!-- Active checkbox expands items contained within nested section -->
+                <input
+                    class="md-nav__toggle md-toggle "
+                    type="checkbox"
+                    id="__nav_2"
+                    
+                />
+
+                <!-- Toggle to expand nested items -->
+                
+                    
+                    
+                    <div class="md-nav__link md-nav__container">
+                        <a
+                            href="../../getting-started/index.html"
+                            class="md-nav__link "
+                        >
+                            
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Getting started
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+                        </a>
+
+                        <!-- Only render toggle if there's at least one more page -->
+                        
+                            
+                            <label
+                                class="md-nav__link "
+                                for="__nav_2"
+                                id="__nav_2_label"
+                                tabindex="0"
+                            >
+                                <span class="md-nav__icon md-icon"></span>
+                            </label>
+                        
+                    </div>
+                
+
+                <!-- Nested navigation -->
+                <nav
+                    class="md-nav"
+                    data-md-level="1"
+                    aria-labelledby="__nav_2_label"
+                    aria-expanded="false"
+                >
+                    <label class="md-nav__title" for="__nav_2">
+                        <span class="md-nav__icon md-icon"></span>
+                        Getting started
+                    </label>
+                    <ul class="md-nav__list" data-md-scrollfix>
+
+                        <!-- Nested navigation item -->
+                        
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="../../getting-started/petrichor-script.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Petrichor Script
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="../../getting-started/command-usage.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Command usage
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                    </ul>
+                </nav>
+
+            <!-- Pruned navigation item -->
+            
+        </li>
+
+    <!-- Currently active page -->
+    
+
+    
+      
+      
+
+    <!-- Determine classes -->
+    
+    
+        
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+
+        <!-- Determine all nested items that are index pages -->
+        
+        
+            
+                
+                    
+                
+            
+                
+            
+        
+
+        <!-- Navigation tabs -->
+        
+
+            <!-- Render 1st level active item as section -->
+            
+                
+                
+            
+
+            <!-- Navigation tabs + sections -->
+            
+
+                <!-- Render 2nd level items with nested items as sections -->
+                
+            
+
+        <!-- Navigation sections -->
+        
+
+        <!-- Navigation pruning -->
+        
+
+        <!-- Nested navigation item -->
+        <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+            
+                
+
+                <!-- Determine checked and indeterminate state -->
+                
+
+                <!-- Active checkbox expands items contained within nested section -->
+                <input
+                    class="md-nav__toggle md-toggle "
+                    type="checkbox"
+                    id="__nav_3"
+                    checked
+                />
+
+                <!-- Toggle to expand nested items -->
+                
+                    
+                    
+                    <div class="md-nav__link md-nav__container">
+                        <a
+                            href="../index.html"
+                            class="md-nav__link "
+                        >
+                            
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Modules
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+                        </a>
+
+                        <!-- Only render toggle if there's at least one more page -->
+                        
+                            
+                            <label
+                                class="md-nav__link "
+                                for="__nav_3"
+                                id="__nav_3_label"
+                                tabindex=""
+                            >
+                                <span class="md-nav__icon md-icon"></span>
+                            </label>
+                        
+                    </div>
+                
+
+                <!-- Nested navigation -->
+                <nav
+                    class="md-nav"
+                    data-md-level="1"
+                    aria-labelledby="__nav_3_label"
+                    aria-expanded="true"
+                >
+                    <label class="md-nav__title" for="__nav_3">
+                        <span class="md-nav__icon md-icon"></span>
+                        Modules
+                    </label>
+                    <ul class="md-nav__list" data-md-scrollfix>
+
+                        <!-- Nested navigation item -->
+                        
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+        
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+
+        <!-- Determine all nested items that are index pages -->
+        
+        
+            
+                
+                    
+                
+            
+                
+            
+                
+            
+                
+            
+        
+
+        <!-- Navigation tabs -->
+        
+
+            <!-- Render 1st level active item as section -->
+            
+
+            <!-- Navigation tabs + sections -->
+            
+
+                <!-- Render 2nd level items with nested items as sections -->
+                
+                    
+                    
+                
+            
+
+        <!-- Navigation sections -->
+        
+
+        <!-- Navigation pruning -->
+        
+
+        <!-- Nested navigation item -->
+        <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+            
+                
+
+                <!-- Determine checked and indeterminate state -->
+                
+
+                <!-- Active checkbox expands items contained within nested section -->
+                <input
+                    class="md-nav__toggle md-toggle "
+                    type="checkbox"
+                    id="__nav_3_2"
+                    checked
+                />
+
+                <!-- Toggle to expand nested items -->
+                
+                    
+                    
+                    <div class="md-nav__link md-nav__container">
+                        <a
+                            href="index.html"
+                            class="md-nav__link "
+                        >
+                            
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Text Shortcut Script Generation
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+                        </a>
+
+                        <!-- Only render toggle if there's at least one more page -->
+                        
+                            
+                            <label
+                                class="md-nav__link "
+                                for="__nav_3_2"
+                                id="__nav_3_2_label"
+                                tabindex=""
+                            >
+                                <span class="md-nav__icon md-icon"></span>
+                            </label>
+                        
+                    </div>
+                
+
+                <!-- Nested navigation -->
+                <nav
+                    class="md-nav"
+                    data-md-level="2"
+                    aria-labelledby="__nav_3_2_label"
+                    aria-expanded="true"
+                >
+                    <label class="md-nav__title" for="__nav_3_2">
+                        <span class="md-nav__icon md-icon"></span>
+                        Text Shortcut Script Generation
+                    </label>
+                    <ul class="md-nav__list" data-md-scrollfix>
+
+                        <!-- Nested navigation item -->
+                        
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+        
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item md-nav__item--active">
+            
+
+            <!-- State toggle -->
+            <input
+                class="md-nav__toggle md-toggle"
+                type="checkbox"
+                id="__toc"
+            />
+
+            <!-- Hack: see partials/toc.html for more information -->
+            
+            
+
+            <!-- Navigation link to table of contents -->
+            
+                <label class="md-nav__link md-nav__link--active" for="__toc">
+                    
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Petrichor Script
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+                    <span class="md-nav__icon md-icon"></span>
+                </label>
+            
+            <a
+                href="petrichor-script.html"
+                class="md-nav__link md-nav__link--active"
+            >
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Petrichor Script
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+
+            <!-- Table of contents -->
+            
+                
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-options-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module options token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module options token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-icon-and-suspend-icon-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default icon and suspend icon tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload-shortcut-and-suspend-shortcut-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reload shortcut and suspend shortcut tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reload shortcut and suspend shortcut tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#control-shortcut-find-and-replace-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control shortcut find-and-replace table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shortcut-list-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut list token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shortcut list token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-template-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut template token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shortcut template token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find-and-replace-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find and replace tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-case-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text case token
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entry-list-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entry list token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entry list token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entry-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entry token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entry token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#color-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Color token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoration-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoration token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      ID token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#last-name-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Last name token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pronoun-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pronoun token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full usage example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+            
+        </li>
+
+    <!-- Navigation item -->
+    
+
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="command-usage.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Command usage
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="running-output-scripts.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Running output scripts
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                    </ul>
+                </nav>
+
+            <!-- Pruned navigation item -->
+            
+        </li>
+
+    <!-- Currently active page -->
+    
+
+                            
+                        
+                    </ul>
+                </nav>
+
+            <!-- Pruned navigation item -->
+            
+        </li>
+
+    <!-- Currently active page -->
+    
+
+    
+      
+      
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+
+        <!-- Determine all nested items that are index pages -->
+        
+        
+            
+                
+            
+                
+            
+        
+
+        <!-- Navigation tabs -->
+        
+
+            <!-- Render 1st level active item as section -->
+            
+
+            <!-- Navigation tabs + sections -->
+            
+
+                <!-- Render 2nd level items with nested items as sections -->
+                
+            
+
+        <!-- Navigation sections -->
+        
+
+        <!-- Navigation pruning -->
+        
+
+        <!-- Nested navigation item -->
+        <li class="md-nav__item md-nav__item--nested">
+            
+                
+
+                <!-- Determine checked and indeterminate state -->
+                
+
+                <!-- Active checkbox expands items contained within nested section -->
+                <input
+                    class="md-nav__toggle md-toggle "
+                    type="checkbox"
+                    id="__nav_4"
+                    
+                />
+
+                <!-- Toggle to expand nested items -->
+                
+                    
+                    <label
+                        class="md-nav__link"
+                        for="__nav_4"
+                        id="__nav_4_label"
+                        tabindex="0"
+                    >
+                        
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            About
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+                        <span class="md-nav__icon md-icon"></span>
+                    </label>
+
+                <!-- Toggle to expand nested items with link to index page -->
+                
+
+                <!-- Nested navigation -->
+                <nav
+                    class="md-nav"
+                    data-md-level="1"
+                    aria-labelledby="__nav_4_label"
+                    aria-expanded="false"
+                >
+                    <label class="md-nav__title" for="__nav_4">
+                        <span class="md-nav__icon md-icon"></span>
+                        About
+                    </label>
+                    <ul class="md-nav__list" data-md-scrollfix>
+
+                        <!-- Nested navigation item -->
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="../../../about/changelog.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            Changelog
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                            
+                                
+
+    <!-- Determine classes -->
+    
+    
+
+    <!-- Determine active page for paginated views -->
+    
+
+    <!-- Navigation item with nested items -->
+    
+        <li class="md-nav__item">
+            <a href="../../../about/license.html" class="md-nav__link">
+                
+
+    <!-- Navigation link icon -->
+    
+
+    <!-- Navigation link title -->
+    <span class="md-ellipsis">
+        
+            License
+        
+    </span>
+
+    <!-- Navigation link status -->
+    
+
+            </a>
+        </li>
+    
+
+                            
+                        
+                    </ul>
+                </nav>
+
+            <!-- Pruned navigation item -->
+            
+        </li>
+
+    <!-- Currently active page -->
+    
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-options-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module options token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module options token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-icon-and-suspend-icon-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default icon and suspend icon tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload-shortcut-and-suspend-shortcut-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reload shortcut and suspend shortcut tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reload shortcut and suspend shortcut tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#control-shortcut-find-and-replace-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control shortcut find-and-replace table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shortcut-list-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut list token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shortcut list token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shortcut-template-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shortcut template token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shortcut template token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find-and-replace-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Find and replace tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-case-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text case token
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entry-list-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entry list token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entry list token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entry-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entry token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entry token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#color-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Color token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoration-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoration token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      ID token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#last-name-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Last name token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pronoun-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pronoun token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full usage example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 align="center">Petrichor Script</h1>
+<h2 align="center"><a href="./index.html">Text Shortcut Script Generation</a></h2>
+
+<hr />
+<h2 id="module-options-token">Module options token</h2>
+<p>This module's variant of the <a href="../../getting-started/petrichor-script.html#module-options-token">module options token</a> supports the following tokens.</p>
+<ul>
+<li><a href="#default-icon-and-suspend-icon-tokens">Default icon</a></li>
+<li><a href="#default-icon-and-suspend-icon-tokens">Suspend icon</a></li>
+<li><a href="#reload-shortcut-and-suspend-shortcut-tokens">Reload shortcut</a></li>
+<li><a href="#reload-shortcut-and-suspend-shortcut-tokens">Suspend shortcut</a></li>
+</ul>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must come after <a href="../../getting-started/petrichor-script.html#metadata-token"><code>metadata</code></a> token.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">metadata</span><span class="o">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>{
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="c1">// Metadata goes here.</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>}
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kr">module-options</span><span class="o">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>{
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="c1">// Module-specific options go here.</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="default-icon-and-suspend-icon-tokens">Default icon and suspend icon tokens</h3>
+<p>These tokens allow you to specify file paths to custom icons for a text shortcut script.</p>
+<p>The <code>default-icon</code> token sets the file path of the icon shown on a script by default.</p>
+<p>The <code>suspend-icon</code> token sets the file path of the icon shown when a script is suspended.</p>
+<p><a href="../../getting-started/command-usage.html#relative-file-paths">Relative file paths</a> can be used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>File paths can be surrounded with quotes, but they do not need to be.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you move an icon file and do not update its path in your input file, the icon will not be found and will not be applied.</p>
+</div>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#module-options-token"><code>module-options</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">module-options</span><span class="o">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="kr">default-icon</span><span class="o">:</span> &lt;path&gt;/default.ico
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="kr">suspend-icon</span><span class="o">:</span> <span class="s">&quot;./suspend_icon.png&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="reload-shortcut-and-suspend-shortcut-tokens">Reload shortcut and suspend shortcut tokens</h3>
+<p>These tokens allow you to set keyboard shortcuts to control the operation of a script.</p>
+<p>The <code>reload-shortcut</code> token sets a keyboard shortcut to reload a script.</p>
+<p>The <code>suspend-shortcut</code> token sets a keyboard shortcut to suspend and resume a script.</p>
+<p>These keyboard shortcuts can be written in AutoHotkey v2 syntax, but for simplicity, Petrichor supports a <a href="#control-shortcut-find-and-replace-table">find-and-replace table</a> of common modifier keys.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#module-options-token"><code>module-options</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">module-options</span><span class="o">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="kr">reload-shortcut</span><span class="o">:</span> &lt;shortcut&gt;
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="kr">suspend-shortcut</span><span class="o">:</span> &lt;shortcut&gt;
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="control-shortcut-find-and-replace-table">Control shortcut find-and-replace table</h4>
+<p>Petrichor supports the following tags in <a href="#reload-shortcut-and-suspend-shortcut-tokens">script control shortcuts</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Alias</th>
+<th>Encodes for</th>
+<th>Key / symbol name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[windows]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[win]</span></code></td>
+<td><span class="keys"><kbd class="key-windows">Win</kbd></span></td>
+<td>Windows key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[alt]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-alt">Alt</kbd></span></td>
+<td>Alt key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[left-alt]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[lalt]</span></code></td>
+<td><span class="keys"><kbd class="key-left-alt">Left Alt</kbd></span></td>
+<td>Left Alt key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[right-alt]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[ralt]</span></code></td>
+<td><span class="keys"><kbd class="key-right-alt">Right Alt</kbd></span></td>
+<td>Right Alt key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[control]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[ctrl]</span></code></td>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd></span></td>
+<td>Control key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[left-control]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[lctrl]</span></code></td>
+<td><span class="keys"><kbd class="key-left-control">Left Ctrl</kbd></span></td>
+<td>Left Control key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[right-control]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[rctrl]</span></code></td>
+<td><span class="keys"><kbd class="key-right-control">Right Ctrl</kbd></span></td>
+<td>Right Control key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[shift]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-shift">Shift</kbd></span></td>
+<td>Shift key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[left-shift]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[lshift]</span></code></td>
+<td><span class="keys"><kbd class="key-left-shift">Left Shift</kbd></span></td>
+<td>Left Shift key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[right-shift]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[rshift]</span></code></td>
+<td><span class="keys"><kbd class="key-right-shift">Right Shift</kbd></span></td>
+<td>Right Shift key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[combine]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[and]</span></code></td>
+<td><span class="keys"><kbd>&amp;</kbd></span></td>
+<td>AutoHotkey combine (Ampersand symbol)</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[alt-graph]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[altgr]</span></code></td>
+<td><span class="keys"><kbd class="key-alt-graph">AltGr</kbd></span></td>
+<td>AltGraph key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[wildcard]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[asterisk]</span></code></td>
+<td><span class="keys"><kbd>*</kbd></span></td>
+<td>AutoHotkey wildcard (Asterisk symbol)</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[passthrough]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[tilde]</span></code></td>
+<td><span class="keys"><kbd class="key-tilde">~</kbd></span></td>
+<td>AutoHotkey passthrough (Tilde symbol)</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[send]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[dollar]</span></code></td>
+<td><span class="keys"><kbd>$</kbd></span></td>
+<td>AutoHotkey send (Dollar sign)</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[tab]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-tab">Tab</kbd></span></td>
+<td>Tab key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[caps-lock]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[caps]</span></code></td>
+<td><span class="keys"><kbd class="key-caps-lock">Caps Lock</kbd></span></td>
+<td>CapsLock key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[enter]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-enter">Enter</kbd></span></td>
+<td>Enter key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[backspace]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[bksp]</span></code></td>
+<td><span class="keys"><kbd class="key-backspace">Backspace</kbd></span></td>
+<td>Backspace key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[insert]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[ins]</span></code></td>
+<td><span class="keys"><kbd class="key-insert">Ins</kbd></span></td>
+<td>Insert key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[delete]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[del]</span></code></td>
+<td><span class="keys"><kbd class="key-delete">Del</kbd></span></td>
+<td>Delete key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[end]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-end">End</kbd></span></td>
+<td>End key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[home]</span></code></td>
+<td></td>
+<td><span class="keys"><kbd class="key-home">Home</kbd></span></td>
+<td>Home key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[page-up]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[pgup]</span></code></td>
+<td><span class="keys"><kbd class="key-page-up">Page Up</kbd></span></td>
+<td>PageUp key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[page-down]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="nv">[pgdn]</span></code></td>
+<td><span class="keys"><kbd class="key-page-down">Page Down</kbd></span></td>
+<td>PageDown key</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[open-bracket]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="se">\[</span></code></td>
+<td><span class="keys"><kbd class="key-bracket-left">[</kbd></span></td>
+<td>Left square bracket</td>
+</tr>
+<tr>
+<td><code class="language-ptcr highlight"><span class="nv">[close-bracket]</span></code></td>
+<td><code class="language-ptcr highlight"><span class="se">\]</span></code></td>
+<td><span class="keys"><kbd class="key-bracket-right">]</kbd></span></td>
+<td>Right square bracket</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="language-ptcr highlight"><span class="se">\[</span></code> and <code class="language-ptcr highlight"><span class="se">\]</span></code> make use of <a href="../../getting-started/petrichor-script.html#escape-characters">escape characters</a>.</p>
+</div>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">module-options</span><span class="o">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="kr">reload-shortcut</span><span class="o">:</span> <span class="nv">[win]</span>r <span class="c1">// Windows key + R</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="kr">suspend-shortcut</span><span class="o">:</span> <span class="se">\[</span>win<span class="se">\]</span>s <span class="c1">// [win]s</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h2 id="shortcut-list-token">Shortcut list token</h2>
+<p>This token contains definitions for the text shortcuts to be generated.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>REQUIRED</p>
+<p>Mininum required: 1</p>
+<p>Maximum allowed: 1</p>
+<p>Must come after <a href="../../getting-started/petrichor-script.html#metadata-token"><code>metadata</code></a> token.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">metadata</span><span class="o">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>{
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="c1">// Metadata goes here.</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>}
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>{
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="c1">// Shortcuts go here.</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="shortcut-token">Shortcut token</h3>
+<p>The <code>shortcut</code> token defines a plaintext shortcut.</p>
+<p>This token's values can use AutoHotkey special behavior if written correctly. Consult AutoHotkey documentation to learn more about this.</p>
+<p>Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 right-angle brackets ( <code>&gt;&gt;</code> ), and a replacement string.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These components can have whitespace between them.</p>
+<p>This whitespace will be trimmed off unless you force it to be kept in by surrounding it with backticks ( <code>`</code> ).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You cannot use <code>::</code> in a hotstring due to the way AutoHotkey hotstrings work.</p>
+<p>Petrichor will allow you to do it, but the generated shortcuts will not work.</p>
+<p><a href="../../getting-started/petrichor-script.html#escape-characters">Escaping</a> the characters will not fix this.</p>
+</div>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>No restrictions on number of instances that can be present.</p>
+<p>Must be in <a href="#shortcut-list-token"><code>shortcut-list</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>{
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="kr">shortcut</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; ` &lt;replacement string&gt; `
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">; This is a standard shortcut. The &lt;hotstring&gt; and &lt;replacement string&gt; will be inserted into the output file unaltered.</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::</span><span class="err">`</span> <span class="o">&lt;</span><span class="n">replacement</span> <span class="n">string</span><span class="o">&gt;</span> <span class="err">`</span>
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="shortcut-template-token">Shortcut template token</h3>
+<p>The <code>shortcut-template</code> token defines a templated shortcut.</p>
+<p>It behaves the same way as the <a href="#shortcut-token">shortcut token</a>, but with additional features.</p>
+<p>Shortcuts will be generated from the template, filling in <code class="language-ptcr highlight"><span class="nv">[field]</span></code> tags with user-provided data.</p>
+<p>Supported fields:</p>
+<ul>
+<li><code class="language-ptcr highlight"><span class="nv">[color]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[decoration]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[id]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[name]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[last-name]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[last-tag]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[pronoun]</span></code></li>
+<li><code class="language-ptcr highlight"><span class="nv">[tag]</span></code></li>
+</ul>
+<p>Additional features are supported via subtokens.</p>
+<p>If no subtokens are used, this token does not need a body.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, you cannot use the <code>[</code> or <code>]</code> symbols in a template. Use <a href="../../getting-started/command-usage.html#escape-characters">escape characters</a> to circumvent this.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You cannot use <code>::</code> in a hotstring due to the way AutoHotkey hotstrings work.</p>
+<p>Petrichor will allow you to do it, but the generated shortcuts will not work.</p>
+<p><a href="../../getting-started/petrichor-script.html#escape-characters">Escaping</a> the characters will not fix this.</p>
+</div>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>No restrictions on number of instances that can be present.</p>
+<p>Must be in <a href="#shortcut-list-token"><code>shortcut-list</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>{
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> <span class="nv">[tag]</span> <span class="nv">[last-tag]</span> &gt;&gt; <span class="nv">[id]</span> - <span class="nv">[name]</span> <span class="nv">[last-name]</span> (<span class="nv">[pronoun]</span>) | {<span class="nv">[decoration]</span>} | <span class="nv">[color]</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">::</span><span class="n">sm</span> <span class="n">smt</span><span class="o">::</span><span class="mi">1234</span> <span class="o">-</span> <span class="n">Sam</span> <span class="n">Smith</span> <span class="p">(</span><span class="n">they</span><span class="o">/</span><span class="n">them</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span><span class="n">a</span> <span class="n">person</span><span class="p">}</span> <span class="o">|</span> <span class="n">#123456</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="o">::</span><span class="n">jo</span> <span class="n">brn</span><span class="o">::</span><span class="mi">5678</span> <span class="o">-</span> <span class="n">Joe</span> <span class="n">Brown</span> <span class="p">(</span><span class="n">they</span><span class="o">/</span><span class="n">them</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span><span class="n">another</span> <span class="n">person</span> <span class="n">person</span><span class="p">}</span> <span class="o">|</span> <span class="n">#789abc</span>
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="find-and-replace-tokens">Find and replace tokens</h4>
+<p>The <code>find</code> and <code>replace</code> token pair defines a custom find-and-replace dictionary for a <code>shortcut-template</code> token.</p>
+<p>The find-and-replace dictionary is only applied to the template's replacement string.</p>
+<p>It is applied after <code class="language-ptcr highlight"><span class="nv">[field]</span></code> tags are populated with data, and therefore can modify that data.</p>
+<p><code>Find keys</code> and <code>replace values</code> are defined in comma-separated lists surrounded by curly brackets ( <code>{</code> <code>}</code> ).</p>
+<p>The <code>find</code> and <code>replace</code> lists cannot contain blank items.</p>
+<p>The <code>find</code> and <code>replace</code> lists must contain the same number of items as each other.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>Find keys</code> are case-sensitive.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a <code>find</code> token does not have a matching <code>replace</code> token, all the <code>find</code> keys will just be removed from the template.</p>
+</div>
+<details class="important" open="open">
+<summary>Find token restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#shortcut-template-token"><code>shortcut-template</code></a> token body.</p>
+</details>
+<details class="important" open="open">
+<summary>Replace token restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#shortcut-template-token"><code>shortcut-template</code></a> token body.</p>
+<p>Must come after <code>find</code> token.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>{
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement string&gt; custom find <span class="m">1</span><span class="p">,</span> custom find <span class="m">2</span><span class="p">,</span> Custom find <span class="m">2</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    {
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        <span class="kr">find</span><span class="o">:</span> { custom find <span class="m">1</span><span class="p">,</span> custom find <span class="m">2</span> } <span class="c1">// These are the `find keys`.</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>        <span class="kr">replace</span><span class="o">:</span> { replace <span class="m">1</span><span class="p">,</span> replace <span class="m">2</span> } <span class="c1">// These are the corresponding `replace values`.</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    }
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement string&gt; custom remove <span class="m">1</span><span class="p">,</span> custom remove <span class="m">2</span><span class="p">,</span> Custom remove <span class="m">2</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    {
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>        <span class="kr">find</span><span class="o">:</span> { custom remove <span class="m">1</span><span class="p">,</span> custom remove <span class="m">2</span> } <span class="c1">// These `find keys` will be removed, since there are no `replace values` for them.</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    }
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">replacement</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">replace</span> <span class="mi">1</span><span class="p">,</span> <span class="n">replace</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Custom</span> <span class="n">find</span> <span class="mi">2</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">replacement</span> <span class="n">string</span><span class="o">&gt;</span> <span class="p">,</span> <span class="p">,</span> <span class="n">Custom</span> <span class="nf">remove</span> <span class="mi">2</span>
+</span></code></pre></div>
+<p>If the <code>find keys</code> are present in <code class="language-ptcr highlight"><span class="nv">[field]</span></code> values within the <code>&lt;replacement string&gt;</code>, they will be replaced there as well.</p>
+</details>
+<hr />
+<h2 id="text-case-token">Text case token</h2>
+<p>The <code>text-case</code> token is used to change the text case of a shortcut after it is generated from a template.</p>
+<p>Case conversion is applied after <code class="language-ptcr highlight"><span class="nv">[field]</span></code> tags are populated and <a href="#find-and-replace-tokens">find-and-replace dictionaries</a> are applied.</p>
+<p>Allowed values:</p>
+<ul>
+<li>unchanged (as-written; default)</li>
+<li>upper (UPPER CASE)</li>
+<li>lower (lower case)</li>
+<li>firstCaps (First Capitals Case)</li>
+</ul>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#shortcut-template-token"><code>shortcut-template</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">unchanged</label><label for="__tabbed_1_2">upper</label><label for="__tabbed_1_3">lower</label><label for="__tabbed_1_4">firstCaps</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>{
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement STRING&gt;
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    {
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        <span class="kr">text-case</span><span class="o">:</span> unchanged
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    }
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">replacement</span> <span class="n">STRING</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>{
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement STRING&gt;
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    {
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="kr">text-case</span><span class="o">:</span> upper
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    }
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">REPLACEMENT</span> <span class="n">STRING</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>{
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement STRING&gt;
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    {
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="kr">text-case</span><span class="o">:</span> lower
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    }
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">replacement</span> <span class="n">string</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>{
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> &lt;hotstring&gt; &gt;&gt; &lt;replacement STRING&gt;
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    {
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="kr">text-case</span><span class="o">:</span> firstCaps
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    }
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">::&lt;</span><span class="n">hotstring</span><span class="o">&gt;::&lt;</span><span class="n">Replacement</span> <span class="n">String</span><span class="o">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<hr />
+<h2 id="entry-list-token">Entry list token</h2>
+<p>The <code>entry-list</code> token contains entries to apply to templated shortcuts.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>REQUIRED</p>
+<p>Minimum required: 1</p>
+<p>Maximum allowed: 1</p>
+<p>Must come after <a href="../../getting-started/petrichor-script.html#metadata-token"><code>metadata</code></a> token.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kr">metadata</span><span class="o">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>{
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="c1">// Metadata goes here.</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>}
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="kr">entry-list</span><span class="o">:</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>{
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="c1">// Entries go here.</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="entry-token">Entry token</h3>
+<p>The <code>entry</code> token defines a set of data to populate a templated shortcut with.</p>
+<p>This token's value is ignored, but will show up in logs. You can put notes into it if desired.</p>
+<p>This token's body contains subtokens defining its data.</p>
+<p>These subtokens correspond to the <code class="language-ptcr highlight"><span class="nv">[field]</span></code> tags in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All token values should be unique, even though Petrichor wont take issue with it.</p>
+<p>If a value is repeated, the script generated from the input data can misbehave in unpredictable ways.</p>
+</div>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>No restrictions on number of instances that can be present.</p>
+<p>Must be in <a href="#entry-list-token"><code>entry-list</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kr">entry-list</span><span class="o">:</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>{
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="kr">entry</span><span class="o">:</span> Notes about entry.
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    {
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        <span class="c1">// Entry data goes here.</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    }
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="color-token">Color token</h4>
+<p>The <code>color</code> token defines a value for the <code class="language-ptcr highlight"><span class="nv">[color]</span></code> field tag in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>{
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="kr">color</span><span class="o">:</span> &lt;value&gt;
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="decoration-token">Decoration token</h4>
+<p>The <code>decoration</code> token defines a value for the <code class="language-ptcr highlight"><span class="nv">[decoration]</span></code> field tag in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>{
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="kr">decoration</span><span class="o">:</span> &lt;value&gt;
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="id-token">ID token</h4>
+<p>The <code>id</code> token defines a value for the <code class="language-ptcr highlight"><span class="nv">[id]</span></code> field tag in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>REQUIRED</p>
+<p>Minimum required: 1</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>{
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="kr">id</span><span class="o">:</span> &lt;value&gt;
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="name-token">Name token</h4>
+<p>The <code>name</code> token defines values for the <code class="language-ptcr highlight"><span class="nv">[name]</span></code> and <code class="language-ptcr highlight"><span class="nv">[tag]</span></code> field tags in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<p>A shortcut will be generated from each template for each <code>name</code> token in an entry.</p>
+<p><code>Name</code> token values must consist of a <code class="language-ptcr highlight"><span class="nv">[name]</span></code> and <code class="language-ptcr highlight"><span class="nv">[tag]</span></code> field, separated by an at-sign ( <code>@</code> ).</p>
+<p>The <code class="language-ptcr highlight"><span class="nv">[name]</span></code> field value can be any non-blank string that does not contain an at-sign ( <code>@</code> ).</p>
+<p>The <code class="language-ptcr highlight"><span class="nv">[tag]</span></code> field value can be any string that does not contain whitespace.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>REQUIRED</p>
+<p>Minimum required: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>{
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="kr">name</span><span class="o">:</span> name string @tagstring
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="last-name-token">Last name token</h4>
+<p>The <code>last-name</code> token defines values for the <code class="language-ptcr highlight"><span class="nv">[last-name]</span></code> and <code class="language-ptcr highlight"><span class="nv">[last-tag]</span></code> field tags in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<p>The <code>last-name</code> token has the same structure as the <a href="#name-token"><code>name</code></a> token.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>{
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="kr">last-name</span><span class="o">:</span> name string @tagstring
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h4 id="pronoun-token">Pronoun token</h4>
+<p>The <code>pronoun</code> token defines a value for the <code class="language-ptcr highlight"><span class="nv">[pronoun]</span></code> field tag in <a href="#shortcut-template-token">templated shortcuts</a>.</p>
+<details class="important" open="open">
+<summary>Restrictions</summary>
+<p>OPTIONAL</p>
+<p>Maximum allowed: 1</p>
+<p>Must be in <a href="#entry-token"><code>entry</code></a> token body.</p>
+</details>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kr">entry</span><span class="o">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>{
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="kr">pronoun</span><span class="o">:</span> &lt;value&gt;
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>}
+</span></code></pre></div>
+</details>
+<hr />
+<h3 id="full-usage-example">Full usage example</h3>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-petrichor highlight"><span class="filename">Input</span><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kr">metadata</span><span class="o">:</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>{
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="c1">// Metadata goes here.</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>}
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="kr">module-options</span><span class="o">:</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>{
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>    <span class="kr">default-icon</span><span class="o">:</span> &lt;file path&gt;
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>    <span class="kr">suspend-icon</span><span class="o">:</span> &lt;file path&gt;
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>    <span class="kr">reload-shortcut</span><span class="o">:</span> &lt;shortcut&gt;
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>    <span class="kr">suspend-shortcut</span><span class="o">:</span> &lt;shortcut&gt;
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>}
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a>
+</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a>
+</span><span id="__span-27-16"><a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="kr">shortcut-list</span><span class="o">:</span>
+</span><span id="__span-27-17"><a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a>{
+</span><span id="__span-27-18"><a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a>    <span class="kr">shortcut</span><span class="o">:</span> replaceme &gt;&gt; withme
+</span><span id="__span-27-19"><a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a>    <span class="kr">shortcut-template</span><span class="o">:</span> <span class="nv">[tag]</span> &gt;&gt; <span class="nv">[name]</span> <span class="nv">[last-name]</span> (<span class="nv">[pronoun]</span>) <span class="nv">[decoration]</span>
+</span><span id="__span-27-20"><a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a>    {
+</span><span id="__span-27-21"><a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a>        <span class="kr">find</span><span class="o">:</span> { this<span class="p">,</span> that }
+</span><span id="__span-27-22"><a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a>        <span class="kr">replace</span><span class="o">:</span> { these<span class="p">,</span> those }
+</span><span id="__span-27-23"><a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a>        <span class="kr">text-case</span><span class="o">:</span> firstCaps
+</span><span id="__span-27-24"><a id="__codelineno-27-24" name="__codelineno-27-24" href="#__codelineno-27-24"></a>    }
+</span><span id="__span-27-25"><a id="__codelineno-27-25" name="__codelineno-27-25" href="#__codelineno-27-25"></a>}
+</span><span id="__span-27-26"><a id="__codelineno-27-26" name="__codelineno-27-26" href="#__codelineno-27-26"></a>
+</span><span id="__span-27-27"><a id="__codelineno-27-27" name="__codelineno-27-27" href="#__codelineno-27-27"></a>
+</span><span id="__span-27-28"><a id="__codelineno-27-28" name="__codelineno-27-28" href="#__codelineno-27-28"></a><span class="kr">entry-list</span><span class="o">:</span>
+</span><span id="__span-27-29"><a id="__codelineno-27-29" name="__codelineno-27-29" href="#__codelineno-27-29"></a>{
+</span><span id="__span-27-30"><a id="__codelineno-27-30" name="__codelineno-27-30" href="#__codelineno-27-30"></a>    <span class="kr">entry</span><span class="o">:</span> A
+</span><span id="__span-27-31"><a id="__codelineno-27-31" name="__codelineno-27-31" href="#__codelineno-27-31"></a>    {
+</span><span id="__span-27-32"><a id="__codelineno-27-32" name="__codelineno-27-32" href="#__codelineno-27-32"></a>        <span class="kr">id</span><span class="o">:</span> idValueA
+</span><span id="__span-27-33"><a id="__codelineno-27-33" name="__codelineno-27-33" href="#__codelineno-27-33"></a>        <span class="kr">last-name</span><span class="o">:</span> last name value A @lastTagValueA
+</span><span id="__span-27-34"><a id="__codelineno-27-34" name="__codelineno-27-34" href="#__codelineno-27-34"></a>        <span class="kr">name</span><span class="o">:</span> name value A <span class="m">1</span> @tagValueA<span class="m">1</span>
+</span><span id="__span-27-35"><a id="__codelineno-27-35" name="__codelineno-27-35" href="#__codelineno-27-35"></a>        <span class="kr">name</span><span class="o">:</span> name value A <span class="m">2</span> @tagValueA<span class="m">2</span>
+</span><span id="__span-27-36"><a id="__codelineno-27-36" name="__codelineno-27-36" href="#__codelineno-27-36"></a>        <span class="kr">pronoun</span><span class="o">:</span> pronounValueA this
+</span><span id="__span-27-37"><a id="__codelineno-27-37" name="__codelineno-27-37" href="#__codelineno-27-37"></a>        <span class="kr">decoration</span><span class="o">:</span> decorationValueA that
+</span><span id="__span-27-38"><a id="__codelineno-27-38" name="__codelineno-27-38" href="#__codelineno-27-38"></a>        <span class="kr">color</span><span class="o">:</span> colorValueA
+</span><span id="__span-27-39"><a id="__codelineno-27-39" name="__codelineno-27-39" href="#__codelineno-27-39"></a>    }
+</span><span id="__span-27-40"><a id="__codelineno-27-40" name="__codelineno-27-40" href="#__codelineno-27-40"></a>
+</span><span id="__span-27-41"><a id="__codelineno-27-41" name="__codelineno-27-41" href="#__codelineno-27-41"></a>    <span class="kr">entry</span><span class="o">:</span> B
+</span><span id="__span-27-42"><a id="__codelineno-27-42" name="__codelineno-27-42" href="#__codelineno-27-42"></a>    {
+</span><span id="__span-27-43"><a id="__codelineno-27-43" name="__codelineno-27-43" href="#__codelineno-27-43"></a>        <span class="kr">id</span><span class="o">:</span> idValueB
+</span><span id="__span-27-44"><a id="__codelineno-27-44" name="__codelineno-27-44" href="#__codelineno-27-44"></a>        <span class="kr">last-name</span><span class="o">:</span> last name value B @lastTagValueB
+</span><span id="__span-27-45"><a id="__codelineno-27-45" name="__codelineno-27-45" href="#__codelineno-27-45"></a>        <span class="kr">name</span><span class="o">:</span> name value B <span class="m">1</span> @tagValueB<span class="m">1</span>
+</span><span id="__span-27-46"><a id="__codelineno-27-46" name="__codelineno-27-46" href="#__codelineno-27-46"></a>        <span class="kr">name</span><span class="o">:</span> name value B <span class="m">2</span> @tagValueB<span class="m">2</span>
+</span><span id="__span-27-47"><a id="__codelineno-27-47" name="__codelineno-27-47" href="#__codelineno-27-47"></a>        <span class="kr">pronoun</span><span class="o">:</span> pronounValueB THIS
+</span><span id="__span-27-48"><a id="__codelineno-27-48" name="__codelineno-27-48" href="#__codelineno-27-48"></a>        <span class="kr">decoration</span><span class="o">:</span> decorationValueB THAT
+</span><span id="__span-27-49"><a id="__codelineno-27-49" name="__codelineno-27-49" href="#__codelineno-27-49"></a>        <span class="kr">color</span><span class="o">:</span> colorValueB
+</span><span id="__span-27-50"><a id="__codelineno-27-50" name="__codelineno-27-50" href="#__codelineno-27-50"></a>    }
+</span><span id="__span-27-51"><a id="__codelineno-27-51" name="__codelineno-27-51" href="#__codelineno-27-51"></a>}
+</span></code></pre></div>
+<div class="language-autohotkey highlight"><span class="filename">Shortcuts generated from input</span><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="o">::</span><span class="n">replaceme</span><span class="o">::</span><span class="n">withme</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="o">::</span><span class="n">tagValueA1</span><span class="o">::</span><span class="n">Name</span> <span class="n">Value</span> <span class="n">A</span> <span class="mi">1</span> <span class="n">Last</span> <span class="n">Name</span> <span class="n">Value</span> <span class="n">A</span> <span class="p">(</span><span class="n">Pronounvaluea</span> <span class="n">These</span><span class="p">)</span> <span class="n">Decorationvaluea</span> <span class="n">Those</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="o">::</span><span class="n">tagValueA2</span><span class="o">::</span><span class="n">Name</span> <span class="n">Value</span> <span class="n">A</span> <span class="mi">2</span> <span class="n">Last</span> <span class="n">Name</span> <span class="n">Value</span> <span class="n">A</span> <span class="p">(</span><span class="n">Pronounvaluea</span> <span class="n">These</span><span class="p">)</span> <span class="n">Decorationvaluea</span> <span class="n">Those</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="o">::</span><span class="n">tagValueB1</span><span class="o">::</span><span class="n">Name</span> <span class="n">Value</span> <span class="n">B</span> <span class="mi">1</span> <span class="n">Last</span> <span class="n">Name</span> <span class="n">Value</span> <span class="n">B</span> <span class="p">(</span><span class="n">Pronounvalueb</span> <span class="n">This</span><span class="p">)</span> <span class="n">Decorationvalueb</span> <span class="n">That</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="o">::</span><span class="n">tagValueB2</span><span class="o">::</span><span class="n">Name</span> <span class="n">Value</span> <span class="n">B</span> <span class="mi">2</span> <span class="n">Last</span> <span class="n">Name</span> <span class="n">Value</span> <span class="n">B</span> <span class="p">(</span><span class="n">Pronounvalueb</span> <span class="n">This</span><span class="p">)</span> <span class="n">Decorationvalueb</span> <span class="n">That</span>
+</span></code></pre></div>
+</details>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 SparkliTwizzl. Licensed under AEL-NC-AT 1.1.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://discord.gg/JReqBYtYpg" target="_blank" rel="noopener" title="SparkliTwizzl on Discord" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M524.531 69.836a1.5 1.5 0 0 0-.764-.7A485.065 485.065 0 0 0 404.081 32.03a1.816 1.816 0 0 0-1.923.91 337.461 337.461 0 0 0-14.9 30.6 447.848 447.848 0 0 0-134.426 0 309.541 309.541 0 0 0-15.135-30.6 1.89 1.89 0 0 0-1.924-.91 483.689 483.689 0 0 0-119.688 37.107 1.712 1.712 0 0 0-.788.676C39.068 183.651 18.186 294.69 28.43 404.354a2.016 2.016 0 0 0 .765 1.375 487.666 487.666 0 0 0 146.825 74.189 1.9 1.9 0 0 0 2.063-.676A348.2 348.2 0 0 0 208.12 430.4a1.86 1.86 0 0 0-1.019-2.588 321.173 321.173 0 0 1-45.868-21.853 1.885 1.885 0 0 1-.185-3.126 251.047 251.047 0 0 0 9.109-7.137 1.819 1.819 0 0 1 1.9-.256c96.229 43.917 200.41 43.917 295.5 0a1.812 1.812 0 0 1 1.924.233 234.533 234.533 0 0 0 9.132 7.16 1.884 1.884 0 0 1-.162 3.126 301.407 301.407 0 0 1-45.89 21.83 1.875 1.875 0 0 0-1 2.611 391.055 391.055 0 0 0 30.014 48.815 1.864 1.864 0 0 0 2.063.7A486.048 486.048 0 0 0 610.7 405.729a1.882 1.882 0 0 0 .765-1.352c12.264-126.783-20.532-236.912-86.934-334.541ZM222.491 337.58c-28.972 0-52.844-26.587-52.844-59.239s23.409-59.241 52.844-59.241c29.665 0 53.306 26.82 52.843 59.239 0 32.654-23.41 59.241-52.843 59.241Zm195.38 0c-28.971 0-52.843-26.587-52.843-59.239s23.409-59.241 52.843-59.241c29.667 0 53.307 26.82 52.844 59.239 0 32.654-23.177 59.241-52.844 59.241Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/sparklitwizzl" target="_blank" rel="noopener" title="SparkliTwizzl on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://twitch.tv/sparklitwizzl" target="_blank" rel="noopener" title="SparkliTwizzl on Twitch" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M391.17 103.47h-38.63v109.7h38.63ZM285 103h-38.63v109.75H285ZM120.83 0 24.31 91.42v329.16h115.83V512l96.53-91.42h77.25L487.69 256V0Zm328.24 237.75-77.22 73.12h-77.24l-67.6 64v-64h-86.87V36.58h308.93Z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://youtube.com/@sparklitwizzl" target="_blank" rel="noopener" title="SparkliTwizzl on YouTube" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.tabs.link", "header.autohide", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
