@@ -1,6 +1,5 @@
 mike
 mkdocs
 mkdocs-material
-petrichor-script-lexer == 1.0.2
 pymdown-extensions
-
+pygments-lexer-petrichorscript @ https://github.com/sparklitwizzl/pygments-lexer-petrichorscript/archive/main.zip
