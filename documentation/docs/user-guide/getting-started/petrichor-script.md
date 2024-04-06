@@ -254,17 +254,20 @@ To use command options, add a body to the token and put subtokens into it, conve
         }
     }
     ```
+
     ```powershell title="Command line"
     [install path]> Petrichor.exe input.txt
     ```
 
     This is equivalent to the following:
+
     ```petrichor title="Input"
     metadata:
     {
         minimum-version: <version number>
     }
     ```
+
     ```powershell title="Command line"
     [install path]> Petrichor.exe commandName --inputFile input.txt --commandOption1 "argument 1" --commandOption2 "argument 2"
     ```

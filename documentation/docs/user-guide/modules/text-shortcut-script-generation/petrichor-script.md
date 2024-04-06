@@ -226,6 +226,7 @@ Shortcuts consist of 3 parts: A hotstring, a divider consisting of 2 right-angle
         shortcut: <hotstring> >> ` <replacement string> `
     }
     ```
+
     ```autohotkey title="Shortcuts generated from input"
     ; This is a standard shortcut. The <hotstring> and <replacement string> will be inserted into the output file unaltered.
     ::<hotstring>::` <replacement string> `
@@ -284,6 +285,7 @@ If no subtokens are used, this token does not need a body.
         shortcut-template: [tag] [last-tag] >> [id] - [name] [last-name] ([pronoun]) | {[decoration]} | [color]
     }
     ```
+
     ```autohotkey title="Shortcuts generated from input"
     ::sm smt::1234 - Sam Smith (they/them) | {a person} | #123456
     ::jo brn::5678 - Joe Brown (they/them) | {another person person} | #789abc
@@ -349,10 +351,12 @@ The `find` and `replace` lists must contain the same number of items as each oth
         }
     }
     ```
+
     ```autohotkey title="Shortcuts generated from input"
     ::<hotstring>::<replacement string> replace 1, replace 2, Custom find 2
     ::<hotstring>::<replacement string> , , Custom remove 2
     ```
+
     If the `find keys` are present in `#!ptcr [field]` values within the `<replacement string>`, they will be replaced there as well.
 
 
@@ -391,6 +395,7 @@ Allowed values:
             }
         }
         ```
+
         ```autohotkey title="Shortcuts generated from input"
         ::<hotstring>::<replacement STRING>
         ```
@@ -406,6 +411,7 @@ Allowed values:
             }
         }
         ```
+
         ```autohotkey title="Shortcuts generated from input"
         ::<hotstring>::<REPLACEMENT STRING>
         ```
@@ -421,6 +427,7 @@ Allowed values:
             }
         }
         ```
+
         ```autohotkey title="Shortcuts generated from input"
         ::<hotstring>::<replacement string>
         ```
@@ -436,6 +443,7 @@ Allowed values:
             }
         }
         ```
+
         ```autohotkey title="Shortcuts generated from input"
         ::<hotstring>::<Replacement String>
         ```
@@ -716,6 +724,7 @@ The `pronoun` token defines a value for the `#!ptcr [pronoun]` field tag in [tem
         }
     }
     ```
+
     ```autohotkey title="Shortcuts generated from input"
     ::replaceme::withme
     ::tagValueA1::Name Value A 1 Last Name Value A (Pronounvaluea These) Decorationvaluea Those

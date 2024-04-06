@@ -385,6 +385,7 @@ If you dont like having to get the full path for files, you can use relative pat
             - example a.txt
         - example b.txt
     ```
+
     ```txt title="Relative paths and equivalent absolute paths"
     "./example a.txt" -> "folder\subfolder\example a.txt"
     "../example b.txt" -> "folder\example b.txt"
