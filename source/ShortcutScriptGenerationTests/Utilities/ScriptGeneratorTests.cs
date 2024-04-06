@@ -16,9 +16,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			{
 				new ScriptEntry(),
 			};
-			public static ScriptMacroTemplate[] TemplateList => new[]
+			public static ScriptShortcutData[] TemplateList => new[]
 			{
-				new ScriptMacroTemplate()
+				new ScriptShortcutData()
 				{
 					TemplateFindString = "template-find",
 					TemplateReplaceString = "template-replace",

@@ -1,0 +1,128 @@
+site_name: Petrichor
+site_author: SparkliTwizzl
+copyright: Copyright &copy; 2024 SparkliTwizzl. Licensed under AEL-NC-AT 1.1.
+repo_url: https://github.com/sparklitwizzl/petrichor/
+repo_name: sparklitwizzl/petrichor
+use_directory_urls: false
+site_url: https://sparklitwizzl.github.io/petrichor/
+
+plugins:
+  - mike:
+  - offline:
+  - search:
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+
+extra:
+  social:
+    - icon: fontawesome/brands/discord
+      name: SparkliTwizzl on Discord
+      link: https://discord.gg/JReqBYtYpg
+
+    - icon: fontawesome/brands/github
+      name: SparkliTwizzl on GitHub
+      link: https://github.com/sparklitwizzl
+
+    - icon: fontawesome/brands/twitch
+      name: SparkliTwizzl on Twitch
+      link: https://twitch.tv/sparklitwizzl
+
+    - icon: fontawesome/brands/youtube
+      name: SparkliTwizzl on YouTube
+      link: https://youtube.com/@sparklitwizzl
+
+  version:
+    provider: mike
+    default: latest
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  favicon: assets/logo.png
+  logo: assets/logo.png
+
+  icon:
+    repo: fontawesome/brands/github
+
+  features:
+    - content.tabs.link
+    - header.autohide
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: deep orange
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: deep orange
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to system preference"
+
+nav:
+  - index.md
+
+  - 'Getting started':
+    - user-guide/getting-started/index.md
+    - user-guide/getting-started/petrichor-script.md
+    - user-guide/getting-started/command-usage.md
+
+  - 'Modules':
+    - user-guide/modules/index.md
+
+    - 'Text Shortcut Script Generation':
+      - user-guide/modules/text-shortcut-script-generation/index.md
+      - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
+      - user-guide/modules/text-shortcut-script-generation/command-usage.md
+      - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
+
+  - 'About':
+    - about/changelog.md
+    - about/license.md

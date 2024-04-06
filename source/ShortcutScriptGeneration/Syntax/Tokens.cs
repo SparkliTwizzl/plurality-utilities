@@ -89,16 +89,19 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 		{
 			Key = "tag",
 		};
-		public static DataToken Template => new()
+		public static DataToken Shortcut => new()
 		{
-			Key = "template",
-			MinRequired = 1,
+			Key = "shortcut",
 		};
-		public static DataToken TemplateList => new()
+		public static DataToken ShortcutList => new()
 		{
-			Key = "template-list",
+			Key = "shortcut-list",
 			MaxAllowed = 1,
 			MinRequired = 1,
+		};
+		public static DataToken ShortcutTemplate => new()
+		{
+			Key = "shortcut-template",
 		};
 		public static DataToken TextCase => new()
 		{
@@ -124,8 +127,8 @@ namespace Petrichor.ShortcutScriptGeneration.Syntax
 			{ SuspendIcon.Key, SuspendIcon },
 			{ SuspendShortcut.Key, SuspendShortcut },
 			{ Tag.Key, Tag },
-			{ Template.Key, Template },
-			{ TemplateList.Key, TemplateList },
+			{ ShortcutTemplate.Key, ShortcutTemplate },
+			{ ShortcutList.Key, ShortcutList },
 		};
 	}
 }

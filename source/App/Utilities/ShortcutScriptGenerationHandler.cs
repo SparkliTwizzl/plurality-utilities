@@ -95,18 +95,18 @@ namespace Petrichor.App.Utilities
 			return new DataRegionParser<ScriptModuleOptions>( parserDescriptor );
 		}
 
-		private static DataRegionParser<ScriptMacroTemplate> CreateTemplateRegionParser()
+		private static DataRegionParser<ScriptShortcutData> CreateShortcutTemplateRegionParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<ScriptMacroTemplate>()
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptShortcutData>()
 			{
-				RegionToken = Tokens.Template,
+				RegionToken = Tokens.ShortcutTemplate,
 				TokenHandlers = new()
 				{
-					{ Tokens.Find, TemplateHandler.FindTokenHandler },
-					{ Tokens.Replace, TemplateHandler.ReplaceTokenHandler },
-					{ Tokens.TextCase, TemplateHandler.TextCaseTokenHandler },
+					{ Tokens.Find, ShortcutHandler.FindTokenHandler },
+					{ Tokens.Replace, ShortcutHandler.ReplaceTokenHandler },
+					{ Tokens.TextCase, ShortcutHandler.TextCaseTokenHandler },
 				},
-				PostParseHandler = ( ScriptMacroTemplate template ) =>
+				PostParseHandler = ( ScriptShortcutData template ) =>
 				{
 					if ( template.TextCase != TemplateTextCases.Default )
 					{
@@ -120,52 +120,56 @@ namespace Petrichor.App.Utilities
 				},
 			};
 
-			var parser = new DataRegionParser<ScriptMacroTemplate>( parserDescriptor );
+			var parser = new DataRegionParser<ScriptShortcutData>( parserDescriptor );
 
-			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptMacroTemplate result ) =>
+			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result ) =>
 			{
-				var handlerResult = TemplateHandler.TemplateTokenHandler( regionData, tokenStartIndex, result );
+				var handlerResult = ShortcutHandler.ShortcutTemplateTokenHandler( regionData, tokenStartIndex, result );
 				result = handlerResult.Value;
 				var nextToken = new StringToken( regionData[ tokenStartIndex + 1 ] );
 				if ( nextToken.Key != Common.Syntax.Tokens.RegionOpen.Key )
 				{
 					parser.CancelParsing();
 				}
-				return new ProcessedRegionData<ScriptMacroTemplate>( result );
+				return new ProcessedRegionData<ScriptShortcutData>( result );
 			};
 
-			parser.AddTokenHandler( Tokens.Template, templateTokenHandler );
+			parser.AddTokenHandler( Tokens.ShortcutTemplate, templateTokenHandler );
 			return parser;
 		}
 
-		private static DataRegionParser<List<ScriptMacroTemplate>> CreateTemplateListRegionParser()
+		private static DataRegionParser<ScriptInput> CreateShortcutListRegionParser()
 		{
-			var templateRegionParser = CreateTemplateRegionParser();
+			var shortcutTemplateRegionParser = CreateShortcutTemplateRegionParser();
 
-			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<ScriptMacroTemplate> result ) =>
+			var shortcutTemplateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ScriptInput result ) =>
 			{
-				templateRegionParser.Reset();
+				shortcutTemplateRegionParser.Reset();
 				var dataTrimmedToRegion = regionData[ tokenStartIndex.. ];
-				var template = templateRegionParser.Parse( dataTrimmedToRegion );
-				result.Add( template );
-				return new ProcessedRegionData<List<ScriptMacroTemplate>>( value: result, bodySize: templateRegionParser.LinesParsed - 1 );
+				var template = shortcutTemplateRegionParser.Parse( dataTrimmedToRegion );
+				var templates = result.ShortcutTemplates.ToList();
+				templates.Add( template );
+				result.ShortcutTemplates = templates.ToArray();
+				return new ProcessedRegionData<ScriptInput>( value: result, bodySize: shortcutTemplateRegionParser.LinesParsed - 1 );
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<List<ScriptMacroTemplate>>()
+			var parserDescriptor = new DataRegionParserDescriptor<ScriptInput>()
 			{
-				RegionToken = Tokens.TemplateList,
+				RegionToken = Tokens.ShortcutList,
 				TokenHandlers = new()
 				{
-					{ Tokens.Template, templateTokenHandler },
+					{ Tokens.Shortcut, ShortcutHandler.ShortcutTokenHandler },
+					{ Tokens.ShortcutTemplate, shortcutTemplateTokenHandler },
 				},
-				PostParseHandler = ( List<ScriptMacroTemplate> templates ) =>
+				PostParseHandler = ( ScriptInput result ) =>
 				{
-					Log.Info( $"Parsed {templates.Count} \"{Tokens.Template.Key}\" tokens." );
-					return templates;
+					Log.Info( $"Parsed {result.Shortcuts.Length} \"{Tokens.Shortcut.Key}\" tokens." );
+					Log.Info( $"Parsed {result.ShortcutTemplates.Length} \"{Tokens.ShortcutTemplate.Key}\" tokens." );
+					return result;
 				},
 			};
 
-			return new DataRegionParser<List<ScriptMacroTemplate>>( parserDescriptor );
+			return new DataRegionParser<ScriptInput>( parserDescriptor );
 		}
 
 		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
@@ -175,8 +179,8 @@ namespace Petrichor.App.Utilities
 				var inputHandler = new ShortcutScriptGeneration.Utilities.InputHandler(
 					moduleOptionsRegionParser: CreateModuleOptionsRegionParser(),
 					entryListRegionParser: CreateEntryListRegionParser(),
-					templateListRegionParser: CreateTemplateListRegionParser(),
-					macroGenerator: new MacroGenerator() );
+					shortcutListRegionParser: CreateShortcutListRegionParser(),
+					shortcutGenerator: new ShortcutProcessor() );
 				var input = inputHandler.ParseRegionData( data );
 				new ScriptGenerator().Generate( input, outputFilePath );
 			}

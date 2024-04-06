@@ -5,16 +5,21 @@ using Petrichor.ShortcutScriptGeneration.Syntax;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class MacroGenerator : IMacroGenerator
+	public class ShortcutProcessor : IShortcutProcessor
 	{
-		public string[] Generate( ScriptInput input )
+		public ScriptInput ProcessAndStoreShortcuts( ScriptInput input )
 		{
-			var macros = new List<string>();
+			var shortcuts = new List<string>();
+			foreach ( var rawShortcut in input.Shortcuts )
+			{
+				shortcuts.Add( ConvertShortcutToAutoHotkeySyntax( rawShortcut ) );
+			}
 			foreach ( var entry in input.Entries )
 			{
-				macros.AddRange( GenerateMacrosFromEntries( input.Templates, entry ) );
+				shortcuts.AddRange( GenerateTemplatedShortcutsFromEntries( input.ShortcutTemplates, entry ) );
 			}
-			return macros.ToArray();
+			input.Shortcuts = shortcuts.ToArray();
+			return input;
 		}
 
 
@@ -38,38 +43,46 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return macro;
 		}
 
-		private static string ApplyTextCaseToMacro( string macro, string textCase ) => textCase switch
+		private static string ApplyTextCaseToString( string text, string textCase ) => textCase switch
 		{
-			TemplateTextCases.FirstCaps => macro.ToFirstCaps(),
-			TemplateTextCases.Lower => macro.ToLower(),
-			TemplateTextCases.Unchanged => macro,
-			TemplateTextCases.Upper => macro.ToUpper(),
-			_ => macro,
+			TemplateTextCases.FirstCaps => text.ToFirstCaps(),
+			TemplateTextCases.Lower => text.ToLower(),
+			TemplateTextCases.Unchanged => text,
+			TemplateTextCases.Upper => text.ToUpper(),
+			_ => text,
 		};
 
-		private static string ConvertTemplateToAutoHotkeySyntax( ScriptMacroTemplate template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
-
-		private static List<string> GenerateMacrosFromEntries( ScriptMacroTemplate[] templates, ScriptEntry entry )
+		private static string ConvertShortcutToAutoHotkeySyntax( string shortcut )
 		{
-			var macros = new List<string>();
+			var parts = shortcut.Split( ControlSequences.ShortcutFindReplaceDivider );
+			var find = parts[ 0 ].Trim();
+			var replace = parts[ 1 ].Trim();
+			return $"::{find}::{replace}";
+		}
+
+		private static string ConvertShortcutTemplateToAutoHotkeySyntax( ScriptShortcutData template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
+
+		private static List<string> GenerateTemplatedShortcutsFromEntries( ScriptShortcutData[] templates, ScriptEntry entry )
+		{
+			var shortcuts = new List<string>();
 			foreach ( var identity in entry.Identities.ToList() )
 			{
-				macros.AddRange( GenerateMacrosFromIdentity( templates, identity, entry ) );
+				shortcuts.AddRange( GenerateShortcutsFromIdentity( templates, identity, entry ) );
 			}
-			return macros;
+			return shortcuts;
 		}
 
-		private static List<string> GenerateMacrosFromIdentity( ScriptMacroTemplate[] templates, ScriptIdentity identity, ScriptEntry entry )
+		private static List<string> GenerateShortcutsFromIdentity( ScriptShortcutData[] templates, ScriptIdentity identity, ScriptEntry entry )
 		{
-			var macros = new List<string>();
+			var shortcuts = new List<string>();
 			foreach ( var template in templates )
 			{
-				macros.Add( GenerateMacroFromTemplate( template, identity, entry ) );
+				shortcuts.Add( GenerateShortcutFromTemplate( template, identity, entry ) );
 			}
-			return macros;
+			return shortcuts;
 		}
 
-		private static string GenerateMacroFromTemplate( ScriptMacroTemplate template, ScriptIdentity identity, ScriptEntry entry )
+		private static string GenerateShortcutFromTemplate( ScriptShortcutData template, ScriptIdentity identity, ScriptEntry entry )
 		{
 			var fields = new Dictionary<string, string>()
 			{
@@ -89,14 +102,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var macroReplaceString = ApplyEntryDataToTemplate( template.TemplateReplaceString, fields );
 			macroReplaceString = ApplyFindAndReplaceToTemplate( macroReplaceString, template.FindAndReplace );
 			macroReplaceString = ReplaceStandinSequencesInMacro( macroReplaceString );
-			macroReplaceString = ApplyTextCaseToMacro( macroReplaceString, template.TextCase );
+			macroReplaceString = ApplyTextCaseToString( macroReplaceString, template.TextCase );
 
-			var modifiedTemplate = new ScriptMacroTemplate()
+			var modifiedTemplate = new ScriptShortcutData()
 			{
 				TemplateFindString = macroFindString,
 				TemplateReplaceString = macroReplaceString,
 			};
-			return ConvertTemplateToAutoHotkeySyntax( modifiedTemplate );
+			return ConvertShortcutTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
 
 		private static string ReplaceStandinSequencesInMacro( string macro ) => macro

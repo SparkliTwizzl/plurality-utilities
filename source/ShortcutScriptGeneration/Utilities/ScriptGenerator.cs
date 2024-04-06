@@ -243,7 +243,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				"; macros generated from entries and templates",
 			};
-			lines.AddRange( Input.Macros );
+			lines.AddRange( Input.Shortcuts );
 			WriteLinesToFile( file, lines.ToArray() );
 			Log.Finish( taskMessage );
 		}
