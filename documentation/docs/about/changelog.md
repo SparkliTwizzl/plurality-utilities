@@ -7,6 +7,33 @@ title: Changelog - About
 
 
 ---
+## 0.9.0
+
+!!! important
+
+    This version has breaking changes and is not backward-compatible.
+
+!!! abstract "General"
+
+    - Change logo.
+    - Change `metadata` token to `module-options`.
+    - Add new `metadata` token for other purposes.
+    - Add support for line comments in input files.
+    - Update and improve documentation.
+    - Improve logging.
+
+!!! abstract "Text Shortcut Script Generation module"
+
+    - Change command from `generateAHKShortcutScript` to `generateTextShortcutScript`.
+    - Add find-and-replace table to simplify syntax for `reload-shortcut` and `suspend-shortcut` token values.
+    - Simplify `template` token structure.
+    - Add `id` token to `entry` token body.
+    - Add `last-name` token to `entry` token body.
+    - Add `color` token to `entry` token body.
+    - Add methods to automatically launch shortcut scripts to documentation.
+
+
+---
 ## 0.8.0
 
 !!! important
