@@ -7,9 +7,6 @@ namespace Petrichor.Common.Info
 {
 	public static class AppVersion
 	{
-		private const string AnyVersion = "*";
-
-
 		public static string Current =>
 #if DEBUG
 			DevelopmentAppVersion;
@@ -26,10 +23,10 @@ namespace Petrichor.Common.Info
 		public static string[] SupportedVersions => new[]
 		{
 			Current,
-			$"{Major}.{Minor}.{Patch}{AnyVersion}",
-			$"{Major}.{Minor}.{AnyVersion}{AnyVersion}",
-			"0.11.1",
+			$"{Major}.{Minor}.{Patch}.0",
+			$"{Major}.{Minor}.0.0",
 			"0.11.0",
+			"0.11.1",
 		};
 
 
@@ -44,10 +41,10 @@ namespace Petrichor.Common.Info
 			}
 #endif
 			var versionComponents = version.Split( '.' );
-			var major = versionComponents.Length > 0 ? versionComponents[ 0 ] : string.Empty;
-			var minor = versionComponents.Length > 1 ? versionComponents[ 1 ] : string.Empty;
-			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : AnyVersion;
-			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : AnyVersion;
+			var major = versionComponents.Length > 0 ? versionComponents[ 0 ] : "invalid";
+			var minor = versionComponents.Length > 1 ? versionComponents[ 1 ] : "invalid";
+			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : "0";
+			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : string.Empty;
 
 			var formattedVersion = $"{major}.{minor}.{patch}{preview}";
 			return SupportedVersions.Contains( formattedVersion );
