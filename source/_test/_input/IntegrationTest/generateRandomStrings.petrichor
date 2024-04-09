@@ -1,0 +1,16 @@
+// top-level line comment
+
+metadata: // inline comment in region name
+{
+	// line comment in metadata region body
+	minimum-version: 0.12 // inline comment in metadata region body
+	command: generateRandomStrings
+	{
+		output-file: "../../../../_test/_output/_integrationtest/"
+		string-count: 5
+		string-length: 20
+		allowed-characters: r'[0-9a-f_-]'
+		log-mode: all
+		log-file: ../../../../_test/_log/_integrationtest/
+	}
+}

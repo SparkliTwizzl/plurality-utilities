@@ -1,8 +1,20 @@
 {
   "profiles": {
-    "App": {
+    "generateTextShortcutScript": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTestInput.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateTextShortcutScript.petrichor"
+    },
+    "generateTextShortcutScript_cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"$(SolutionDir)$(TestInputDir)IntegrationTest\\generateTextShortcutScript_cmd.petrichor\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
+    },
+    "generateRandomStrings": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings\r\n.petrichor"
+    },
+    "generateRandomStrings_cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "generateRandomStrings\r\n--outputFile \"../../../../_test/_output/_integrationtest/\"\r\n--stringCount 5\r\n--stringLength 20\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
     }
   }
 }

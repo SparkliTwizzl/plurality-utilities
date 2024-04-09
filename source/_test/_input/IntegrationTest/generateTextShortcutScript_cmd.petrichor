@@ -1,0 +1,101 @@
+// top-level line comment
+
+metadata: // inline comment in region name
+{
+	// line comment in metadata region body
+	minimum-version: 0.11 // inline comment in metadata region body
+}
+
+
+module-options:
+{
+	// line comment in module options region body
+	default-icon:../_input/IconDefault.ico // inline comment in module options region body
+	suspend-icon: "../_input/IconSuspend.ico"
+	reload-shortcut : [tab] [and] r
+	suspend-shortcut :[win]s
+}
+
+
+shortcut-list:
+{
+	// line comment in template-list region body
+	
+	shortcut: find >> replace
+	shortcut-template: [tag] >> [name]
+	shortcut-template: `[tag] >> `[name]
+	shortcut-template: ~[tag] >> ~[name]
+	shortcut-template: ![tag] >> ![name]
+	shortcut-template: @[tag] >> @[name]
+	shortcut-template: #[tag] >> #[name]
+	shortcut-template: $[tag] >> $[name]
+	shortcut-template: %[tag] >> ^[name]
+	shortcut-template: &[tag] >> &[name]
+	shortcut-template: *[tag] >> *[name]
+	shortcut-template: ([tag] >> ([name]
+	shortcut-template: )[tag] >> )[name]
+	shortcut-template: -[tag] >> -[name]
+	shortcut-template: _[tag] >> _[name]
+	shortcut-template: =[tag] >> =[name]
+	shortcut-template: +[tag] >> +[name]
+	shortcut-template: \[[tag] >> \[[name]
+	shortcut-template: \{[tag] >> \{[name]
+	shortcut-template: \][tag] >> \][name]
+	shortcut-template: \}[tag] >> \}[name]
+	shortcut-template: \\[tag] >> \\[name]
+	shortcut-template: |[tag] >> |[name]
+	shortcut-template: ;[tag] >> ;[name]
+	shortcut-template: :[tag] >> :[name]
+	shortcut-template: '[tag] >> '[name]
+	shortcut-template: \"[tag] >> \"[name]
+	shortcut-template: ,[tag] >> ,[name]
+	shortcut-template: <[tag] >> <[name]
+	shortcut-template: .[tag] >> .[name]
+	shortcut-template: >[tag] >> >[name]
+	shortcut-template: /[tag] >> /[name]
+	shortcut-template: ?[tag] >> ?[name]
+	shortcut-template: [tag][last-tag] findme findmetoo >> ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	{
+		find: { findmetoo, findme }
+		replace: { foundyoutoo, foundyou }
+	}
+	shortcut-template: [tag]-first-caps >> [name]
+	{
+		text-case: firstCaps
+	}
+	shortcut-template: [tag]-lower >> [name]
+	{
+		text-case: lower
+	}
+	shortcut-template: [tag]-unchanged >> [name]
+	{
+		text-case: unchanged
+	}
+	shortcut-template: [tag]-upper >> [name]
+	{
+		text-case: upper
+	}
+}
+
+
+entry-list:
+{
+	// line comment before entry-list in entry-list region body
+	entry: 1 // inline comment in entry-list region body
+	{
+		// line comment in entry region body
+		id: 1234 // inline comment in entry region body
+		name: Sam @sm
+		name: Sammy @smy
+		last-name: Smith @s
+		pronoun: they/them
+		color: green
+		decoration: \// a person // inline comment on same line as escaped comment sequence
+	}
+	
+	entry: 2
+	{
+		id: 4321
+		name: tesT casE @tc
+	}
+}

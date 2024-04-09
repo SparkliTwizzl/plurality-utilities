@@ -8,6 +8,7 @@ namespace Petrichor.App.Utilities
 		public static void ShowTestMessagesInDebug()
 		{
 #if DEBUG
+			Console.WriteLine( "========== START FORMATTED LOG MESSAGE TEST ==========" );
 			Log.Important( "test" );
 			Log.Info( "test" );
 			Log.Start( "test" );
@@ -22,6 +23,7 @@ namespace Petrichor.App.Utilities
 				Background = "#02468a",
 			};
 			Log.Formatted( "custom", "test", customColors );
+			Console.WriteLine( "========== END FORMATTED LOG MESSAGE TEST ==========" );
 #endif
 		}
 	}
