@@ -1,23 +1,23 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ScriptIdentity : IEquatable<ScriptIdentity>
+	public sealed class Identity : IEquatable<Identity>
 	{
-		public static readonly ScriptIdentity Empty = new ScriptIdentity();
+		public static readonly Identity Empty = new Identity();
 		public string Name { get; set; } = string.Empty;
 		public string Tag { get; set; } = string.Empty;
 
 
-		public ScriptIdentity() { }
-		public ScriptIdentity( string name, string tag )
+		public Identity() { }
+		public Identity( string name, string tag )
 		{
 			Name = name;
 			Tag = tag;
 		}
 
 
-		public static bool operator ==( ScriptIdentity a, ScriptIdentity b ) => a.Equals( b );
+		public static bool operator ==( Identity a, Identity b ) => a.Equals( b );
 
-		public static bool operator !=( ScriptIdentity a, ScriptIdentity b ) => !a.Equals( b );
+		public static bool operator !=( Identity a, Identity b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -25,10 +25,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ScriptIdentity ) obj );
+			return Equals( ( Identity ) obj );
 		}
 
-		public bool Equals( ScriptIdentity? other )
+		public bool Equals( Identity? other )
 		{
 			if ( other is null )
 			{

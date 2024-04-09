@@ -1,22 +1,22 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ScriptInput : IEquatable<ScriptInput>
+	public sealed class InputData : IEquatable<InputData>
 	{
-		public ScriptEntry[] Entries { get; set; } = Array.Empty<ScriptEntry>();
-		public ScriptModuleOptions ModuleOptions { get; set; } = new();
+		public Entry[] Entries { get; set; } = Array.Empty<Entry>();
+		public ModuleOptionData ModuleOptions { get; set; } = new();
 		public string[] Shortcuts { get; set; } = Array.Empty<string>();
-		public ScriptShortcutData[] ShortcutTemplates { get; set; } = Array.Empty<ScriptShortcutData>();
+		public ShortcutData[] ShortcutTemplates { get; set; } = Array.Empty<ShortcutData>();
 
 
-		public ScriptInput() { }
-		public ScriptInput( ScriptModuleOptions moduleOptions, ScriptEntry[] entries, ScriptShortcutData[] templates, string[]? shortcuts = null )
+		public InputData() { }
+		public InputData( ModuleOptionData moduleOptions, Entry[] entries, ShortcutData[] templates, string[]? shortcuts = null )
 		{
 			Entries = entries;
 			ModuleOptions = moduleOptions;
 			Shortcuts = shortcuts ?? Array.Empty<string>();
 			ShortcutTemplates = templates;
 		}
-		public ScriptInput( ScriptInput other)
+		public InputData( InputData other)
 		{
 			Entries = other.Entries;
 			ModuleOptions = other.ModuleOptions;
@@ -25,9 +25,9 @@
 		}
 
 
-		public static bool operator ==( ScriptInput a, ScriptInput b ) => a.Equals( b );
+		public static bool operator ==( InputData a, InputData b ) => a.Equals( b );
 
-		public static bool operator !=( ScriptInput a, ScriptInput b ) => !a.Equals( b );
+		public static bool operator !=( InputData a, InputData b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -35,10 +35,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ScriptInput ) obj );
+			return Equals( ( InputData ) obj );
 		}
 
-		public bool Equals( ScriptInput? other )
+		public bool Equals( InputData? other )
 		{
 			if ( other is null )
 			{

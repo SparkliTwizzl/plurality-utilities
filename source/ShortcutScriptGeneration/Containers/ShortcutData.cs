@@ -3,7 +3,7 @@
 
 namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ScriptShortcutData : IEquatable<ScriptShortcutData>
+	public sealed class ShortcutData : IEquatable<ShortcutData>
 	{
 		public Dictionary<string, string> FindAndReplace { get; set; } = new();
 		public string ShortcutString { get; set; } = string.Empty;
@@ -12,16 +12,16 @@ namespace Petrichor.ShortcutScriptGeneration.Containers
 		public string TextCase { get; set; } = TemplateTextCases.Default;
 
 
-		public ScriptShortcutData() { }
-		public ScriptShortcutData( string shortcutString ) => ShortcutString = shortcutString;
-		public ScriptShortcutData( string templateFindString, string templateReplaceString, string textCase, Dictionary<string, string> findAndReplace )
+		public ShortcutData() { }
+		public ShortcutData( string shortcutString ) => ShortcutString = shortcutString;
+		public ShortcutData( string templateFindString, string templateReplaceString, string textCase, Dictionary<string, string> findAndReplace )
 		{
 			FindAndReplace = findAndReplace;
 			TemplateFindString = templateFindString;
 			TemplateReplaceString = templateReplaceString;
 			TextCase = textCase;
 		}
-		public ScriptShortcutData( ScriptShortcutData other )
+		public ShortcutData( ShortcutData other )
 		{
 			FindAndReplace = other.FindAndReplace;
 			TemplateReplaceString = other.TemplateReplaceString;
@@ -35,11 +35,11 @@ namespace Petrichor.ShortcutScriptGeneration.Containers
 			{
 				return false;
 			}
-			var other = obj as ScriptShortcutData;
+			var other = obj as ShortcutData;
 			return Equals( other );
 		}
 
-		public bool Equals( ScriptShortcutData? other )
+		public bool Equals( ShortcutData? other )
 		{
 			if ( other is null )
 			{
@@ -52,9 +52,9 @@ namespace Petrichor.ShortcutScriptGeneration.Containers
 
 		public override string ToString() => $"shortcut:[{ShortcutString}] template:[{TemplateFindString}{ControlSequences.ShortcutFindReplaceDivider}{TemplateReplaceString}]";
 
-		public static bool operator ==( ScriptShortcutData a, ScriptShortcutData b ) => a.Equals( b );
+		public static bool operator ==( ShortcutData a, ShortcutData b ) => a.Equals( b );
 
-		public static bool operator !=( ScriptShortcutData a, ScriptShortcutData b ) => !a.Equals( b );
+		public static bool operator !=( ShortcutData a, ShortcutData b ) => !a.Equals( b );
 
 
 		private bool AreFindAndReplacesEqual( Dictionary<string, string> other )

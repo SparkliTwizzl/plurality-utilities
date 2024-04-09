@@ -7,50 +7,50 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public static class EntryHandler
 	{
-		public static ProcessedRegionData<ScriptEntry> ColorTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> ColorTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Color = token.Value;
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
-		public static ProcessedRegionData<ScriptEntry> DecorationTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> DecorationTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Decoration = token.Value;
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
-		public static ProcessedRegionData<ScriptEntry> IDTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> IDTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.ID = token.Value;
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
-		public static ProcessedRegionData<ScriptEntry> NameTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> NameTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Identities.Add( ParseNameTokenValue( token ) );
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
-		public static ProcessedRegionData<ScriptEntry> LastNameTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> LastNameTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.LastIdentity = ParseNameTokenValue( token );
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
-		public static ProcessedRegionData<ScriptEntry> PronounTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptEntry result )
+		public static ProcessedRegionData<Entry> PronounTokenHandler( IndexedString[] regionData, int tokenStartIndex, Entry result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.Pronoun = token.Value;
-			return new ProcessedRegionData<ScriptEntry>( result );
+			return new ProcessedRegionData<Entry>( result );
 		}
 
 
-		private static ScriptIdentity ParseNameTokenValue( StringToken token )
+		private static Identity ParseNameTokenValue( StringToken token )
 		{
 			var components = token.Value.Split( '@' );
 			if ( components.Length != 2 )
@@ -60,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			var name = components[ 0 ].Trim();
 			var tag = components[ 1 ].Trim();
-			var identity = new ScriptIdentity( name, tag );
+			var identity = new Identity( name, tag );
 			return identity;
 		}
 	}
