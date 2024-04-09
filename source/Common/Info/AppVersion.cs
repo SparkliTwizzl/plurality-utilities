@@ -19,8 +19,8 @@ namespace Petrichor.Common.Info
 		public static string DevelopmentAppVersion => $"{ReleaseAppVersion}{DevelopmentAppVersionSuffix}";
 		public const string DevelopmentAppVersionSuffix = "-dev";
 		public const string Major = "0";
-		public const string Minor = "11";
-		public const string Patch = "1";
+		public const string Minor = "12";
+		public const string Patch = "0";
 		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
 		public static string[] SupportedMajorVersions => new[]
@@ -33,7 +33,6 @@ namespace Petrichor.Common.Info
 		};
 		public static string[] SupportedPatchVersions => new[]
 		{
-			"0",
 			Patch,
 			AnyVersion,
 		};
