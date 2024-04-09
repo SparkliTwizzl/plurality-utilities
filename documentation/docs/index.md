@@ -10,7 +10,7 @@ title: Home
 <div align="center">Part of the <a href="https://github.com/SparkliTwizzl/trioxichor">Trioxichor project</a>.</div>
 
 ---
-## About
+## Overview
 
 Petrichor is a command-line app with modules for various utilities.
 

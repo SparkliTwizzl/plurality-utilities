@@ -6,34 +6,6 @@ repo_name: sparklitwizzl/petrichor
 use_directory_urls: false
 site_url: https://sparklitwizzl.github.io/petrichor/
 
-plugins:
-  - mike:
-  - search:
-
-extra_css:
-  - stylesheets/extra.css
-
-markdown_extensions:
-  - admonition
-  - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-      options:
-        custom_icons:
-          - overrides/.icons
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.keys
-  - pymdownx.snippets
-  - pymdownx.superfences
-  - pymdownx.tabbed:
-      alternate_style: true
-  - tables
-
 extra:
   social:
     - icon: kofi
@@ -59,6 +31,56 @@ extra:
   version:
     provider: mike
     default: latest
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - overrides/.icons
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+
+nav:
+  - index.md
+
+  - 'Getting started':
+    - user-guide/getting-started/index.md
+    - user-guide/getting-started/petrichor-script.md
+    - user-guide/getting-started/command-usage.md
+
+  - 'Modules':
+    - user-guide/modules/index.md
+
+    - 'Text Shortcut Script Generation':
+      - user-guide/modules/text-shortcut-script-generation/index.md
+      - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
+      - user-guide/modules/text-shortcut-script-generation/command-usage.md
+      - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
+
+  - 'About':
+    - about/changelog.md
+    - about/compatibility.md
+    - about/license.md
+
+plugins:
+  - mike:
+  - search:
 
 theme:
   name: material
@@ -114,24 +136,3 @@ theme:
       toggle:
         icon: material/lightbulb-outline
         name: Switch to system preference"
-
-nav:
-  - index.md
-
-  - 'Getting started':
-    - user-guide/getting-started/index.md
-    - user-guide/getting-started/petrichor-script.md
-    - user-guide/getting-started/command-usage.md
-
-  - 'Modules':
-    - user-guide/modules/index.md
-
-    - 'Text Shortcut Script Generation':
-      - user-guide/modules/text-shortcut-script-generation/index.md
-      - user-guide/modules/text-shortcut-script-generation/petrichor-script.md
-      - user-guide/modules/text-shortcut-script-generation/command-usage.md
-      - user-guide/modules/text-shortcut-script-generation/running-output-scripts.md
-
-  - 'About':
-    - about/changelog.md
-    - about/license.md
