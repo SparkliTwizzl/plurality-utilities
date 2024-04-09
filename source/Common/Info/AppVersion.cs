@@ -23,8 +23,8 @@ namespace Petrichor.Common.Info
 		public static string[] SupportedVersions => new[]
 		{
 			Current,
-			$"{Major}.{Minor}.{Patch}.0",
-			$"{Major}.{Minor}.0.0",
+			$"{Major}.{Minor}.{Patch}",
+			$"{Major}.{Minor}.0",
 			"0.11.0",
 			"0.11.1",
 		};
