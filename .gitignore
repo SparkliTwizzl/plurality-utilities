@@ -11,5 +11,6 @@ obj/
 site/
 venv/
 
+*.csproj.user
 *.log
 *.pypirc
