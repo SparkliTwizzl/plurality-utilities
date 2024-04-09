@@ -23,23 +23,13 @@ namespace Petrichor.Common.Info
 		public const string Patch = "0";
 		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
-		public static string[] SupportedMajorVersions => new[]
+		public static string[] SupportedVersions => new[]
 		{
-			Major,
-		};
-		public static string[] SupportedMinorVersions => new[]
-		{
-			Minor,
-		};
-		public static string[] SupportedPatchVersions => new[]
-		{
-			Patch,
-			AnyVersion,
-		};
-		public static string[] SupportedPreviewVersions => new[]
-		{
-			Preview,
-			AnyVersion,
+			Current,
+			$"{Major}.{Minor}.{Patch}{AnyVersion}",
+			$"{Major}.{Minor}.{AnyVersion}{AnyVersion}",
+			"0.11.1",
+			"0.11.0",
 		};
 
 
@@ -59,11 +49,8 @@ namespace Petrichor.Common.Info
 			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : AnyVersion;
 			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : AnyVersion;
 
-			var isMajorSupported = SupportedMajorVersions.Contains( major );
-			var isMinorSupported = SupportedMinorVersions.Contains( minor );
-			var isPatchSupported = SupportedPatchVersions.Contains( patch );
-			var isPreviewSupported = SupportedPreviewVersions.Contains( preview );
-			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
+			var formattedVersion = $"{major}.{minor}.{patch}{preview}";
+			return SupportedVersions.Contains( formattedVersion );
 		}
 
 		public static void RejectUnsupportedVersions( string version, int? lineNumber = null )
