@@ -4,7 +4,7 @@ using Petrichor.Logging;
 
 namespace Petrichor.Common.Utilities
 {
-	public class InputHandler
+	public class InputFileHandler
 	{
 		private const string DefaultInputDirectory = @".\";
 		private const string DefaultInputFileName = "input.petrichor";
@@ -16,7 +16,7 @@ namespace Petrichor.Common.Utilities
 		public ModuleCommand ActiveCommand { get; private set; } = ModuleCommand.None;
 
 
-		public InputHandler( ITokenBodyParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
+		public InputFileHandler( ITokenBodyParser<List<IndexedString>> metadataRegionParser, ModuleCommand? command = null )
 		{
 			ActiveCommand = command ?? ModuleCommand.None;
 			MetadataRegionParser = metadataRegionParser;

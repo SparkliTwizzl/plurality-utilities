@@ -1,22 +1,75 @@
-﻿using Petrichor.App.Syntax;
-using Petrichor.Common.Containers;
+﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using Petrichor.ShortcutScriptGeneration.Syntax;
-using Petrichor.ShortcutScriptGeneration.Utilities;
+using System.CommandLine;
 
 
-namespace Petrichor.App.Utilities
+namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public static class ShortcutScriptGenerationHandler
 	{
+		public static Command CreateCLICommand()
+		{
+			var inputFileOption = new Option<string>(
+				name: Common.Syntax.Commands.InputFileOption,
+				description: "Path to input file." );
+
+			var outputFileOption = new Option<string>(
+				name: Common.Syntax.Commands.OutputFileOption,
+				description: "Path and filename to generate AutoHotkey script at." );
+
+			var logModeOption = new Option<string>(
+				name: Common.Syntax.Commands.LogModeOption,
+				description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
+
+			var logFileOption = new Option<string>(
+				name: Common.Syntax.Commands.LogFileOption,
+				description: "Path to generate log file at. If not provided, a default filepath will be used." );
+
+			var shortcutScriptCommand = new Command(
+				name: Commands.ModuleCommand,
+				description: "Parse input file and generate a text find-and-replace shortcut script." )
+			{
+				inputFileOption,
+				outputFileOption,
+				logModeOption,
+				logFileOption,
+			};
+
+			shortcutScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
+				{
+					MetadataHandler.CommandToRun = new()
+					{
+						Name = Commands.ModuleCommand,
+						Options = new()
+						{
+							{ Common.Syntax.Commands.InputFileOption, inputFilePath },
+							{ Common.Syntax.Commands.OutputFileOption, outputFilePath },
+							{ Common.Syntax.Commands.LogModeOption, logMode },
+							{ Common.Syntax.Commands.LogFileOption, logFile },
+						},
+					};
+
+					await MetadataHandler.InitalizeLogging( logMode, logFile );
+					Log.WriteBufferToFile();
+					Log.DisableBuffering();
+
+					var inputHandler = new Common.Utilities.InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
+					MetadataHandler.CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
+				},
+				inputFileOption, outputFileOption, logModeOption, logFileOption );
+
+			return shortcutScriptCommand;
+		}
+
 		public static void GenerateScript( ModuleCommand command )
 		{
 			Log.Important( "Generating text shortcuts script..." );
 
-			var outputFilePath = command.Options[ CommandOptions.ShortcutScriptOptionOutputFile ];
+			var outputFilePath = command.Options[ Common.Syntax.Commands.OutputFileOption ];
 			var data = command.Data;
 			GenerateAutoHotkeyScript( data, outputFilePath );
 
@@ -177,7 +230,7 @@ namespace Petrichor.App.Utilities
 		{
 			try
 			{
-				var inputHandler = new ShortcutScriptGeneration.Utilities.InputHandler(
+				var inputHandler = new InputHandler(
 					moduleOptionsParser: CreateModuleOptionsParser(),
 					entryListParser: CreateEntryListParser(),
 					shortcutListParser: CreateShortcutListParser(),

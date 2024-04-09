@@ -1,6 +1,6 @@
-﻿using Petrichor.App.Syntax;
-using Petrichor.Common.Containers;
+﻿using Petrichor.Common.Containers;
 using Petrichor.Logging;
+using Petrichor.ShortcutScriptGeneration.Utilities;
 
 
 namespace Petrichor.App.Utilities
@@ -11,7 +11,7 @@ namespace Petrichor.App.Utilities
 		{
 			switch ( command.Name )
 			{
-				case Commands.GenerateShortcutScript:
+				case ShortcutScriptGeneration.Syntax.Commands.ModuleCommand:
 					ShortcutScriptGenerationHandler.GenerateScript( command );
 					break;
 
