@@ -6,7 +6,7 @@ metadata: // inline comment in region name
 	minimum-version: 0.11 // inline comment in metadata region body
 	command: generateTextShortcutScript
 	{
-		output-file: "../../../../_test/_output/_integrationtest/generateTextShortcutScript.ext"
+		output-file:../../../../_test/_output/_integrationtest/generateTextShortcutScript.ext
 		log-mode: all
 		log-file: "../../../../_test/_log/_integrationtest/"
 	}
@@ -26,8 +26,8 @@ module-options:
 shortcut-list:
 {
 	// line comment in template-list region body
-	
-	shortcut: find >> replace
+
+	shortcut: \:find >> \>> replace
 	shortcut-template: [tag] >> [name]
 	shortcut-template: `[tag] >> `[name]
 	shortcut-template: ~[tag] >> ~[name]
@@ -51,7 +51,7 @@ shortcut-list:
 	shortcut-template: \\[tag] >> \\[name]
 	shortcut-template: |[tag] >> |[name]
 	shortcut-template: ;[tag] >> ;[name]
-	shortcut-template: :[tag] >> :[name]
+	shortcut-template: \:[tag] >> \:[name]
 	shortcut-template: '[tag] >> '[name]
 	shortcut-template: \"[tag] >> \"[name]
 	shortcut-template: ,[tag] >> ,[name]
@@ -98,7 +98,7 @@ entry-list:
 		color: green
 		decoration: \// a person // inline comment on same line as escaped comment sequence
 	}
-	
+
 	entry: 2
 	{
 		id: 4321

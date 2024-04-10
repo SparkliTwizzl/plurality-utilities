@@ -20,8 +20,8 @@ module-options:
 shortcut-list:
 {
 	// line comment in template-list region body
-	
-	shortcut: find >> replace
+
+	shortcut: \:find >> \>> replace
 	shortcut-template: [tag] >> [name]
 	shortcut-template: `[tag] >> `[name]
 	shortcut-template: ~[tag] >> ~[name]
@@ -45,7 +45,7 @@ shortcut-list:
 	shortcut-template: \\[tag] >> \\[name]
 	shortcut-template: |[tag] >> |[name]
 	shortcut-template: ;[tag] >> ;[name]
-	shortcut-template: :[tag] >> :[name]
+	shortcut-template: \:[tag] >> \:[name]
 	shortcut-template: '[tag] >> '[name]
 	shortcut-template: \"[tag] >> \"[name]
 	shortcut-template: ,[tag] >> ,[name]
@@ -92,7 +92,7 @@ entry-list:
 		color: green
 		decoration: \// a person // inline comment on same line as escaped comment sequence
 	}
-	
+
 	entry: 2
 	{
 		id: 4321
