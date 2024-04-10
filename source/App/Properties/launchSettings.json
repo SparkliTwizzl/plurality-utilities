@@ -9,19 +9,19 @@
     },
     "generateRandomStrings": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateRandomStrings.petrichor"
     },
     "generateRandomStrings_cmd": {
       "commandName": "Project",
-      "commandLineArgs": "generateRandomStrings\r\n--outputFile \"../../../../_test/_output/_integrationtest/\"\r\n--stringCount 5\r\n--stringLength 20\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
+      "commandLineArgs": "generateRandomStrings\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cmd.ext\"\r\n--stringCount 5\r\n--stringLength 20\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
     },
     "generateTextShortcutScript": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateTextShortcutScript.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateTextShortcutScript.petrichor"
     },
     "generateTextShortcutScript_cmd": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings\r\n.petrichor"
+      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cmd.petrichor\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cmd.ext\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
     }
   }
 }

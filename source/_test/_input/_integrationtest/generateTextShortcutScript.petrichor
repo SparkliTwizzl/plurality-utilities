@@ -6,7 +6,7 @@ metadata: // inline comment in region name
 	minimum-version: 0.11 // inline comment in metadata region body
 	command: generateTextShortcutScript
 	{
-		output-file: "../../../../_test/_output/_integrationtest/"
+		output-file: "../../../../_test/_output/_integrationtest/generateTextShortcutScript.ext"
 		log-mode: all
 		log-file: "../../../../_test/_log/_integrationtest/"
 	}

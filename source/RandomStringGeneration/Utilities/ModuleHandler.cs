@@ -1,5 +1,8 @@
-﻿using Petrichor.Common.Utilities;
+﻿using Petrichor.Common.Containers;
+using Petrichor.Common.Exceptions;
+using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.RandomStringGeneration.Containers;
 using Petrichor.RandomStringGeneration.Syntax;
 using System.CommandLine;
 
@@ -69,6 +72,45 @@ namespace Petrichor.RandomStringGeneration.Utilities
 				allowedCharactersOption, stringCountOption, stringLengthOption, outputFileOption, logModeOption, logFileOption );
 
 			return moduleCommand;
+		}
+
+		public static void ExecuteCommand( ModuleCommand command )
+		{
+			Log.Important( "Generating random strings..." );
+			GenerateRandomStrings( command );
+			Log.Important( "Generated random strings successfully." );
+		}
+
+
+		private static void GenerateRandomStrings( ModuleCommand command )
+		{
+			var input = GetInputDataFromCommand( command );
+			var outputFilePath = command.Options[ Common.Syntax.Commands.OutputFileOption ];
+			new StringGenerator().Generate( input, outputFilePath );
+		}
+
+		private static InputData GetInputDataFromCommand( ModuleCommand command )
+		{
+			var isStringCountOptionAnInt = int.TryParse( command.Options[ Commands.StringCountOption ], out var stringCount );
+			var isStringCountOptionValid = isStringCountOptionAnInt && stringCount > 0;
+			if ( !isStringCountOptionValid )
+			{
+				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.StringCountOption}\" argument must be a positive integer." ) );
+			}
+
+			var isStringLengthOptionAnInt = int.TryParse( command.Options[ Commands.StringLengthOption ], out var stringLength );
+			var isStringLengthOptionValid = isStringLengthOptionAnInt && stringLength > 0;
+			if ( !isStringLengthOptionValid )
+			{
+				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.StringLengthOption}\" argument must be a positive integer." ) );
+			}
+
+			return new InputData()
+			{
+				AllowedCharacters = command.Options[ Commands.AllowedCharactersOption ],
+				StringCount = stringCount,
+				StringLength = stringLength,
+			};
 		}
 	}
 }

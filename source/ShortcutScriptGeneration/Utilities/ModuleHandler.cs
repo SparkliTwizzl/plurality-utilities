@@ -65,20 +65,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return moduleCommand;
 		}
 
-		public static void GenerateScript( ModuleCommand command )
+		public static void ExecuteCommand( ModuleCommand command )
 		{
 			Log.Important( "Generating text shortcuts script..." );
-
 			var outputFilePath = command.Options[ Common.Syntax.Commands.OutputFileOption ];
-			var data = command.Data;
-			GenerateAutoHotkeyScript( data, outputFilePath );
-
-			var successMessage = "Generated text shortcuts script successfully.";
-			if ( Log.IsLoggingToConsoleDisabled )
-			{
-				Console.WriteLine( successMessage );
-			}
-			Log.Important( successMessage );
+			GenerateAutoHotkeyScript( command.Data, outputFilePath );
+			Log.Important( "Generated text shortcuts script successfully." );
 		}
 
 
