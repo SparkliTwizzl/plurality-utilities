@@ -1,16 +1,23 @@
 {
   "profiles": {
+    "default command": {
+      "commandName": "Project"
+    },
+    "default --help": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    },
     "generateTextShortcutScript": {
       "commandName": "Project",
       "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateTextShortcutScript.petrichor"
     },
     "generateTextShortcutScript_cmd": {
       "commandName": "Project",
-      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"$(SolutionDir)$(TestInputDir)IntegrationTest\\generateTextShortcutScript_cmd.petrichor\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings\r\n.petrichor"
     },
     "generateRandomStrings": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings\r\n.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTest\\generateRandomStrings.petrichor"
     },
     "generateRandomStrings_cmd": {
       "commandName": "Project",

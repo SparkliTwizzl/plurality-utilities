@@ -9,37 +9,37 @@ using System.CommandLine;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public static class ShortcutScriptGenerationHandler
+	public static class ModuleHandler
 	{
 		public static Command CreateCLICommand()
 		{
 			var inputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.InputFileOption,
-				description: "Path to input file." );
+				description: "Path to input file. If not provided, a default file path will be used." );
 
 			var outputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.OutputFileOption,
-				description: "Path and filename to generate AutoHotkey script at." );
+				description: "Path to generate output file at. If not provided, a default file path will be used." );
 
 			var logModeOption = new Option<string>(
 				name: Common.Syntax.Commands.LogModeOption,
-				description: "Logging mode to enable. Options are consoleOnly, fileOnly, all." );
+				description: "Logging mode to enable. Options are: [none | consoleOnly | fileOnly | all]." );
 
 			var logFileOption = new Option<string>(
 				name: Common.Syntax.Commands.LogFileOption,
-				description: "Path to generate log file at. If not provided, a default filepath will be used." );
+				description: "Path to generate log file at. If not provided, a default file path will be used." );
 
-			var shortcutScriptCommand = new Command(
+			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Parse input file and generate a text find-and-replace shortcut script." )
-			{
-				inputFileOption,
-				outputFileOption,
-				logModeOption,
-				logFileOption,
-			};
+				{
+					inputFileOption,
+					outputFileOption,
+					logModeOption,
+					logFileOption,
+				};
 
-			shortcutScriptCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
+			moduleCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
@@ -57,12 +57,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 
-					var inputHandler = new Common.Utilities.InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
+					var inputHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
 					MetadataHandler.CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
 				},
 				inputFileOption, outputFileOption, logModeOption, logFileOption );
 
-			return shortcutScriptCommand;
+			return moduleCommand;
 		}
 
 		public static void GenerateScript( ModuleCommand command )

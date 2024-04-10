@@ -2,7 +2,6 @@
 using Petrichor.Common.Syntax;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
-using Petrichor.ShortcutScriptGeneration.Utilities;
 using System.CommandLine;
 
 
@@ -30,9 +29,9 @@ namespace Petrichor.App.Utilities
 				description: "Path to input file." );
 
 			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
-			{
-				inputFileArgument,
-			};
+				{
+					inputFileArgument,
+				};
 
 			rootCommand.SetHandler( async ( inputFilePath ) =>
 				{
@@ -56,7 +55,8 @@ namespace Petrichor.App.Utilities
 				},
 				inputFileArgument );
 
-			rootCommand.AddCommand( ShortcutScriptGenerationHandler.CreateCLICommand() );
+			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateCLICommand() );
+			rootCommand.AddCommand( ShortcutScriptGeneration.Utilities.ModuleHandler.CreateCLICommand() );
 			return rootCommand;
 		}
 

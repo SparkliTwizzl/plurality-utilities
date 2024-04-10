@@ -12,7 +12,7 @@ namespace Petrichor.App.Utilities
 			switch ( command.Name )
 			{
 				case ShortcutScriptGeneration.Syntax.Commands.ModuleCommand:
-					ShortcutScriptGenerationHandler.GenerateScript( command );
+					ModuleHandler.GenerateScript( command );
 					break;
 
 				case Common.Syntax.Commands.Some:
