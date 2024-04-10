@@ -8,6 +8,10 @@
 		public const string StringCountOption = "--stringCount";
 		public const string StringLengthOption = "--stringLength";
 
+		public const string AllowedCharactersDefaultValue = "abcdefghijklmnopqrstuvwxyz";
+		public const int StringCountDefaultValue = 1;
+		public const int StringLengthDefaultValue = 10;
+
 
 		public static Dictionary<string, string> LookUpTable => new()
 		{

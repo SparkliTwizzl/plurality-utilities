@@ -91,25 +91,34 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 		private static InputData GetInputDataFromCommand( ModuleCommand command )
 		{
-			var isStringCountOptionAnInt = int.TryParse( command.Options[ Commands.StringCountOption ], out var stringCount );
+			var hasAllowedCharacters = command.Options.TryGetValue( Commands.AllowedCharactersOption, out var allowedCharactersArgument );
+			var isAllowedCharactersValid = allowedCharactersArgument is not null && allowedCharactersArgument.Length > 0;
+			if (!isAllowedCharactersValid)
+			{
+				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.AllowedCharactersOption}\" argument must be a string of 1 or more characters." ) );
+			}
+
+			var hasStringCount = command.Options.TryGetValue( Commands.StringCountOption, out var stringCountArgument );
+			var isStringCountOptionAnInt = int.TryParse( stringCountArgument, out var stringCount );
 			var isStringCountOptionValid = isStringCountOptionAnInt && stringCount > 0;
-			if ( !isStringCountOptionValid )
+			if ( hasStringCount && !isStringCountOptionValid )
 			{
 				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.StringCountOption}\" argument must be a positive integer." ) );
 			}
 
-			var isStringLengthOptionAnInt = int.TryParse( command.Options[ Commands.StringLengthOption ], out var stringLength );
+			var hasStringLength = command.Options.TryGetValue( Commands.StringLengthOption, out var stringLengthArgument );
+			var isStringLengthOptionAnInt = int.TryParse( stringLengthArgument, out var stringLength );
 			var isStringLengthOptionValid = isStringLengthOptionAnInt && stringLength > 0;
-			if ( !isStringLengthOptionValid )
+			if ( hasStringLength && !isStringLengthOptionValid )
 			{
 				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.StringLengthOption}\" argument must be a positive integer." ) );
 			}
 
 			return new InputData()
 			{
-				AllowedCharacters = command.Options[ Commands.AllowedCharactersOption ],
-				StringCount = stringCount,
-				StringLength = stringLength,
+				AllowedCharacters = hasAllowedCharacters ? allowedCharactersArgument! : Commands.AllowedCharactersDefaultValue,
+				StringCount = hasStringCount ? stringCount : Commands.StringCountDefaultValue,
+				StringLength = hasStringLength ? stringLength : Commands.StringLengthDefaultValue,
 			};
 		}
 	}

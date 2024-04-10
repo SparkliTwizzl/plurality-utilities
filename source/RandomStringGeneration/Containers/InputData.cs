@@ -1,10 +1,12 @@
-﻿namespace Petrichor.RandomStringGeneration.Containers
+﻿using Petrichor.RandomStringGeneration.Syntax;
+
+namespace Petrichor.RandomStringGeneration.Containers
 {
 	public sealed class InputData : IEquatable<InputData>
 	{
-		public string AllowedCharacters { get; set; } = string.Empty;
-		public int StringCount { get; set; } = 0;
-		public int StringLength { get; set; } = 0;
+		public string AllowedCharacters { get; set; } = Commands.AllowedCharactersDefaultValue;
+		public int StringCount { get; set; } = Commands.StringCountDefaultValue;
+		public int StringLength { get; set; } = Commands.StringLengthDefaultValue;
 
 
 		public InputData() { }
