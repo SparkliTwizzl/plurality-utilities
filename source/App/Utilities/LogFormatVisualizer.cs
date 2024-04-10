@@ -23,7 +23,7 @@ namespace Petrichor.App.Utilities
 				Background = "#02468a",
 			};
 			Log.Formatted( "custom", "test", customColors );
-			Console.WriteLine( "========== END FORMATTED LOG MESSAGE TEST ==========" );
+			Console.WriteLine( "=========== END FORMATTED LOG MESSAGE TEST ===========" );
 #endif
 		}
 	}
