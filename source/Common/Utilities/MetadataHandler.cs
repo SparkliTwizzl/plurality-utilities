@@ -2,7 +2,6 @@
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Syntax;
 using Petrichor.Logging;
-using System.Text;
 
 
 namespace Petrichor.Common.Utilities
@@ -54,16 +53,6 @@ namespace Petrichor.Common.Utilities
 				TokenHandlers = new()
 				{
 					{ Tokens.Command, commandTokenHandler },
-				},
-				PostParseHandler = ( ModuleCommand result ) =>
-				{
-					var optionListStringBuilder = new StringBuilder();
-					foreach ( var option in result.Options )
-					{
-						_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}" );
-					}
-					Log.Info( $"Command to run: \"{result.Name}{optionListStringBuilder}\"" );
-					return result;
 				},
 			};
 

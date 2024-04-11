@@ -11,39 +11,35 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public static class ModuleHandler
 	{
-		private readonly struct CommandOptions
+		public static Command CreateTerminalCommand()
 		{
-			public static Option<string> InputFile => new(
+			var inputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.InputFile,
 				description: "Path to input file. If not provided, a default file path will be used." );
 
-			public static Option<string> LogMode => new(
+			var logModeOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.LogMode,
 				description: "Logging mode to enable. See documentation for available modes." );
 
-			public static Option<string> LogFile => new(
+			var logFileOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.LogFile,
 				description: "Path to generate log file at. If not provided, a default file path will be used." );
 
-			public static Option<string> OutputFile => new(
+			var outputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.OutputFile,
 				description: "Path to generate output file at. If not provided, a default file path will be used." );
-		}
 
-
-		public static Command CreateTerminalCommand()
-		{
 			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Parse input file and generate a text find-and-replace shortcut script." )
 				{
-					CommandOptions.InputFile,
-					CommandOptions.LogMode,
-					CommandOptions.LogFile,
-					CommandOptions.OutputFile,
+					inputFileOption,
+					logFileOption,
+					logModeOption,
+					outputFileOption,
 				};
 
-			moduleCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
+			moduleCommand.SetHandler( async ( inputFilePath, logFile, logMode, outputFilePath ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
@@ -51,8 +47,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						Options = new()
 						{
 							{ Common.Syntax.Commands.Options.InputFile, inputFilePath },
-							{ Common.Syntax.Commands.Options.LogMode, logMode },
 							{ Common.Syntax.Commands.Options.LogFile, logFile },
+							{ Common.Syntax.Commands.Options.LogMode, logMode },
 							{ Common.Syntax.Commands.Options.OutputFile, outputFilePath },
 						},
 					};
@@ -64,7 +60,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
 					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFilePath ).ToArray();
 				},
-				CommandOptions.InputFile, CommandOptions.LogMode, CommandOptions.LogFile, CommandOptions.OutputFile );
+				inputFileOption, logFileOption, logModeOption, outputFileOption );
 
 			return moduleCommand;
 		}

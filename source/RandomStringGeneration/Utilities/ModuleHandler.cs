@@ -11,51 +11,47 @@ namespace Petrichor.RandomStringGeneration.Utilities
 {
 	public static class ModuleHandler
 	{
-		private readonly struct TerminalCommandOptions
-		{
-			public static Option<string> AllowedCharacters => new(
-				name: Commands.Options.AllowedCharacters,
-				description: "Set of characters that random strings will be generated from." );
-
-			public static Option<string> LogMode => new(
-				name: Common.Syntax.Commands.Options.LogMode,
-				description: "Logging mode to enable. See documentation for available modes." );
-
-			public static Option<string> LogFile => new(
-				name: Common.Syntax.Commands.Options.LogFile,
-				description: "Path to generate log file at. If not provided, a default filepath will be used." );
-
-			public static Option<string> OutputFile => new(
-				name: Common.Syntax.Commands.Options.OutputFile,
-				description: "Path to generate output file at. If not provided, a default file path will be used." );
-
-			public static Option<string> StringCount => new(
-				name: Commands.Options.StringCount,
-				description: "Number of random strings to generate." );
-
-			public static Option<string> StringLength => new(
-				name: Commands.Options.StringLength,
-				description: "Length of random strings." );
-		}
-
-
 		public static Command CreateTerminalCommand()
 		{
 			MetadataHandler.RegisterCommandOptions( Commands.Options.LookUpTable, Tokens.CommandOptionLookUpTable );
+
+			var allowedCharactersOption = new Option<string>(
+				name: Commands.Options.AllowedCharacters,
+				description: "Set of characters that random strings will be generated from." );
+
+			var logModeOption = new Option<string>(
+				name: Common.Syntax.Commands.Options.LogMode,
+				description: "Logging mode to enable. See documentation for available modes." );
+
+			var logFileOption = new Option<string>(
+				name: Common.Syntax.Commands.Options.LogFile,
+				description: "Path to generate log file at. If not provided, a default filepath will be used." );
+
+			var outputFileOption = new Option<string>(
+				name: Common.Syntax.Commands.Options.OutputFile,
+				description: "Path to generate output file at. If not provided, a default file path will be used." );
+
+			var stringCountOption = new Option<string>(
+				name: Commands.Options.StringCount,
+				description: "Number of random strings to generate." );
+
+			var stringLengthOption = new Option<string>(
+				name: Commands.Options.StringLength,
+				description: "Length of random strings." );
 
 			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Generate a list of random text strings." )
 				{
-					TerminalCommandOptions.AllowedCharacters,
-					TerminalCommandOptions.LogMode,
-					TerminalCommandOptions.LogFile,
-					TerminalCommandOptions.OutputFile,
-					TerminalCommandOptions.StringCount,
-					TerminalCommandOptions.StringLength,
+					allowedCharactersOption,
+					logModeOption,
+					logFileOption,
+					outputFileOption,
+					stringCountOption,
+					stringLengthOption,
 				};
 
-			moduleCommand.SetHandler( async ( allowedCharacters, stringCount, stringLength, outputFilePath, logMode, logFile ) =>
+			moduleCommand.SetHandler( async ( allowedCharacters, logMode, logFile, outputFilePath, stringCount, stringLength ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
@@ -75,7 +71,7 @@ namespace Petrichor.RandomStringGeneration.Utilities
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 				},
-				TerminalCommandOptions.AllowedCharacters, TerminalCommandOptions.LogMode, TerminalCommandOptions.LogFile, TerminalCommandOptions.OutputFile, TerminalCommandOptions.StringCount, TerminalCommandOptions.StringLength );
+				allowedCharactersOption, logModeOption, logFileOption, outputFileOption, stringCountOption, stringLengthOption );
 
 			return moduleCommand;
 		}

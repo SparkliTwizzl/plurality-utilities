@@ -13,7 +13,7 @@
     },
     "generateRandomStrings_cmd": {
       "commandName": "Project",
-      "commandLineArgs": "generateRandomStrings\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cmd.ext\"\r\n--stringCount 5\r\n--stringLength 20\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
+      "commandLineArgs": "generateRandomStrings\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cmd.ext\"\r\n--stringCount 5\r\n--stringLength 20"
     },
     "generateTextShortcutScript": {
       "commandName": "Project",
