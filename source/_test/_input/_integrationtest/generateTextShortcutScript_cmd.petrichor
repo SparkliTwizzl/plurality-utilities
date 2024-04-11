@@ -54,7 +54,7 @@ shortcut-list:
 	shortcut-template: >[tag] >> >[name]
 	shortcut-template: /[tag] >> /[name]
 	shortcut-template: ?[tag] >> ?[name]
-	shortcut-template: [tag][last-tag] findme findmetoo >> ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] findme findmetoo ` // inline comment in template-list region body
+	shortcut-template: [tag][last-tag] findme findmetoo >> ` \\\[[id]\] [name] [last-name] ([pronoun]) [decoration] Findme findme findmetoo ` // inline comment in template-list region body
 	{
 		find: { findmetoo, findme }
 		replace: { foundyoutoo, foundyou }
