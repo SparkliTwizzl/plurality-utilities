@@ -60,13 +60,25 @@ namespace Petrichor.Common.Syntax
 		};
 
 
+		public static Dictionary<string, DataToken> CommandOptionLookUpTable => new()
+		{
+			{ InputFile.Key, InputFile },
+			{ LogFile.Key, LogFile },
+			{ LogMode.Key, LogMode },
+			{ OutputFile.Key, OutputFile },
+		};
+
 		public static Dictionary<string, DataToken> LookUpTable => new()
 		{
 			{ BlankLine.Key, BlankLine },
 			{ Command.Key, Command },
+			{ InputFile.Key, InputFile },
 			{ LineComment.Key, LineComment },
+			{ LogFile.Key, LogFile },
+			{ LogMode.Key, LogMode },
 			{ Metadata.Key, Metadata },
 			{ MinimumVersion.Key, MinimumVersion },
+			{ OutputFile.Key, OutputFile },
 			{ RegionClose.Key, RegionClose },
 			{ RegionOpen.Key, RegionOpen },
 		};

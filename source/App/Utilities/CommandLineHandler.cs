@@ -16,22 +16,24 @@ namespace Petrichor.App.Utilities
 				return ModuleCommand.None;
 			}
 
-			var rootCommand = CreateCLICommands();
+			var rootCommand = CreateTerminalCommands();
 			_ = await rootCommand.InvokeAsync( arguments );
 			return MetadataHandler.CommandToRun;
 		}
 
 
-		private static RootCommand CreateCLICommands()
+		private static RootCommand CreateTerminalCommands()
 		{
 			var inputFileArgument = new Argument<string>(
-				name: Commands.InputFileOption,
+				name: Commands.Options.InputFile,
 				description: "Path to input file." );
 
 			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
 				{
 					inputFileArgument,
 				};
+
+			MetadataHandler.RegisterCommandOptions( Commands.Options.LookUpTable, Tokens.CommandOptionLookUpTable );
 
 			rootCommand.SetHandler( async ( inputFilePath ) =>
 				{
@@ -40,8 +42,8 @@ namespace Petrichor.App.Utilities
 						var inputHandler = new InputFileHandler( metadataRegionParser: MetadataHandler.CreateMetadataTokenParser() );
 						var data = inputHandler.ProcessFile( inputFilePath ).ToArray();
 						MetadataHandler.CommandToRun.Data = data;
-						var logMode = MetadataHandler.CommandToRun.Options[ Commands.LogModeOption ];
-						var logFile = MetadataHandler.CommandToRun.Options[ Commands.LogFileOption ];
+						var logMode = MetadataHandler.CommandToRun.Options[ Commands.Options.LogMode ];
+						var logFile = MetadataHandler.CommandToRun.Options[ Commands.Options.LogFile ];
 						await MetadataHandler.InitalizeLogging( logMode, logFile );
 						Log.WriteBufferToFile();
 						Log.DisableBuffering();
@@ -55,8 +57,8 @@ namespace Petrichor.App.Utilities
 				},
 				inputFileArgument );
 
-			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateCLICommand() );
-			rootCommand.AddCommand( ShortcutScriptGeneration.Utilities.ModuleHandler.CreateCLICommand() );
+			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
+			rootCommand.AddCommand( ShortcutScriptGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
 			return rootCommand;
 		}
 
@@ -74,7 +76,7 @@ namespace Petrichor.App.Utilities
 		public static void TryParseInputFile( string inputFile )
 		{
 			MetadataHandler.CommandToRun.Data = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() ).ProcessFile( inputFile ).ToArray();
-			MetadataHandler.CommandToRun.Options.Add( Commands.InputFileOption, inputFile );
+			MetadataHandler.CommandToRun.Options.Add( Commands.Options.InputFile, inputFile );
 		}
 	}
 }

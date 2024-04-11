@@ -12,9 +12,24 @@ namespace Petrichor.Common.Utilities
 		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\_log";
 		private static string DefaultLogFileName => $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
 
+		private static Dictionary<string, string> CommandOptionTerminalFlags { get; set; } = new();
+		private static Dictionary<string, DataToken> CommandOptionTokens { get; set; } = new();
+
 
 		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.None;
 
+
+		public static void RegisterCommandOptions( Dictionary<string, string> terminalFlags, Dictionary<string, DataToken> tokens )
+		{
+			foreach ( var item in terminalFlags )
+			{
+				CommandOptionTerminalFlags.Add( item.Key, item.Value );
+			}
+			foreach ( var item in tokens )
+			{
+				CommandOptionTokens.Add( item.Key, item.Value );
+			}
+		}
 
 		public static TokenBodyParser<ModuleCommand> CreateCommandTokenParser()
 		{
@@ -28,20 +43,17 @@ namespace Petrichor.Common.Utilities
 			var commandOptionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
 			{
 				var token = new StringToken( regionData[ tokenStartIndex ] );
-				var commandLineOption = Commands.LookUpTable[ token.Key ];
+				var commandLineOption = CommandOptionTerminalFlags[ token.Key ];
 				result.Options.Add( commandLineOption, token.Value );
 				return new ProcessedRegionData<ModuleCommand>( result );
 			};
 
 			var parserDescriptor = new DataRegionParserDescriptor<ModuleCommand>()
 			{
-				RegionToken = Syntax.Tokens.Command,
+				RegionToken = Tokens.Command,
 				TokenHandlers = new()
 				{
-					{ Syntax.Tokens.Command, commandTokenHandler },
-					{ Syntax.Tokens.LogFile, commandOptionTokenHandler },
-					{ Syntax.Tokens.LogMode, commandOptionTokenHandler },
-					{ Syntax.Tokens.OutputFile, commandOptionTokenHandler },
+					{ Tokens.Command, commandTokenHandler },
 				},
 				PostParseHandler = ( ModuleCommand result ) =>
 				{
@@ -55,7 +67,12 @@ namespace Petrichor.Common.Utilities
 				},
 			};
 
-			return new TokenBodyParser<ModuleCommand>( parserDescriptor );
+			var parser = new TokenBodyParser<ModuleCommand>( parserDescriptor );
+			foreach ( var token in CommandOptionTokens.Values )
+			{
+				parser.AddTokenHandler( token, commandOptionTokenHandler );
+			}
+			return parser;
 		}
 
 		public static TokenBodyParser<List<IndexedString>> CreateMetadataTokenParser()
@@ -82,11 +99,11 @@ namespace Petrichor.Common.Utilities
 
 			var parserDescriptor = new DataRegionParserDescriptor<List<IndexedString>>()
 			{
-				RegionToken = Syntax.Tokens.Metadata,
+				RegionToken = Tokens.Metadata,
 				TokenHandlers = new()
 				{
-					{ Syntax.Tokens.Command, commandTokenHandler },
-					{ Syntax.Tokens.MinimumVersion, minimumVersionTokenHandler },
+					{ Tokens.Command, commandTokenHandler },
+					{ Tokens.MinimumVersion, minimumVersionTokenHandler },
 				},
 			};
 
@@ -98,19 +115,19 @@ namespace Petrichor.Common.Utilities
 			{
 				switch ( logModeArgument )
 				{
-					case Commands.LogModeOptionValueConsoleOnly:
+					case Commands.Options.LogModeValueConsoleOnly:
 					{
 						Log.EnableLoggingToConsole();
 						break;
 					}
 
-					case Commands.LogModeOptionValueFileOnly:
+					case Commands.Options.LogModeValueFileOnly:
 					{
 						Log.EnableLoggingToFile();
 						break;
 					}
 
-					case Commands.LogModeOptionValueAll:
+					case Commands.Options.LogModeValueAll:
 					{
 						Log.EnableAllLogDestinations();
 						break;
@@ -125,7 +142,7 @@ namespace Petrichor.Common.Utilities
 
 				if ( Log.IsLoggingToConsoleDisabled )
 				{
-					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.LogModeOption}\" with parameters \"{Commands.LogModeOptionValueConsoleOnly}\" or \"{Commands.LogModeOptionValueAll}\"." );
+					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.Options.LogMode}\" with parameters \"{Commands.Options.LogModeValueConsoleOnly}\" or \"{Commands.Options.LogModeValueAll}\"." );
 				}
 
 				if ( Log.IsLoggingToFileEnabled )
@@ -145,7 +162,7 @@ namespace Petrichor.Common.Utilities
 			{
 				return;
 			}
-			ExceptionLogger.LogAndThrow( exception: new CommandException( $"A(n) \"{Syntax.Tokens.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"." ) );
+			ExceptionLogger.LogAndThrow( exception: new CommandException( $"A(n) \"{Tokens.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"." ) );
 		}
 	}
 }

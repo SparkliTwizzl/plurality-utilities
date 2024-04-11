@@ -4,9 +4,9 @@ namespace Petrichor.RandomStringGeneration.Containers
 {
 	public sealed class InputData : IEquatable<InputData>
 	{
-		public string AllowedCharacters { get; set; } = Commands.AllowedCharactersDefaultValue;
-		public int StringCount { get; set; } = Commands.StringCountDefaultValue;
-		public int StringLength { get; set; } = Commands.StringLengthDefaultValue;
+		public string AllowedCharacters { get; set; } = Commands.Options.AllowedCharactersDefaultValue;
+		public int StringCount { get; set; } = Commands.Options.StringCountDefaultValue;
+		public int StringLength { get; set; } = Commands.Options.StringLengthDefaultValue;
 
 
 		public InputData() { }

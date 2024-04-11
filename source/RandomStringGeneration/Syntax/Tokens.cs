@@ -22,6 +22,13 @@ namespace Petrichor.RandomStringGeneration.Syntax
 		};
 
 
+		public static Dictionary<string, DataToken> CommandOptionLookUpTable => new()
+		{
+			{ AllowedCharacters.Key, AllowedCharacters },
+			{ StringCount.Key, StringCount },
+			{ StringLength.Key, StringLength },
+		};
+
 		public static Dictionary<string, DataToken> LookUpTable => new()
 		{
 			{ AllowedCharacters.Key, AllowedCharacters },

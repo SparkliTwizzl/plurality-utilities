@@ -11,32 +11,36 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public static class ModuleHandler
 	{
-		public static Command CreateCLICommand()
+		private readonly struct CommandOptions
 		{
-			var inputFileOption = new Option<string>(
-				name: Common.Syntax.Commands.InputFileOption,
+			public static Option<string> InputFile => new(
+				name: Common.Syntax.Commands.Options.InputFile,
 				description: "Path to input file. If not provided, a default file path will be used." );
 
-			var outputFileOption = new Option<string>(
-				name: Common.Syntax.Commands.OutputFileOption,
-				description: "Path to generate output file at. If not provided, a default file path will be used." );
+			public static Option<string> LogMode => new(
+				name: Common.Syntax.Commands.Options.LogMode,
+				description: "Logging mode to enable. See documentation for available modes." );
 
-			var logModeOption = new Option<string>(
-				name: Common.Syntax.Commands.LogModeOption,
-				description: "Logging mode to enable. Options are: [none | consoleOnly | fileOnly | all]." );
-
-			var logFileOption = new Option<string>(
-				name: Common.Syntax.Commands.LogFileOption,
+			public static Option<string> LogFile => new(
+				name: Common.Syntax.Commands.Options.LogFile,
 				description: "Path to generate log file at. If not provided, a default file path will be used." );
 
+			public static Option<string> OutputFile => new(
+				name: Common.Syntax.Commands.Options.OutputFile,
+				description: "Path to generate output file at. If not provided, a default file path will be used." );
+		}
+
+
+		public static Command CreateTerminalCommand()
+		{
 			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Parse input file and generate a text find-and-replace shortcut script." )
 				{
-					inputFileOption,
-					outputFileOption,
-					logModeOption,
-					logFileOption,
+					CommandOptions.InputFile,
+					CommandOptions.LogMode,
+					CommandOptions.LogFile,
+					CommandOptions.OutputFile,
 				};
 
 			moduleCommand.SetHandler( async ( inputFilePath, outputFilePath, logMode, logFile ) =>
@@ -46,10 +50,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						Name = Commands.ModuleCommand,
 						Options = new()
 						{
-							{ Common.Syntax.Commands.InputFileOption, inputFilePath },
-							{ Common.Syntax.Commands.OutputFileOption, outputFilePath },
-							{ Common.Syntax.Commands.LogModeOption, logMode },
-							{ Common.Syntax.Commands.LogFileOption, logFile },
+							{ Common.Syntax.Commands.Options.InputFile, inputFilePath },
+							{ Common.Syntax.Commands.Options.LogMode, logMode },
+							{ Common.Syntax.Commands.Options.LogFile, logFile },
+							{ Common.Syntax.Commands.Options.OutputFile, outputFilePath },
 						},
 					};
 
@@ -57,10 +61,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 
-					var inputHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
-					MetadataHandler.CommandToRun.Data = inputHandler.ProcessFile( inputFilePath ).ToArray();
+					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
+					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFilePath ).ToArray();
 				},
-				inputFileOption, outputFileOption, logModeOption, logFileOption );
+				CommandOptions.InputFile, CommandOptions.LogMode, CommandOptions.LogFile, CommandOptions.OutputFile );
 
 			return moduleCommand;
 		}
@@ -68,7 +72,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		public static void ExecuteCommand( ModuleCommand command )
 		{
 			Log.Important( "Generating text shortcuts script..." );
-			var outputFilePath = command.Options[ Common.Syntax.Commands.OutputFileOption ];
+			var outputFilePath = command.Options[ Common.Syntax.Commands.Options.OutputFile ];
 			GenerateAutoHotkeyScript( command.Data, outputFilePath );
 			Log.Important( "Generated text shortcuts script successfully." );
 		}
