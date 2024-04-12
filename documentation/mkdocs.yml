@@ -67,6 +67,10 @@ nav:
   - 'Modules':
     - user-guide/modules/index.md
 
+    - 'Random String Generation':
+      - user-guide/modules/random-string-generation/index.md
+      - user-guide/modules/random-string-generation/command-usage.md
+
     - 'Text Shortcut Script Generation':
       - user-guide/modules/text-shortcut-script-generation/index.md
       - user-guide/modules/text-shortcut-script-generation/petrichor-script.md

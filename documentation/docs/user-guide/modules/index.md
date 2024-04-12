@@ -5,6 +5,15 @@ title: Modules
 
 <h1 align="center"><a href="../getting-started/index.html#modules">Modules</a></h1>
 
+
+---
+## [Random String Generation](../modules/random-string-generation/index.md)
+
+This module allows you to generate a list of randomly-generated text strings.
+
+The number of strinsg to generate, length of strings, and set of characters to generate strings from are customizable.
+
+
 ---
 ## [Text Shortcut Script Generation](../modules/text-shortcut-script-generation/index.md)
 
