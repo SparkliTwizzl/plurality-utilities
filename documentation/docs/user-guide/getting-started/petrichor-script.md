@@ -166,7 +166,7 @@ Version numbers are in the format `major.minor.patch.preview`.
 
 !!! info
 
-    If `patch` version or `patch` and `preview` versions are blank, they are assumed to be any version.
+    If `patch` version is blank, it is assumed to be 0.
 
 !!! warning
 
@@ -195,21 +195,21 @@ Version numbers are in the format `major.minor.patch.preview`.
     }
     ```
 
-    ```petrichor title="Major version 1, minor version 2, patch version 3, any preview version"
+    ```petrichor title="Major version 1, minor version 2, patch version 3, no preview version"
     metadata:
     {
         minimum-version: 1.2.3
     }
     ```
 
-    ```petrichor title="Major version 1, minor version 2, any patch or preview version"
+    ```petrichor title="Major version 1, minor version 2, patch version 0, no preview version"
     metadata:
     {
         minimum-version: 1.2
     }
     ```
 
-    ```petrichor title="(NOT ALLOWED) Major version 1, minor version 2, blank patch version, preview version pre-4"
+    ```petrichor title="(NOT ALLOWED) Major version 1, minor version 2, no patch version, preview version pre-4"
     metadata:
     {
         minimum-version: 1.2..pre-4 // This is not allowed by Petrichor.

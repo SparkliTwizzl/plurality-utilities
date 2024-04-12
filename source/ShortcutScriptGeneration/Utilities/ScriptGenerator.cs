@@ -15,12 +15,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		private const string OutputFileExtension = "ahk";
 
 
-		private ScriptInput Input { get; set; } = new();
+		private InputData Input { get; set; } = new();
 		private string OutputFilePath { get; set; } = string.Empty;
 		private int TotalLinesWritten { get; set; } = 0;
 
 
-		public void Generate( ScriptInput input, string outputFile )
+		public void Generate( InputData input, string outputFile )
 		{
 			Input = input;
 			var filePathHandler = new FilePathHandler( DefaultOutputDirectory, DefaultOutputFileName );

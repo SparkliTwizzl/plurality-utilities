@@ -83,7 +83,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static class ShortcutParseHandler
 		{
-			public static ScriptShortcutData ParseTemplateString( StringToken token, ScriptShortcutData result )
+			public static ShortcutData ParseTemplateString( StringToken token, ShortcutData result )
 			{
 				ValidateShortcutStructure( token );
 				var sanitizedHotstring = SanitizeHotstring( token.Value );
@@ -232,11 +232,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's body has no region close character.
 		/// Thrown when a token's body contains blank items.
 		/// </exception>
-		public static ProcessedRegionData<ScriptShortcutData> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
+		public static ProcessedRegionData<ShortcutData> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseFindKeys( token );
-			return new ProcessedRegionData<ScriptShortcutData>( result );
+			return new ProcessedRegionData<ShortcutData>( result );
 		}
 
 		/// <summary>
@@ -256,11 +256,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's body contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// Thrown when a token's body contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// </exception>
-		public static ProcessedRegionData<ScriptShortcutData> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
+		public static ProcessedRegionData<ShortcutData> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseReplaceValues( token, result.FindAndReplace );
-			return new ProcessedRegionData<ScriptShortcutData>( result );
+			return new ProcessedRegionData<ShortcutData>( result );
 		}
 
 		/// <summary>
@@ -274,14 +274,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value is not a valid template string.
 		/// </exception>
-		public static ProcessedRegionData<ScriptInput> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptInput result )
+		public static ProcessedRegionData<InputData> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, InputData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			ShortcutParseHandler.ValidateShortcutStructure( token );
 			var shortcuts = result.Shortcuts.ToList();
 			shortcuts.Add( token.Value );
 			result.Shortcuts = shortcuts.ToArray();
-			return new ProcessedRegionData<ScriptInput>()
+			return new ProcessedRegionData<InputData>()
 			{
 				Value = result,
 			};
@@ -303,11 +303,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
 		/// </exception>
-		public static ProcessedRegionData<ScriptShortcutData> ShortcutTemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
+		public static ProcessedRegionData<ShortcutData> ShortcutTemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result = ShortcutParseHandler.ParseTemplateString( token, result );
-			return new ProcessedRegionData<ScriptShortcutData>( result );
+			return new ProcessedRegionData<ShortcutData>( result );
 		}
 
 		/// <summary>
@@ -322,11 +322,11 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's value is not recognized.
 		/// </exception>
-		public static ProcessedRegionData<ScriptShortcutData> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptShortcutData result )
+		public static ProcessedRegionData<ShortcutData> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			result.TextCase = TextCaseParseHandler.ParseTextCase( token );
-			return new ProcessedRegionData<ScriptShortcutData>( result );
+			return new ProcessedRegionData<ShortcutData>( result );
 		}
 	}
 }

@@ -73,21 +73,21 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string TemplateToken_Valid
 				=> $"{Tokens.ShortcutTemplate.Qualify()} {TemplateFindString} {ControlSequences.ShortcutFindReplaceDivider} {TemplateReplaceString} {Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagOpen}text{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagClose}";
 			public static string TemplateTriggerString => "~";
-			public static ScriptShortcutData TemplateWithEmptyFindAndReplace => new();
-			public static ScriptShortcutData TemplateWithFindAndReplace => new()
+			public static ShortcutData TemplateWithEmptyFindAndReplace => new();
+			public static ShortcutData TemplateWithFindAndReplace => new()
 			{
 				FindAndReplace = FindAndReplace,
 			};
-			public static ScriptShortcutData TemplateWithFindKeys => new()
+			public static ShortcutData TemplateWithFindKeys => new()
 			{
 				FindAndReplace = FindAndReplace_KeysOnly,
 			};
-			public static ScriptShortcutData TemplateWithTemplateString => new()
+			public static ShortcutData TemplateWithTemplateString => new()
 			{
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = $"{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
 			};
-			public static ScriptShortcutData TemplateWithTextCase => new()
+			public static ShortcutData TemplateWithTextCase => new()
 			{
 				TextCase = TemplateTextCase,
 			};
@@ -104,7 +104,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( FindTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void FindTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ScriptShortcutData> expected )
+		public void FindTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ShortcutData> expected )
 		{
 			var actual = ShortcutHandler.FindTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 			Assert.AreEqual( expected, actual );
@@ -114,7 +114,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_Valid ), new ProcessedRegionData<ScriptShortcutData>( TestData.TemplateWithFindKeys ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.FindToken_Valid ), new ProcessedRegionData<ShortcutData>( TestData.TemplateWithFindKeys ) };
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( ReplaceTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void ReplaceTokenHandler_Test_Success( IndexedString[] regionData, ScriptShortcutData input, ProcessedRegionData<ScriptShortcutData> expected )
+		public void ReplaceTokenHandler_Test_Success( IndexedString[] regionData, ShortcutData input, ProcessedRegionData<ShortcutData> expected )
 		{
 			var actual = ShortcutHandler.ReplaceTokenHandler( regionData, TestData.TokenStartIndex, result: input );
 			Assert.AreEqual( expected, actual );
@@ -152,7 +152,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_Valid ), TestData.TemplateWithFindKeys, new ProcessedRegionData<ScriptShortcutData>( TestData.TemplateWithFindAndReplace ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_Valid ), TestData.TemplateWithFindKeys, new ProcessedRegionData<ShortcutData>( TestData.TemplateWithFindAndReplace ) };
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenValueException ) )]
 		[DynamicData( nameof( ReplaceTokenHandler_Test_Throws_TokenValueExeception_Data ), DynamicDataSourceType.Property )]
-		public void ReplaceTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData, ScriptShortcutData input )
+		public void ReplaceTokenHandler_Test_Throws_TokenValueException( IndexedString[] regionData, ShortcutData input )
 		{
 			Log.Info( $"input: {regionData[ 0 ]}" );
 			_ = ShortcutHandler.ReplaceTokenHandler( regionData, TestData.TokenStartIndex, result: input );
@@ -170,12 +170,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ), new ScriptShortcutData() };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionClose ), new ScriptShortcutData() };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionOpen ), new ScriptShortcutData() };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoValue ), new ScriptShortcutData() };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ), new ScriptShortcutData() };
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ), new ScriptShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoItems ), new ShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionClose ), new ShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoRegionOpen ), new ShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_NoValue ), new ShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooFewItems ), new ShortcutData() };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_TooManyItems ), new ShortcutData() };
 				yield return new object[] { IndexedString.IndexRawStrings( TestData.ReplaceToken_Valid ), TestData.TemplateWithEmptyFindAndReplace };
 			}
 		}
@@ -183,7 +183,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( ShortcutTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void ShortcutTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ScriptInput> expected )
+		public void ShortcutTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<InputData> expected )
 		{
 			var actual = ShortcutHandler.ShortcutTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 			Assert.AreEqual( expected, actual );
@@ -193,7 +193,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ShortcutToken_Valid ), new ProcessedRegionData<ScriptInput>() { Value = new() { Shortcuts = new[] { TestData.ShortcutString } } } };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ShortcutToken_Valid ), new ProcessedRegionData<InputData>() { Value = new() { Shortcuts = new[] { TestData.ShortcutString } } } };
 			}
 		}
 
@@ -219,7 +219,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( ShortcutTemplateTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void ShortcutTemplateTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ScriptShortcutData> expected )
+		public void ShortcutTemplateTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ShortcutData> expected )
 		{
 			var actual = ShortcutHandler.ShortcutTemplateTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 			Assert.AreEqual( expected, actual );
@@ -229,7 +229,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.TemplateToken_Valid ), new ProcessedRegionData<ScriptShortcutData>( TestData.TemplateWithTemplateString ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.TemplateToken_Valid ), new ProcessedRegionData<ShortcutData>( TestData.TemplateWithTemplateString ) };
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( TextCaseTokenHandler_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void TextCaseTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ScriptShortcutData> expected )
+		public void TextCaseTokenHandler_Test_Success( IndexedString[] regionData, ProcessedRegionData<ShortcutData> expected )
 		{
 			var actual = ShortcutHandler.TextCaseTokenHandler( regionData, TestData.TokenStartIndex, result: new() );
 			Assert.AreEqual( expected, actual );
@@ -271,7 +271,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.TextCaseToken_Valid ), new ProcessedRegionData<ScriptShortcutData>( TestData.TemplateWithTextCase ) };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.TextCaseToken_Valid ), new ProcessedRegionData<ShortcutData>( TestData.TemplateWithTextCase ) };
 			}
 		}
 

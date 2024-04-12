@@ -50,9 +50,9 @@ Some commands have unique options.
 ---
 #### Input file option
 
-Command line syntax: `#!powershell --inputFile [argument]`
+Command line syntax: `#!powershell --inputFile [file]`
 
-Petrichor Script syntax: `#!ptcr input-file : <argument>`
+Petrichor Script syntax: `#!ptcr input-file : <file>`
 
 The `input file` option allows you to specify the input file directory and/or name.
 
@@ -69,6 +69,8 @@ The `input file` option allows you to specify the input file directory and/or na
 ???+ important "Restrictions"
 
     OPTIONAL
+
+    In Petrichor Script, must be within [`command`](./petrichor-script.html#command-token) token body.
 
     If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
 
@@ -124,11 +126,122 @@ The `input file` option allows you to specify the input file directory and/or na
 
 
 ---
+#### Log file option
+
+Command line syntax: `#!powershell --logFile [file]`
+
+Petrichor Script syntax: `#!ptcr log-file : <file>`
+
+The `log file` option is used to specify the file name and/or directory to generate log files at.
+
+[Relative file paths](#relative-file-paths) can be used.
+
+!!! note
+
+    Log file will only be created if [logging to file is enabled](#log-mode-option).
+
+???+ important "Restrictions"
+
+    OPTIONAL
+
+    In Petrichor Script, must be within [`command`](./petrichor-script.html#command-token) token body.
+
+    If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
+
+    A file extension is not required and will be overridden if specified.
+
+???+ example
+
+    === "Command line "
+
+        === "File name only, default directory"
+
+            ```powershell
+            Petrichor.exe commandName --logFile "logFile.txt"
+            ```
+            Petrichor will generate the file "{install path}\_log\logFile.txt".
+
+        === "Directory only, default file name"
+
+            ```powershell
+            Petrichor.exe commandName --logFile "[path]/"
+            ```
+            Petrichor will generate the file "{path}\{default log file name}.log".
+
+        === "Full file path"
+
+            ```powershell
+            Petrichor.exe commandName --logFile "[path]\logFile.txt"
+            ```
+            Petrichor will generate the file "{path}\logFile.txt".
+
+    === "Petrichor Script"
+
+        === "File name only, default directory"
+
+            ```petrichor
+            log-file : "logFile.txt"
+            ```
+            Petrichor will generate the file "{install path}\_log\logFile.txt".
+
+        === "Directory only, default file name"
+
+            ```petrichor
+            log-file : "<path>/"
+            ```
+            Petrichor will generate the file "{path}\{default log file name}.log".
+
+        === "Full file path"
+
+            ```petrichor
+            log-file : "<path>/logFile.txt"
+            ```
+            Petrichor will generate the file "{path}\logFile.txt".
+
+
+---
+#### Log mode option
+
+Command line syntax: `#!powershell --logMode [mode]`
+
+Petrichor Script syntax: `#!ptcr log-mode : <mode>`
+
+The `log mode` option is used to control where logs are sent.
+
+Allowed values:
+
+- `all` (DEFAULT) - Send logs to all output locations.
+- `fileOnly` - Send logs only to log file.
+- `consoleOnly` - Send logs only to console output.
+- `none` - Disable logging.
+
+???+ important "Restrictions"
+
+    OPTIONAL
+
+    In Petrichor Script, must be within [`command`](./petrichor-script.html#command-token) token body.
+
+???+ example
+
+    === "Command line"
+
+        ```powershell
+        Petrichor.exe comandName --logMode [all | fileOnly | consoleOnly | none]
+        ```
+
+    === "Petrichor Script"
+
+        ```petrichor
+        log-mode : <all | fileOnly | consoleOnly | none>
+        ```
+
+
+---
 #### Output file option
 
-Command line syntax: `#!powershell --outputFile [argument]`
+Command line syntax: `#!powershell --outputFile [file]`
 
-Petrichor Script syntax: `#!ptcr output-file : <argument>`
+Petrichor Script syntax: `#!ptcr output-file : <file>`
 
 The `output file` option allows you to specify the output file directory and/or name for commands which generate files.
 
@@ -145,6 +258,8 @@ The `output file` option allows you to specify the output file directory and/or 
 ???+ important "Restrictions"
 
     OPTIONAL
+
+    In Petrichor Script, must be within [`command`](./petrichor-script.html#command-token) token body.
 
     If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
 
@@ -198,112 +313,6 @@ The `output file` option allows you to specify the output file directory and/or 
             output-file : "<path>\outputFile"
             ```
             Petrichor will generate the file "{path}\outputFile.{extension}".
-
-
----
-#### Log mode option
-
-Command line syntax: `#!powershell --logMode [argument]`
-
-Petrichor Script syntax: `#!ptcr log-mode : <argument>`
-
-The `log mode` option is used to control where logs are sent.
-
-Allowed values:
-
-- `all` (DEFAULT) - Send logs to all output locations.
-- `fileOnly` - Send logs only to log file.
-- `consoleOnly` - Send logs only to console output.
-- `none` - Disable logging.
-
-???+ important "Restrictions"
-
-    OPTIONAL
-
-???+ example
-
-    === "Command line"
-
-        ```powershell
-        Petrichor.exe comandName --logMode [all | fileOnly | consoleOnly | none]
-        ```
-
-    === "Petrichor Script"
-
-        ```petrichor
-        log-mode : <all | fileOnly | consoleOnly | none>
-        ```
-
----
-#### Log file option
-
-Command line syntax: `#!powershell --logFile [argument]`
-
-Petrichor Script syntax: `#!ptcr log-file : <argument>`
-
-The `log file` option is used to specify the file name and/or directory to generate log files at.
-
-[Relative file paths](#relative-file-paths) can be used.
-
-!!! note
-
-    Log file will only be created if [logging to file is enabled](#log-mode-option).
-
-???+ important "Restrictions"
-
-    OPTIONAL
-
-    If there are spaces in the argument, it must be surrounded by quotes ( `"` ).
-
-    A file extension is not required and will be overridden if specified.
-
-???+ example
-
-    === "Command line "
-
-        === "File name only, default directory"
-
-            ```powershell
-            Petrichor.exe commandName --logFile "logFile.txt"
-            ```
-            Petrichor will generate the file "{install path}\_log\logFile.txt".
-
-        === "Directory only, default file name"
-
-            ```powershell
-            Petrichor.exe commandName --logFile "[path]/"
-            ```
-            Petrichor will generate the file "{path}\{default log file name}.log".
-
-        === "Full file path"
-
-            ```powershell
-            Petrichor.exe commandName --logFile "[path]\logFile.txt"
-            ```
-            Petrichor will generate the file "{path}\logFile.txt".
-
-    === "Petrichor Script"
-
-        === "File name only, default directory"
-
-            ```petrichor
-            log-file : "logFile.txt"
-            ```
-            Petrichor will generate the file "{install path}\_log\logFile.txt".
-
-        === "Directory only, default file name"
-
-            ```petrichor
-            log-file : "<path>/"
-            ```
-            Petrichor will generate the file "{path}\{default log file name}.log".
-
-        === "Full file path"
-
-            ```petrichor
-            log-file : "<path>/logFile.txt"
-            ```
-            Petrichor will generate the file "{path}\logFile.txt".
 
 
 ---

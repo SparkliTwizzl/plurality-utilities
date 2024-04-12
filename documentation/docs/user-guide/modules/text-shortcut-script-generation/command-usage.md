@@ -8,16 +8,16 @@ title: Command usage - Text Shortcut Script Generation - Modules
 
 
 ---
-## generateTextShortcutScript command
+## Module command
 
 To generate a text hotstring shortcut script, call Petrichor with the command argument `generateTextShortcutScript`.
 
 This command supports the following options:
 
 - [Input file](../../getting-started/command-usage.html#input-file-option)
-- [Output file](../../getting-started/command-usage.html#output-file-option)
-- [Log mode](../../getting-started/command-usage.html#log-mode-option)
 - [Log file](../../getting-started/command-usage.html#log-file-option)
+- [Log mode](../../getting-started/command-usage.html#log-mode-option)
+- [Output file](../../getting-started/command-usage.html#output-file-option)
 
 
 ???+ example
