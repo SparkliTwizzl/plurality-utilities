@@ -1756,7 +1756,7 @@
 <hr />
 <h4 id="input-file-option">Input file option</h4>
 <p>Command line syntax: <code class="language-powershell highlight"><span class="p">-</span><span class="n">-inputFile</span> <span class="no">[file]</span></code></p>
-<p>Petrichor Script syntax: <code class="language-ptcr highlight"><span class="kr">input-file</span> <span class="o">:</span> &lt;file&gt;</code></p>
+<p>Petrichor Script syntax: <code class="language-text highlight">input-file : &lt;file&gt;</code></p>
 <p>The <code>input file</code> option allows you to specify the input file directory and/or name.</p>
 <p><a href="#relative-file-paths">Relative file paths</a> can be used.</p>
 <div class="admonition note">
@@ -1803,17 +1803,17 @@ Petrichor will look for "{path}\inputFile.txt".</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">File name only, default directory</label><label for="__tabbed_3_2">Directory only, default file name</label><label for="__tabbed_3_3">Full file path</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">input-file</span> <span class="o">:</span> <span class="s">&quot;inputFile.txt&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>input-file : &quot;inputFile.txt&quot;
 </span></code></pre></div>
 Petrichor will look for "{install path}\inputFile.txt".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">input-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;</span><span class="se">\&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>input-file : &quot;&lt;path&gt;\&quot;
 </span></code></pre></div>
 Petrichor will look for "{path}\input.petrichor".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kr">input-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;</span><span class="se">\i</span><span class="s">nputFile.txt&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>input-file : &quot;&lt;path&gt;\inputFile.txt&quot;
 </span></code></pre></div>
 Petrichor will look for "{path}\inputFile.txt".</p>
 </div>
@@ -1826,7 +1826,7 @@ Petrichor will look for "{path}\inputFile.txt".</p>
 <hr />
 <h4 id="log-file-option">Log file option</h4>
 <p>Command line syntax: <code class="language-powershell highlight"><span class="p">-</span><span class="n">-logFile</span> <span class="no">[file]</span></code></p>
-<p>Petrichor Script syntax: <code class="language-ptcr highlight"><span class="kr">log-file</span> <span class="o">:</span> &lt;file&gt;</code></p>
+<p>Petrichor Script syntax: <code class="language-text highlight">log-file : &lt;file&gt;</code></p>
 <p>The <code>log file</code> option is used to specify the file name and/or directory to generate log files at.</p>
 <p><a href="#relative-file-paths">Relative file paths</a> can be used.</p>
 <div class="admonition note">
@@ -1869,17 +1869,17 @@ Petrichor will generate the file "{path}\logFile.txt".</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">File name only, default directory</label><label for="__tabbed_6_2">Directory only, default file name</label><label for="__tabbed_6_3">Full file path</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kr">log-file</span> <span class="o">:</span> <span class="s">&quot;logFile.txt&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>log-file : &quot;logFile.txt&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{install path}_log\logFile.txt".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kr">log-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;/&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>log-file : &quot;&lt;path&gt;/&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{path}{default log file name}.log".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kr">log-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;/logFile.txt&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>log-file : &quot;&lt;path&gt;/logFile.txt&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{path}\logFile.txt".</p>
 </div>
@@ -1892,7 +1892,7 @@ Petrichor will generate the file "{path}\logFile.txt".</p>
 <hr />
 <h4 id="log-mode-option">Log mode option</h4>
 <p>Command line syntax: <code class="language-powershell highlight"><span class="p">-</span><span class="n">-logMode</span> <span class="no">[mode]</span></code></p>
-<p>Petrichor Script syntax: <code class="language-ptcr highlight"><span class="kr">log-mode</span> <span class="o">:</span> &lt;mode&gt;</code></p>
+<p>Petrichor Script syntax: <code class="language-text highlight">log-mode : &lt;mode&gt;</code></p>
 <p>The <code>log mode</code> option is used to control where logs are sent.</p>
 <p>Allowed values:</p>
 <ul>
@@ -1915,7 +1915,7 @@ Petrichor will generate the file "{path}\logFile.txt".</p>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-petrichor highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kr">log-mode</span> <span class="o">:</span> &lt;all | fileOnly | consoleOnly | none&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>log-mode : &lt;all | fileOnly | consoleOnly | none&gt;
 </span></code></pre></div>
 </div>
 </div>
@@ -1924,7 +1924,7 @@ Petrichor will generate the file "{path}\logFile.txt".</p>
 <hr />
 <h4 id="output-file-option">Output file option</h4>
 <p>Command line syntax: <code class="language-powershell highlight"><span class="p">-</span><span class="n">-outputFile</span> <span class="no">[file]</span></code></p>
-<p>Petrichor Script syntax: <code class="language-ptcr highlight"><span class="kr">output-file</span> <span class="o">:</span> &lt;file&gt;</code></p>
+<p>Petrichor Script syntax: <code class="language-text highlight">output-file : &lt;file&gt;</code></p>
 <p>The <code>output file</code> option allows you to specify the output file directory and/or name for commands which generate files.</p>
 <p><a href="#relative-file-paths">Relative file paths</a> can be used.</p>
 <div class="admonition note">
@@ -1971,17 +1971,17 @@ Petrichor will generate the file "{path}\outputFile.{extension}".</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="10:3"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">File name only, default directory</label><label for="__tabbed_10_2">Directory only, default file name</label><label for="__tabbed_10_3">Full file path</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kr">output-file</span> <span class="o">:</span> <span class="s">&quot;outputFile&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>output-file : &quot;outputFile&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{install path}_output\outputFile.{extension}".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kr">output-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;</span><span class="se">\o</span><span class="s">utput</span><span class="se">\&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>output-file : &quot;&lt;path&gt;\output\&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{path}\output\output.{extension}".</p>
 </div>
 <div class="tabbed-block">
-<p><div class="language-petrichor highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kr">output-file</span> <span class="o">:</span> <span class="s">&quot;&lt;path&gt;</span><span class="se">\o</span><span class="s">utputFile&quot;</span>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>output-file : &quot;&lt;path&gt;\outputFile&quot;
 </span></code></pre></div>
 Petrichor will generate the file "{path}\outputFile.{extension}".</p>
 </div>
