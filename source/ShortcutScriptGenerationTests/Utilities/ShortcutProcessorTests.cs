@@ -120,9 +120,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				TemplateDataTextCaseUpper,
 			};
 			public static string TemplateFindString
-				=> $"{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
+				=> $"U+005C{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
 			public static string TemplateReplaceString
-				=> $"{Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindTags.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {Find1}{Find2} `";
+				=> $"U+005B{TemplateFindTags.ID}U+005D {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {Find1}{Find2} `";
 			public const string TextCaseFirstCaps = TemplateTextCases.FirstCaps;
 			public const string TextCaseLower = TemplateTextCases.Lower;
 			public const string TextCaseUnchanged = TemplateTextCases.Unchanged;

@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using Petrichor.Common.Syntax;
+using System.Text;
 using System.Text.RegularExpressions;
+
 
 namespace Petrichor.Common.Utilities
 {
@@ -12,6 +14,30 @@ namespace Petrichor.Common.Utilities
 				return input;
 			}
 			return $"{input}{Path.PathSeparator}";
+		}
+
+		public static string CodepointsToChars( this string input )
+		{
+			var regex = UnicodeCodepointRegex();
+			var result = regex.Replace( input, match =>
+			{
+				var hexValue = match.Groups[ 1 ].Value;
+				var codepoint = int.Parse( hexValue, System.Globalization.NumberStyles.HexNumber );
+				return char.ConvertFromUtf32( codepoint );
+			} );
+			return result;
+		}
+
+		public static string EscapedCharsToCodepoints( this string input )
+		{
+			var regex = new Regex( $@"\{ControlSequences.Escape}." );
+			var result = regex.Replace( input, match =>
+			{
+				var escaped = match.Captures[ 0 ].Value[ 1 ];
+				var codepoint = char.ConvertToUtf32( escaped.ToString(), 0 );
+				return $"U+{codepoint:X4}";
+			} );
+			return result;
 		}
 
 		public static string ToFirstCaps( this string input )
@@ -65,9 +91,12 @@ namespace Petrichor.Common.Utilities
 		}
 
 
-		[GeneratedRegex( "[a-z,A-Z]" )]
-		private static partial Regex RegexAlphabetic();
+		[GeneratedRegex( "[a-zA-Z]" )]
+		private static partial Regex AlphabeticRegex();
 
-		private static bool IsAlphabetic( char c ) => RegexAlphabetic().Match( c.ToString() ).Success;
+		private static bool IsAlphabetic( char c ) => AlphabeticRegex().Match( c.ToString() ).Success;
+
+		[GeneratedRegex( "U\\+([0-9A-Fa-f]{4})" )]
+		private static partial Regex UnicodeCodepointRegex();
 	}
 }
