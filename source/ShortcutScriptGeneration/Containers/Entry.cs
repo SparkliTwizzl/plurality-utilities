@@ -1,17 +1,17 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Containers
 {
-	public sealed class ScriptEntry : IEquatable<ScriptEntry>
+	public sealed class Entry : IEquatable<Entry>
 	{
 		public string Color { get; set; } = string.Empty;
 		public string Decoration { get; set; } = string.Empty;
 		public string ID { get; set; } = string.Empty;
-		public List<ScriptIdentity> Identities { get; set; } = new();
-		public ScriptIdentity LastIdentity { get; set; } = new();
+		public List<Identity> Identities { get; set; } = new();
+		public Identity LastIdentity { get; set; } = new();
 		public string Pronoun { get; set; } = string.Empty;
 
 
-		public ScriptEntry() { }
-		public ScriptEntry( ScriptEntry other )
+		public Entry() { }
+		public Entry( Entry other )
 		{
 			Color = other.Color;
 			Decoration = other.Decoration;
@@ -20,12 +20,12 @@
 			LastIdentity = other.LastIdentity;
 			Pronoun = other.Pronoun;
 		}
-		public ScriptEntry( string id, List<ScriptIdentity> identities )
+		public Entry( string id, List<Identity> identities )
 		{
 			ID = id;
 			Identities = identities;
 		}
-		public ScriptEntry( string id, List<ScriptIdentity> identities, ScriptIdentity lastIdentity, string pronoun, string color, string decoration )
+		public Entry( string id, List<Identity> identities, Identity lastIdentity, string pronoun, string color, string decoration )
 		{
 			Color = color;
 			Decoration = decoration;
@@ -36,9 +36,9 @@
 		}
 
 
-		public static bool operator ==( ScriptEntry a, ScriptEntry b ) => a.Equals( b );
+		public static bool operator ==( Entry a, Entry b ) => a.Equals( b );
 
-		public static bool operator !=( ScriptEntry a, ScriptEntry b ) => !a.Equals( b );
+		public static bool operator !=( Entry a, Entry b ) => !a.Equals( b );
 
 		public override bool Equals( object? obj )
 		{
@@ -46,10 +46,10 @@
 			{
 				return false;
 			}
-			return Equals( ( ScriptEntry ) obj );
+			return Equals( ( Entry ) obj );
 		}
 
-		public bool Equals( ScriptEntry? other )
+		public bool Equals( Entry? other )
 		{
 			if ( other is null )
 			{

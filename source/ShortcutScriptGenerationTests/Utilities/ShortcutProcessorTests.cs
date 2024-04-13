@@ -13,12 +13,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public readonly struct TestData
 		{
-			public static ScriptEntry[] EntryList => new[]
+			public static Entry[] EntryList => new[]
 			{
-				new ScriptEntry(
+				new Entry(
 					EntryID,
-					new List<ScriptIdentity>(){ new( EntryName, EntryTag ) },
-					new ScriptIdentity( EntryLastName, EntryLastTag ),
+					new List<Identity>(){ new( EntryName, EntryTag ) },
+					new Identity( EntryLastName, EntryLastTag ),
 					EntryPronoun,
 					EntryColor,
 					EntryDecoration
@@ -42,8 +42,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string EntryTagFirstCaps => "Tag";
 			public static string Find1 => "find1";
 			public static string Find2 => "find2";
-			public static ScriptInput Input => new( ModuleOptions, EntryList, TemplateList, RawShortcuts );
-			public static ScriptModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static InputData Input => new( ModuleOptions, EntryList, TemplateList, RawShortcuts );
+			public static ModuleOptionData ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string RawShortcut => $"{Find1}{ControlSequences.ShortcutFindReplaceDivider}{Replace1}";
 			public static string[] RawShortcuts => new[]
 			{
@@ -63,34 +63,34 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				TemplatedShortcutTextCaseUnchanged,
 				TemplatedShortcutTextCaseUpper,
 			};
-			public static ScriptShortcutData TemplateDataTextCaseDefault => new()
+			public static ShortcutData TemplateDataTextCaseDefault => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 			};
-			public static ScriptShortcutData TemplateDataTextCaseFirstCaps => new()
+			public static ShortcutData TemplateDataTextCaseFirstCaps => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseFirstCaps,
 			};
-			public static ScriptShortcutData TemplateDataTextCaseLower => new()
+			public static ShortcutData TemplateDataTextCaseLower => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseLower,
 			};
-			public static ScriptShortcutData TemplateDataTextCaseUnchanged => new()
+			public static ShortcutData TemplateDataTextCaseUnchanged => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseUnchanged,
 			};
-			public static ScriptShortcutData TemplateDataTextCaseUpper => new()
+			public static ShortcutData TemplateDataTextCaseUpper => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
@@ -111,7 +111,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				{ Find1, Replace1 },
 				{ Find2, Replace2 },
 			};
-			public static ScriptShortcutData[] TemplateList => new[]
+			public static ShortcutData[] TemplateList => new[]
 			{
 				TemplateDataTextCaseDefault,
 				TemplateDataTextCaseFirstCaps,
@@ -120,9 +120,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				TemplateDataTextCaseUpper,
 			};
 			public static string TemplateFindString
-				=> $"{Common.Syntax.ControlSequences.EscapeStandin}{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
+				=> $"U+005C{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
 			public static string TemplateReplaceString
-				=> $"{Common.Syntax.ControlSequences.FindTagOpenStandin}{TemplateFindTags.ID}{Common.Syntax.ControlSequences.FindTagCloseStandin} {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {Find1}{Find2} `";
+				=> $"U+005B{TemplateFindTags.ID}U+005D {TemplateFindTags.Name} {TemplateFindTags.LastName} {TemplateFindTags.Pronoun} {TemplateFindTags.Color} {TemplateFindTags.Decoration} {Find1}{Find2} `";
 			public const string TextCaseFirstCaps = TemplateTextCases.FirstCaps;
 			public const string TextCaseLower = TemplateTextCases.Lower;
 			public const string TextCaseUnchanged = TemplateTextCases.Unchanged;

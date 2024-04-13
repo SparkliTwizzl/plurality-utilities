@@ -7,12 +7,12 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public class ShortcutProcessor : IShortcutProcessor
 	{
-		public ScriptInput ProcessAndStoreShortcuts( ScriptInput input )
+		public InputData ProcessAndStoreShortcuts( InputData input )
 		{
 			var shortcuts = new List<string>();
 			foreach ( var rawShortcut in input.Shortcuts )
 			{
-				shortcuts.Add( ConvertShortcutToAutoHotkeySyntax( rawShortcut ) );
+				shortcuts.Add( ConvertShortcutToAutoHotkeySyntax( rawShortcut ).CodepointsToChars() );
 			}
 			foreach ( var entry in input.Entries )
 			{
@@ -60,9 +60,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return $"::{find}::{replace}";
 		}
 
-		private static string ConvertShortcutTemplateToAutoHotkeySyntax( ScriptShortcutData template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
+		private static string ConvertShortcutTemplateToAutoHotkeySyntax( ShortcutData template ) => $"::{template.TemplateFindString}::{template.TemplateReplaceString}";
 
-		private static List<string> GenerateTemplatedShortcutsFromEntries( ScriptShortcutData[] templates, ScriptEntry entry )
+		private static List<string> GenerateTemplatedShortcutsFromEntries( ShortcutData[] templates, Entry entry )
 		{
 			var shortcuts = new List<string>();
 			foreach ( var identity in entry.Identities.ToList() )
@@ -72,7 +72,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return shortcuts;
 		}
 
-		private static List<string> GenerateShortcutsFromIdentity( ScriptShortcutData[] templates, ScriptIdentity identity, ScriptEntry entry )
+		private static List<string> GenerateShortcutsFromIdentity( ShortcutData[] templates, Identity identity, Entry entry )
 		{
 			var shortcuts = new List<string>();
 			foreach ( var template in templates )
@@ -82,7 +82,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return shortcuts;
 		}
 
-		private static string GenerateShortcutFromTemplate( ScriptShortcutData template, ScriptIdentity identity, ScriptEntry entry )
+		private static string GenerateShortcutFromTemplate( ShortcutData template, Identity identity, Entry entry )
 		{
 			var fields = new Dictionary<string, string>()
 			{
@@ -104,7 +104,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			macroReplaceString = ReplaceStandinSequencesInMacro( macroReplaceString );
 			macroReplaceString = ApplyTextCaseToString( macroReplaceString, template.TextCase );
 
-			var modifiedTemplate = new ScriptShortcutData()
+			var modifiedTemplate = new ShortcutData()
 			{
 				TemplateFindString = macroFindString,
 				TemplateReplaceString = macroReplaceString,
@@ -112,9 +112,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return ConvertShortcutTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
 
-		private static string ReplaceStandinSequencesInMacro( string macro ) => macro
-			.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
-			.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
-			.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+		private static string ReplaceStandinSequencesInMacro( string macro ) => macro.CodepointsToChars();
 	}
 }

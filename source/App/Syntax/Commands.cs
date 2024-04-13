@@ -2,6 +2,6 @@
 {
 	public readonly struct Commands
 	{
-		public const string GenerateShortcutScript = "generateTextShortcutScript";
+		public const string HelpOption = "--help";
 	}
 }

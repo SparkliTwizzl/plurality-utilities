@@ -9,40 +9,40 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
 	public static class ModuleOptionsHandler
 	{
-		public static ProcessedRegionData<ScriptModuleOptions> DefaultIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result )
+		public static ProcessedRegionData<ModuleOptionData> DefaultIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			var filePath = token.Value.WrapInQuotes();
 			result.DefaultIconFilePath = filePath;
 			Log.Info( $"Stored default icon file path ({filePath})." );
-			return new ProcessedRegionData<ScriptModuleOptions>( result );
+			return new ProcessedRegionData<ModuleOptionData>( result );
 		}
 
-		public static ProcessedRegionData<ScriptModuleOptions> ReloadShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result )
+		public static ProcessedRegionData<ModuleOptionData> ReloadShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 			result.ReloadShortcut = hotstring;
 			Log.Info( $"Stored reload shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-			return new ProcessedRegionData<ScriptModuleOptions>( result );
+			return new ProcessedRegionData<ModuleOptionData>( result );
 		}
 
-		public static ProcessedRegionData<ScriptModuleOptions> SuspendIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result )
+		public static ProcessedRegionData<ModuleOptionData> SuspendIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			var filePath = token.Value.WrapInQuotes();
 			result.SuspendIconFilePath = filePath;
 			Log.Info( $"Stored suspend icon file path ({filePath})." );
-			return new ProcessedRegionData<ScriptModuleOptions>( result );
+			return new ProcessedRegionData<ModuleOptionData>( result );
 		}
 
-		public static ProcessedRegionData<ScriptModuleOptions> SuspendShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ScriptModuleOptions result )
+		public static ProcessedRegionData<ModuleOptionData> SuspendShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
 		{
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
 			result.SuspendShortcut = hotstring;
 			Log.Info( $"Stored suspend shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-			return new ProcessedRegionData<ScriptModuleOptions>( result );
+			return new ProcessedRegionData<ModuleOptionData>( result );
 		}
 
 

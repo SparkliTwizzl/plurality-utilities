@@ -7,9 +7,6 @@ namespace Petrichor.Common.Info
 {
 	public static class AppVersion
 	{
-		private const string AnyVersion = "*";
-
-
 		public static string Current =>
 #if DEBUG
 			DevelopmentAppVersion;
@@ -19,28 +16,17 @@ namespace Petrichor.Common.Info
 		public static string DevelopmentAppVersion => $"{ReleaseAppVersion}{DevelopmentAppVersionSuffix}";
 		public const string DevelopmentAppVersionSuffix = "-dev";
 		public const string Major = "0";
-		public const string Minor = "11";
-		public const string Patch = "1";
+		public const string Minor = "12";
+		public const string Patch = "0";
 		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
-		public static string[] SupportedMajorVersions => new[]
+		public static string[] SupportedVersions => new[]
 		{
-			Major,
-		};
-		public static string[] SupportedMinorVersions => new[]
-		{
-			Minor,
-		};
-		public static string[] SupportedPatchVersions => new[]
-		{
-			"0",
-			Patch,
-			AnyVersion,
-		};
-		public static string[] SupportedPreviewVersions => new[]
-		{
-			Preview,
-			AnyVersion,
+			Current,
+			$"{Major}.{Minor}.{Patch}",
+			$"{Major}.{Minor}.0",
+			"0.11.0",
+			"0.11.1",
 		};
 
 
@@ -55,16 +41,13 @@ namespace Petrichor.Common.Info
 			}
 #endif
 			var versionComponents = version.Split( '.' );
-			var major = versionComponents.Length > 0 ? versionComponents[ 0 ] : string.Empty;
-			var minor = versionComponents.Length > 1 ? versionComponents[ 1 ] : string.Empty;
-			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : AnyVersion;
-			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : AnyVersion;
+			var major = versionComponents.Length > 0 ? versionComponents[ 0 ] : "invalid";
+			var minor = versionComponents.Length > 1 ? versionComponents[ 1 ] : "invalid";
+			var patch = versionComponents.Length > 2 ? versionComponents[ 2 ] : "0";
+			var preview = versionComponents.Length > 3 ? versionComponents[ 3 ] : string.Empty;
 
-			var isMajorSupported = SupportedMajorVersions.Contains( major );
-			var isMinorSupported = SupportedMinorVersions.Contains( minor );
-			var isPatchSupported = SupportedPatchVersions.Contains( patch );
-			var isPreviewSupported = SupportedPreviewVersions.Contains( preview );
-			return isMajorSupported && isMinorSupported && isPatchSupported && isPreviewSupported;
+			var formattedVersion = $"{major}.{minor}.{patch}{preview}";
+			return SupportedVersions.Contains( formattedVersion );
 		}
 
 		public static void RejectUnsupportedVersions( string version, int? lineNumber = null )

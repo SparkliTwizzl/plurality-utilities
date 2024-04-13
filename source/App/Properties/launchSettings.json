@@ -1,8 +1,27 @@
 {
   "profiles": {
-    "App": {
+    "default command": {
+      "commandName": "Project"
+    },
+    "default --help": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)IntegrationTestInput.petrichor"
+      "commandLineArgs": "--help"
+    },
+    "generateRandomStrings": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateRandomStrings.petrichor"
+    },
+    "generateRandomStrings_cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "generateRandomStrings\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cmd.ext\"\r\n--stringCount 5\r\n--stringLength 20"
+    },
+    "generateTextShortcutScript": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateTextShortcutScript.petrichor"
+    },
+    "generateTextShortcutScript_cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cmd.petrichor\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cmd.ext\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
     }
   }
 }

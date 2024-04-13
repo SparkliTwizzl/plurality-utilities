@@ -1,6 +1,7 @@
 ﻿using Petrichor.App.Utilities;
 using Petrichor.Common.Info;
 using Petrichor.Logging;
+using System.Text;
 
 
 namespace Petrichor.App
@@ -21,6 +22,12 @@ namespace Petrichor.App
 				Log.Info( AppInfo.AppNameAndVersion );
 				Log.Info( startTimeMessage );
 				var commandToRun = await CommandLineHandler.ParseArguments( args );
+				var optionListStringBuilder = new StringBuilder();
+				foreach ( var option in commandToRun.Options )
+				{
+					_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}" );
+				}
+				Log.Info( $"Command to run: {commandToRun.Name}{optionListStringBuilder}" );
 				RuntimeHandler.Execute( commandToRun );
 			}
 			catch ( Exception exception )
