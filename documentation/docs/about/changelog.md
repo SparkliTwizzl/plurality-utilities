@@ -9,6 +9,16 @@ title: Changelog - About
 ---
 ## 0.12.0
 
+!!! abstract "General"
+
+    - Add Random String Generation module.
+    - Add add version compatibility page to user guide.
+
+!!! bug "Bugfixes"
+
+    - Fix 217 - escaped characters in text shortcuts are handled wrong.
+    - Fix 218 - escaped text shortcut divider operators are handled wrong.
+
 
 ---
 ## 0.11.1
