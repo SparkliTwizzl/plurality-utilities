@@ -12,7 +12,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var shortcuts = new List<string>();
 			foreach ( var rawShortcut in input.Shortcuts )
 			{
-				shortcuts.Add( ConvertShortcutToAutoHotkeySyntax( rawShortcut ) );
+				shortcuts.Add( ConvertShortcutToAutoHotkeySyntax( rawShortcut ).CodepointsToChars() );
 			}
 			foreach ( var entry in input.Entries )
 			{
