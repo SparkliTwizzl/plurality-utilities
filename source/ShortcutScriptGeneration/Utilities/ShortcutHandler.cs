@@ -276,7 +276,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			var token = new StringToken( regionData[ tokenStartIndex ] );
 			ShortcutParseHandler.ValidateShortcutStructure( token );
 			var shortcuts = result.Shortcuts.ToList();
-			shortcuts.Add( token.Value );
+			var newShortcut = token.Value.EscapedCharsToCodepoints();
+			shortcuts.Add( newShortcut );
 			result.Shortcuts = shortcuts.ToArray();
 			return new ProcessedRegionData<InputData>()
 			{
