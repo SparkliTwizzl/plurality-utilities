@@ -137,7 +137,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			public static void ValidateShortcutStructure( StringToken token )
 			{
-				var components = token.Value.Split( ControlSequences.ShortcutFindReplaceDivider );
+				var hotstring = SanitizeHotstring( token.Value );
+				var components = hotstring.Split( ControlSequences.ShortcutFindReplaceDivider );
 				var doesFindStringExist = ( components.Length > 0 ) && ( components[ 0 ]?.Length > 0 );
 				var doesReplaceStringExist = ( components.Length > 1 ) && ( components[ 1 ]?.Length > 0 );
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
@@ -183,11 +184,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				return findTagValueLength + 2;
 			}
 
-			private static string SanitizeHotstring( string rawHotstring )
-				=> rawHotstring
-					.Replace( $"{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.Escape}", Common.Syntax.ControlSequences.EscapeStandin )
-					.Replace( $"{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagOpen}", Common.Syntax.ControlSequences.FindTagOpenStandin )
-					.Replace( $"{Common.Syntax.ControlSequences.Escape}{Common.Syntax.ControlSequences.FindTagClose}", Common.Syntax.ControlSequences.FindTagCloseStandin );
+			private static string SanitizeHotstring( string rawHotstring ) => rawHotstring.EscapedCharsToCodepoints();
 
 			private static void ValidateFindTagValue( string findTag, int lineNumber )
 			{

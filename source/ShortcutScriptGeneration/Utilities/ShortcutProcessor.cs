@@ -112,9 +112,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return ConvertShortcutTemplateToAutoHotkeySyntax( modifiedTemplate );
 		}
 
-		private static string ReplaceStandinSequencesInMacro( string macro ) => macro
-			.Replace( Common.Syntax.ControlSequences.EscapeStandin, Common.Syntax.ControlSequences.Escape.ToString() )
-			.Replace( Common.Syntax.ControlSequences.FindTagOpenStandin, Common.Syntax.ControlSequences.FindTagOpen.ToString() )
-			.Replace( Common.Syntax.ControlSequences.FindTagCloseStandin, Common.Syntax.ControlSequences.FindTagClose.ToString() );
+		private static string ReplaceStandinSequencesInMacro( string macro ) => macro.CodepointsToChars();
 	}
 }

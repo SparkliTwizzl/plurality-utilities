@@ -85,7 +85,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static ShortcutData TemplateWithTemplateString => new()
 			{
 				TemplateFindString = TemplateFindString,
-				TemplateReplaceString = $"{TemplateReplaceString} {Common.Syntax.ControlSequences.FindTagOpenStandin}text{Common.Syntax.ControlSequences.FindTagCloseStandin}",
+				TemplateReplaceString = $"{TemplateReplaceString} U+005BtextU+005D",
 			};
 			public static ShortcutData TemplateWithTextCase => new()
 			{
