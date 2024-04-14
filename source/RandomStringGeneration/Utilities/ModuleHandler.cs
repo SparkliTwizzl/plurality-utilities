@@ -17,6 +17,7 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 			var allowedCharactersOption = new Option<string>(
 				name: Commands.Options.AllowedCharacters,
+				getDefaultValue: () => Commands.Options.Defaults.AllowedCharactersValue,
 				description: "Set of characters that random strings will be generated from." );
 
 			var logModeOption = new Option<string>(
@@ -33,10 +34,12 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 			var stringCountOption = new Option<string>(
 				name: Commands.Options.StringCount,
+				getDefaultValue: () => Commands.Options.Defaults.StringCountValue.ToString(),
 				description: "Number of random strings to generate." );
 
 			var stringLengthOption = new Option<string>(
 				name: Commands.Options.StringLength,
+				getDefaultValue: () => Commands.Options.Defaults.StringLengthValue.ToString(),
 				description: "Length of random strings." );
 
 			var moduleCommand = new Command(
@@ -118,9 +121,9 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 			return new InputData()
 			{
-				AllowedCharacters = hasAllowedCharacters ? allowedCharactersArgument! : Commands.Options.AllowedCharactersDefaultValue,
-				StringCount = hasStringCount ? stringCount : Commands.Options.StringCountDefaultValue,
-				StringLength = hasStringLength ? stringLength : Commands.Options.StringLengthDefaultValue,
+				AllowedCharacters = hasAllowedCharacters ? allowedCharactersArgument! : Commands.Options.Defaults.AllowedCharactersValue,
+				StringCount = hasStringCount ? stringCount : Commands.Options.Defaults.StringCountValue,
+				StringLength = hasStringLength ? stringLength : Commands.Options.Defaults.StringLengthValue,
 			};
 		}
 	}
