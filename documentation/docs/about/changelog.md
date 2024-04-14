@@ -7,12 +7,16 @@ title: Changelog - About
 
 
 ---
+## 0.12.1
+
+
+---
 ## 0.12.0
 
 !!! abstract "General"
 
     - Add Random String Generation module.
-    - Add add version compatibility page to user guide.
+    - Add version compatibility page to user guide.
 
 !!! bug "Bugfixes"
 

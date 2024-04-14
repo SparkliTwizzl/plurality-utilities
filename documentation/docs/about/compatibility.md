@@ -26,6 +26,11 @@ title: Compatibility - About
 ---
 ## 0.12
 
+!!! abstract "0.12.1"
+
+    - 0.12.x
+    - 0.11.x
+
 !!! success "0.12.0"
 
     - 0.12.x
