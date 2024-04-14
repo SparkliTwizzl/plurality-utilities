@@ -17,44 +17,79 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 			var allowedCharactersOption = new Option<string>(
 				name: Commands.Options.AllowedCharacters,
-				getDefaultValue: () => Commands.Options.Defaults.AllowedCharactersValue,
-				description: "Set of characters that random strings will be generated from." );
+				description: "Set of characters that random strings will be generated from.",
+				parseArgument: result =>
+				{
+					if ( !result.Tokens.Any() )
+					{
+						return Commands.Options.Defaults.AllowedCharactersValue;
+					}
 
-			var logModeOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogMode,
-				description: "Logging mode to enable. See documentation for available modes." );
+					var isValid = result.Tokens.Count == 1 && result.Tokens[ 0 ].Value.Length > 0;
+					if ( !isValid )
+					{
+						result.ErrorMessage = $"Command option \"{Commands.Options.AllowedCharacters}\" argument must be a string of 1 or more characters.";
+						ExceptionLogger.LogAndThrow( new CommandException( result.ErrorMessage ) );
+						return string.Empty;
+					}
 
-			var logFileOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogFile,
-				description: "Path to generate log file at. If not provided, a default filepath will be used." );
+					return result.Tokens[ 0 ].Value;
+				} );
 
 			var outputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.OutputFile,
 				description: "Path to generate output file at. If not provided, a default file path will be used." );
 
-			var stringCountOption = new Option<string>(
+			var stringCountOption = new Option<int>(
 				name: Commands.Options.StringCount,
-				getDefaultValue: () => Commands.Options.Defaults.StringCountValue.ToString(),
-				description: "Number of random strings to generate." );
+				description: "Number of random strings to generate.",
+				parseArgument: result =>
+				{
+					if ( !result.Tokens.Any() )
+					{
+						return Commands.Options.Defaults.StringCountValue;
+					}
 
-			var stringLengthOption = new Option<string>(
+					var isValid = result.Tokens.Count == 1 && int.Parse( result.Tokens[ 0 ].Value ) > 0;
+					if ( !isValid )
+					{
+						ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringCount}\" argument must be a positive integer." ) );
+						return 0;
+					}
+
+					return int.Parse( result.Tokens[ 0 ].Value );
+				} );
+
+			var stringLengthOption = new Option<int>(
 				name: Commands.Options.StringLength,
-				getDefaultValue: () => Commands.Options.Defaults.StringLengthValue.ToString(),
-				description: "Length of random strings." );
+				description: "Length of random strings.",
+				parseArgument: result =>
+				{
+					if ( !result.Tokens.Any() )
+					{
+						return Commands.Options.Defaults.StringLengthValue;
+					}
+
+					var isValid = result.Tokens.Count == 1 && int.Parse( result.Tokens[ 0 ].Value ) > 0;
+					if ( !isValid )
+					{
+						ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringLength}\" argument must be a positive integer." ) );
+					}
+
+					return int.Parse( result.Tokens[ 0 ].Value );
+				} );
 
 			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Generate a list of random text strings." )
 				{
 					allowedCharactersOption,
-					logModeOption,
-					logFileOption,
 					outputFileOption,
 					stringCountOption,
 					stringLengthOption,
 				};
 
-			moduleCommand.SetHandler( async ( allowedCharacters, logMode, logFile, outputFilePath, stringCount, stringLength ) =>
+			moduleCommand.SetHandler( async ( allowedCharacters, outputFilePath, stringCount, stringLength ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
@@ -62,19 +97,16 @@ namespace Petrichor.RandomStringGeneration.Utilities
 						Options = new()
 						{
 							{ Commands.Options.AllowedCharacters, allowedCharacters },
-							{ Common.Syntax.Commands.Options.LogMode, logMode },
-							{ Common.Syntax.Commands.Options.LogFile, logFile },
 							{ Common.Syntax.Commands.Options.OutputFile, outputFilePath },
-							{ Commands.Options.StringCount, stringCount },
-							{ Commands.Options.StringLength, stringLength },
+							{ Commands.Options.StringCount, stringCount.ToString() },
+							{ Commands.Options.StringLength, stringLength.ToString() },
 						},
 					};
 
-					await MetadataHandler.InitalizeLogging( logMode, logFile );
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 				},
-				allowedCharactersOption, logModeOption, logFileOption, outputFileOption, stringCountOption, stringLengthOption );
+				allowedCharactersOption, outputFileOption, stringCountOption, stringLengthOption );
 
 			return moduleCommand;
 		}
@@ -96,34 +128,14 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 		private static InputData GetInputDataFromCommand( ModuleCommand command )
 		{
-			var hasAllowedCharacters = command.Options.TryGetValue( Commands.Options.AllowedCharacters, out var allowedCharactersArgument );
-			var isAllowedCharactersValid = allowedCharactersArgument is not null && allowedCharactersArgument.Length > 0;
-			if ( !isAllowedCharactersValid )
-			{
-				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.AllowedCharacters}\" argument must be a string of 1 or more characters." ) );
-			}
-
-			var hasStringCount = command.Options.TryGetValue( Commands.Options.StringCount, out var stringCountArgument );
-			var isStringCountOptionAnInt = int.TryParse( stringCountArgument, out var stringCount );
-			var isStringCountOptionValid = isStringCountOptionAnInt && stringCount > 0;
-			if ( hasStringCount && !isStringCountOptionValid )
-			{
-				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringCount}\" argument must be a positive integer." ) );
-			}
-
-			var hasStringLength = command.Options.TryGetValue( Commands.Options.StringLength, out var stringLengthArgument );
-			var isStringLengthOptionAnInt = int.TryParse( stringLengthArgument, out var stringLength );
-			var isStringLengthOptionValid = isStringLengthOptionAnInt && stringLength > 0;
-			if ( hasStringLength && !isStringLengthOptionValid )
-			{
-				ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringLength}\" argument must be a positive integer." ) );
-			}
-
+			var hasAllowedCharacters = command.Options.TryGetValue( Commands.Options.StringCount, out var allowedCharacters );
+			var hasStringCount = command.Options.TryGetValue( Commands.Options.StringCount, out var stringCount );
+			var hasStringLength = command.Options.TryGetValue( Commands.Options.StringLength, out var stringLength );
 			return new InputData()
 			{
-				AllowedCharacters = hasAllowedCharacters ? allowedCharactersArgument! : Commands.Options.Defaults.AllowedCharactersValue,
-				StringCount = hasStringCount ? stringCount : Commands.Options.Defaults.StringCountValue,
-				StringLength = hasStringLength ? stringLength : Commands.Options.Defaults.StringLengthValue,
+				AllowedCharacters = hasAllowedCharacters ? allowedCharacters! : Commands.Options.Defaults.AllowedCharactersValue,
+				StringCount = hasStringCount ? int.Parse( stringCount! ) : Commands.Options.Defaults.StringCountValue,
+				StringLength = hasStringLength ? int.Parse( stringLength! ) : Commands.Options.Defaults.StringLengthValue,
 			};
 		}
 	}

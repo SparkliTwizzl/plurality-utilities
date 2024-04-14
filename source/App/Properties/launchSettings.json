@@ -7,21 +7,29 @@
       "commandName": "Project",
       "commandLineArgs": "--help"
     },
-    "generateRandomStrings": {
+    "generateRandomStrings default": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateRandomStrings.petrichor"
+      "commandLineArgs": "generateRandomStrings"
     },
-    "generateRandomStrings_cmd": {
+    "generateRandomStrings cli": {
       "commandName": "Project",
-      "commandLineArgs": "generateRandomStrings\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cmd.ext\"\r\n--stringCount 5\r\n--stringLength 20"
+      "commandLineArgs": "generateRandomStrings\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cli.ext\"\r\n--stringCount 5\r\n--stringLength 20"
     },
-    "generateTextShortcutScript": {
+    "generateRandomStrings file": {
       "commandName": "Project",
-      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateTextShortcutScript.petrichor"
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateRandomStrings_file.petrichor"
     },
-    "generateTextShortcutScript_cmd": {
+    "generateTextShortcutScript default": {
       "commandName": "Project",
-      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cmd.petrichor\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cmd.ext\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\""
+      "commandLineArgs": "generateTextShortcutScript"
+    },
+    "generateTextShortcutScript cli": {
+      "commandName": "Project",
+      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cli.petrichor\"\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--logMode all\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cli.ext\""
+    },
+    "generateTextShortcutScript file": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)$(TestInputDir)_integrationtest\\generateTextShortcutScript_file.petrichor"
     }
   }
 }

@@ -45,6 +45,8 @@ namespace Petrichor.RandomStringGeneration.Utilities
 
 		private void CreateOutputFile( string filePath )
 		{
+			var directory = Path.GetDirectoryName( filePath );
+			_ = Directory.CreateDirectory( directory! );
 			var file = File.Create( filePath );
 			var randomStrings = GenerateRandomStringList();
 			WriteLinesToFile( file, randomStrings, " (Random string list)" );

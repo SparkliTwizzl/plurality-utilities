@@ -28,6 +28,19 @@ namespace Petrichor.App.Utilities
 				name: Commands.Options.InputFile,
 				description: "Path to input file." );
 
+			var logModeOption = new Option<string>(
+				name: Commands.Options.LogMode,
+				description: "Logging mode to enable. See documentation for available modes." )
+				.FromAmong(
+					Commands.Options.LogModeValueAll,
+					Commands.Options.LogModeValueConsoleOnly,
+					Commands.Options.LogModeValueFileOnly,
+					Commands.Options.LogModeValueNone );
+
+			var logFileOption = new Option<string>(
+				name: Commands.Options.LogFile,
+				description: "Path to generate log file at. If not provided, a default filepath will be used." );
+
 			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
 				{
 					inputFileArgument,
@@ -57,6 +70,8 @@ namespace Petrichor.App.Utilities
 				},
 				inputFileArgument );
 
+			rootCommand.AddGlobalOption( logFileOption );
+			rootCommand.AddGlobalOption( logModeOption );
 			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
 			rootCommand.AddCommand( ShortcutScriptGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
 			return rootCommand;

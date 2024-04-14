@@ -15,7 +15,7 @@
 
 			public const string LogModeValueAll = "all";
 			public const string LogModeValueConsoleOnly = "consoleOnly";
-			public const string LogModeValueFileNone = "none";
+			public const string LogModeValueNone = "none";
 			public const string LogModeValueFileOnly = "fileOnly";
 
 			public static Dictionary<string, string> LookUpTable => new()

@@ -17,14 +17,6 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				name: Common.Syntax.Commands.Options.InputFile,
 				description: "Path to input file. If not provided, a default file path will be used." );
 
-			var logModeOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogMode,
-				description: "Logging mode to enable. See documentation for available modes." );
-
-			var logFileOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogFile,
-				description: "Path to generate log file at. If not provided, a default file path will be used." );
-
 			var outputFileOption = new Option<string>(
 				name: Common.Syntax.Commands.Options.OutputFile,
 				description: "Path to generate output file at. If not provided, a default file path will be used." );
@@ -34,12 +26,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				description: "Parse input file and generate a text find-and-replace shortcut script." )
 				{
 					inputFileOption,
-					logFileOption,
-					logModeOption,
 					outputFileOption,
 				};
 
-			moduleCommand.SetHandler( async ( inputFilePath, logFile, logMode, outputFilePath ) =>
+			moduleCommand.SetHandler( async ( inputFilePath, outputFilePath ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
@@ -47,20 +37,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						Options = new()
 						{
 							{ Common.Syntax.Commands.Options.InputFile, inputFilePath },
-							{ Common.Syntax.Commands.Options.LogFile, logFile },
-							{ Common.Syntax.Commands.Options.LogMode, logMode },
 							{ Common.Syntax.Commands.Options.OutputFile, outputFilePath },
 						},
 					};
 
-					await MetadataHandler.InitalizeLogging( logMode, logFile );
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 
 					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
 					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFilePath ).ToArray();
 				},
-				inputFileOption, logFileOption, logModeOption, outputFileOption );
+				inputFileOption, outputFileOption );
 
 			return moduleCommand;
 		}

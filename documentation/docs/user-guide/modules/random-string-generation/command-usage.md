@@ -58,7 +58,7 @@ These options are specific to this module.
 ---
 ### Allowed characters option
 
-Command line syntax: `#!powershell --allowedCharacters [string]`
+Command line syntax: `#!powershell --allowedCharacters <string>`
 
 Petrichor Script syntax: `#!ptcr allowed-characters : <string>`
 
@@ -124,7 +124,7 @@ The `allowed characters` option allows you to specify the set of characters that
 ---
 ### String count option
 
-Command line syntax: `#!powershell --stringCount [integer]`
+Command line syntax: `#!powershell --stringCount <integer>`
 
 Petrichor Script syntax: `#!ptcr string-count : <integer>`
 
@@ -163,7 +163,7 @@ The `string count` option allows you to control the number of random strings to 
 ---
 ### String length option
 
-Command line syntax: `#!powershell --stringLength [integer]`
+Command line syntax: `#!powershell --stringLength <integer>`
 
 Petrichor Script syntax: `#!ptcr string-length : <integer>`
 
