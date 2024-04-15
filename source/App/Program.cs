@@ -45,7 +45,7 @@ namespace Petrichor.App
 			Console.WriteLine( finishTimeMessage );
 			Console.WriteLine();
 
-			RuntimeHandler.WaitForUserAndExit();
+			RuntimeHandler.ExitApp();
 		}
 	}
 }

@@ -24,14 +24,16 @@ namespace Petrichor.RandomStringGeneration.Utilities
 					TerminalOptions.StringLength,
 				};
 
-			moduleCommand.SetHandler( ( allowedCharacters, logFile, logMode, outputFile, stringCount, stringLength ) =>
+			moduleCommand.SetHandler( ( allowedCharacters, autoExit, logFile, logMode, outputFile, stringCount, stringLength ) =>
 				{
+					Common.Utilities.TerminalOptions.IsAutoExitEnabled = autoExit;
 					MetadataHandler.CommandToRun = new()
 					{
 						Name = Commands.ModuleCommand,
 						Options = new()
 						{
 							{ Commands.Options.AllowedCharacters, allowedCharacters },
+							{ Common.Syntax.Commands.Options.AutoExit, autoExit.ToString() },
 							{ Common.Syntax.Commands.Options.LogFile, logFile },
 							{ Common.Syntax.Commands.Options.LogMode, logMode },
 							{ Common.Syntax.Commands.Options.OutputFile, outputFile },
@@ -44,6 +46,7 @@ namespace Petrichor.RandomStringGeneration.Utilities
 					Log.DisableBuffering();
 				},
 				TerminalOptions.AllowedCharacters,
+				Common.Utilities.TerminalOptions.AutoExit,
 				Common.Utilities.TerminalOptions.LogFile,
 				Common.Utilities.TerminalOptions.LogMode,
 				Common.Utilities.TerminalOptions.OutputFile,

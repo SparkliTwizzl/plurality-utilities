@@ -21,13 +21,15 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					TerminalOptions.OutputFile,
 				};
 
-			moduleCommand.SetHandler( ( inputFile, logFile, logMode, outputFile ) =>
+			moduleCommand.SetHandler( ( autoExit, inputFile, logFile, logMode, outputFile ) =>
 				{
+					TerminalOptions.IsAutoExitEnabled = autoExit;
 					MetadataHandler.CommandToRun = new()
 					{
 						Name = Commands.ModuleCommand,
 						Options = new()
 						{
+							{ Common.Syntax.Commands.Options.AutoExit, autoExit.ToString() },
 							{ Common.Syntax.Commands.Options.InputFile, inputFile },
 							{ Common.Syntax.Commands.Options.LogFile, logFile },
 							{ Common.Syntax.Commands.Options.LogMode, logMode },
@@ -41,6 +43,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
 					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFile ).ToArray();
 				},
+				TerminalOptions.AutoExit,
 				TerminalOptions.InputFile,
 				TerminalOptions.LogFile,
 				TerminalOptions.LogMode,

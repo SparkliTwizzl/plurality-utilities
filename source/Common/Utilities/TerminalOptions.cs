@@ -4,8 +4,17 @@ using System.CommandLine;
 
 namespace Petrichor.Common.Utilities
 {
-	public readonly struct TerminalOptions
+	public static class TerminalOptions
 	{
+		public static bool IsAutoExitEnabled { get; set; } = false;
+
+
+		public static Option<bool> AutoExit { get; } = new Option<bool>(
+			name: Commands.Options.AutoExit,
+			description: "Exit without waiting for user input.",
+			getDefaultValue: () => true )
+				.FromAmong( "true" );
+
 		public static Option<string> InputFile { get; } = new(
 			name: Commands.Options.InputFile,
 			description: "Path to input file. If not provided, a default file path will be used." );

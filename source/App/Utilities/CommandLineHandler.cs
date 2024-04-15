@@ -36,12 +36,13 @@ namespace Petrichor.App.Utilities
 
 			MetadataHandler.RegisterCommandOptions( Commands.Options.LookUpTable, Tokens.CommandOptionLookUpTable );
 
-			rootCommand.SetHandler( async ( inputFilePath ) =>
+			rootCommand.SetHandler( async ( autoExit, inputFile ) =>
 				{
 					try
 					{
+						TerminalOptions.IsAutoExitEnabled = autoExit;
 						var inputHandler = new InputFileHandler( metadataRegionParser: MetadataHandler.CreateMetadataTokenParser() );
-						var data = inputHandler.ProcessFile( inputFilePath ).ToArray();
+						var data = inputHandler.ProcessFile( inputFile ).ToArray();
 						MetadataHandler.CommandToRun.Data = data;
 						var logMode = MetadataHandler.CommandToRun.Options[ Commands.Options.LogMode ];
 						var logFile = MetadataHandler.CommandToRun.Options[ Commands.Options.LogFile ];
@@ -51,13 +52,15 @@ namespace Petrichor.App.Utilities
 					}
 					catch ( Exception exception )
 					{
-						Log.Error( $"Failed to parse input file \"{inputFilePath}\": {exception.Message}" );
+						Log.Error( $"Failed to parse input file \"{inputFile}\": {exception.Message}" );
 						Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 						MetadataHandler.CommandToRun = ModuleCommand.None;
 					}
 				},
+				TerminalOptions.AutoExit,
 				InputFileArgument );
 
+			rootCommand.AddGlobalOption( TerminalOptions.AutoExit );
 			rootCommand.AddGlobalOption( TerminalOptions.LogFile );
 			rootCommand.AddGlobalOption( TerminalOptions.LogMode );
 			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );

@@ -31,10 +31,13 @@ namespace Petrichor.App.Utilities
 			}
 		}
 
-		public static void WaitForUserAndExit()
+		public static void ExitApp()
 		{
-			Console.Write( "Press any key to exit..." );
-			_ = Console.ReadKey( true );
+			if ( !Common.Utilities.TerminalOptions.IsAutoExitEnabled )
+			{
+				Console.Write( "Press any key to exit..." );
+				_ = Console.ReadKey( true );
+			}
 			Environment.Exit( 0 );
 		}
 	}

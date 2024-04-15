@@ -8,6 +8,7 @@
 
 		public readonly struct Options
 		{
+			public const string AutoExit = "--autoExit";
 			public const string InputFile = "--inputFile";
 			public const string LogFile = "--logFile";
 			public const string LogMode = "--logMode";

@@ -13,7 +13,7 @@
     },
     "generateRandomStrings cli": {
       "commandName": "Project",
-      "commandLineArgs": "generateRandomStrings\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cli.ext\"\r\n--stringCount 5\r\n--stringLength 20"
+      "commandLineArgs": "generateRandomStrings\r\n--autoExit\r\n--allowedCharacters \"0123456789abcdef-_\"\r\n--logMode all\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateRandomStrings_cli.ext\"\r\n--stringCount 5\r\n--stringLength 20"
     },
     "generateRandomStrings file": {
       "commandName": "Project",
@@ -25,7 +25,7 @@
     },
     "generateTextShortcutScript cli": {
       "commandName": "Project",
-      "commandLineArgs": "generateTextShortcutScript\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cli.petrichor\"\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--logMode all\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cli.ext\""
+      "commandLineArgs": "generateTextShortcutScript\r\n--autoExit\r\n--inputFile \"../../../../_test/_input/_integrationtest/generateTextShortcutScript_cli.petrichor\"\r\n--logFile \"../../../../_test/_log/_integrationtest/\"\r\n--logMode all\r\n--outputFile \"../../../../_test/_output/_integrationtest/generateTextShortcutScript_cli.ext\""
     },
     "generateTextShortcutScript file": {
       "commandName": "Project",
