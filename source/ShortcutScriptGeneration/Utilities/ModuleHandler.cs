@@ -29,7 +29,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					outputFileOption,
 				};
 
-			moduleCommand.SetHandler( async ( inputFilePath, outputFilePath ) =>
+			moduleCommand.SetHandler( ( inputFilePath, outputFilePath ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{

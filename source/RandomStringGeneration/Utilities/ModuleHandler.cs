@@ -25,15 +25,16 @@ namespace Petrichor.RandomStringGeneration.Utilities
 						return Commands.Options.Defaults.AllowedCharactersValue;
 					}
 
-					var isValid = result.Tokens.Count == 1 && result.Tokens[ 0 ].Value.Length > 0;
-					if ( !isValid )
+					var argument = result.Tokens[ 0 ].Value;
+
+					if ( argument.Length < 1 )
 					{
 						result.ErrorMessage = $"Command option \"{Commands.Options.AllowedCharacters}\" argument must be a string of 1 or more characters.";
 						ExceptionLogger.LogAndThrow( new CommandException( result.ErrorMessage ) );
 						return string.Empty;
 					}
 
-					return result.Tokens[ 0 ].Value;
+					return argument;
 				} );
 
 			var outputFileOption = new Option<string>(
@@ -50,14 +51,13 @@ namespace Petrichor.RandomStringGeneration.Utilities
 						return Commands.Options.Defaults.StringCountValue;
 					}
 
-					var isValid = result.Tokens.Count == 1 && int.Parse( result.Tokens[ 0 ].Value ) > 0;
-					if ( !isValid )
+					if ( !int.TryParse( result.Tokens[ 0 ].Value, out var argument ) || argument < 1 )
 					{
 						ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringCount}\" argument must be a positive integer." ) );
 						return 0;
 					}
 
-					return int.Parse( result.Tokens[ 0 ].Value );
+					return argument;
 				} );
 
 			var stringLengthOption = new Option<int>(
@@ -70,13 +70,13 @@ namespace Petrichor.RandomStringGeneration.Utilities
 						return Commands.Options.Defaults.StringLengthValue;
 					}
 
-					var isValid = result.Tokens.Count == 1 && int.Parse( result.Tokens[ 0 ].Value ) > 0;
-					if ( !isValid )
+					if ( !int.TryParse( result.Tokens[ 0 ].Value, out var argument ) || argument < 1 )
 					{
 						ExceptionLogger.LogAndThrow( new CommandException( $"Command option \"{Commands.Options.StringLength}\" argument must be a positive integer." ) );
+						return 0;
 					}
 
-					return int.Parse( result.Tokens[ 0 ].Value );
+					return argument;
 				} );
 
 			var moduleCommand = new Command(
@@ -89,7 +89,7 @@ namespace Petrichor.RandomStringGeneration.Utilities
 					stringLengthOption,
 				};
 
-			moduleCommand.SetHandler( async ( allowedCharacters, outputFilePath, stringCount, stringLength ) =>
+			moduleCommand.SetHandler( ( allowedCharacters, outputFilePath, stringCount, stringLength ) =>
 				{
 					MetadataHandler.CommandToRun = new()
 					{
