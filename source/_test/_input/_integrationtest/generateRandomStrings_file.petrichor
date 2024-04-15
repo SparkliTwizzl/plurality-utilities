@@ -7,6 +7,7 @@ metadata: // inline comment in region name
 	command: generateRandomStrings
 	{
 		allowed-characters: 0123456789abcdef_-
+		auto-exit:
 		log-file: "../../../../_test/_log/_integrationtest/"
 		log-mode: all
 		output-file:../../../../_test/_output/_integrationtest/generateRandomStrings_file.ext

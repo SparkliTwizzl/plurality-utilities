@@ -21,6 +21,7 @@
 
 			public static Dictionary<string, string> LookUpTable => new()
 			{
+				{ Tokens.AutoExit.Key, AutoExit },
 				{ Tokens.InputFile.Key, InputFile },
 				{ Tokens.LogFile.Key, LogFile },
 				{ Tokens.LogMode.Key, LogMode },
