@@ -9,6 +9,11 @@ namespace Petrichor.App.Utilities
 {
 	public static class CommandLineHandler
 	{
+		private static Argument<string> InputFileArgument { get; } = new(
+			name: Commands.Options.InputFile,
+			description: "Path to input file." );
+
+
 		public static async Task<ModuleCommand> ParseArguments( string[] arguments )
 		{
 			if ( !WereArgumentsProvided( arguments ) )
@@ -24,26 +29,9 @@ namespace Petrichor.App.Utilities
 
 		private static RootCommand CreateTerminalCommands()
 		{
-			var inputFileArgument = new Argument<string>(
-				name: Commands.Options.InputFile,
-				description: "Path to input file." );
-
-			var logModeOption = new Option<string>(
-				name: Commands.Options.LogMode,
-				description: "Logging mode to enable. See documentation for available modes." )
-				.FromAmong(
-					Commands.Options.LogModeValueAll,
-					Commands.Options.LogModeValueConsoleOnly,
-					Commands.Options.LogModeValueFileOnly,
-					Commands.Options.LogModeValueNone );
-
-			var logFileOption = new Option<string>(
-				name: Commands.Options.LogFile,
-				description: "Path to generate log file at. If not provided, a default filepath will be used." );
-
 			var rootCommand = new RootCommand( description: "Command line app with miscellaneous utilities." )
 				{
-					inputFileArgument,
+					InputFileArgument,
 				};
 
 			MetadataHandler.RegisterCommandOptions( Commands.Options.LookUpTable, Tokens.CommandOptionLookUpTable );
@@ -68,10 +56,10 @@ namespace Petrichor.App.Utilities
 						MetadataHandler.CommandToRun = ModuleCommand.None;
 					}
 				},
-				inputFileArgument );
+				InputFileArgument );
 
-			rootCommand.AddGlobalOption( logFileOption );
-			rootCommand.AddGlobalOption( logModeOption );
+			rootCommand.AddGlobalOption( TerminalOptions.LogFile );
+			rootCommand.AddGlobalOption( TerminalOptions.LogMode );
 			rootCommand.AddCommand( RandomStringGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
 			rootCommand.AddCommand( ShortcutScriptGeneration.Utilities.ModuleHandler.CreateTerminalCommand() );
 			return rootCommand;
