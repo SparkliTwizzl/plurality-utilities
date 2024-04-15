@@ -14,6 +14,7 @@ To generate a text hotstring shortcut script, call Petrichor with the command ar
 
 This command supports the following options:
 
+- [Auto exit](../../getting-started/command-usage.html#auto-exit-option)
 - [Input file](../../getting-started/command-usage.html#input-file-option)
 - [Log file](../../getting-started/command-usage.html#log-file-option)
 - [Log mode](../../getting-started/command-usage.html#log-mode-option)
@@ -35,6 +36,7 @@ This command supports the following options:
         {
             command: generateTextShortcutScript
             {
+                auto-exit:
                 // input-file: Implict when command is in input file.
                 output-file: <file>
                 log-mode: <mode>

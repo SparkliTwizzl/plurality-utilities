@@ -4,11 +4,19 @@ title: Changelog - About
 ---
 
 <h1 align="center">Changelog</h1>
+<h2 align="center">About</h2>
 
 
 ---
 ## 0.12.1
 
+!!! abstract "General"
+
+    - Add `auto exit` command option.
+
+!!! bug "Bugfixes"
+
+    - Fix 223 - command option default values are not used.
 
 ---
 ## 0.12.0

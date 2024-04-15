@@ -6,11 +6,12 @@ metadata: // inline comment in region name
 	minimum-version: 0.12 // inline comment in metadata region body
 	command: generateRandomStrings
 	{
-		output-file:../../../../_test/_output/_integrationtest/generateRandomStrings.ext
+		allowed-characters: 0123456789abcdef_-
+		auto-exit:
+		log-file: "../../../../_test/_log/_integrationtest/"
+		log-mode: all
+		output-file:../../../../_test/_output/_integrationtest/generateRandomStrings_file.ext
 		string-count: 5
 		string-length: 20
-		allowed-characters: 0123456789abcdef_-
-		log-mode: all
-		log-file: "../../../../_test/_log/_integrationtest/"
 	}
 }

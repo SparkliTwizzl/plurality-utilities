@@ -4,6 +4,7 @@ title: Compatibility - About
 ---
 
 <h1 align="center">Compatibility</h1>
+<h2 align="center">About</h2>
 
 
 ---
@@ -20,7 +21,6 @@ title: Compatibility - About
 !!! abstract "X.Y.Z"
 
     No information about backward-compatibility.
-
 
 
 ---

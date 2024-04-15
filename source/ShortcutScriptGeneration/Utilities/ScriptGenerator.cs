@@ -46,6 +46,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private void CreateOutputFile( string filePath )
 		{
+			var directory = Path.GetDirectoryName( filePath );
+			_ = Directory.CreateDirectory( directory! );
 			var file = File.Create( filePath );
 			WriteHeaderToFile( file );
 			WriteMacrosToFile( file );

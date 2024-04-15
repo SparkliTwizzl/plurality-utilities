@@ -15,6 +15,7 @@ To generate a list of random strings, call Petrichor with the command argument `
 This command supports the following options:
 
 - [Allowed characters](#allowed-characters-option)
+- [Auto exit](../../getting-started/command-usage.html#auto-exit-option)
 - [Log file](../../getting-started/command-usage.html#log-file-option)
 - [Log mode](../../getting-started/command-usage.html#log-mode-option)
 - [Output file](../../getting-started/command-usage.html#output-file-option)
@@ -39,6 +40,7 @@ This command supports the following options:
             {
                 // input-file: Implict when command is in input file. Not used by module.
                 allowed-characters: <string>
+                auto-exit:
                 string-count: <integer>
                 string-length: <integer>
                 output-file: <file>
@@ -58,7 +60,7 @@ These options are specific to this module.
 ---
 ### Allowed characters option
 
-Command line syntax: `#!powershell --allowedCharacters [string]`
+Command line syntax: `#!powershell --allowedCharacters <string>`
 
 Petrichor Script syntax: `#!ptcr allowed-characters : <string>`
 
@@ -124,7 +126,7 @@ The `allowed characters` option allows you to specify the set of characters that
 ---
 ### String count option
 
-Command line syntax: `#!powershell --stringCount [integer]`
+Command line syntax: `#!powershell --stringCount <integer>`
 
 Petrichor Script syntax: `#!ptcr string-count : <integer>`
 
@@ -163,7 +165,7 @@ The `string count` option allows you to control the number of random strings to 
 ---
 ### String length option
 
-Command line syntax: `#!powershell --stringLength [integer]`
+Command line syntax: `#!powershell --stringLength <integer>`
 
 Petrichor Script syntax: `#!ptcr string-length : <integer>`
 
