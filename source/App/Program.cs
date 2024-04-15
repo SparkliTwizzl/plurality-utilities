@@ -10,6 +10,8 @@ namespace Petrichor.App
 	{
 		static async Task Main( string[] args )
 		{
+			LogFormatVisualizer.ShowTestMessagesInDebug();
+
 			Console.Title = AppInfo.AppName;
 			var startTime = DateTime.Now;
 			var startTimeMessage = $"Execution started at {startTime.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}.";
@@ -35,7 +37,6 @@ namespace Petrichor.App
 				Log.Error( $"Error occurred during execution: {exception.Message}" );
 				Log.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 			}
-			LogFormatVisualizer.ShowTestMessagesInDebug();
 
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
@@ -44,7 +45,7 @@ namespace Petrichor.App
 			Console.WriteLine( finishTimeMessage );
 			Console.WriteLine();
 
-			RuntimeHandler.WaitForUserAndExit();
+			RuntimeHandler.ExitApp();
 		}
 	}
 }

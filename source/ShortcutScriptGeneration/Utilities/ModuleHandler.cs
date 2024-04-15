@@ -13,54 +13,41 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 	{
 		public static Command CreateTerminalCommand()
 		{
-			var inputFileOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.InputFile,
-				description: "Path to input file. If not provided, a default file path will be used." );
-
-			var logModeOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogMode,
-				description: "Logging mode to enable. See documentation for available modes." );
-
-			var logFileOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.LogFile,
-				description: "Path to generate log file at. If not provided, a default file path will be used." );
-
-			var outputFileOption = new Option<string>(
-				name: Common.Syntax.Commands.Options.OutputFile,
-				description: "Path to generate output file at. If not provided, a default file path will be used." );
-
 			var moduleCommand = new Command(
 				name: Commands.ModuleCommand,
 				description: "Parse input file and generate a text find-and-replace shortcut script." )
 				{
-					inputFileOption,
-					logFileOption,
-					logModeOption,
-					outputFileOption,
+					TerminalOptions.InputFile,
+					TerminalOptions.OutputFile,
 				};
 
-			moduleCommand.SetHandler( async ( inputFilePath, logFile, logMode, outputFilePath ) =>
+			moduleCommand.SetHandler( ( autoExit, inputFile, logFile, logMode, outputFile ) =>
 				{
+					TerminalOptions.IsAutoExitEnabled = autoExit;
 					MetadataHandler.CommandToRun = new()
 					{
 						Name = Commands.ModuleCommand,
 						Options = new()
 						{
-							{ Common.Syntax.Commands.Options.InputFile, inputFilePath },
+							{ Common.Syntax.Commands.Options.AutoExit, autoExit.ToString() },
+							{ Common.Syntax.Commands.Options.InputFile, inputFile },
 							{ Common.Syntax.Commands.Options.LogFile, logFile },
 							{ Common.Syntax.Commands.Options.LogMode, logMode },
-							{ Common.Syntax.Commands.Options.OutputFile, outputFilePath },
+							{ Common.Syntax.Commands.Options.OutputFile, outputFile },
 						},
 					};
 
-					await MetadataHandler.InitalizeLogging( logMode, logFile );
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 
 					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
-					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFilePath ).ToArray();
+					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFile ).ToArray();
 				},
-				inputFileOption, logFileOption, logModeOption, outputFileOption );
+				TerminalOptions.AutoExit,
+				TerminalOptions.InputFile,
+				TerminalOptions.LogFile,
+				TerminalOptions.LogMode,
+				TerminalOptions.OutputFile );
 
 			return moduleCommand;
 		}

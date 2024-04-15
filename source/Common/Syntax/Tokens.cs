@@ -5,6 +5,11 @@ namespace Petrichor.Common.Syntax
 {
 	public readonly struct Tokens
 	{
+		public static DataToken AutoExit => new()
+		{
+			Key = "auto-exit",
+			MaxAllowed = 1,
+		};
 		public static DataToken BlankLine => new()
 		{
 			Key = string.Empty,
@@ -62,6 +67,7 @@ namespace Petrichor.Common.Syntax
 
 		public static Dictionary<string, DataToken> CommandOptionLookUpTable => new()
 		{
+			{ AutoExit.Key, AutoExit },
 			{ InputFile.Key, InputFile },
 			{ LogFile.Key, LogFile },
 			{ LogMode.Key, LogMode },

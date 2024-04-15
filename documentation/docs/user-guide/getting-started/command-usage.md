@@ -50,7 +50,7 @@ Some commands have unique options.
 ---
 #### Input file option
 
-Command line syntax: `#!powershell --inputFile [file]`
+Command line syntax: `#!powershell --inputFile <file>`
 
 Petrichor Script syntax: `#!ptcr input-file : <file>`
 
@@ -126,13 +126,49 @@ The `input file` option allows you to specify the input file directory and/or na
 
 
 ---
+#### Auto exit option
+
+Command line syntax: `#!powershell --autoExit`
+
+Petrichor Script syntax: `#!ptcr auto-exit :`
+
+The `auto exit` option triggers Petrichor to exit immediately when execution finishes, without waiting for user input.
+
+All commands support this option.
+
+???+ important "Restrictions"
+
+    OPTIONAL
+
+    In Petrichor Script, must be within [`command`](./petrichor-script.html#command-token) token body.
+
+    Value is ignored.
+
+???+ example
+
+    === "Command line"
+
+        ```powershell
+        Petrichor.exe commandName --autoExit
+        ```
+
+    === "Petrichor Script"
+
+        ```petrichor
+        auto-exit :
+        ```
+
+
+---
 #### Log file option
 
-Command line syntax: `#!powershell --logFile [file]`
+Command line syntax: `#!powershell --logFile <file>`
 
 Petrichor Script syntax: `#!ptcr log-file : <file>`
 
 The `log file` option is used to specify the file name and/or directory to generate log files at.
+
+All commands support this option.
 
 [Relative file paths](#relative-file-paths) can be used.
 
@@ -202,11 +238,13 @@ The `log file` option is used to specify the file name and/or directory to gener
 ---
 #### Log mode option
 
-Command line syntax: `#!powershell --logMode [mode]`
+Command line syntax: `#!powershell --logMode <mode>`
 
 Petrichor Script syntax: `#!ptcr log-mode : <mode>`
 
 The `log mode` option is used to control where logs are sent.
+
+All commands support this option.
 
 Allowed values:
 
@@ -239,7 +277,7 @@ Allowed values:
 ---
 #### Output file option
 
-Command line syntax: `#!powershell --outputFile [file]`
+Command line syntax: `#!powershell --outputFile <file>`
 
 Petrichor Script syntax: `#!ptcr output-file : <file>`
 

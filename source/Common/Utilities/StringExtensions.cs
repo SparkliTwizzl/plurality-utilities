@@ -54,6 +54,11 @@ namespace Petrichor.Common.Utilities
 
 		public static string TrimQuotes( this string input )
 		{
+			if ( input is null )
+			{
+				return string.Empty;
+			}
+
 			var startsWithQuote = input.StartsWith( '"' );
 			var endsWithQuote = input.EndsWith( '"' );
 			if ( startsWithQuote && endsWithQuote )

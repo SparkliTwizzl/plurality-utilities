@@ -7,7 +7,12 @@ namespace Petrichor.Common.Utilities
 	public class InputFileHandler
 	{
 		private const string DefaultInputDirectory = @".\";
-		private const string DefaultInputFileName = "input.petrichor";
+		private const string DefaultInputFileName =
+#if DEBUG
+			@"..\..\..\..\_test\_input\_integrationtest\generateTextShortcutScript_cli.petrichor";
+#else
+			"input.petrichor";
+#endif
 
 		private ITokenBodyParser<List<IndexedString>> FileRegionParser { get; set; }
 		private ITokenBodyParser<List<IndexedString>> MetadataRegionParser { get; set; }

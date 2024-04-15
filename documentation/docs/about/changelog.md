@@ -4,7 +4,19 @@ title: Changelog - About
 ---
 
 <h1 align="center">Changelog</h1>
+<h2 align="center">About</h2>
 
+
+---
+## 0.12.1
+
+!!! abstract "General"
+
+    - Add `auto exit` command option.
+
+!!! bug "Bugfixes"
+
+    - Fix 223 - command option default values are not used.
 
 ---
 ## 0.12.0
@@ -12,7 +24,7 @@ title: Changelog - About
 !!! abstract "General"
 
     - Add Random String Generation module.
-    - Add add version compatibility page to user guide.
+    - Add version compatibility page to user guide.
 
 !!! bug "Bugfixes"
 

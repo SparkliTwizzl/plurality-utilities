@@ -4,6 +4,7 @@ title: Compatibility - About
 ---
 
 <h1 align="center">Compatibility</h1>
+<h2 align="center">About</h2>
 
 
 ---
@@ -22,9 +23,13 @@ title: Compatibility - About
     No information about backward-compatibility.
 
 
-
 ---
 ## 0.12
+
+!!! abstract "0.12.1"
+
+    - 0.12.x
+    - 0.11.x
 
 !!! success "0.12.0"
 
