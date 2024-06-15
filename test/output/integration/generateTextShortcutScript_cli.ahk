@@ -5,8 +5,8 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-defaultIcon := "../_input/IconDefault.ico"
-suspendIcon := "../_input/IconSuspend.ico"
+defaultIcon := "./test/input/IconDefault.ico"
+suspendIcon := "./test/input/IconSuspend.ico"
 
 
 ; constants used for icon handling

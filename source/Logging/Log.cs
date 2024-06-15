@@ -252,7 +252,7 @@ namespace Petrichor.Logging
 
 
 		private static string AddTimestampToMessage( string message = "" )
-			=> $"[{DateTime.Now.ToString( "yyyy-MM-dd:HH:mm:ss.fffffff" )}] {message}";
+			=> $"[{DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff}] {message}";
 
 		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
 		{
@@ -270,19 +270,19 @@ namespace Petrichor.Logging
 				return;
 			}
 
-			if ( IsBufferingEnabled )
+			WriteToConsole( message, colorScheme );
+			
+			if ( !IsBufferingEnabled )
 			{
-				WriteToConsole( message, colorScheme );
-				MessageBuffer.Add( new()
-				{
-					ColorScheme = colorScheme,
-					Text = message,
-				} );
+				WriteToFile( message );
 				return;
 			}
 
-			WriteToConsole( message, colorScheme );
-			WriteToFile( message );
+			MessageBuffer.Add( new()
+			{
+				ColorScheme = colorScheme,
+				Text = message,
+			} );
 		}
 
 		private static void WriteToConsole( string message, ColorScheme? colorScheme = null )

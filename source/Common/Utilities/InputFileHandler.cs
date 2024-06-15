@@ -9,7 +9,7 @@ namespace Petrichor.Common.Utilities
 		private const string DefaultInputDirectory = @".\";
 		private const string DefaultInputFileName =
 #if DEBUG
-			@"..\..\..\..\_test\_input\_integrationtest\generateTextShortcutScript_cli.petrichor";
+			@".\test\input\integration\generateTextShortcutScript_cli.petrichor";
 #else
 			"input.petrichor";
 #endif

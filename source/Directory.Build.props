@@ -5,9 +5,6 @@
 		<LogDir>log\</LogDir>
 		<OutputDir>output\</OutputDir>
 		<TestDir>test\</TestDir>
-		<TestInputDir>$(TestDir)input\</TestInputDir>
-		<TestLogDir>$(TestDir)$(LogDir)</TestLogDir>
-		<TestOutputDir>$(TestDir)$(OutputDir)</TestOutputDir>
 	</PropertyGroup>
 
 	<PropertyGroup>

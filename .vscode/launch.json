@@ -29,7 +29,7 @@
             "console": "integratedTerminal",
             "program": "${workspaceRoot}\\build\\App.exe",
             "args": [
-                "generateRandomStrings"
+                "generateRandomStrings",
             ],
         },
         {
@@ -41,7 +41,13 @@
             "program": "${workspaceRoot}\\build\\App.exe",
             "args": [
                 "generateRandomStrings",
-                "",
+                "--autoExit",
+                "--allowedCharacters", "\"0123456789abcdef-_\"",
+                "--logMode", "all",
+                "--logFile", "\"${workspaceRoot}/test/log/integration/\"",
+                "--outputFile", "\"${workspaceRoot}/test/output/integration/generateRandomStrings_cli.ext\"",
+                "--stringCount", "5",
+                "--stringLength", "20"
             ],
         },
         {
@@ -63,7 +69,7 @@
             "console": "integratedTerminal",
             "program": "${workspaceRoot}\\build\\App.exe",
             "args": [
-                "generateTextShortcutScript"
+                "generateTextShortcutScript",
             ],
         },
         {
@@ -75,7 +81,11 @@
             "program": "${workspaceRoot}\\build\\App.exe",
             "args": [
                 "generateTextShortcutScript",
-                "",
+                "--autoExit",
+                "--inputFile", "\"${workspaceRoot}/test/input/integration/generateTextShortcutScript_cli.petrichor\"",
+                "--logFile", "\"${workspaceRoot}/test/log/integration/\"",
+                "--logMode", "all",
+                "--outputFile", "\"${workspaceRoot}/test/output/integration/generateTextShortcutScript_cli.ext\""
             ],
         },
         {
@@ -86,8 +96,7 @@
             "console": "integratedTerminal",
             "program": "${workspaceRoot}\\build\\App.exe",
             "args": [
-                "generateTextShortcutScript",
-                "",
+                "${workspaceRoot}\\test\\input\\integration\\generateTextShortcutScript_file.petrichor",
             ],
         },
     ],

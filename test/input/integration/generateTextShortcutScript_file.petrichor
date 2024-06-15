@@ -7,9 +7,9 @@ metadata: // inline comment in region name
 	command: generateTextShortcutScript
 	{
 		auto-exit:
-		log-file: "../../../../_test/_log/_integrationtest/"
+		log-file: "./test/log/integration/"
 		log-mode: all
-		output-file:../../../../_test/_output/_integrationtest/generateTextShortcutScript_file.ext
+		output-file:./test/output/integration/generateTextShortcutScript_file.ext
 	}
 }
 
@@ -17,8 +17,8 @@ metadata: // inline comment in region name
 module-options:
 {
 	// line comment in module options region body
-	default-icon:../_input/IconDefault.ico // inline comment in module options region body
-	suspend-icon: "../_input/IconSuspend.ico"
+	default-icon:../input/IconDefault.ico // inline comment in module options region body
+	suspend-icon: "../input/IconSuspend.ico"
 	reload-shortcut : [tab] [and] r
 	suspend-shortcut :[win]s
 }
