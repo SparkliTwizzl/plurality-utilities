@@ -2,15 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "clean",
-            "type": "shell",
-            "command": "if (Test-Path ${workspaceRoot}\\build) { del -r ${workspaceRoot}\\build }",
-        },
-        {
             "label": "build",
-            "dependsOn": [
-                "clean",
-            ],
             "type": "process",
             "command": "dotnet",
             "args": [
