@@ -5,7 +5,7 @@ namespace Petrichor.TestShared.Info
 {
 	public class TestDirectories : ProjectDirectories
 	{
-		private const string TestDirectoryName = "test";
+		private const string TestDirectoryName = "../../test";
 
 
 		public static string TestDirectory => Path.Combine( DebugBaseDirectory, TestDirectoryName );
