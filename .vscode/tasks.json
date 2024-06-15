@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "del",
+            "args": [
+                "-r",
+                "${workspaceRoot}\\build",
+            ]
+        },
+        {
+            "label": "build",
+            "dependsOn": [
+                "clean",
+            ],
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceRoot}\\source\\App\\App.csproj",
+                "-o",
+                "${workspaceRoot}\\build\\",
+            ]
+        },
+    ]
+}
