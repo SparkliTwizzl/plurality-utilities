@@ -4,11 +4,7 @@
         {
             "label": "clean",
             "type": "shell",
-            "command": "del",
-            "args": [
-                "-r",
-                "${workspaceRoot}\\build",
-            ]
+            "command": "if (Test-Path ${workspaceRoot}\\build) { del -r ${workspaceRoot}\\build }",
         },
         {
             "label": "build",
