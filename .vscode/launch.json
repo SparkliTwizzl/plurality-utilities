@@ -5,7 +5,6 @@
             "name": "App [default command]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [],
@@ -14,7 +13,6 @@
             "name": "App [default command --help]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -25,7 +23,6 @@
             "name": "App [generateRandomStrings default]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -36,7 +33,6 @@
             "name": "App [generateRandomStrings CLI args]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -54,7 +50,6 @@
             "name": "App [generateRandomStrings file args]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -65,7 +60,6 @@
             "name": "App [generateTextShortcutScript default]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -76,7 +70,6 @@
             "name": "App [generateTextShortcutScript CLI args]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -92,7 +85,6 @@
             "name": "App [generateTextShortcutScript file args]",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
             "console": "integratedTerminal",
             "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
@@ -102,7 +94,7 @@
     ],
     "compounds": [
         {
-            "name": "Integration tests",
+            "name": "All tests",
             "configurations": [
                 "App [default command]",
                 "App [default command --help]",
@@ -111,9 +103,10 @@
                 "App [generateRandomStrings file args]",
                 "App [generateTextShortcutScript default]",
                 "App [generateTextShortcutScript CLI args]",
-                "App [generateTextShortcutScript file args]"
+                "App [generateTextShortcutScript file args]",
             ],
+            "preLaunchTask": "build & test",
             "stopAll": true
-        }
+        },
     ]
 }
