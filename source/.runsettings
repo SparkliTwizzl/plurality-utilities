@@ -1,5 +1,5 @@
 <RunSettings>
 	<RunConfiguration>
-		<ResultsDirectory>.\_test\_results\</ResultsDirectory>
+		<ResultsDirectory>.\test\results\</ResultsDirectory>
 	</RunConfiguration>
 </RunSettings>

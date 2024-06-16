@@ -1,10 +1,10 @@
 .cr/
 .vs/
 __pycache__/
-_build/
-_log/
-_output/
-_results/
+build/
+log/
+output/
+results/
 bin/
 dist/
 obj/

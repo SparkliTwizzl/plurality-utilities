@@ -4,14 +4,21 @@ metadata: // inline comment in region name
 {
 	// line comment in metadata region body
 	minimum-version: 0.11 // inline comment in metadata region body
+	command: generateTextShortcutScript
+	{
+		auto-exit:
+		log-file: "./test/log/integration/"
+		log-mode: all
+		output-file:./test/output/integration/generateTextShortcutScript_file.ext
+	}
 }
 
 
 module-options:
 {
 	// line comment in module options region body
-	default-icon:../_input/IconDefault.ico // inline comment in module options region body
-	suspend-icon: "../_input/IconSuspend.ico"
+	default-icon:../../input/IconDefault.ico // inline comment in module options region body
+	suspend-icon: "../../input/IconSuspend.ico"
 	reload-shortcut : [tab] [and] r
 	suspend-shortcut :[win]s
 }

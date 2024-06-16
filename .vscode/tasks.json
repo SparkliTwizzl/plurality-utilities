@@ -1,0 +1,46 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceRoot}/source/App/App.csproj"
+            ],
+        },
+        {
+            "label": "CommonTests",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "test",
+                "${workspaceRoot}/source/CommonTests/CommonTests.csproj"
+            ],
+        },
+        {
+            "label": "ShortcutScriptGenerationTests",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "test",
+                "${workspaceRoot}/source/ShortcutScriptGenerationTests/ShortcutScriptGenerationTests.csproj"
+            ],
+        },
+        {
+            "label": "unit tests",
+            "dependsOn": [
+                "CommonTests",
+                "ShortcutScriptGenerationTests",
+            ],
+        },
+        {
+            "label": "build & test",
+            "dependsOn": [
+                "build",
+                "unit tests",
+            ],
+        },
+    ]
+}

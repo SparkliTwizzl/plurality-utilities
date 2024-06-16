@@ -8,8 +8,8 @@ namespace Petrichor.Common.Utilities
 {
 	public static class MetadataHandler
 	{
-		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\_log";
-		private static string DefaultLogFileName => $"{DateTime.Now.ToString( "yyyy-MM-dd_HH-mm-ss" )}.log";
+		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\log";
+		private static string DefaultLogFileName => $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.log";
 
 		private static Dictionary<string, string> CommandOptionTerminalFlags { get; set; } = new();
 		private static Dictionary<string, DataToken> CommandOptionTokens { get; set; } = new();

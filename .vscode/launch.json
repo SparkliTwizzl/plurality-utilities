@@ -1,0 +1,112 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "App [default command]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [],
+        },
+        {
+            "name": "App [default command --help]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "--help"
+            ],
+        },
+        {
+            "name": "App [generateRandomStrings default]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "generateRandomStrings",
+            ],
+        },
+        {
+            "name": "App [generateRandomStrings CLI args]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "generateRandomStrings",
+                "--autoExit",
+                "--allowedCharacters", "\"0123456789abcdef-_\"",
+                "--logMode", "all",
+                "--logFile", "\"${workspaceRoot}/test/log/integration/\"",
+                "--outputFile", "\"${workspaceRoot}/test/output/integration/generateRandomStrings_cli.ext\"",
+                "--stringCount", "5",
+                "--stringLength", "20"
+            ],
+        },
+        {
+            "name": "App [generateRandomStrings file args]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "${workspaceRoot}/test/input/integration/generateRandomStrings_file.petrichor",
+            ],
+        },
+        {
+            "name": "App [generateTextShortcutScript default]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "generateTextShortcutScript",
+            ],
+        },
+        {
+            "name": "App [generateTextShortcutScript CLI args]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "generateTextShortcutScript",
+                "--autoExit",
+                "--inputFile", "\"${workspaceRoot}/test/input/integration/generateTextShortcutScript_cli.petrichor\"",
+                "--logFile", "\"${workspaceRoot}/test/log/integration/\"",
+                "--logMode", "all",
+                "--outputFile", "\"${workspaceRoot}/test/output/integration/generateTextShortcutScript_cli.ext\""
+            ],
+        },
+        {
+            "name": "App [generateTextShortcutScript file args]",
+            "type": "coreclr",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "args": [
+                "${workspaceRoot}/test/input/integration/generateTextShortcutScript_file.petrichor",
+            ],
+        },
+    ],
+    "compounds": [
+        {
+            "name": "All tests",
+            "configurations": [
+                "App [default command]",
+                "App [default command --help]",
+                "App [generateRandomStrings default]",
+                "App [generateRandomStrings CLI args]",
+                "App [generateRandomStrings file args]",
+                "App [generateTextShortcutScript default]",
+                "App [generateTextShortcutScript CLI args]",
+                "App [generateTextShortcutScript file args]",
+            ],
+            "preLaunchTask": "build & test",
+            "stopAll": true
+        },
+    ]
+}

@@ -2,12 +2,12 @@ namespace Petrichor.Common.Info
 {
 	public class ProjectDirectories
 	{
-		protected static string DebugBaseDirectory => $@"{AppContext.BaseDirectory}..\..\..\..";
+		protected static string DebugBaseDirectory => $@"{AppContext.BaseDirectory}../../..";
 		protected static string ReleaseBaseDirectory => $"{AppContext.BaseDirectory}";
-		protected const string BuildDirectoryName = "_build";
-		protected const string InputDirectoryName = "_input";
-		protected const string LogDirectoryName = "_log";
-		protected const string OutputDirectoryName = "_output";
+		protected const string BuildDirectoryName = "build";
+		protected const string InputDirectoryName = "input";
+		protected const string LogDirectoryName = "log";
+		protected const string OutputDirectoryName = "output";
 
 
 		public static string BaseDirectory =>

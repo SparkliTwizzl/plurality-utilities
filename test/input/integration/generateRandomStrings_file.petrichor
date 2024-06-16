@@ -8,9 +8,9 @@ metadata: // inline comment in region name
 	{
 		allowed-characters: 0123456789abcdef_-
 		auto-exit:
-		log-file: "../../../../_test/_log/_integrationtest/"
+		log-file: "./test/log/integration/"
 		log-mode: all
-		output-file:../../../../_test/_output/_integrationtest/generateRandomStrings_file.ext
+		output-file:./test/output/integration/generateRandomStrings_file.ext
 		string-count: 5
 		string-length: 20
 	}
