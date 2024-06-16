@@ -3,13 +3,11 @@
     "tasks": [
         {
             "label": "build",
-            "type": "process",
+            "type": "shell",
             "command": "dotnet",
             "args": [
                 "build",
-                "${workspaceRoot}\\source\\App\\App.csproj",
-                "-o",
-                "${workspaceRoot}\\build\\",
+                "${workspaceRoot}/source/App/App.csproj"
             ]
         },
     ]

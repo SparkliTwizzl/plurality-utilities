@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [],
         },
         {
@@ -16,7 +16,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
                 "--help"
             ],
@@ -27,7 +27,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
                 "generateRandomStrings",
             ],
@@ -38,7 +38,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
                 "generateRandomStrings",
                 "--autoExit",
@@ -56,9 +56,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
-                "${workspaceRoot}\\test\\input\\integration\\generateRandomStrings_file.petrichor",
+                "${workspaceRoot}/test/input/integration/generateRandomStrings_file.petrichor",
             ],
         },
         {
@@ -67,7 +67,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
                 "generateTextShortcutScript",
             ],
@@ -78,7 +78,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
                 "generateTextShortcutScript",
                 "--autoExit",
@@ -94,9 +94,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}\\build\\App.exe",
+            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
             "args": [
-                "${workspaceRoot}\\test\\input\\integration\\generateTextShortcutScript_file.petrichor",
+                "${workspaceRoot}/test/input/integration/generateTextShortcutScript_file.petrichor",
             ],
         },
     ],

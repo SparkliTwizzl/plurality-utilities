@@ -1,7 +1,11 @@
 <Project>
 
 	<PropertyGroup>
-		<BuildDir>build\</BuildDir>
+		<SolutionName>Petrichor</SolutionName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<BuildDir>..\..\build\</BuildDir>
 		<LogDir>log\</LogDir>
 		<OutputDir>output\</OutputDir>
 		<TestDir>test\</TestDir>
@@ -10,6 +14,9 @@
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<BaseIntermediateOutputPath>$(BuildDir)$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
 		<IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
 		<BaseOutputPath>$(BuildDir)$(MSBuildProjectName)\bin\</BaseOutputPath>
