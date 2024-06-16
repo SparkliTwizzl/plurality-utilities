@@ -17,8 +17,8 @@ metadata: // inline comment in region name
 module-options:
 {
 	// line comment in module options region body
-	default-icon:../input/IconDefault.ico // inline comment in module options region body
-	suspend-icon: "../input/IconSuspend.ico"
+	default-icon:../../input/IconDefault.ico // inline comment in module options region body
+	suspend-icon: "../../input/IconSuspend.ico"
 	reload-shortcut : [tab] [and] r
 	suspend-shortcut :[win]s
 }
