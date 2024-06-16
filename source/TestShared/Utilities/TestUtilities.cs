@@ -11,7 +11,7 @@ namespace Petrichor.TestShared.Utilities
 			Log.EnableBuffering();
 			Log.EnableTestMode();
 			var label = GetCallingClassName();
-			var logFileName = $"{label}_{DateTime.Now.ToString( "yyyy-MM-dd_hh-mm-ss.fffffff" )}.log";
+			var logFileName = $"{label}_{DateTime.Now:yyyy-MM-dd_hh-mm-ss_fffffff}.log";
 			var logFilePath = Path.Combine( TestDirectories.TestLogDirectory, logFileName );
 			Log.CreateLogFile( logFilePath );
 			Log.WriteBufferToFile();
