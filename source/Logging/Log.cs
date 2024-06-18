@@ -1,84 +1,17 @@
-﻿using Pastel;
+﻿using Petrichor.Logging.Containers;
 using Petrichor.Logging.Enums;
+using Petrichor.Logging.Styling;
 
 
 namespace Petrichor.Logging
 {
 	public static class Log
 	{
-		private struct FormattedMessage
-		{
-			public ColorScheme? ColorScheme { get; set; } = null;
-			public string Text { get; set; } = string.Empty;
-
-
-			public FormattedMessage() { }
-		}
-
-		public struct ColorScheme
-		{
-			public string Background { get; set; } = "#000000";
-			public string Foreground { get; set; } = "#aaaaaa";
-
-
-			public ColorScheme() { }
-
-
-			public readonly string Apply( string line )
-			{
-				if ( IsInTestMode )
-				{
-					return line;
-				}
-
-				return line.Pastel( Foreground ).PastelBg( Background );
-			}
-		}
-
-
-		private static readonly ColorScheme DebugColorScheme = new()
-		{
-			Foreground = "#40ffff",
-			Background = "#004040",
-		};
-		private static readonly ColorScheme ErrorColorScheme = new()
-		{
-			Foreground = "#ffffff",
-			Background = "#c00000",
-		};
-		private static readonly ColorScheme FinishColorScheme = new()
-		{
-			Foreground = "#00c080",
-			Background = "#202020",
-		};
-		private const int FormattedMessagePaddingAmount = 10;
-		private static readonly ColorScheme ImportantColorScheme = new()
-		{
-			Foreground = "#ffffff",
-			Background = "#007070",
-		};
-		private static readonly ColorScheme InfoColorScheme = new()
-		{
-			Foreground = "#909090",
-		};
-		private static readonly ColorScheme StartColorScheme = new()
-		{
-			Foreground = "#d09000",
-			Background = "#202020",
-		};
-		private static readonly ColorScheme WarningColorScheme = new()
-		{
-			Foreground = "#ffffff",
-			Background = "#707000",
-		};
-
 		private static string LogFilePath { get; set; } = string.Empty;
-		private static List<FormattedMessage> MessageBuffer { get; set; } = new();
+		private static List<Message> MessageBuffer { get; set; } = new();
 
 
 		public static LogMode ActiveMode { get; private set; } = LogMode.All;
-		public static bool IsLoggingToConsoleDisabled => !IsLoggingToConsoleEnabled;
-		public static bool IsLoggingToFileDisabled => !IsLoggingToFileEnabled;
 		public static bool IsLoggingToConsoleEnabled => ActiveMode is LogMode.Test or LogMode.ConsoleOnly or LogMode.All;
 		public static bool IsLoggingToFileEnabled => ActiveMode is LogMode.Test or LogMode.FileOnly or LogMode.All;
 		public static bool IsBufferingEnabled { get; private set; } = false;
@@ -95,9 +28,9 @@ namespace Petrichor.Logging
 		/// <summary>
 		/// Write formatted debug information to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
-		public static void Debug( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "DEBUG", message, lineNumber, DebugColorScheme );
+		/// <param name="text">Information to write to log.</param>
+		public static void Debug( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Debug, lineNumber );
 
 		public static void DisableLogging()
 		{
@@ -146,68 +79,74 @@ namespace Petrichor.Logging
 		/// <summary>
 		/// Write an error message to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Error( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "ERROR", message, lineNumber, ErrorColorScheme );
+		public static void Error( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Error, lineNumber );
 
 		/// <summary>
 		/// Write information about a task finishing to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Finish( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "FINISH", message, lineNumber, FinishColorScheme );
+		public static void Finish( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Finish, lineNumber );
 
 		/// <summary>
 		/// Write information with custom label and color scheme to log.
 		/// </summary>
 		/// <param name="label">Label text to apply to message.</param>
-		/// <param name="message">Information to write to log.</param>
-		/// <param name="colorScheme">Custom coloration to apply to message.</param>
+		/// <param name="text">Information to write to log.</param>
+		/// <param name="format">Custom coloration to apply to message.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Formatted( string label, string message = "", ColorScheme? colorScheme = null, int? lineNumber = null )
-			=> WriteFormattedMessage( label.ToUpper(), message, lineNumber, colorScheme );
+		public static void Formatted( string text = "", MessageFormat? format = null, int? lineNumber = null )
+			=> WriteFormattedMessage( text, format ?? new(), lineNumber );
 
 		/// <summary>
 		/// Write important information to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Important( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "IMPORTANT", message, lineNumber, ImportantColorScheme );
+		public static void Important( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Important, lineNumber );
 
 		/// <summary>
 		/// Write information to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Info( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "INFO", message, lineNumber, InfoColorScheme );
+		public static void Info( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Info, lineNumber );
 
 		/// <summary>
 		/// Write information about a task starting to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Start( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "START", message, lineNumber, StartColorScheme );
+		public static void Start( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Start, lineNumber );
 
 		/// <summary>
 		/// Write a warning message to log.
 		/// </summary>
-		/// <param name="message">Information to write to log.</param>
+		/// <param name="text">Information to write to log.</param>
 		/// <param name="lineNumber">Line number that message relates to.</param>
-		public static void Warning( string message = "", int? lineNumber = null )
-			=> WriteFormattedMessage( "WARNING", message, lineNumber, WarningColorScheme );
+		public static void Warning( string text = "", int? lineNumber = null )
+			=> WriteFormattedMessage( text, StandardMessageFormats.Warning, lineNumber );
 
 		/// <summary>
 		/// Write text to log.
 		/// </summary>
-		/// <param name="message">Text to write to log.</param>
-		/// <param name="colorScheme">Colors to apply to message in console.</param>
-		public static void Write( string message = "", ColorScheme? colorScheme = null )
-			=> WriteOrBuffer( message, colorScheme );
+		/// <param name="text">Text to write to log.</param>
+		public static void Write( string text )
+			=> WriteOrBuffer( new() { Text = text } );
+
+		/// <summary>
+		/// Write message to log.
+		/// </summary>
+		/// <param name="message">Message to write to log.</param>
+		public static void Write( Message message )
+			=> WriteOrBuffer( message );
 
 		/// <summary>
 		/// Write all buffered messages to log file and clear buffer.
@@ -218,7 +157,7 @@ namespace Petrichor.Logging
 			Info( "Wrote log buffer to file." );
 			foreach ( var message in MessageBuffer )
 			{
-				WriteToFile( message.Text );
+				WriteToFile( message );
 			}
 			MessageBuffer.Clear();
 		}
@@ -226,85 +165,90 @@ namespace Petrichor.Logging
 		/// <summary>
 		/// Write a line of text to log.
 		/// </summary>
-		/// <param name="message">Line of text to write to log.</param>
-		/// <param name="colorScheme">Colors to apply to message in console.</param>
-		public static void WriteLine( string message = "", ColorScheme? colorScheme = null )
+		/// <param name="line">Line of text to write to log.</param>
+		public static void WriteLine( string line )
 		{
-			Write( message, colorScheme );
+			Write( line );
 			Write( "\n" );
 		}
 
 		/// <summary>
-		/// Write a timestamped line of text to log.
+		/// Write a message to log.
 		/// </summary>
-		/// <param name="message">Line of text to write to log.</param>
-		/// <param name="colorScheme">Colors to apply to message in console.</param>
-		public static void WriteLineWithTimestamp( string message = "", ColorScheme? colorScheme = null )
-			=> WriteLine( AddTimestampToMessage( message ), colorScheme );
-
-		/// <summary>
-		/// Write timestamped text to log.
-		/// </summary>
-		/// <param name="message">Text to write to log.</param>
-		/// <param name="colorScheme">Colors to apply to message in console.</param>
-		public static void WriteWithTimestamp( string message = "", ColorScheme? colorScheme = null )
-			=> Write( AddTimestampToMessage( message ), colorScheme );
-
-
-		private static string AddTimestampToMessage( string message = "" )
-			=> $"[{DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff}] {message}";
-
-		private static void WriteFormattedMessage( string label, string message = "", int? lineNumber = null, ColorScheme? colorScheme = null )
+		/// <param name="message">Message to write to log.</param>
+		public static void WriteLine( Message message )
 		{
-			var hasLineNumber = lineNumber is not null;
-			var lineNumberString = hasLineNumber ? $"<LINE {lineNumber}> " : string.Empty;
-			var formattedLabel = string.Format( "{0," + FormattedMessagePaddingAmount + "}", $"{label}" );
-			var formattedMessage = $"{formattedLabel} : {lineNumberString}{message}";
-			WriteLineWithTimestamp( formattedMessage, colorScheme );
+			Write( message );
+			Write( "\n" );
 		}
 
-		private static void WriteOrBuffer( string message = "", ColorScheme? colorScheme = null )
+		/// <summary>
+		/// Write a timestamped message to log.
+		/// </summary>
+		/// <param name="message">Message to write to log.</param>
+		public static void WriteLineWithTimestamp( Message message )
+			=> WriteLine( AddTimestampToMessage( message ) );
+
+		/// <summary>
+		/// Write timestamped message to log.
+		/// </summary>
+		/// <param name="message">Message to write to log.</param>
+		public static void WriteWithTimestamp( Message message )
+			=> Write( AddTimestampToMessage( message ) );
+
+
+		private static Message AddTimestampToMessage( Message message )
 		{
-			if ( message == string.Empty )
+			var timestampedMessage = message;
+			timestampedMessage.Text = $"[{DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff}] {message.Text}";
+			return timestampedMessage;
+		}
+
+		private static void WriteFormattedMessage( string text, MessageFormat format, int? lineNumber = null )
+		{
+			var formatWithLineNumber = format;
+			formatWithLineNumber.LineNumber = lineNumber;
+			var message = new Message()
+			{
+				Text = text,
+				Format = formatWithLineNumber,
+			};
+			WriteLineWithTimestamp( message );
+		}
+
+		private static void WriteOrBuffer( Message message )
+		{
+			if ( message.Text == string.Empty )
 			{
 				return;
 			}
-
-			WriteToConsole( message, colorScheme );
-			
+			WriteToConsole( message );
 			if ( !IsBufferingEnabled )
 			{
 				WriteToFile( message );
 				return;
 			}
-
-			MessageBuffer.Add( new()
-			{
-				ColorScheme = colorScheme,
-				Text = message,
-			} );
+			MessageBuffer.Add( message );
 		}
 
-		private static void WriteToConsole( string message, ColorScheme? colorScheme = null )
+		private static void WriteToConsole( Message message )
 		{
-			if ( IsLoggingToConsoleDisabled )
+			if ( !IsLoggingToConsoleEnabled )
 			{
 				return;
 			}
-			var formattedMessage = colorScheme?.Apply( message ) ?? message;
 			Console.ResetColor();
-			Console.Write( formattedMessage );
+			Console.Write( message.Formatted() );
 		}
 
-		private static void WriteToFile( string message )
+		private static void WriteToFile( Message message )
 		{
-			if ( IsLoggingToFileDisabled || LogFilePath == string.Empty )
+			if ( !IsLoggingToFileEnabled || LogFilePath == string.Empty )
 			{
 				return;
 			}
-
 			using var logFile = File.AppendText( LogFilePath );
-			logFile.Write( message );
+			logFile.Write( message.Formatted() );
 		}
 	}
 }

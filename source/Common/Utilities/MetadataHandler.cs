@@ -129,7 +129,7 @@ namespace Petrichor.Common.Utilities
 					}
 				}
 
-				if ( Log.IsLoggingToConsoleDisabled )
+				if ( !Log.IsLoggingToConsoleEnabled )
 				{
 					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.Options.LogMode}\" with parameters \"{Commands.Options.LogModeValueConsoleOnly}\" or \"{Commands.Options.LogModeValueAll}\"." );
 				}

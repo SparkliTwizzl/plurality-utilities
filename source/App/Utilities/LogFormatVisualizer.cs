@@ -1,4 +1,5 @@
 ﻿using Petrichor.Logging;
+using Petrichor.Logging.Styling;
 
 
 namespace Petrichor.App.Utilities
@@ -17,12 +18,13 @@ namespace Petrichor.App.Utilities
 			Log.Error( "test" );
 			Log.Debug( "test" );
 
-			var customColors = new Log.ColorScheme
+			var custom = new MessageFormat
 			{
 				Foreground = "#fdb975",
 				Background = "#02468a",
+				Label = "custom",
 			};
-			Log.Formatted( "custom", "test", customColors );
+			Log.Formatted( "test", custom );
 			Console.WriteLine( "=========== END FORMATTED LOG MESSAGE TEST ===========" );
 #endif
 		}
