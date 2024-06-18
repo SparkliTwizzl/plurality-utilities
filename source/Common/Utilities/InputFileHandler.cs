@@ -6,13 +6,14 @@ namespace Petrichor.Common.Utilities
 {
 	public class InputFileHandler
 	{
-		private const string DefaultInputDirectory = @".\";
-		private const string DefaultInputFileName =
+		private const string DefaultInputDirectory =
 #if DEBUG
-			@".\test\input\integration\generateTextShortcutScript_cli.petrichor";
+			"test/input/";
 #else
-			"input.petrichor";
+			"./";
 #endif
+
+		private const string DefaultInputFileName = "input.petrichor";
 
 		private ITokenBodyParser<List<IndexedString>> FileRegionParser { get; set; }
 		private ITokenBodyParser<List<IndexedString>> MetadataRegionParser { get; set; }
@@ -49,6 +50,12 @@ namespace Petrichor.Common.Utilities
 			{
 				ExceptionLogger.LogAndThrow( new FileNotFoundException( $"Input file was not found (\"{filePath}\").", exception ) );
 			}
+
+			if ( fileData.Count < 1 )
+			{
+				return new List<IndexedString>();
+			}
+
 			var regionData = IndexedString.IndexRawStrings( fileData.ToArray() );
 			var result = ParseRegionData( regionData.ToArray() );
 

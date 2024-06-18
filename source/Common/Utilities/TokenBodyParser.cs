@@ -40,18 +40,23 @@ namespace Petrichor.Common.Utilities
 
 		public void CancelParsing() => IsParsingFinished = true;
 
-		public T Parse( IndexedString[] regionData, T? input = null )
+		public T Parse( IndexedString[] data, T? input = null )
 		{
-			var token = new StringToken( regionData[ 0 ] );
+			if ( data.Length < 1 )
+			{
+				ExceptionLogger.LogAndThrow( new TokenValueException( "Attempted to parse a nonexistent token body." ) );
+			}
+
+			var token = new StringToken( data[ 0 ] );
 			RegionStartLineNumber = token.LineNumber;
-			var regionTokenValue = token.Value != string.Empty ? $" (\"{token.Value}\")" : string.Empty;
-			var taskMessage = $"Parse \"{RegionToken.Key}\" region{regionTokenValue}";
+			var tokenValueString = token.Value != string.Empty ? $" (\"{token.Value}\")" : string.Empty;
+			var taskMessage = $"Parse \"{RegionToken.Key}\" region{tokenValueString}";
 			Log.Start( taskMessage, token.LineNumber );
 
 			TryAddDefaultControlTokenHandlers();
 			PopulateTokenInstanceCountKeys();
 			var result = PreParseHandler( input ?? new T() );
-			result = ParseAllTokens( regionData, result );
+			result = ParseAllTokens( data, result );
 			ValidateIndentLevel();
 			ValidateTokenInstanceCounts();
 			result = PostParseHandler( result );

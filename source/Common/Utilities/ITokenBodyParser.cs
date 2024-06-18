@@ -4,7 +4,7 @@ namespace Petrichor.Common.Utilities
 {
 	public interface ITokenBodyParser<T> where T : class, new()
 	{
-		static Func<IndexedString[], int, T, ProcessedRegionData<T>> InertHandler => ( IndexedString[] regionData, int tokenStartIndex, T result ) => new() { Value = result };
+		static Func<IndexedString[], int, T, ProcessedRegionData<T>> InertHandler => ( IndexedString[] data, int tokenStartIndex, T result ) => new() { Value = result };
 
 
 		int LinesParsed { get; }
@@ -14,7 +14,7 @@ namespace Petrichor.Common.Utilities
 
 		void AddTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler );
 		void CancelParsing();
-		T Parse( IndexedString[] regionData, T? input = null );
+		T Parse( IndexedString[] data, T? input = null );
 		void Reset();
 	}
 }
