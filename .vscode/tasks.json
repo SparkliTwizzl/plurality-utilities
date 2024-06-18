@@ -14,7 +14,7 @@
             "label": "unit tests",
             "type": "shell",
             "dependsOn": "build",
-            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { Start-Job -ScriptBlock { param($projectPath) & dotnet test $projectPath } -ArgumentList $_.FullName } | Wait-Job | Receive-Job; Get-Job | Remove-Job",
+            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { $job = Start-Job -ScriptBlock { param($projectPath) & dotnet test $projectPath } -ArgumentList $_.FullName; Wait-Job $job; Receive-Job $job | Select-Object -Last 1; Remove-Job $job }",
         },
     ]
 }
