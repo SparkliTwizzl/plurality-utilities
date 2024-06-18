@@ -4,11 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "build",
-                "${workspaceRoot}/source/App/App.csproj"
-            ],
+            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj",
         },
         {
             "label": "unit tests",
