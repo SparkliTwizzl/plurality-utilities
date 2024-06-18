@@ -1,5 +1,5 @@
-﻿using Petrichor.Logging;
-using Petrichor.TestShared.Info;
+﻿using Petrichor.Common.Info;
+using Petrichor.Logging;
 
 
 namespace Petrichor.TestShared.Utilities
@@ -12,13 +12,13 @@ namespace Petrichor.TestShared.Utilities
 			Log.EnableTestMode();
 			var label = GetCallingClassName();
 			var logFileName = $"{label}_{DateTime.Now:yyyy-MM-dd_hh-mm-ss_fffffff}.log";
-			var logFilePath = Path.Combine( TestDirectories.TestLogDirectory, logFileName );
+			var logFilePath = Path.Combine( ProjectDirectories.TestLogDirectory, logFileName );
 			Log.CreateLogFile( logFilePath );
 			Log.WriteBufferToFile();
 			Log.DisableBuffering();
 		}
 
-		public static string LocateInputFile( string fileName ) => $@"{TestDirectories.TestInputDirectory}\{fileName}";
+		public static string LocateInputFile( string fileName ) => $@"{ProjectDirectories.TestInputDirectory}\{fileName}";
 
 
 		private static string GetCallingClassName()
