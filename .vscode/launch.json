@@ -110,7 +110,7 @@
                 "generateTextShortcutScript CLI args",
                 "generateTextShortcutScript file args",
             ],
-            "preLaunchTask": "build & test",
+            "preLaunchTask": "unit tests",
             "stopAll": true
         },
     ]
