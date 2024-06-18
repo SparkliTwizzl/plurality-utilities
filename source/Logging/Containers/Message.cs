@@ -26,6 +26,25 @@ namespace Petrichor.Logging.Containers
 		/// </summary>
 		public string Formatted()
 		{
+			var uncoloredText = ApplyStringFormatting();
+			if ( Format is null || Log.IsInTestMode )
+			{
+				return uncoloredText;
+			}
+			return uncoloredText.Pastel( Format?.Foreground ).PastelBg( Format?.Background );
+		}
+
+		/// <summary>
+		/// Get message text with formatting applied, sans color scheme.
+		/// Does not modify stored data.
+		/// </summary>
+		public string FormattedWithoutColor() => ApplyStringFormatting();
+
+		public override string ToString() => Text;
+
+
+		private string ApplyStringFormatting()
+		{
 			if ( Format is null )
 			{
 				return Text;
@@ -35,14 +54,7 @@ namespace Petrichor.Logging.Containers
 			var lineNumberString = Format?.LineNumber is not null ? $"<LINE {Format?.LineNumber}> " : string.Empty;
 			var uncoloredText = $"{labelString} : {lineNumberString}{Text}";
 
-			if ( Log.IsInTestMode )
-			{
-				return uncoloredText;
-			}
-
-			return uncoloredText.Pastel( Format?.Foreground ).PastelBg( Format?.Background );
+			return uncoloredText;
 		}
-
-		public override string ToString() => Text;
 	}
 }

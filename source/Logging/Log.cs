@@ -189,22 +189,23 @@ namespace Petrichor.Logging
 		/// </summary>
 		/// <param name="message">Message to write to log.</param>
 		public static void WriteLineWithTimestamp( Message message )
-			=> WriteLine( AddTimestampToMessage( message ) );
+		{
+			Write( FormattedTimestamp() );
+			WriteLine( message );
+		}
 
 		/// <summary>
 		/// Write timestamped message to log.
 		/// </summary>
 		/// <param name="message">Message to write to log.</param>
 		public static void WriteWithTimestamp( Message message )
-			=> Write( AddTimestampToMessage( message ) );
-
-
-		private static Message AddTimestampToMessage( Message message )
 		{
-			var timestampedMessage = message;
-			timestampedMessage.Text = $"[{DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff}] {message.Text}";
-			return timestampedMessage;
+			Write( FormattedTimestamp() );
+			Write( message );
 		}
+
+
+		private static string FormattedTimestamp() => $"[{DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff}]";
 
 		private static void WriteFormattedMessage( string text, MessageFormat format, int? lineNumber = null )
 		{
@@ -250,7 +251,7 @@ namespace Petrichor.Logging
 				return;
 			}
 			using var logFile = File.AppendText( LogFilePath );
-			logFile.Write( message.Formatted() );
+			logFile.Write( message.FormattedWithoutColor() );
 		}
 	}
 }
