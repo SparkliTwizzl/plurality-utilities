@@ -243,7 +243,7 @@ namespace Petrichor.Logging
 			=> WriteLine( AddTimestampToMessage( message ), colorScheme );
 
 		/// <summary>
-		/// Write timestamped textto log.
+		/// Write timestamped text to log.
 		/// </summary>
 		/// <param name="message">Text to write to log.</param>
 		/// <param name="colorScheme">Colors to apply to message in console.</param>
