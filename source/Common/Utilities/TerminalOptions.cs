@@ -12,8 +12,7 @@ namespace Petrichor.Common.Utilities
 		public static Option<bool> AutoExit { get; } = new Option<bool>(
 			name: Commands.Options.AutoExit,
 			description: "Exit without waiting for user input.",
-			getDefaultValue: () => true )
-				.FromAmong( "true" );
+			getDefaultValue: () => false);
 
 		public static Option<string> InputFile { get; } = new(
 			name: Commands.Options.InputFile,

@@ -3,6 +3,8 @@ using Petrichor.Common.Syntax;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
 using System.CommandLine;
+using System.CommandLine.NamingConventionBinder;
+using System.CommandLine.Parsing;
 
 
 namespace Petrichor.App.Utilities
@@ -36,12 +38,14 @@ namespace Petrichor.App.Utilities
 
 			MetadataHandler.RegisterCommandOptions( Commands.Options.LookUpTable, Tokens.CommandOptionLookUpTable );
 
-			rootCommand.SetHandler( async ( autoExit, inputFile ) =>
+			rootCommand.Handler = CommandHandler.Create( async ( ParseResult parseResult ) =>
 				{
+					var inputFile = string.Empty;
 					try
 					{
-						TerminalOptions.IsAutoExitEnabled = autoExit;
+						TerminalOptions.IsAutoExitEnabled = parseResult.HasOption( TerminalOptions.AutoExit );
 						var inputHandler = new InputFileHandler( metadataRegionParser: MetadataHandler.CreateMetadataTokenParser() );
+						inputFile = parseResult.GetValueForArgument( InputFileArgument ) ?? string.Empty;
 						var data = inputHandler.ProcessFile( inputFile ).ToArray();
 						MetadataHandler.CommandToRun.Data = data;
 						var logMode = MetadataHandler.CommandToRun.Options[ Commands.Options.LogMode ];
@@ -56,9 +60,7 @@ namespace Petrichor.App.Utilities
 						Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 						MetadataHandler.CommandToRun = ModuleCommand.None;
 					}
-				},
-				TerminalOptions.AutoExit,
-				InputFileArgument );
+				});
 
 			rootCommand.AddGlobalOption( TerminalOptions.AutoExit );
 			rootCommand.AddGlobalOption( TerminalOptions.LogFile );
