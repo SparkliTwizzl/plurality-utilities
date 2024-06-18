@@ -21,6 +21,8 @@ namespace Petrichor.Logging
 		public static void CreateLogFile( string filePath )
 		{
 			LogFilePath = filePath;
+			var directory = Path.GetDirectoryName( filePath ) ?? string.Empty;
+			_ = Directory.CreateDirectory( directory );
 			File.Create( LogFilePath ).Close();
 			Info( $"Created log file \"{LogFilePath}\"." );
 		}
