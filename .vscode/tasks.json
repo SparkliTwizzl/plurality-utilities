@@ -13,14 +13,8 @@
         {
             "label": "unit tests",
             "type": "shell",
+            "dependsOn": "build",
             "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { & dotnet test $_.FullName }",
-        },
-        {
-            "label": "build & test",
-            "dependsOn": [
-                "build",
-                "unit tests",
-            ],
         },
     ]
 }
