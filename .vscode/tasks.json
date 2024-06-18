@@ -11,29 +11,9 @@
             ],
         },
         {
-            "label": "CommonTests",
-            "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "test",
-                "${workspaceRoot}/source/CommonTests/CommonTests.csproj"
-            ],
-        },
-        {
-            "label": "ShortcutScriptGenerationTests",
-            "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "test",
-                "${workspaceRoot}/source/ShortcutScriptGenerationTests/ShortcutScriptGenerationTests.csproj"
-            ],
-        },
-        {
             "label": "unit tests",
-            "dependsOn": [
-                "CommonTests",
-                "ShortcutScriptGenerationTests",
-            ],
+            "type": "shell",
+            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { $_.FullName | ForEach-Object { dotnet test \"$_\" } }",
         },
         {
             "label": "build & test",
