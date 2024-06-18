@@ -4,43 +4,13 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "build",
-                "${workspaceRoot}/source/App/App.csproj"
-            ],
-        },
-        {
-            "label": "CommonTests",
-            "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "test",
-                "${workspaceRoot}/source/CommonTests/CommonTests.csproj"
-            ],
-        },
-        {
-            "label": "ShortcutScriptGenerationTests",
-            "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "test",
-                "${workspaceRoot}/source/ShortcutScriptGenerationTests/ShortcutScriptGenerationTests.csproj"
-            ],
+            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj",
         },
         {
             "label": "unit tests",
-            "dependsOn": [
-                "CommonTests",
-                "ShortcutScriptGenerationTests",
-            ],
-        },
-        {
-            "label": "build & test",
-            "dependsOn": [
-                "build",
-                "unit tests",
-            ],
+            "type": "shell",
+            "dependsOn": "build",
+            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { $job = Start-Job -ScriptBlock { param($projectPath) & dotnet test $projectPath } -ArgumentList $_.FullName; Wait-Job $job; Receive-Job $job | Select-Object -Last 1; Remove-Job $job }",
         },
     ]
 }
