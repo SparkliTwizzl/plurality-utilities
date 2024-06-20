@@ -99,7 +99,7 @@
     ],
     "compounds": [
         {
-            "name": "All tests debug",
+            "name": "All tests Debug",
             "configurations": [
                 "default command",
                 "default command --help",
@@ -110,11 +110,11 @@
                 "generateTextShortcutScript CLI args",
                 "generateTextShortcutScript file args",
             ],
-            "preLaunchTask": "unit tests debug",
+            "preLaunchTask": "unit tests Debug",
             "stopAll": true
         },
         {
-            "name": "All tests release",
+            "name": "All tests Release",
             "configurations": [
                 "default command",
                 "default command --help",
@@ -125,7 +125,7 @@
                 "generateTextShortcutScript CLI args",
                 "generateTextShortcutScript file args",
             ],
-            "preLaunchTask": "unit tests release",
+            "preLaunchTask": "unit tests Release",
             "stopAll": true
         },
     ]

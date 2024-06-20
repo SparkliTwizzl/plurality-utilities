@@ -2,46 +2,48 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build debug",
+            "label": "build Debug",
             "type": "shell",
-            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Debug"
+            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Debug",
+            "problemMatcher": "$msCompile",
         },
         {
-            "label": "build release",
+            "label": "build Release",
             "type": "shell",
-            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Release"
+            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Release",
         },
         {
             "label": "publish",
             "type": "shell",
-            "dependsOn": "build release",
-            "command": "(Get-Content -Raw .vscode/publish.json | ConvertFrom-Json).platforms | ForEach-Object { dotnet publish source/App/App.csproj --configuration Release --runtime $_ --output publish/$_ /p:DebugType=None /p:DebugSymbols=false --self-contained }",
-            "problemMatcher": [
-                "$msCompile"
-            ]
+            "dependsOn": "build Release",
+            "command": "(Get-Content -Raw .vscode/publish.json | ConvertFrom-Json).platforms | ForEach-Object { dotnet publish source/App/App.csproj --configuration Release --runtime $_ --output publish/$_ --self-contained /p:DebugType=None /p:DebugSymbols=false /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true }",
+            "problemMatcher": "$msCompile",
         },
         {
             "label": "unit tests",
             "type": "shell",
-            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { $job = Start-Job -ScriptBlock { param($projectPath) & dotnet test $projectPath } -ArgumentList $_.FullName; Wait-Job $job; Receive-Job $job | Select-Object -Last 1; Remove-Job $job }"
+            "command": "Get-ChildItem -Path ./source/ -Recurse -Filter *Tests.csproj | ForEach-Object { $job = Start-Job -ScriptBlock { param($projectPath) & dotnet test $projectPath } -ArgumentList $_.FullName; Wait-Job $job; Receive-Job $job | Select-Object -Last 1; Remove-Job $job }",
+            "problemMatcher": "$msCompile",
         },
         {
-            "label": "unit tests debug",
+            "label": "unit tests Debug",
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "build debug",
+                "build Debug",
                 "unit tests",
-            ]
+            ],
+            "problemMatcher": "$msCompile",
         },
         {
-            "label": "unit tests release",
+            "label": "unit tests Release",
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "build release",
+                "build Release",
                 "unit tests",
-            ]
+            ],
+            "problemMatcher": "$msCompile",
         },
     ]
 }
