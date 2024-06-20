@@ -6,16 +6,15 @@ namespace Petrichor.Common.Info
 #if DEBUG
 			$"{AppContext.BaseDirectory}../../..";
 #else
-			AppContext.BaseDirectory
+			AppContext.BaseDirectory;
 #endif
 
-		private static string DebugOutputDirectoryName = Path.Combine( TestDirectoryName, ReleaseOutputDirectoryName );
-		private const string ReleaseOutputDirectoryName = "output";
+		private const string OutputDirectoryName = "output";
 		public static string OutputDirectory =>
 #if DEBUG
-			Path.Combine( BaseDirectory, DebugOutputDirectoryName );
+			Path.Combine( BaseDirectory, Path.Combine( TestDirectoryName, OutputDirectoryName ) );
 #else
-			Path.Combine( BaseDirectory, ReleaseOutputDirectoryName );
+			Path.Combine( BaseDirectory, OutputDirectoryName );
 #endif
 
 		private const string BuildDirectoryName = "build";
