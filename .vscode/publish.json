@@ -1,0 +1,6 @@
+{
+    "platforms": [
+        "win-arm64",
+        "win-x64"
+    ]
+}
