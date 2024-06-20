@@ -5,8 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
-		<AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
-		<RootNamespace>$(SolutionName).$(MSBuildProjectName)</RootNamespace>
+		<AssemblyName>$(AppName).$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>$(AppName).$(MSBuildProjectName)</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

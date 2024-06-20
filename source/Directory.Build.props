@@ -1,7 +1,7 @@
 <Project>
 
 	<PropertyGroup>
-		<SolutionName>Petrichor</SolutionName>
+		<AppName>Petrichor</AppName>
 	</PropertyGroup>
 
 	<PropertyGroup>
