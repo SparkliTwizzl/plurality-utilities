@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 using Petrichor.RandomStringGeneration.Containers;
 using Petrichor.RandomStringGeneration.Exceptions;
 using System.Text;

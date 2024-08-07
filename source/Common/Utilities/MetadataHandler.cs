@@ -2,6 +2,7 @@
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Syntax;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 
 
 namespace Petrichor.Common.Utilities

@@ -1,5 +1,6 @@
 ﻿using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 using System.Data;
 
 

@@ -1,5 +1,6 @@
 ﻿using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
+using Petrichor.Logging.Utilities;
 using Petrichor.RandomStringGeneration.Syntax;
 using System.CommandLine;
 

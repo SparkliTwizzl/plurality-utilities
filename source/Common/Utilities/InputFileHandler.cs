@@ -1,5 +1,6 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 
 
 namespace Petrichor.Common.Utilities

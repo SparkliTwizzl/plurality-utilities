@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Exceptions;
 using Petrichor.Common.Utilities;
+using Petrichor.Logging.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities

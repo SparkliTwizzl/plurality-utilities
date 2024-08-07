@@ -1,7 +1,4 @@
-﻿using Petrichor.Logging;
-
-
-namespace Petrichor.Common.Utilities
+﻿namespace Petrichor.Logging.Utilities
 {
 	public static class ExceptionLogger
 	{

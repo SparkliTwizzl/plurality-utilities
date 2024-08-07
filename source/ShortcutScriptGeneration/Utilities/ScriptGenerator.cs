@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Info;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 using Petrichor.ShortcutScriptGeneration.Containers;
 using Petrichor.ShortcutScriptGeneration.Exceptions;
 using System.Text;
