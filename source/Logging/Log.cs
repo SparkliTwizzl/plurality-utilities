@@ -160,7 +160,7 @@ namespace Petrichor.Logging
 		{
 			if ( LogFilePath == string.Empty )
 			{
-				ExceptionLogger.LogAndThrow( new FileNotFoundException() );
+				ExceptionLogger.LogAndThrow( new FileNotFoundException( "Log file path was not set." ) );
 			}
 			foreach ( var message in MessageBuffer )
 			{
