@@ -31,7 +31,7 @@ namespace Petrichor.Logging.Styling
 		};
 		public static MessageFormat Info => new()
 		{
-			Foreground = "#909090",
+			Foreground = "#ffffff",
 			Label = nameof( Info ).ToUpper(),
 		};
 		public static MessageFormat Start => new()
