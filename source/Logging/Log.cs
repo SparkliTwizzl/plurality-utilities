@@ -226,12 +226,12 @@ namespace Petrichor.Logging
 				return;
 			}
 			WriteToConsole( message );
-			if ( !IsBufferingEnabled )
+			if ( IsBufferingEnabled )
 			{
-				WriteToFile( message );
+				MessageBuffer.Add( message );
 				return;
 			}
-			MessageBuffer.Add( message );
+			WriteToFile( message );
 		}
 
 		private static void WriteToConsole( Message message )
