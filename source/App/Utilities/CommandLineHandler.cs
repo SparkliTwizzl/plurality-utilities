@@ -40,7 +40,7 @@ namespace Petrichor.App.Utilities
 				{
 					InputFileArgument,
 				};
-			rootCommand.Handler = CommandHandler.Create( async ( ParseResult parseResult ) =>
+			rootCommand.Handler = CommandHandler.Create( ( ParseResult parseResult ) =>
 				{
 					var inputFile = string.Empty;
 					try
@@ -54,7 +54,7 @@ namespace Petrichor.App.Utilities
 						
 						var logMode = MetadataHandler.CommandToRun.Options[ Commands.Options.LogMode ];
 						var logFile = MetadataHandler.CommandToRun.Options[ Commands.Options.LogFile ];
-						await MetadataHandler.InitalizeLogging( logMode, logFile );
+						MetadataHandler.InitializeLogging( logMode, logFile );
 						Log.WriteBufferToFile();
 						Log.DisableBuffering();
 					}

@@ -100,48 +100,47 @@ namespace Petrichor.Common.Utilities
 			return new TokenBodyParser<List<IndexedString>>( parserDescriptor );
 		}
 
-		public static async Task InitalizeLogging( string logModeArgument, string logFileArgument )
-			=> await Task.Run( () =>
+		public static void InitializeLogging( string logModeArgument, string logFileArgument )
+		{
+			switch ( logModeArgument )
 			{
-				switch ( logModeArgument )
+				case Commands.Options.LogModeValueConsoleOnly:
 				{
-					case Commands.Options.LogModeValueConsoleOnly:
-					{
-						Log.EnableLoggingToConsole();
-						break;
-					}
-
-					case Commands.Options.LogModeValueFileOnly:
-					{
-						Log.EnableLoggingToFile();
-						break;
-					}
-
-					case Commands.Options.LogModeValueAll:
-					{
-						Log.EnableAllLogDestinations();
-						break;
-					}
-
-					default:
-					{
-						Log.DisableLogging();
-						break;
-					}
+					Log.EnableLoggingToConsole();
+					break;
 				}
 
-				if ( !Log.IsLoggingToConsoleEnabled )
+				case Commands.Options.LogModeValueFileOnly:
 				{
-					Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.Options.LogMode}\" with parameters \"{Commands.Options.LogModeValueConsoleOnly}\" or \"{Commands.Options.LogModeValueAll}\"." );
+					Log.EnableLoggingToFile();
+					break;
 				}
 
-				if ( Log.IsLoggingToFileEnabled )
+				case Commands.Options.LogModeValueAll:
 				{
-					var filePathHandler = new FilePathHandler( DefaultLogDirectory, DefaultLogFileName );
-					filePathHandler.SetFile( logFileArgument );
-					Log.CreateLogFile( filePathHandler.FilePath );
+					Log.EnableAllLogDestinations();
+					break;
 				}
-			} );
+
+				default:
+				{
+					Log.DisableLogging();
+					break;
+				}
+			}
+
+			if ( !Log.IsLoggingToConsoleEnabled )
+			{
+				Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.Options.LogMode}\" with parameters \"{Commands.Options.LogModeValueConsoleOnly}\" or \"{Commands.Options.LogModeValueAll}\"." );
+			}
+
+			if ( Log.IsLoggingToFileEnabled )
+			{
+				var filePathHandler = new FilePathHandler( DefaultLogDirectory, DefaultLogFileName );
+				filePathHandler.SetFile( logFileArgument );
+				Log.CreateLogFile( filePathHandler.FilePath );
+			}
+		}
 
 
 		private static void RejectConflictingModuleCommands( ModuleCommand command )

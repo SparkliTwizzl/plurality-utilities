@@ -38,6 +38,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						},
 					};
 
+					MetadataHandler.InitializeLogging( logMode, logFile );
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 
