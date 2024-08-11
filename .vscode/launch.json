@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            //TODO: should not look for default file, actually; does not make log file
+            //TODO: should not look for default file, actually; does not make log file (update: fails because of empty default file)
             "name": "default command",
             "type": "coreclr",
             "request": "launch",
@@ -13,7 +13,7 @@
             ],
         },
         {
-            //TODO: maybe works? does not make log file
+            //TODO: maybe works? does not make log file (update: log file fails b/c of empty defaults)
             "name": "default command --help",
             "type": "coreclr",
             "request": "launch",
@@ -25,7 +25,7 @@
             ],
         },
         {
-            //TODO: all options default to empty strings?? does not make log file
+            //TODO: all options default to empty strings?? does not make log file (update: log file fails b/c of empty defaults)
             "name": "generateRandomStrings default",
             "type": "coreclr",
             "request": "launch",
@@ -37,7 +37,7 @@
             ],
         },
         {
-            //TODO: works but does not make log file
+            //TODO: fixed
             "name": "generateRandomStrings CLI args",
             "type": "coreclr",
             "request": "launch",
@@ -66,7 +66,7 @@
             ],
         },
         {
-            //TODO: all options default to blank strings?? does not make log file
+            //TODO: all options default to blank strings?? does not make log file (update: log file fails b/c of empty defaults)
             "name": "generateTextShortcutScript default",
             "type": "coreclr",
             "request": "launch",
@@ -78,7 +78,7 @@
             ],
         },
         {
-            //TODO: works but does not make log file
+            //TODO: fixed
             "name": "generateTextShortcutScript CLI args",
             "type": "coreclr",
             "request": "launch",

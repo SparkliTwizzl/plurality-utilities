@@ -9,9 +9,6 @@ namespace Petrichor.Common.Utilities
 {
 	public static class MetadataHandler
 	{
-		private static string DefaultLogDirectory => $@"{AppContext.BaseDirectory}\log";
-		private static string DefaultLogFileName => $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss_fffffff}.log";
-
 		private static Dictionary<string, string> CommandOptionTerminalFlags { get; set; } = new();
 		private static Dictionary<string, DataToken> CommandOptionTokens { get; set; } = new();
 
@@ -136,7 +133,7 @@ namespace Petrichor.Common.Utilities
 
 			if ( Log.IsLoggingToFileEnabled )
 			{
-				var filePathHandler = new FilePathHandler( DefaultLogDirectory, DefaultLogFileName );
+				var filePathHandler = new FilePathHandler( TerminalOptions.DefaultLogDirectory, TerminalOptions.DefaultLogFileName );
 				filePathHandler.SetFile( logFileArgument );
 				Log.CreateLogFile( filePathHandler.FilePath );
 			}
