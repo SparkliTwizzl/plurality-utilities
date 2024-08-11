@@ -4,6 +4,7 @@ namespace Petrichor.Common.Info
 	{
 		private const string BuildDirectoryName = "build";
 		private const string InputDirectoryName = "input";
+		private const string IntegrationTestDirectoryName = "integration";
 		private const string LogDirectoryName = "log";
 		private const string OutputDirectoryName = "output";
 		private const string TestDirectoryName = "test";
@@ -21,7 +22,13 @@ namespace Petrichor.Common.Info
 #else
 	Path.Combine( BaseDirectory, InputDirectoryName );
 #endif
-		public static string LogDirectory => Path.Combine( BaseDirectory, LogDirectoryName );
+		public static string LogDirectory =>
+#if DEBUG
+		Path.Combine( TestLogDirectory, IntegrationTestDirectoryName );
+#else
+		Path.Combine( BaseDirectory, LogDirectoryName );
+#endif
+
 		public static string OutputDirectory =>
 #if DEBUG
 			Path.Combine( BaseDirectory, Path.Combine( TestDirectoryName, OutputDirectoryName ) );
