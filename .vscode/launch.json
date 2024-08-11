@@ -37,7 +37,6 @@
             ],
         },
         {
-            //TODO: fixed
             "name": "generateRandomStrings CLI args",
             "type": "coreclr",
             "request": "launch",
@@ -55,7 +54,6 @@
             ],
         },
         {
-            //TODO: apparently works
             "name": "generateRandomStrings file args",
             "type": "coreclr",
             "request": "launch",
@@ -66,7 +64,6 @@
             ],
         },
         {
-            //TODO: all options default to blank strings?? does not make log file (update: log file fails b/c of empty defaults)
             "name": "generateTextShortcutScript default",
             "type": "coreclr",
             "request": "launch",
@@ -78,7 +75,6 @@
             ],
         },
         {
-            //TODO: fixed
             "name": "generateTextShortcutScript CLI args",
             "type": "coreclr",
             "request": "launch",
@@ -94,7 +90,6 @@
             ],
         },
         {
-            //TODO: apparently works
             "name": "generateTextShortcutScript file args",
             "type": "coreclr",
             "request": "launch",
