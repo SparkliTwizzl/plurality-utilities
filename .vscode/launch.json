@@ -25,7 +25,6 @@
             ],
         },
         {
-            //TODO: all options default to empty strings?? does not make log file (update: log file fails b/c of empty defaults)
             "name": "generateRandomStrings default",
             "type": "coreclr",
             "request": "launch",
