@@ -40,7 +40,7 @@ namespace Petrichor.App.Utilities
 				{
 					InputFileArgument,
 				};
-			rootCommand.Handler = CommandHandler.Create( async ( ParseResult parseResult ) =>
+			rootCommand.Handler = CommandHandler.Create( ( ParseResult parseResult ) =>
 				{
 					var inputFile = string.Empty;
 					try
@@ -51,10 +51,12 @@ namespace Petrichor.App.Utilities
 						inputFile = parseResult.GetValueForArgument( InputFileArgument ) ?? string.Empty;
 						var data = inputHandler.ProcessFile( inputFile ).ToArray();
 						MetadataHandler.CommandToRun.Data = data;
-						
-						var logMode = MetadataHandler.CommandToRun.Options[ Commands.Options.LogMode ];
-						var logFile = MetadataHandler.CommandToRun.Options[ Commands.Options.LogFile ];
-						await MetadataHandler.InitalizeLogging( logMode, logFile );
+
+						_ = MetadataHandler.CommandToRun.Options.TryGetValue( Commands.Options.LogMode, out var logMode );
+						_ = MetadataHandler.CommandToRun.Options.TryGetValue( Commands.Options.LogFile, out var logFile );
+						MetadataHandler.InitializeLogging(
+							logMode ?? Commands.Options.LogModeValueAll,
+							logFile ?? TerminalOptions.DefaultLogFileName );
 						Log.WriteBufferToFile();
 						Log.DisableBuffering();
 					}
@@ -64,7 +66,7 @@ namespace Petrichor.App.Utilities
 						Log.Important( "If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 						MetadataHandler.CommandToRun = ModuleCommand.None;
 					}
-				});
+				} );
 
 			rootCommand.AddGlobalOption( TerminalOptions.AutoExit );
 			rootCommand.AddGlobalOption( TerminalOptions.LogFile );

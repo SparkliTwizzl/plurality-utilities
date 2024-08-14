@@ -1,6 +1,7 @@
 ﻿using Petrichor.Common.Containers;
 using Petrichor.Common.Utilities;
 using Petrichor.Logging;
+using Petrichor.Logging.Utilities;
 using Petrichor.RandomStringGeneration.Containers;
 using Petrichor.RandomStringGeneration.Syntax;
 using System.CommandLine;
@@ -42,6 +43,7 @@ namespace Petrichor.RandomStringGeneration.Utilities
 						},
 					};
 
+					MetadataHandler.InitializeLogging( logMode, logFile );
 					Log.WriteBufferToFile();
 					Log.DisableBuffering();
 				},

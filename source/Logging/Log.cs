@@ -1,6 +1,8 @@
 ﻿using Petrichor.Logging.Containers;
 using Petrichor.Logging.Enums;
 using Petrichor.Logging.Styling;
+using Petrichor.Logging.Utilities;
+using System.IO;
 
 
 namespace Petrichor.Logging
@@ -156,12 +158,16 @@ namespace Petrichor.Logging
 		/// </summary>
 		public static void WriteBufferToFile()
 		{
-			Info( "Wrote log buffer to file." );
+			if ( LogFilePath == string.Empty )
+			{
+				ExceptionLogger.LogAndThrow( new FileNotFoundException( "Log file path was not set." ) );
+			}
 			foreach ( var message in MessageBuffer )
 			{
 				WriteToFile( message );
 			}
 			MessageBuffer.Clear();
+			Info( "Wrote log buffer to file." );
 		}
 
 		/// <summary>
@@ -226,12 +232,12 @@ namespace Petrichor.Logging
 				return;
 			}
 			WriteToConsole( message );
-			if ( !IsBufferingEnabled )
+			if ( IsBufferingEnabled )
 			{
-				WriteToFile( message );
+				MessageBuffer.Add( message );
 				return;
 			}
-			MessageBuffer.Add( message );
+			WriteToFile( message );
 		}
 
 		private static void WriteToConsole( Message message )

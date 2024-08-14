@@ -12,17 +12,6 @@
             ],
         },
         {
-            "name": "default command --help",
-            "type": "coreclr",
-            "request": "launch",
-            "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
-            "args": [
-                "--help",
-                "--autoExit",
-            ],
-        },
-        {
             "name": "generateRandomStrings default",
             "type": "coreclr",
             "request": "launch",
@@ -102,7 +91,6 @@
             "name": "All tests Debug",
             "configurations": [
                 "default command",
-                "default command --help",
                 "generateRandomStrings default",
                 "generateRandomStrings CLI args",
                 "generateRandomStrings file args",
@@ -117,7 +105,6 @@
             "name": "All tests Release",
             "configurations": [
                 "default command",
-                "default command --help",
                 "generateRandomStrings default",
                 "generateRandomStrings CLI args",
                 "generateRandomStrings file args",
