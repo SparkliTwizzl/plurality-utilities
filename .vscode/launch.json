@@ -2,7 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            //TODO: should not look for default file, actually; does not make log file (update: fails because of empty default file)
             "name": "default command",
             "type": "coreclr",
             "request": "launch",
