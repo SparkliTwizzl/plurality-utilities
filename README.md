@@ -10,4 +10,6 @@
 
 [Source code and releases](https://github.com/SparkliTwizzl/petrichor/)
 
+[Editor syntax highlighting](https://github.com/SparkliTwizzl/petrichor-syntax-highlighting)
+
 Petrichor is licensed under the [Anti-Exploitation License Noncommercial Attribution v1.1 (AEL-NC-AT 1.1)](https://github.com/SparkliTwizzl/anti-exploitation-license). By using this project or its source material, you agree to abide by the terms of this license.
