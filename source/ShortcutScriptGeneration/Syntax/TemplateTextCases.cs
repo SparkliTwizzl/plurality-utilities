@@ -8,12 +8,12 @@
 		public const string Unchanged = "unchanged";
 		public const string Upper = "upper";
 
-		public static string[] LookUpTable => new[]
-		{
+		public static string[] LookUpTable =>
+		[
 			FirstCaps,
 			Lower,
 			Unchanged,
 			Upper,
-		};
+		];
 	}
 }

@@ -193,7 +193,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		{
 			get
 			{
-				yield return new object[] { IndexedString.IndexRawStrings( TestData.ShortcutToken_Valid ), new ProcessedRegionData<InputData>() { Value = new() { Shortcuts = new[] { TestData.ShortcutString } } } };
+				yield return new object[] { IndexedString.IndexRawStrings( TestData.ShortcutToken_Valid ), new ProcessedRegionData<InputData>() { Value = new() { Shortcuts = [TestData.ShortcutString] } } };
 			}
 		}
 

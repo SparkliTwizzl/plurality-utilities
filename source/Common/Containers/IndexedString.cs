@@ -23,7 +23,7 @@
 		}
 
 
-		public static IndexedString[] IndexRawStrings( string value ) => IndexRawStrings( new[] { value } );
+		public static IndexedString[] IndexRawStrings( string value ) => IndexRawStrings( [value] );
 
 		public static IndexedString[] IndexRawStrings( string[] strings )
 		{

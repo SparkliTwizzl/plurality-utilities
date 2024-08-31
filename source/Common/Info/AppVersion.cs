@@ -21,8 +21,8 @@ namespace Petrichor.Common.Info
 		public const string Patch = "2";
 		public const string Preview = "";
 		public static string ReleaseAppVersion => $"{Major}.{Minor}.{Patch}{Preview}";
-		public static string[] SupportedVersions => new[]
-		{
+		public static string[] SupportedVersions =>
+		[
 			Current,
 			$"{Major}.{Minor}.{Patch}",
 			$"{Major}.{Minor}.0",
@@ -30,7 +30,7 @@ namespace Petrichor.Common.Info
 			"0.12.0",
 			"0.11.1",
 			"0.11.0",
-		};
+		];
 
 
 
