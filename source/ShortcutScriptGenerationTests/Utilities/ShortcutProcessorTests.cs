@@ -13,8 +13,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 	{
 		public readonly struct TestData
 		{
-			public static Entry[] EntryList => new[]
-			{
+			public static Entry[] EntryList =>
+			[
 				new Entry(
 					EntryID,
 					new List<Identity>(){ new( EntryName, EntryTag ) },
@@ -23,7 +23,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 					EntryColor,
 					EntryDecoration
 				),
-			};
+			];
 			public static string EntryID => "iD";
 			public static string EntryIDFirstCaps => "Id";
 			public static string EntryColor => "coloR";
@@ -45,24 +45,24 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static InputData Input => new( ModuleOptions, EntryList, TemplateList, RawShortcuts );
 			public static ModuleOptionData ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
 			public static string RawShortcut => $"{Find1}{ControlSequences.ShortcutFindReplaceDivider}{Replace1}";
-			public static string[] RawShortcuts => new[]
-			{
+			public static string[] RawShortcuts =>
+			[
 				RawShortcut,
-			};
+			];
 			public static string Replace1 => "replace1";
 			public static string Replace1FirstCaps => "Replace1";
 			public static string Replace2 => "replace2";
 			public static string Replace2FirstCaps => "Replace2";
 			public static string ShortcutString => $"::{Find1}::{Replace1}";
-			public static string[] Shortcuts => new[]
-			{
+			public static string[] Shortcuts =>
+			[
 				ShortcutString,
 				TemplatedShortcutTextCaseDefault,
 				TemplatedShortcutTextCaseFirstCaps,
 				TemplatedShortcutTextCaseLower,
 				TemplatedShortcutTextCaseUnchanged,
 				TemplatedShortcutTextCaseUpper,
-			};
+			];
 			public static ShortcutData TemplateDataTextCaseDefault => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
@@ -111,14 +111,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				{ Find1, Replace1 },
 				{ Find2, Replace2 },
 			};
-			public static ShortcutData[] TemplateList => new[]
-			{
+			public static ShortcutData[] TemplateList =>
+			[
 				TemplateDataTextCaseDefault,
 				TemplateDataTextCaseFirstCaps,
 				TemplateDataTextCaseLower,
 				TemplateDataTextCaseUnchanged,
 				TemplateDataTextCaseUpper,
-			};
+			];
 			public static string TemplateFindString
 				=> $"U+005C{TemplateFindTags.Tag}-{TemplateFindTags.LastTag}";
 			public static string TemplateReplaceString

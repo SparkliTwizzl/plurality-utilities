@@ -20,53 +20,53 @@ namespace Petrichor.Common.Utilities.Tests
 					{ TestToken, ITokenBodyParser<IndexedString>.InertHandler },
 				},
 			};
-			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexRawStrings( new[]
-			{
+			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				$"\t{ TestToken.Qualify() } { TestTokenValue }",
 				Tokens.RegionClose.Key,
-			} );
-			public static IndexedString[] RegionData_MismatchedRegionOpen => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_MismatchedRegionOpen => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
 				$"\t{ TestToken.Qualify() } { TestTokenValue }",
-			} );
-			public static IndexedString[] RegionData_TokenWithNoValue => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_TokenWithNoValue => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
 				$"\t{ TestToken.Qualify() }",
 				Tokens.RegionClose.Key,
-			} );
-			public static IndexedString[] RegionData_TooFewTokenInstances => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_TooFewTokenInstances => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
 				Tokens.RegionClose.Key,
-			} );
-			public static IndexedString[] RegionData_TooManyTokenInstances => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_TooManyTokenInstances => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
 				$"\t{ TestToken.Qualify() } { TestTokenValue }",
 				$"\t{ TestToken.Qualify() } { TestTokenValue }",
 				Tokens.RegionClose.Key,
-			} );
-			public static IndexedString[] RegionData_UnrecognizedToken => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_UnrecognizedToken => IndexedString.IndexRawStrings(
+			[
 				RegionToken.Qualify(),
 				Tokens.RegionOpen.Key,
 				$"\tunknown-token{ ControlSequences.TokenValueDivider } value",
 				Tokens.RegionClose.Key,
-			} );
-			public static IndexedString[] RegionData_Valid => IndexedString.IndexRawStrings( new[]
-			{
+			] );
+			public static IndexedString[] RegionData_Valid => IndexedString.IndexRawStrings(
+			[
 				$"{RegionToken.Qualify()} region token value",
 				$"{ Tokens.RegionOpen.Key } { Tokens.LineComment.Key } inline comment",
 				$"\t{ TestToken.Qualify() } { TestTokenValue }",
 				Tokens.RegionClose.Key,
-			} );
+			] );
 			public static DataToken RegionToken => new()
 			{
 				Key = nameof( TokenBodyParserTests ),
