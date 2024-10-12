@@ -6,90 +6,113 @@ using Petrichor.Logging.Utilities;
 
 namespace Petrichor.Common.Utilities
 {
+	/// <summary>
+	/// Parses token bodies and processes them according to specified handlers.
+	/// </summary>
+	/// <typeparam name="T">The type of the result object.</typeparam>
 	public class TokenBodyParser<T> : ITokenBodyParser<T> where T : class, new()
 	{
 		private const int DefaultIndentLevel = 0;
 		private const int DefaultLinesParsed = 0;
 		private const int DefaultTokenInstancesParsed = 0;
 
-		private int IndentLevel { get; set; } = 0;
-		private bool IsParsingFinished { get; set; } = false;
-		private Func<T, T> PostParseHandler { get; set; } = ( T result ) => result;
-		private Func<T, T> PreParseHandler { get; set; } = ( T input ) => new T();
-		private int RegionStartLineNumber { get; set; } = -1;
-		private Dictionary<string, Func<IndexedString[], int, T, ProcessedRegionData<T>>> TokenHandlers { get; set; } = new();
+		private int CurrentIndentLevel { get; set; } = 0;
+		private bool IsParsingCompleted { get; set; } = false;
+		private Func<T, T> PostParseAction { get; set; } = (T result) => result;
+		private Func<T, T> PreParseAction { get; set; } = (T input) => new T();
+		private int StartLineNumber { get; set; } = -1;
+		private Dictionary<string, Func<IndexedString[], int, T, ProcessedTokenData<T>>> TokenHandlerMap { get; set; } = new();
 
 
-		public int LinesParsed { get; private set; } = 0;
-		public Dictionary<string, int> MaxAllowedTokenInstances { get; private set; } = new();
-		public Dictionary<string, int> MinRequiredTokenInstances { get; private set; } = new();
-		public DataToken RegionToken { get; private set; } = new();
-		public Dictionary<string, int> TokenInstancesParsed { get; private set; } = new();
+		/// <inheritdoc />
+		public int TotalLinesParsed { get; private set; } = 0;
 
+		/// <inheritdoc />
+		public Dictionary<string, int> MaxTokenInstances { get; private set; } = new();
 
+		/// <inheritdoc />
+		public Dictionary<string, int> MinTokenInstances { get; private set; } = new();
+
+		/// <inheritdoc />
+		public DataToken TokenPrototype { get; private set; } = new();
+
+		/// <inheritdoc />
+		public Dictionary<string, int> ParsedTokenInstances { get; private set; } = new();
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TokenBodyParser{T}"/> class.
+		/// </summary>
 		public TokenBodyParser() { }
-		public TokenBodyParser( DataRegionParserDescriptor<T> descriptor )
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TokenBodyParser{T}"/> class with a descriptor.
+		/// </summary>
+		/// <param name="descriptor">The token parse descriptor with initialization data.</param>
+		public TokenBodyParser(TokenParseDescriptor<T> descriptor)
 		{
-			PostParseHandler = descriptor.PostParseHandler;
-			PreParseHandler = descriptor.PreParseHandler;
-			RegionToken = descriptor.RegionToken;
-			StoreTokenHandlers( descriptor.TokenHandlers );
+			PostParseAction = descriptor.PostParseAction;
+			PreParseAction = descriptor.PreParseAction;
+			TokenPrototype = descriptor.TokenPrototype;
+			RegisterTokenHandlers(descriptor.SubTokenHandlers);
 		}
 
+		/// <inheritdoc />
+		public void AddTokenHandler(DataToken tokenPrototype, Func<IndexedString[], int, T, ProcessedTokenData<T>> handler) => RegisterTokenHandler(tokenPrototype, handler);
 
-		public void AddTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler ) => StoreTokenHandler( token, handler );
+		/// <inheritdoc />
+		public void CancelParsing() => IsParsingCompleted = true;
 
-		public void CancelParsing() => IsParsingFinished = true;
-
-		public T Parse( IndexedString[] data, T? input = null )
+		/// <inheritdoc />
+		public T Parse(IndexedString[] data, T? input = null)
 		{
-			if ( data.Length < 1 )
+			if (data.Length < 1)
 			{
-				ExceptionLogger.LogAndThrow( new TokenValueException( "Attempted to parse a nonexistent token body." ) );
+				ExceptionLogger.LogAndThrow(new TokenValueException("Attempted to parse a nonexistent token body."));
 			}
 
-			var token = new StringToken( data[ 0 ] );
-			RegionStartLineNumber = token.LineNumber;
-			var tokenValueString = token.Value != string.Empty ? $" (\"{token.Value}\")" : string.Empty;
-			var taskMessage = $"Parse \"{RegionToken.Key}\" region{tokenValueString}";
-			Log.Start( taskMessage, token.LineNumber );
+			var token = new StringToken(data[0]);
+			StartLineNumber = token.LineNumber;
+			var tokenValueString = token.TokenValue != string.Empty ? $" (\"{token.TokenValue}\")" : string.Empty;
+			var taskMessage = $"Parse \"{TokenPrototype.Key}\" region{tokenValueString}";
+			Logger.Start(taskMessage, token.LineNumber);
 
-			TryAddDefaultControlTokenHandlers();
+			AddDefaultControlTokenHandlers();
 			PopulateTokenInstanceCountKeys();
-			var result = PreParseHandler( input ?? new T() );
-			result = ParseAllTokens( data, result );
-			ValidateIndentLevel();
-			ValidateTokenInstanceCounts();
-			result = PostParseHandler( result );
+			var result = PreParseAction(input ?? new T());
+			result = ParseAllTokens(data, result);
+			CheckIndentLevel();
+			CheckTokenInstanceCounts();
+			result = PostParseAction(result);
 
-			var regionCloseLineNumber = token.LineNumber + LinesParsed - 1;
-			Log.Finish( taskMessage, regionCloseLineNumber );
+			var regionCloseLineNumber = token.LineNumber + TotalLinesParsed - 1;
+			Logger.Finish(taskMessage, regionCloseLineNumber);
 			return result;
 		}
 
+		/// <inheritdoc />
 		public void Reset()
 		{
-			IsParsingFinished = false;
-			IndentLevel = DefaultIndentLevel;
-			LinesParsed = DefaultLinesParsed;
-			foreach ( var tokenName in TokenInstancesParsed.Keys )
+			IsParsingCompleted = false;
+			CurrentIndentLevel = DefaultIndentLevel;
+			TotalLinesParsed = DefaultLinesParsed;
+			foreach (var tokenName in ParsedTokenInstances.Keys)
 			{
-				TokenInstancesParsed[ tokenName ] = DefaultTokenInstancesParsed;
+				ParsedTokenInstances[tokenName] = DefaultTokenInstancesParsed;
 			}
 		}
 
 
-		private T ParseAllTokens( IndexedString[] regionData, T result )
+		private T ParseAllTokens(IndexedString[] bodyData, T result)
 		{
-			for ( var i = 0 ; i < regionData.Length ; ++i )
+			for (var i = 0; i < bodyData.Length; ++i)
 			{
-				var rawToken = regionData[ i ];
-				var stringToken = new StringToken( rawToken );
-				var parseResult = ParseToken( stringToken, regionData, i, result );
+				var rawToken = bodyData[i];
+				var stringToken = new StringToken(rawToken);
+				var parseResult = ParseToken(stringToken, bodyData, i, result);
 				i += parseResult.BodySize;
 				result = parseResult.Value;
-				LinesParsed = i + 1;
-				if ( IsParsingFinished )
+				TotalLinesParsed = i + 1;
+				if (IsParsingCompleted)
 				{
 					break;
 				}
@@ -103,131 +126,133 @@ namespace Petrichor.Common.Utilities
 		/// </summary>
 		private void PopulateTokenInstanceCountKeys()
 		{
-			foreach ( var tokenName in MinRequiredTokenInstances.Keys )
+			foreach (var tokenName in MinTokenInstances.Keys)
 			{
-				_ = TokenInstancesParsed.TryAdd( tokenName, 0 );
+				_ = ParsedTokenInstances.TryAdd(tokenName, 0);
 			}
 		}
 
-		private ProcessedRegionData<T> ParseToken( StringToken stringToken, IndexedString[] regionData, int tokenStartIndex, T result )
+		private ProcessedTokenData<T> ParseToken(StringToken stringToken, IndexedString[] bodyData, int tokenStartIndex, T result)
 		{
-			if ( !TokenHandlers.TryGetValue( stringToken.Key, out var handler ) )
+			if (!TokenHandlerMap.TryGetValue(stringToken.TokenKey, out var handler))
 			{
-				ExceptionLogger.LogAndThrow( new TokenNameException( $"An unrecognized token \"{stringToken.Key}{ControlSequences.TokenValueDivider} {stringToken.Value}\" was found in a(n) \"{RegionToken.Key}\" region." ), stringToken.LineNumber );
+				ExceptionLogger.LogAndThrow(new TokenNameException($"An unrecognized token \"{stringToken.TokenKey}{ControlSequences.TokenKeyDelimiter} {stringToken.TokenValue}\" was found in a(n) \"{TokenPrototype.Key}\" region."), stringToken.LineNumber);
 			}
 
-			WarnAboutBlankTokenValues( stringToken, regionData, tokenStartIndex );
+			LogBlankTokenWarnings(stringToken, bodyData, tokenStartIndex);
 
-			if ( TokenInstancesParsed.TryGetValue( stringToken.Key, out var value ) )
+			if (ParsedTokenInstances.TryGetValue(stringToken.TokenKey, out var value))
 			{
-				++TokenInstancesParsed[ stringToken.Key ];
+				++ParsedTokenInstances[stringToken.TokenKey];
 			}
 
-			return handler!( regionData, tokenStartIndex, result );
+			return handler!(bodyData, tokenStartIndex, result);
 		}
 
-		private void StoreTokenHandler( DataToken token, Func<IndexedString[], int, T, ProcessedRegionData<T>> handler )
-			=> StoreTokenHandlers( new Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>>() { { token, handler } } );
+		private void RegisterTokenHandler(DataToken token, Func<IndexedString[], int, T, ProcessedTokenData<T>> handler)
+			=> RegisterTokenHandlers(new Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedTokenData<T>>>() { { token, handler } });
 
-		private void StoreTokenHandlers( Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedRegionData<T>>> rawHandlers )
+		private void RegisterTokenHandlers(Dictionary<DataToken, Func<IndexedString[], int, T, ProcessedTokenData<T>>> rawHandlers)
 		{
-			foreach ( var handler in rawHandlers )
+			foreach (var handler in rawHandlers)
 			{
 				var token = handler.Key;
 				var callback = handler.Value;
 
-				TokenHandlers.Add( token.Key, callback );
-				MaxAllowedTokenInstances.Add( token.Key, token.MaxAllowed );
-				MinRequiredTokenInstances.Add( token.Key, token.MinRequired );
+				TokenHandlerMap.Add(token.Key, callback);
+				MaxTokenInstances.Add(token.Key, token.MaxAllowed);
+				MinTokenInstances.Add(token.Key, token.MinRequired);
 			}
 		}
 
-		private void TryAddDefaultControlTokenHandlers()
+		private void AddDefaultControlTokenHandlers()
 		{
-			var regionCloseTokenHandler = ( IndexedString[] regionData, int currentLine, T result ) =>
+			var regionCloseTokenHandler = (IndexedString[] bodyData, int currentLine, T result) =>
 			{
-				--IndentLevel;
+				--CurrentIndentLevel;
 
-				if ( IndentLevel < 0 )
+				if (CurrentIndentLevel < 0)
 				{
-					var lineNumber = regionData[ currentLine ].LineNumber;
-					ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched closing bracket was found in a(n) \"{RegionToken.Key}\" region." ), lineNumber );
+					var lineNumber = bodyData[currentLine].LineNumber;
+					ExceptionLogger.LogAndThrow(new BracketException($"A mismatched closing bracket was found in a(n) \"{TokenPrototype.Key}\" region."), lineNumber);
 				}
 
-				if ( IndentLevel == 0 )
+				if (CurrentIndentLevel == 0)
 				{
-					LinesParsed = currentLine + 1;
-					IsParsingFinished = true;
+					TotalLinesParsed = currentLine + 1;
+					IsParsingCompleted = true;
 				}
 
-				return new ProcessedRegionData<T>( result );
+				return new ProcessedTokenData<T>(result);
 			};
 
-			var regionOpenTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, T result ) =>
+			var regionOpenTokenHandler = (IndexedString[] bodyData, int tokenStartIndex, T result) =>
 			{
-				++IndentLevel;
-				return new ProcessedRegionData<T>( result );
+				++CurrentIndentLevel;
+				return new ProcessedTokenData<T>(result);
 			};
 
-			_ = TokenHandlers.TryAdd( Tokens.BlankLine.Key, ITokenBodyParser<T>.InertHandler );
-			_ = TokenHandlers.TryAdd( Tokens.RegionClose.Key, regionCloseTokenHandler );
-			_ = TokenHandlers.TryAdd( Tokens.RegionOpen.Key, regionOpenTokenHandler );
-			_ = TokenHandlers.TryAdd( RegionToken.Key, ITokenBodyParser<T>.InertHandler ); // this removes the need to offset the token start index in handlers to skip the region name token
+			_ = TokenHandlerMap.TryAdd(TokenPrototypes.BlankLine.Key, ITokenBodyParser<T>.InertHandler);
+			_ = TokenHandlerMap.TryAdd(TokenPrototypes.TokenBodyClose.Key, regionCloseTokenHandler);
+			_ = TokenHandlerMap.TryAdd(TokenPrototypes.TokenBodyOpen.Key, regionOpenTokenHandler);
+			_ = TokenHandlerMap.TryAdd(TokenPrototype.Key, ITokenBodyParser<T>.InertHandler);
+			// setting the prototype's key to an inert handler removes the need to offset the start index
+			//   in handlers in order to skip the valueless token that just starts a data container
 		}
 
-		private void ValidateIndentLevel()
+		private void CheckIndentLevel()
 		{
-			if ( IndentLevel != 0 )
+			if (CurrentIndentLevel != 0)
 			{
-				ExceptionLogger.LogAndThrow( new BracketException( $"A mismatched curly brace was found in a(n) \"{RegionToken.Key}\" region." ), RegionStartLineNumber );
+				ExceptionLogger.LogAndThrow(new BracketException($"A mismatched curly brace was found in a(n) \"{TokenPrototype.Key}\" region."), StartLineNumber);
 			}
 		}
 
-		private void ValidateTokenInstanceCounts()
+		private void CheckTokenInstanceCounts()
 		{
-			foreach ( var tokenName in TokenInstancesParsed.Keys )
+			foreach (var tokenName in ParsedTokenInstances.Keys)
 			{
-				var instances = TokenInstancesParsed[ tokenName ];
-				_ = MinRequiredTokenInstances.TryGetValue( tokenName, out var minRequiredInstances );
-				_ = MaxAllowedTokenInstances.TryGetValue( tokenName, out var maxAllowedInstances );
+				var instances = ParsedTokenInstances[tokenName];
+				_ = MinTokenInstances.TryGetValue(tokenName, out var minRequiredInstances);
+				_ = MaxTokenInstances.TryGetValue(tokenName, out var maxAllowedInstances);
 
 				var hasTooManyInstances = instances > maxAllowedInstances;
 				var hasTooFewInstances = instances < minRequiredInstances;
 
 				var quantityWord = hasTooFewInstances ? "few" : "many";
-				if ( hasTooFewInstances || hasTooManyInstances )
+				if (hasTooFewInstances || hasTooManyInstances)
 				{
-					ExceptionLogger.LogAndThrow( new TokenCountException( $"A(n) \"{RegionToken.Key}\" region has too {quantityWord} \"{tokenName}\" tokens (Has: {instances} / Requires: Between {minRequiredInstances} and {maxAllowedInstances})." ), RegionStartLineNumber );
+					ExceptionLogger.LogAndThrow(new TokenCountException($"A(n) \"{TokenPrototype.Key}\" region has too {quantityWord} \"{tokenName}\" tokens (Has: {instances} / Requires: Between {minRequiredInstances} and {maxAllowedInstances})."), StartLineNumber);
 				}
 			}
 		}
 
-		private static void WarnAboutBlankTokenValues( StringToken token, IndexedString[] regionData, int tokenStartIndex )
+		private static void LogBlankTokenWarnings(StringToken token, IndexedString[] bodyData, int tokenStartIndex)
 		{
-			var isTokenNameBlank = token.Key == string.Empty;
-			if ( isTokenNameBlank )
+			var isTokenNameBlank = token.TokenKey == string.Empty;
+			if (isTokenNameBlank)
 			{
 				return;
 			}
 
-			var isTokenValueBlank = token.Value == string.Empty;
-			if ( !isTokenValueBlank )
+			var isTokenValueBlank = token.TokenValue == string.Empty;
+			if (!isTokenValueBlank)
 			{
 				return;
 			}
 
-			var isTokenRegionBoundary = token.Key == Tokens.RegionOpen.Key || token.Key == Tokens.RegionClose.Key;
-			if ( isTokenRegionBoundary )
+			var isTokenRegionBoundary = token.TokenKey == TokenPrototypes.TokenBodyOpen.Key || token.TokenKey == TokenPrototypes.TokenBodyClose.Key;
+			if (isTokenRegionBoundary)
 			{
 				return;
 			}
 
-			StringToken? nextToken = tokenStartIndex < regionData.Length - 1 ? new( regionData[ tokenStartIndex + 1 ] ) : null;
+			StringToken? nextToken = tokenStartIndex < bodyData.Length - 1 ? new(bodyData[tokenStartIndex + 1]) : null;
 			var hasNextToken = nextToken is not null;
-			var isTokenARegion = hasNextToken && nextToken!.Key == Tokens.RegionOpen.Key;
-			if ( !isTokenARegion )
+			var isTokenARegion = hasNextToken && nextToken!.TokenKey == TokenPrototypes.TokenBodyOpen.Key;
+			if (!isTokenARegion)
 			{
-				Log.Warning( $"A(n) \"{token.Key}\" token has no value. You can ignore this warning if it is intentional.", token.LineNumber );
+				Logger.Warning($"A(n) \"{token.TokenKey}\" token has no value. You can ignore this warning if it is intentional.", token.LineNumber);
 			}
 		}
 	}

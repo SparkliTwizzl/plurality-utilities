@@ -18,3 +18,5 @@ venv/
 *.log
 *.pypirc
 *.sln
+
+.vscode/settings.json

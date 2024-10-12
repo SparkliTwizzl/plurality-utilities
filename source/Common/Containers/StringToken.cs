@@ -1,75 +1,123 @@
 ﻿using Petrichor.Common.Syntax;
 
+
 namespace Petrichor.Common.Containers
 {
+	/// <summary>
+	/// Represents a tokenized string.
+	/// </summary>
 	public class StringToken
 	{
+		/// <summary>
+		/// The line number from which this token was extracted.
+		/// </summary>
 		public int LineNumber { get; set; } = 0;
-		public string Key { get; set; } = string.Empty;
-		public string RawLine { get; set; } = string.Empty;
-		public string Value { get; set; } = string.Empty;
+
+		/// <summary>
+		/// The key extracted from the tokenized string.
+		/// </summary>
+		public string TokenKey { get; set; } = string.Empty;
+
+		/// <summary>
+		/// The raw, unprocessed line from which the token was derived.
+		/// </summary>
+		public string OriginalLine { get; set; } = string.Empty;
+
+		/// <summary>
+		/// The value associated with the token, if any.
+		/// </summary>
+		public string TokenValue { get; set; } = string.Empty;
 
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StringToken"/> class.
+		/// </summary>
 		public StringToken() { }
-		public StringToken( StringToken other )
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StringToken"/> class by copying another instance.
+		/// </summary>
+		/// <param name="other">The instance of <see cref="StringToken"/> to copy.</param>
+		public StringToken(StringToken other)
 		{
 			LineNumber = other.LineNumber;
-			Key = other.Key;
-			RawLine = other.RawLine;
-			Value = other.Value;
+			TokenKey = other.TokenKey;
+			OriginalLine = other.OriginalLine;
+			TokenValue = other.TokenValue;
 		}
-		public StringToken( string line )
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StringToken"/> class from a line of input text.
+		/// </summary>
+		/// <param name="line">The line of input text to tokenize.</param>
+		public StringToken(string line)
 		{
-			RawLine = line;
-			GetTokenDataFromLine( RawLine );
+			OriginalLine = line;
+			ParseTokenFromLine(OriginalLine);
 		}
-		public StringToken( IndexedString line )
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StringToken"/> class from an indexed string.
+		/// </summary>
+		/// <param name="line">The indexed string to tokenize.</param>
+		public StringToken(IndexedString line)
 		{
 			LineNumber = line.LineNumber;
-			RawLine = line.Value;
-			GetTokenDataFromLine( RawLine );
+			OriginalLine = line.Value;
+			ParseTokenFromLine(OriginalLine);
 		}
 
 
-		private void GetTokenDataFromLine( string rawLine )
+		/// <summary>
+		/// Extracts the key and value from the given raw line.
+		/// </summary>
+		/// <param name="rawLine">The raw line to parse for token data.</param>
+		private void ParseTokenFromLine(string rawLine)
 		{
-			var line = TrimLineCommentFromLine( rawLine.Trim() );
-			var nameEndsAt = line.IndexOf( ':' );
-			var doesTokenContainAValue = nameEndsAt >= 0;
-			if ( !doesTokenContainAValue )
+			var trimmedLine = RemoveCommentFromLine(rawLine.Trim());
+			var keyDelimiterIndex = trimmedLine.IndexOf(ControlSequences.TokenKeyDelimiter);
+			var hasValue = keyDelimiterIndex >= 0;
+
+			if (!hasValue)
 			{
-				Key = line.Trim();
+				TokenKey = trimmedLine.Trim();
 				return;
 			}
-			Key = line[ ..nameEndsAt ].Trim();
-			var valueStartsAt = nameEndsAt + 1;
-			Value = line[ valueStartsAt.. ].Trim();
+
+			TokenKey = trimmedLine[..keyDelimiterIndex].Trim();
+			var valueStartIndex = keyDelimiterIndex + 1;
+			TokenValue = trimmedLine[valueStartIndex..].Trim();
 		}
 
-		private static string TrimLineCommentFromLine( string line )
+		/// <summary>
+		/// Removes any line comments from the given line.
+		/// </summary>
+		/// <param name="line">The line to process for comments.</param>
+		/// <returns>The line without comments.</returns>
+		private static string RemoveCommentFromLine(string line)
 		{
-			var lineCommentIndex = line.IndexOf( Tokens.LineComment.Key );
-			var doesContainLineComment = lineCommentIndex >= 0;
-			if ( !doesContainLineComment )
+			var commentStartIndex = line.IndexOf(TokenPrototypes.LineComment.Key);
+			var hasComment = commentStartIndex >= 0;
+
+			if (!hasComment)
 			{
 				return line;
 			}
 
 			var escapeSequenceLength = ControlSequences.Escape.ToString().Length;
-			var isLineCommentEscaped = ( lineCommentIndex >= escapeSequenceLength )
-				&& ( line[ lineCommentIndex - escapeSequenceLength ] == ControlSequences.Escape );
+			var isCommentEscaped = (commentStartIndex >= escapeSequenceLength)
+				&& (line[commentStartIndex - escapeSequenceLength] == ControlSequences.Escape);
 
-			if ( !isLineCommentEscaped )
+			if (!isCommentEscaped)
 			{
-				return line[ ..lineCommentIndex ];
+				return line[..commentStartIndex];
 			}
 
-			var firstPartEndIndex = lineCommentIndex - escapeSequenceLength;
-			var firstPart = line[ ..firstPartEndIndex ];
-			var secondPartStartIndex = lineCommentIndex + ControlSequences.LineComment.Length;
-			var secondPart = TrimLineCommentFromLine( line[ secondPartStartIndex.. ] );
-			var processedLine = $"{firstPart}{ControlSequences.LineComment}{secondPart}";
-			return processedLine.Trim();
+			var commentEndIndex = commentStartIndex - escapeSequenceLength;
+			var lineBeforeComment = line[..commentEndIndex];
+			var lineAfterCommentStartIndex = commentStartIndex + ControlSequences.LineComment.Length;
+			var lineAfterComment = RemoveCommentFromLine(line[lineAfterCommentStartIndex..]);
+			return $"{lineBeforeComment}{ControlSequences.LineComment}{lineAfterComment}".Trim();
 		}
 	}
 }

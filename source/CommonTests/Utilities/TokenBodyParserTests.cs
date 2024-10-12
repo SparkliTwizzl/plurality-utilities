@@ -12,60 +12,60 @@ namespace Petrichor.Common.Utilities.Tests
 	{
 		public readonly struct TestData
 		{
-			public static DataRegionParserDescriptor<IndexedString> ParserDescriptor => new()
+			public static TokenParseDescriptor<IndexedString> ParserDescriptor => new()
 			{
-				RegionToken = RegionToken,
-				TokenHandlers = new()
+				TokenPrototype = RegionToken,
+				SubTokenHandlers = new()
 				{
 					{ TestToken, ITokenBodyParser<IndexedString>.InertHandler },
 				},
 			};
 			public static IndexedString[] RegionData_MismatchedRegionClose => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				$"\t{ TestToken.Qualify() } { TestTokenValue }",
-				Tokens.RegionClose.Key,
+				RegionToken.QualifyKey(),
+				$"\t{ TestToken.QualifyKey() } { TestTokenValue }",
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static IndexedString[] RegionData_MismatchedRegionOpen => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				Tokens.RegionOpen.Key,
-				$"\t{ TestToken.Qualify() } { TestTokenValue }",
+				RegionToken.QualifyKey(),
+				TokenPrototypes.TokenBodyOpen.Key,
+				$"\t{ TestToken.QualifyKey() } { TestTokenValue }",
 			] );
 			public static IndexedString[] RegionData_TokenWithNoValue => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				Tokens.RegionOpen.Key,
-				$"\t{ TestToken.Qualify() }",
-				Tokens.RegionClose.Key,
+				RegionToken.QualifyKey(),
+				TokenPrototypes.TokenBodyOpen.Key,
+				$"\t{ TestToken.QualifyKey() }",
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static IndexedString[] RegionData_TooFewTokenInstances => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				Tokens.RegionOpen.Key,
-				Tokens.RegionClose.Key,
+				RegionToken.QualifyKey(),
+				TokenPrototypes.TokenBodyOpen.Key,
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static IndexedString[] RegionData_TooManyTokenInstances => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				Tokens.RegionOpen.Key,
-				$"\t{ TestToken.Qualify() } { TestTokenValue }",
-				$"\t{ TestToken.Qualify() } { TestTokenValue }",
-				Tokens.RegionClose.Key,
+				RegionToken.QualifyKey(),
+				TokenPrototypes.TokenBodyOpen.Key,
+				$"\t{ TestToken.QualifyKey() } { TestTokenValue }",
+				$"\t{ TestToken.QualifyKey() } { TestTokenValue }",
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static IndexedString[] RegionData_UnrecognizedToken => IndexedString.IndexRawStrings(
 			[
-				RegionToken.Qualify(),
-				Tokens.RegionOpen.Key,
-				$"\tunknown-token{ ControlSequences.TokenValueDivider } value",
-				Tokens.RegionClose.Key,
+				RegionToken.QualifyKey(),
+				TokenPrototypes.TokenBodyOpen.Key,
+				$"\tunknown-token{ ControlSequences.TokenKeyDelimiter } value",
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static IndexedString[] RegionData_Valid => IndexedString.IndexRawStrings(
 			[
-				$"{RegionToken.Qualify()} region token value",
-				$"{ Tokens.RegionOpen.Key } { Tokens.LineComment.Key } inline comment",
-				$"\t{ TestToken.Qualify() } { TestTokenValue }",
-				Tokens.RegionClose.Key,
+				$"{RegionToken.QualifyKey()} region token value",
+				$"{ TokenPrototypes.TokenBodyOpen.Key } { TokenPrototypes.LineComment.Key } inline comment",
+				$"\t{ TestToken.QualifyKey() } { TestTokenValue }",
+				TokenPrototypes.TokenBodyClose.Key,
 			] );
 			public static DataToken RegionToken => new()
 			{
@@ -94,14 +94,14 @@ namespace Petrichor.Common.Utilities.Tests
 
 		[TestMethod]
 		[DynamicData( nameof( Parse_Test_Success_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Success( IndexedString[] regionData )
+		public void Parse_Test_Success( IndexedString[] bodyData )
 		{
 			var expectedResult = new IndexedString();
-			var actualResult = parser!.Parse( regionData );
+			var actualResult = parser!.Parse( bodyData );
 			Assert.AreEqual( expectedResult, actualResult );
 
-			var expectedLinesParsed = regionData.Length;
-			var actualLinesParsed = parser!.LinesParsed;
+			var expectedLinesParsed = bodyData.Length;
+			var actualLinesParsed = parser!.TotalLinesParsed;
 			Assert.AreEqual( expectedLinesParsed, actualLinesParsed );
 		}
 
@@ -118,7 +118,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( BracketException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_BracketException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_BracketException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_BracketException( IndexedString[] bodyData ) => _ = parser!.Parse( bodyData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_BracketException_Data
 		{
@@ -133,7 +133,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenCountException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenCountException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenCountException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_TokenCountException( IndexedString[] bodyData ) => _ = parser!.Parse( bodyData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenCountException_Data
 		{
@@ -148,7 +148,7 @@ namespace Petrichor.Common.Utilities.Tests
 		[TestMethod]
 		[ExpectedException( typeof( TokenNameException ) )]
 		[DynamicData( nameof( Parse_Test_Throws_TokenNameException_Data ), DynamicDataSourceType.Property )]
-		public void Parse_Test_Throws_TokenNameException( IndexedString[] regionData ) => _ = parser!.Parse( regionData );
+		public void Parse_Test_Throws_TokenNameException( IndexedString[] bodyData ) => _ = parser!.Parse( bodyData );
 
 		public static IEnumerable<object[]> Parse_Test_Throws_TokenNameException_Data
 		{

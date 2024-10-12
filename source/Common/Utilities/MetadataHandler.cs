@@ -7,148 +7,170 @@ using Petrichor.Logging.Utilities;
 
 namespace Petrichor.Common.Utilities
 {
+	/// <summary>
+	/// Handles metadata-related parsing and logging initialization.
+	/// </summary>
 	public static class MetadataHandler
 	{
-		private static Dictionary<string, string> CommandOptionTerminalFlags { get; set; } = new();
-		private static Dictionary<string, DataToken> CommandOptionTokens { get; set; } = new();
+		private static Dictionary<string, string> CommandParameterMap { get; set; } = new();
+		private static Dictionary<string, DataToken> CommandTokenMap { get; set; } = new();
 
 
+		/// <summary>
+		/// Gets or sets the command to run, determined by parsed metadata.
+		/// </summary>
 		public static ModuleCommand CommandToRun { get; set; } = ModuleCommand.None;
 
-
-		public static void RegisterCommandOptions( Dictionary<string, string> terminalFlags, Dictionary<string, DataToken> tokens )
+		/// <summary>
+		/// Registers command options to allow them to be parsed from Petrichor Script.
+		/// </summary>
+		/// <param name="commandParameterMap">A dictionary mapping token keys to command parameters.</param>
+		/// <param name="commandTokenMap">A dictionary mapping token keys to token prototypes.</param>
+		public static void RegisterCommandOptions(Dictionary<string, string> commandParameterMap, Dictionary<string, DataToken> commandTokenMap)
 		{
-			foreach ( var item in terminalFlags )
+			foreach (var item in commandParameterMap)
 			{
-				CommandOptionTerminalFlags.Add( item.Key, item.Value );
+				CommandParameterMap.Add(item.Key, item.Value);
 			}
-			foreach ( var item in tokens )
+			foreach (var item in commandTokenMap)
 			{
-				CommandOptionTokens.Add( item.Key, item.Value );
+				CommandTokenMap.Add(item.Key, item.Value);
 			}
 		}
 
+		/// <summary>
+		/// Creates a parser to handle command tokens.
+		/// </summary>
+		/// <returns>A <see cref="TokenBodyParser{T}"/> which generates a <see cref="ModuleCommand"/>.</returns>
 		public static TokenBodyParser<ModuleCommand> CreateCommandTokenParser()
 		{
-			var commandTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
+			var commandTokenHandler = (IndexedString[] bodyData, int tokenStartIndex, ModuleCommand result) =>
 			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				result.Name = token.Value;
-				return new ProcessedRegionData<ModuleCommand>( result );
+				var token = new StringToken(bodyData[tokenStartIndex]);
+				result.Name = token.TokenValue;
+				return new ProcessedTokenData<ModuleCommand>(result);
 			};
 
-			var commandOptionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ModuleCommand result ) =>
+			var commandOptionTokenHandler = (IndexedString[] bodyData, int tokenStartIndex, ModuleCommand result) =>
 			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				var commandLineOption = CommandOptionTerminalFlags[ token.Key ];
-				result.Options.Add( commandLineOption, token.Value );
-				return new ProcessedRegionData<ModuleCommand>( result );
+				var token = new StringToken(bodyData[tokenStartIndex]);
+				var commandLineOption = CommandParameterMap[token.TokenKey];
+				result.Options.Add(commandLineOption, token.TokenValue);
+				return new ProcessedTokenData<ModuleCommand>(result);
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<ModuleCommand>()
+			var parserDescriptor = new TokenParseDescriptor<ModuleCommand>()
 			{
-				RegionToken = Tokens.Command,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.Command,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Command, commandTokenHandler },
+					{ TokenPrototypes.Command, commandTokenHandler },
 				},
 			};
 
-			var parser = new TokenBodyParser<ModuleCommand>( parserDescriptor );
-			foreach ( var token in CommandOptionTokens.Values )
+			var parser = new TokenBodyParser<ModuleCommand>(parserDescriptor);
+			foreach (var token in CommandTokenMap.Values)
 			{
-				parser.AddTokenHandler( token, commandOptionTokenHandler );
+				parser.AddTokenHandler(token, commandOptionTokenHandler);
 			}
 			return parser;
 		}
 
+		/// <summary>
+		/// Creates a parser to handle metadata tokens.
+		/// </summary>
+		/// <returns>A <see cref="TokenBodyParser{T}"/> which generates an <see cref="IndexedString"/>.</returns>
+		/// <exception cref="CommandException">Thrown when conflicting module commands are detected in metadata.</exception>
+		/// <exception cref="System.Data.VersionNotFoundException">Thrown when a minimum version token contains an unsupported version number string.</exception>
 		public static TokenBodyParser<List<IndexedString>> CreateMetadataTokenParser()
 		{
 			var commandRegionParser = CreateCommandTokenParser();
 
-			var minimumVersionTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<IndexedString> result ) =>
+			var minimumVersionTokenHandler = (IndexedString[] bodyData, int tokenStartIndex, List<IndexedString> result) =>
 			{
-				var token = new StringToken( regionData[ tokenStartIndex ] );
-				var version = token.Value;
-				Info.AppVersion.RejectUnsupportedVersions( version: version, lineNumber: token.LineNumber );
-				return new ProcessedRegionData<List<IndexedString>>();
+				var token = new StringToken(bodyData[tokenStartIndex]);
+				var version = token.TokenValue;
+				Info.AppVersion.RejectUnsupportedVersions(version: version, lineNumber: token.LineNumber);
+				return new ProcessedTokenData<List<IndexedString>>();
 			};
 
-			var commandTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<IndexedString> result ) =>
+			var commandTokenHandler = (IndexedString[] bodyData, int tokenStartIndex, List<IndexedString> result) =>
 			{
-				var dataTrimmedToToken = regionData[ tokenStartIndex.. ];
+				var dataTrimmedToToken = bodyData[tokenStartIndex..];
 				CommandToRun = ModuleCommand.Some;
-				var command = commandRegionParser.Parse( dataTrimmedToToken );
-				RejectConflictingModuleCommands( command );
+				var command = commandRegionParser.Parse(dataTrimmedToToken);
+				RejectConflictingModuleCommands(command);
 				CommandToRun = command;
-				return new ProcessedRegionData<List<IndexedString>>( value: result, bodySize: commandRegionParser.LinesParsed - 1 );
+				return new ProcessedTokenData<List<IndexedString>>(value: result, bodySize: commandRegionParser.TotalLinesParsed - 1);
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<List<IndexedString>>()
+			var tokenParseDescriptor = new TokenParseDescriptor<List<IndexedString>>()
 			{
-				RegionToken = Tokens.Metadata,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.Metadata,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Command, commandTokenHandler },
-					{ Tokens.MinimumVersion, minimumVersionTokenHandler },
+					{ TokenPrototypes.Command, commandTokenHandler },
+					{ TokenPrototypes.MinimumVersion, minimumVersionTokenHandler },
 				},
 			};
 
-			return new TokenBodyParser<List<IndexedString>>( parserDescriptor );
+			return new TokenBodyParser<List<IndexedString>>(tokenParseDescriptor);
 		}
 
-		public static void InitializeLogging( string logModeArgument, string logFileArgument )
+		/// <summary>
+		/// Initializes logging based on the provided arguments.
+		/// </summary>
+		/// <param name="logModeArgument">The logging mode to enable.</param>
+		/// <param name="logFileArgument">The log file name and/or path to store.</param>
+		public static void InitializeLogging(string logModeArgument, string logFileArgument)
 		{
-			switch ( logModeArgument )
+			switch (logModeArgument)
 			{
-				case Commands.Options.LogModeValueConsoleOnly:
-				{
-					Log.EnableLoggingToConsole();
+				case Commands.Arguments.LogModeConsoleOnly:
+					Logger.EnableConsoleLogging();
 					break;
-				}
 
-				case Commands.Options.LogModeValueFileOnly:
-				{
-					Log.EnableLoggingToFile();
+				case Commands.Arguments.LogModeFileOnly:
+					Logger.EnableFileLogging();
 					break;
-				}
 
-				case Commands.Options.LogModeValueAll:
-				{
-					Log.EnableAllLogDestinations();
+				case Commands.Arguments.LogModeAll:
+					Logger.EnableAllLogDestinations();
 					break;
-				}
 
 				default:
-				{
-					Log.DisableLogging();
+					Logger.DisableLogging();
 					break;
-				}
 			}
 
-			if ( !Log.IsLoggingToConsoleEnabled )
+			if (!Logger.IsConsoleLoggingEnabled)
 			{
-				Console.WriteLine( $"Logging to console is disabled. To enable it, use command option \"{Commands.Options.LogMode}\" with parameters \"{Commands.Options.LogModeValueConsoleOnly}\" or \"{Commands.Options.LogModeValueAll}\"." );
+				Console.WriteLine($"Logging to console is disabled. To enable it, use command option \"{Commands.Parameters.LogMode}\" with argument \"{Commands.Arguments.LogModeConsoleOnly}\" or \"{Commands.Arguments.LogModeAll}\".");
 			}
 
-			if ( Log.IsLoggingToFileEnabled )
+			if (Logger.IsFileLoggingEnabled)
 			{
-				var filePathHandler = new FilePathHandler( TerminalOptions.DefaultLogDirectory, TerminalOptions.DefaultLogFileName );
-				filePathHandler.SetFile( logFileArgument );
-				Log.CreateLogFile( filePathHandler.FilePath );
+				var filePathHandler = new FilePathHandler(TerminalOptions.DefaultLogDirectory, TerminalOptions.DefaultLogFileName);
+				filePathHandler.SetFile(logFileArgument);
+				Logger.CreateLogFile(filePathHandler.FilePath);
 			}
 		}
 
 
-		private static void RejectConflictingModuleCommands( ModuleCommand command )
+		/// <summary>
+		/// Validates and rejects conflicting module commands.
+		/// </summary>
+		/// <param name="command">The parsed module command to validate.</param>
+		/// <exception cref="CommandException">Thrown if a conflicting module command is detected.</exception>
+		private static void RejectConflictingModuleCommands(ModuleCommand command)
 		{
 			var isCurrentCommandSet = CommandToRun != ModuleCommand.None && CommandToRun != ModuleCommand.Some;
 			var isNewCommandSet = command != ModuleCommand.None;
-			if ( !isCurrentCommandSet || !isNewCommandSet )
+			if (!isCurrentCommandSet || !isNewCommandSet)
 			{
 				return;
 			}
-			ExceptionLogger.LogAndThrow( exception: new CommandException( $"A(n) \"{Tokens.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"." ) );
+			ExceptionLogger.LogAndThrow(new CommandException($"A(n) \"{TokenPrototypes.Metadata.Key}\" region contains a command \"{command.Name}\" which conflicts with active command \"{CommandToRun.Name}\"."));
 		}
 	}
 }

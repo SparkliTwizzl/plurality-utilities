@@ -7,48 +7,79 @@ using Petrichor.ShortcutScriptGeneration.Syntax;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
+	/// <summary>
+	/// Provides methods to handle module options for text shortcut script generation.
+	/// </summary>
 	public static class ModuleOptionsHandler
 	{
-		public static ProcessedRegionData<ModuleOptionData> DefaultIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
+		/// <summary>
+		/// The handler function for <see cref="TokenPrototypes.DefaultIcon"/> tokens.
+		/// </summary>
+		/// <param name="bodyData">The indexed string data representing the body data.</param>
+		/// <param name="tokenStartIndex">The start index of the token with in the body data.</param>
+		/// <param name="result">The result to modify.</param>
+		/// <returns>The modified <see cref="ModuleOptions"/> instance.</returns>
+		public static ProcessedTokenData<ModuleOptions> DefaultIconTokenHandler( IndexedString[] bodyData, int tokenStartIndex, ModuleOptions result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
-			var filePath = token.Value.WrapInQuotes();
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
+			var filePath = token.TokenValue.WrapInQuotes();
 			result.DefaultIconFilePath = filePath;
-			Log.Info( $"Stored default icon file path ({filePath})." );
-			return new ProcessedRegionData<ModuleOptionData>( result );
+			Logger.Info( $"Stored default icon file path ({filePath})." );
+			return new ProcessedTokenData<ModuleOptions>( result );
 		}
 
-		public static ProcessedRegionData<ModuleOptionData> ReloadShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
+		/// <summary>
+		/// The handler function for <see cref="TokenPrototypes.ReloadShortcut"/> tokens.
+		/// </summary>
+		/// <param name="bodyData">The indexed string data representing the body data.</param>
+		/// <param name="tokenStartIndex">The start index of the token with in the body data.</param>
+		/// <param name="result">The result to modify.</param>
+		/// <returns>The modified <see cref="ModuleOptions"/> instance.</returns>
+		public static ProcessedTokenData<ModuleOptions> ReloadShortcutTokenHandler( IndexedString[] bodyData, int tokenStartIndex, ModuleOptions result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
-			var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
+			var hotstring = ReplaceFieldsInScriptControlHotstring( token.TokenValue );
 			result.ReloadShortcut = hotstring;
-			Log.Info( $"Stored reload shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-			return new ProcessedRegionData<ModuleOptionData>( result );
+			Logger.Info( $"Stored reload shortcut (\"{token.TokenValue}\" -> \"{hotstring}\")." );
+			return new ProcessedTokenData<ModuleOptions>( result );
 		}
 
-		public static ProcessedRegionData<ModuleOptionData> SuspendIconTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
+		/// <summary>
+		/// The handler function for <see cref="TokenPrototypes.SuspendIcon"/> tokens.
+		/// </summary>
+		/// <param name="bodyData">The indexed string data representing the body data.</param>
+		/// <param name="tokenStartIndex">The start index of the token with in the body data.</param>
+		/// <param name="result">The result to modify.</param>
+		/// <returns>The modified <see cref="ModuleOptions"/> instance.</returns>
+		public static ProcessedTokenData<ModuleOptions> SuspendIconTokenHandler( IndexedString[] bodyData, int tokenStartIndex, ModuleOptions result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
-			var filePath = token.Value.WrapInQuotes();
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
+			var filePath = token.TokenValue.WrapInQuotes();
 			result.SuspendIconFilePath = filePath;
-			Log.Info( $"Stored suspend icon file path ({filePath})." );
-			return new ProcessedRegionData<ModuleOptionData>( result );
+			Logger.Info( $"Stored suspend icon file path ({filePath})." );
+			return new ProcessedTokenData<ModuleOptions>( result );
 		}
 
-		public static ProcessedRegionData<ModuleOptionData> SuspendShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, ModuleOptionData result )
+		/// <summary>
+		/// The handler function for <see cref="TokenPrototypes.SuspendShortcut"/> tokens.
+		/// </summary>
+		/// <param name="bodyData">The indexed string data representing the body data.</param>
+		/// <param name="tokenStartIndex">The start index of the token with in the body data.</param>
+		/// <param name="result">The result to modify.</param>
+		/// <returns>The modified <see cref="ModuleOptions"/> instance.</returns>
+		public static ProcessedTokenData<ModuleOptions> SuspendShortcutTokenHandler( IndexedString[] bodyData, int tokenStartIndex, ModuleOptions result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
-			var hotstring = ReplaceFieldsInScriptControlHotstring( token.Value );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
+			var hotstring = ReplaceFieldsInScriptControlHotstring( token.TokenValue );
 			result.SuspendShortcut = hotstring;
-			Log.Info( $"Stored suspend shortcut (\"{token.Value}\" -> \"{hotstring}\")." );
-			return new ProcessedRegionData<ModuleOptionData>( result );
+			Logger.Info( $"Stored suspend shortcut (\"{token.TokenValue}\" -> \"{hotstring}\")." );
+			return new ProcessedTokenData<ModuleOptions>( result );
 		}
 
 
 		private static string ReplaceFieldsInScriptControlHotstring( string hotstring )
 		{
-			foreach ( var findTag in ControlShortcutFindAndReplace.LookUpTable )
+			foreach ( var findTag in FindAndReplaceMaps.ScriptControlKeyboardShortcuts )
 			{
 				var find = findTag.Key;
 				var replace = findTag.Value;

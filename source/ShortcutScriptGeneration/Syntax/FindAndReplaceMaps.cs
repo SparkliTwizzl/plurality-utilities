@@ -1,8 +1,14 @@
 ﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
 {
-	public static class ControlShortcutFindAndReplace
+	/// <summary>
+	/// Contains maps of find-and-replace pairs.
+	/// </summary>
+	public static class FindAndReplaceMaps
 	{
-		public static Dictionary<string, string> LookUpTable => new()
+		/// <summary>
+		/// Find-and-replace map for keyboard shortcuts to control shortcut scripts.
+		/// </summary>
+		public static Dictionary<string, string> ScriptControlKeyboardShortcuts => new()
 		{
 			{ "[windows]", "#" },
 			{ "[win]", "#" },

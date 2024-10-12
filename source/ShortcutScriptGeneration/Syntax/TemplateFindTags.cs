@@ -1,17 +1,58 @@
-﻿namespace Petrichor.ShortcutScriptGeneration.Syntax
-{
-	public readonly struct TemplateFindTags
-	{
-		public static string Color => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Color.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string Decoration => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Decoration.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string ID => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.ID.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string Name => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Name.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string LastName => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.LastName.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string LastTag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.LastTag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string Pronoun => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Pronoun.Key}{Common.Syntax.ControlSequences.FindTagClose}";
-		public static string Tag => $"{Common.Syntax.ControlSequences.FindTagOpen}{Tokens.Tag.Key}{Common.Syntax.ControlSequences.FindTagClose}";
+﻿using Petrichor.Common.Containers;
 
-		public static string[] LookUpTable =>
+
+namespace Petrichor.ShortcutScriptGeneration.Syntax
+{
+	/// <summary>
+	/// Contains predefined tags for find-and-replace in templated shortcuts.
+	/// </summary>
+	public static class TemplateFindTags
+	{
+		/// <summary>
+		/// Gets the tag corresponding to the <see cref="Containers.Entry.Color"> field.
+		/// </summary>
+		public static string Color => QualifyTag(TokenPrototypes.Color);
+
+		/// <summary>
+		/// Gets the tag corresponding to the <see cref="Containers.Entry.Decoration"> field.
+		/// </summary>
+		public static string Decoration => QualifyTag(TokenPrototypes.Decoration);
+
+		/// <summary>
+		/// Gets the tag corresponding to the <see cref="Containers.Entry.ID"> field.
+		/// </summary>
+		public static string ID => QualifyTag(TokenPrototypes.ID);
+
+		/// <summary>
+		/// Gets the tag corresponding to the value of the <see cref="Containers.Entry.Name"> field.
+		/// </summary>
+		public static string Name => QualifyTag(TokenPrototypes.Name);
+
+		/// <summary>
+		/// Gets the tag corresponding to the value of the <see cref="Containers.Entry.LastName"> field.
+		/// </summary>
+		public static string LastName => QualifyTag(TokenPrototypes.LastName);
+
+		/// <summary>
+		/// Gets the tag corresponding to the tag of the <see cref="Containers.Entry.LastName"> field.
+		/// </summary>
+		public static string LastTag => QualifyTag(TokenPrototypes.LastTag);
+
+		/// <summary>
+		/// Gets the tag corresponding to the <see cref="Containers.Entry.Pronoun"> field.
+		/// </summary>
+		public static string Pronoun => QualifyTag(TokenPrototypes.Pronoun);
+
+		/// <summary>
+		/// Gets the tag corresponding to the tag of the <see cref="Containers.Entry.Name"> field.
+		/// </summary>
+		public static string Tag => QualifyTag(TokenPrototypes.Tag);
+
+
+		/// <summary>
+		/// Gets a lookup table of all defined tags.
+		/// </summary>
+		public static string[] LookupTable =>
 		[
 			Color,
 			Decoration,
@@ -22,5 +63,8 @@
 			Pronoun,
 			Tag,
 		];
+
+
+		private static string QualifyTag(DataToken tagToken) => $"{Common.Syntax.ControlSequences.FindTagOpen}{tagToken.Key}{Common.Syntax.ControlSequences.FindTagClose}";
 	}
 }

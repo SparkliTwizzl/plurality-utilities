@@ -20,32 +20,32 @@ namespace Petrichor.App
 
 			try
 			{
-				Log.EnableBuffering();
-				Log.Info( AppInfo.AppNameAndVersion );
-				Log.Info( startTimeMessage );
-				var commandToRun = await CommandLineHandler.ParseArguments( args );
+				Logger.EnableBuffering();
+				Logger.Info( AppInfo.AppNameAndVersion );
+				Logger.Info( startTimeMessage );
+				var commandToRun = await CommandLineManager.HandleCommandLineInput( args );
 				var optionListStringBuilder = new StringBuilder();
 				foreach ( var option in commandToRun.Options )
 				{
 					_ = optionListStringBuilder.Append( $" {option.Key} {option.Value}" );
 				}
-				Log.Info( $"Command to run: {commandToRun.Name}{optionListStringBuilder}" );
-				RuntimeHandler.Execute( commandToRun );
+				Logger.Info( $"Command to run: {commandToRun.Name}{optionListStringBuilder}" );
+				ApplicationManager.HandleModuleCommand( commandToRun );
 			}
 			catch ( Exception exception )
 			{
-				Log.Error( $"Error occurred during execution: {exception.Message}" );
-				Log.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
+				Logger.Error( $"Error occurred during execution: {exception.Message}" );
+				Logger.Important( $"If you file a bug report, please include the input and log files to help developers reproduce the issue." );
 			}
 
 			var endTime = DateTime.Now;
 			var executionTime = ( endTime - startTime ).TotalSeconds;
 			var finishTimeMessage = $"Execution finished at {DateTime.Now:yyyy-MM-dd:HH:mm:ss.fffffff} and took {executionTime} seconds.";
-			Log.Info( finishTimeMessage );
+			Logger.Info( finishTimeMessage );
 			Console.WriteLine( finishTimeMessage );
 			Console.WriteLine();
 
-			RuntimeHandler.ExitApp();
+			ApplicationManager.TerminateApplication();
 		}
 	}
 }
