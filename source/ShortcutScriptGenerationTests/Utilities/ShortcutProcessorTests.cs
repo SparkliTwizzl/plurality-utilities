@@ -17,8 +17,8 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			[
 				new Entry(
 					EntryID,
-					new List<Identity>(){ new( EntryName, EntryTag ) },
-					new Identity( EntryLastName, EntryLastTag ),
+					new List<Name>(){ new( EntryName, EntryTag ) },
+					new Name( EntryLastName, EntryLastTag ),
 					EntryPronoun,
 					EntryColor,
 					EntryDecoration
@@ -42,9 +42,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 			public static string EntryTagFirstCaps => "Tag";
 			public static string Find1 => "find1";
 			public static string Find2 => "find2";
-			public static InputData Input => new( ModuleOptions, EntryList, TemplateList, RawShortcuts );
-			public static ModuleOptionData ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
-			public static string RawShortcut => $"{Find1}{ControlSequences.ShortcutFindReplaceDivider}{Replace1}";
+			public static ShortcutScriptInput Input => new( ModuleOptions, EntryList, RawShortcuts, TemplateList );
+			public static ModuleOptions ModuleOptions => new( TestAssets.DefaultIconFileName, TestAssets.SuspendIconFilePath, TestAssets.ReloadShortcut, TestAssets.SuspendShortcut );
+			public static string RawShortcut => $"{Find1}{ControlSequences.TemplateFindStringDelimiter}{Replace1}";
 			public static string[] RawShortcuts =>
 			[
 				RawShortcut,
@@ -63,34 +63,34 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				TemplatedShortcutTextCaseUnchanged,
 				TemplatedShortcutTextCaseUpper,
 			];
-			public static ShortcutData TemplateDataTextCaseDefault => new()
+			public static TextShortcut TemplateDataTextCaseDefault => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 			};
-			public static ShortcutData TemplateDataTextCaseFirstCaps => new()
+			public static TextShortcut TemplateDataTextCaseFirstCaps => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseFirstCaps,
 			};
-			public static ShortcutData TemplateDataTextCaseLower => new()
+			public static TextShortcut TemplateDataTextCaseLower => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseLower,
 			};
-			public static ShortcutData TemplateDataTextCaseUnchanged => new()
+			public static TextShortcut TemplateDataTextCaseUnchanged => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
 				TemplateReplaceString = TemplateReplaceString,
 				TextCase = TextCaseUnchanged,
 			};
-			public static ShortcutData TemplateDataTextCaseUpper => new()
+			public static TextShortcut TemplateDataTextCaseUpper => new()
 			{
 				FindAndReplace = TemplateFindAndReplace,
 				TemplateFindString = TemplateFindString,
@@ -111,7 +111,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 				{ Find1, Replace1 },
 				{ Find2, Replace2 },
 			};
-			public static ShortcutData[] TemplateList =>
+			public static TextShortcut[] TemplateList =>
 			[
 				TemplateDataTextCaseDefault,
 				TemplateDataTextCaseFirstCaps,
@@ -145,19 +145,20 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		public void Generate_Test_Success()
 		{
 			var expected = TestData.Shortcuts;
-			var input = shortcutProcessor!.ProcessAndStoreShortcuts( TestData.Input );
+			var input = shortcutProcessor!.SanitizePlaintextShortcuts( TestData.Input );
+			input = shortcutProcessor!.GenerateTemplatedShortcuts( input );
 			var actual = input.Shortcuts;
 
-			Log.Info( "expected:" );
+			Logger.Info( "expected:" );
 			foreach ( var item in expected )
 			{
-				Log.Info( $"    {item}" );
+				Logger.Info( $"    {item}" );
 			}
 
-			Log.Info( "actual:" );
+			Logger.Info( "actual:" );
 			foreach ( var item in actual )
 			{
-				Log.Info( $"    {item}" );
+				Logger.Info( $"    {item}" );
 			}
 
 			CollectionAssert.AreEqual( expected, actual );

@@ -8,15 +8,15 @@ namespace Petrichor.TestShared.Utilities
 	{
 		public static void InitializeLoggingForTests()
 		{
-			Log.EnableBuffering();
-			Log.EnableTestMode();
+			Logger.EnableBuffering();
+			Logger.EnableTestMode();
 			var label = GetCallingClassName();
 			var logFileName = $"{label}_{DateTime.Now:yyyy-MM-dd_hh-mm-ss_fffffff}.log";
 			var logFileDirectory = Path.Combine( ProjectDirectories.TestLogDirectory, "unit" );
 			var logFilePath = Path.Combine( logFileDirectory, logFileName );
-			Log.CreateLogFile( logFilePath );
-			Log.WriteBufferToFile();
-			Log.DisableBuffering();
+			Logger.CreateLogFile( logFilePath );
+			Logger.WriteBufferToFile();
+			Logger.DisableBuffering();
 		}
 
 		public static string LocateInputFile( string fileName ) => $@"{ProjectDirectories.TestInputDirectory}\{fileName}";

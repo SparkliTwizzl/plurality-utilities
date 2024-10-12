@@ -1,13 +1,43 @@
 ﻿namespace Petrichor.Common.Syntax
 {
-	public readonly struct ControlSequences
+	/// <summary>
+	/// Contains control sequences used for tokenization and parsing.
+	/// </summary>
+	public static class ControlSequences
 	{
+		/// <summary>
+		/// The escape character used for escaping sequences.
+		/// </summary>
 		public const char Escape = '\\';
-		public const char RegionClose = '}';
-		public const char RegionOpen = '{';
+		
+		/// <summary>
+		/// The sequence that indicates the closing of a token body.
+		/// </summary>
+		public const char TokenBodyClose = '}';
+		
+		/// <summary>
+		/// The sequence that indicates the opening of a token body.
+		/// </summary>
+		public const char TokenBodyOpen = '{';
+		
+		/// <summary>
+		/// The sequence that indicates the closing of a find tag.
+		/// </summary>
 		public const char FindTagClose = ']';
+		
+		/// <summary>
+		/// The sequence that indicates the opening of a find tag.
+		/// </summary>
 		public const char FindTagOpen = '[';
+		
+		/// <summary>
+		/// The sequence that starts a line comment.
+		/// </summary>
 		public const string LineComment = "//";
-		public const char TokenValueDivider = ':';
+		
+		/// <summary>
+		/// The sequence that delimits token keys.
+		/// </summary>
+		public const char TokenKeyDelimiter = ':';
 	}
 }

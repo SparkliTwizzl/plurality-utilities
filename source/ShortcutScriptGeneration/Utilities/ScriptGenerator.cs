@@ -9,60 +9,67 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
-	public class ScriptGenerator
+	/// <summary>
+	/// Generates AutoHotkey shortcut scripts based on the provided input data.
+	/// </summary>
+	public class ShortcutScriptGenerator
 	{
 		private static readonly string DefaultOutputDirectory = ProjectDirectories.OutputDirectory;
 		private static readonly string DefaultOutputFileName = $"output.{OutputFileExtension}";
 		private const string OutputFileExtension = "ahk";
 
-
-		private InputData Input { get; set; } = new();
+		private ShortcutScriptInput InputData { get; set; } = new();
 		private string OutputFilePath { get; set; } = string.Empty;
 		private int TotalLinesWritten { get; set; } = 0;
 
 
-		public void Generate( InputData input, string outputFile )
+		/// <summary>
+		/// Generates the shortcut script and writes it to the specified output file.
+		/// </summary>
+		/// <param name="input">The input data for the script generation.</param>
+		/// <param name="outputFile">The path to the output file.</param>
+		/// <exception cref="ScriptGenerationException">Thrown when the output file cannot be generated.</exception>
+		public void GenerateShortcutScriptFile(ShortcutScriptInput input, string outputFile)
 		{
-			Input = input;
-			var filePathHandler = new FilePathHandler( DefaultOutputDirectory, DefaultOutputFileName );
-			filePathHandler.SetFile( outputFile );
-			var filePath = Path.ChangeExtension( filePathHandler.FilePath, OutputFileExtension );
+			InputData = input;
+			var filePathHandler = new FilePathHandler(DefaultOutputDirectory, DefaultOutputFileName);
+			filePathHandler.SetFile(outputFile);
+			var filePath = Path.ChangeExtension(filePathHandler.FilePath, OutputFileExtension);
 
 			var taskMessage = $"Generate output file \"{filePath}\"";
-			Log.Start( taskMessage );
+			Logger.Start(taskMessage);
 
 			try
 			{
-				CreateOutputFile( filePath );
+				var directory = Path.GetDirectoryName(filePath);
+				_ = Directory.CreateDirectory(directory!);
+				var file = File.Create(filePath);
+				WriteScriptHeaderToFile(file);
+				WriteScriptMacrosToFile(file);
+				file.Close();
 			}
-			catch ( Exception exception )
+			catch (Exception exception)
 			{
-				ExceptionLogger.LogAndThrow( new ScriptGenerationException( $"Failed to generate output file \"{OutputFilePath}\".", exception ) );
+				ExceptionLogger.LogAndThrow(new ScriptGenerationException($"Failed to generate output file \"{OutputFilePath}\".", exception));
 			}
 
-			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file." );
-			Log.Finish( taskMessage );
+			Logger.Info($"Wrote {TotalLinesWritten} total lines to output file.");
+			Logger.Finish(taskMessage);
 		}
 
 
-		private void CreateOutputFile( string filePath )
-		{
-			var directory = Path.GetDirectoryName( filePath );
-			_ = Directory.CreateDirectory( directory! );
-			var file = File.Create( filePath );
-			WriteHeaderToFile( file );
-			WriteMacrosToFile( file );
-			file.Close();
-		}
-
-		private static void WriteByteOrderMarkToFile( FileStream file )
+		/// <summary>
+		/// Writes a UTF-8 byte order mark to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		private static void WriteByteOrderMarkToFile(FileStream file)
 		{
 			var encoding = Encoding.UTF8;
-			file.Write( encoding.GetPreamble() );
-			Log.Info( "Wrote byte order mark to output file." );
+			file.Write(encoding.GetPreamble());
+			Logger.Info("Wrote byte order mark to output file.");
 		}
 
-		private void WriteConstantsToFile( FileStream file )
+		private void WriteScriptConstantsToFile(FileStream file)
 		{
 			var lines = new string[]
 			{
@@ -77,12 +84,16 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile( file, lines, " (Constants needed for script execution)" );
+			WriteLinesToFile(file, lines, " (Constants needed for script execution)");
 		}
 
-		private void WriteControlShortcutsToFile( FileStream file )
+		/// <summary>
+		/// Writes the keyboard shortcuts to reload or suspend the script to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		private void WriteScriptControlShortcutsToFile(FileStream file)
 		{
-			if ( Input.ModuleOptions.ReloadShortcut == string.Empty && Input.ModuleOptions.SuspendShortcut == string.Empty )
+			if (InputData.ModuleOptions.ReloadShortcut == string.Empty && InputData.ModuleOptions.SuspendShortcut == string.Empty)
 			{
 				return;
 			}
@@ -93,23 +104,27 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"#SuspendExempt true"
 			};
 
-			if ( Input.ModuleOptions.ReloadShortcut != string.Empty )
+			if (InputData.ModuleOptions.ReloadShortcut != string.Empty)
 			{
-				lines.Add( $"{Input.ModuleOptions.ReloadShortcut}::Reload()" );
+				lines.Add($"{InputData.ModuleOptions.ReloadShortcut}::Reload()");
 			}
 
-			if ( Input.ModuleOptions.SuspendShortcut != string.Empty )
+			if (InputData.ModuleOptions.SuspendShortcut != string.Empty)
 			{
-				lines.Add( $"{Input.ModuleOptions.SuspendShortcut}::Suspend( SUSPEND_TOGGLE )" );
+				lines.Add($"{InputData.ModuleOptions.SuspendShortcut}::Suspend( SUSPEND_TOGGLE )");
 			}
 
-			lines.Add( "#SuspendExempt false" );
-			lines.Add( "" );
-			lines.Add( "" );
-			WriteLinesToFile( file, lines.ToArray(), " (Script reload/suspend shortcuts)" );
+			lines.Add("#SuspendExempt false");
+			lines.Add("");
+			lines.Add("");
+			WriteLinesToFile(file, lines.ToArray(), " (Script reload/suspend shortcuts)");
 		}
 
-		private void WriteControlStatementsToFile( FileStream file )
+		/// <summary>
+		/// Writes the AutoHotkey control statements to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		private void WriteScriptControlStatementsToFile(FileStream file)
 		{
 			var lines = new string[]
 			{
@@ -117,49 +132,53 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"#SingleInstance Force",
 				"",
 			};
-			WriteLinesToFile( file, lines, " (AutoHotkey control statements)" );
+			WriteLinesToFile(file, lines, " (AutoHotkey control statements)");
 		}
 
-		private void WriteGeneratedByMessageToFile( FileStream file )
+		/// <summary>
+		/// Writes the "Generated by" message to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		private void WriteGeneratedByInfoToFile(FileStream file)
 		{
 			var lines = new string[]
 			{
-				$"; Generated by { AppInfo.AppNameAndVersion } AutoHotkey shortcut script generator",
+				$"; Generated by {AppInfo.AppNameAndVersion} AutoHotkey shortcut script generator",
 				"; https://github.com/SparkliTwizzl/petrichor",
 				"",
 				"",
 			};
-			WriteLinesToFile( file, lines, " (\"Generated by\" message)" );
+			WriteLinesToFile(file, lines, " (\"Generated by\" message)");
 		}
 
-		private void WriteHeaderToFile( FileStream file )
+		private void WriteScriptHeaderToFile(FileStream file)
 		{
 			var taskMessage = "Write header to output file";
-			Log.Start( taskMessage );
-			WriteByteOrderMarkToFile( file );
-			WriteGeneratedByMessageToFile( file );
-			WriteControlStatementsToFile( file );
-			WriteIconFilePathsToFile( file );
-			WriteConstantsToFile( file );
-			WriteIconHandlingToFile( file );
-			WriteControlShortcutsToFile( file );
-			Log.Info( $"Wrote {TotalLinesWritten} total lines to output file header." );
-			Log.Finish( taskMessage );
+			Logger.Start(taskMessage);
+			WriteByteOrderMarkToFile(file);
+			WriteGeneratedByInfoToFile(file);
+			WriteScriptControlStatementsToFile(file);
+			WriteIconPathsToFile(file);
+			WriteScriptConstantsToFile(file);
+			WriteIconHandlingLogicToFile(file);
+			WriteScriptControlShortcutsToFile(file);
+			Logger.Info($"Wrote {TotalLinesWritten} total lines to output file header.");
+			Logger.Finish(taskMessage);
 		}
 
-		private void WriteIconFilePathsToFile( FileStream file )
+		private void WriteIconPathsToFile(FileStream file)
 		{
 			var lines = new string[]
 			{
-				$"defaultIcon := { Input.ModuleOptions.DefaultIconFilePath }",
-				$"suspendIcon := { Input.ModuleOptions.SuspendIconFilePath }",
+				$"defaultIcon := {InputData.ModuleOptions.DefaultIconFilePath}",
+				$"suspendIcon := {InputData.ModuleOptions.SuspendIconFilePath}",
 				"",
 				"",
 			};
-			WriteLinesToFile( file, lines, " (Icon filepaths)" );
+			WriteLinesToFile(file, lines, " (Icon filepaths)");
 		}
 
-		private void WriteIconHandlingToFile( FileStream file )
+		private void WriteIconHandlingLogicToFile(FileStream file)
 		{
 			var lines = new string[]
 			{
@@ -210,45 +229,57 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 				"",
 				"",
 			};
-			WriteLinesToFile( file, lines, " (Icon handling logic)" );
+			WriteLinesToFile(file, lines, " (Icon handling logic)");
 		}
 
-		private void WriteLineToFile( FileStream file, string line = "" )
+		/// <summary>
+		/// Writes a single line to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		/// <param name="line">The line to write to the file.</param>
+		/// <exception cref="FileLoadException">Thrown when the line cannot be written to the file.</exception>
+		private void WriteLineToFile(FileStream file, string line = "")
 		{
 			try
 			{
-				var bytes = Encoding.UTF8.GetBytes( $"{line}\n" );
-				file.Write( bytes );
+				var bytes = Encoding.UTF8.GetBytes($"{line}\n");
+				file.Write(bytes);
 				++TotalLinesWritten;
 			}
-			catch ( Exception exception )
+			catch (Exception exception)
 			{
-				ExceptionLogger.LogAndThrow( new FileLoadException( "Failed to write line to output file.", exception ) );
+				ExceptionLogger.LogAndThrow(new FileLoadException("Failed to write line to output file.", exception));
 			}
 		}
 
-		private void WriteLinesToFile( FileStream file, string[] lines, string message = "" )
+		/// <summary>
+		/// Writes multiple lines to the specified file.
+		/// </summary>
+		/// <param name="file">The file stream to write to.</param>
+		/// <param name="lines">The lines to write to the file.</param>
+		/// <param name="message">An optional message to log after writing the lines.</param>
+		private void WriteLinesToFile(FileStream file, string[] lines, string message = "")
 		{
 			var linesWritten = 0;
-			foreach ( var line in lines )
+			foreach (var line in lines)
 			{
-				WriteLineToFile( file, line );
+				WriteLineToFile(file, line);
 				++linesWritten;
 			}
-			Log.Info( $"Wrote {linesWritten} lines to output file{message}." );
+			Logger.Info($"Wrote {linesWritten} lines to output file{message}.");
 		}
 
-		private void WriteMacrosToFile( FileStream file )
+		private void WriteScriptMacrosToFile(FileStream file)
 		{
 			var taskMessage = "Write macros to output file";
-			Log.Start( taskMessage );
+			Logger.Start(taskMessage);
 			var lines = new List<string>
 			{
 				"; macros generated from entries and templates",
 			};
-			lines.AddRange( Input.Shortcuts );
-			WriteLinesToFile( file, lines.ToArray() );
-			Log.Finish( taskMessage );
+			lines.AddRange(InputData.Shortcuts);
+			WriteLinesToFile(file, lines.ToArray());
+			Logger.Finish(taskMessage);
 		}
 	}
 }

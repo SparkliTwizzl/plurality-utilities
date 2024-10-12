@@ -9,6 +9,9 @@ using System.Text;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
+	/// <summary>
+	/// Provides methods to handle parsing text shortcut tokens.
+	/// </summary>
 	public static class ShortcutHandler
 	{
 		private static class FindAndReplaceParseHandler
@@ -28,13 +31,13 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			{
 				if ( result.Count < 1 )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{Tokens.ShortcutTemplate.Key}\" region has a \"{token.Key}\" token, but is missing a corresponding \"{Tokens.Find}\" token." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{TokenPrototypes.ShortcutTemplate.Key}\" region has a \"{token.TokenKey}\" token, but is missing a corresponding \"{TokenPrototypes.Find}\" token." ), token.LineNumber );
 				}
 
 				var items = ExtractItemsFromBody( token );
 				if ( items.Length != result.Count )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's body has a different number of items than its corresponding \"{Tokens.Find.Key}\" token (has: {items.Length} / should have: {result.Count})." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.TokenKey}\" token's body has a different number of items than it's corresponding \"{TokenPrototypes.Find.Key}\" token (has: {items.Length} / should have: {result.Count})." ), token.LineNumber );
 				}
 
 				for ( var i = 0 ; i < items.Length ; ++i )
@@ -49,22 +52,22 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			private static string[] ExtractItemsFromBody( StringToken token )
 			{
-				if ( token.Value == string.Empty )
+				if ( token.TokenValue == string.Empty )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token values cannot be blank." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.TokenKey}\" token values cannot be blank." ), token.LineNumber );
 				}
 
-				if ( !token.Value.StartsWith( Common.Syntax.ControlSequences.RegionOpen ) )
+				if ( !token.TokenValue.StartsWith( Common.Syntax.ControlSequences.TokenBodyOpen ) )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies must start with a '{Common.Syntax.ControlSequences.RegionOpen}' character." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.TokenKey}\" token bodies must start with a '{Common.Syntax.ControlSequences.TokenBodyOpen}' character." ), token.LineNumber );
 				}
 
-				if ( !token.Value.EndsWith( Common.Syntax.ControlSequences.RegionClose ) )
+				if ( !token.TokenValue.EndsWith( Common.Syntax.ControlSequences.TokenBodyClose ) )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies must end with a '{Common.Syntax.ControlSequences.RegionClose}' character." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.TokenKey}\" token bodies must end with a '{Common.Syntax.ControlSequences.TokenBodyClose}' character." ), token.LineNumber );
 				}
 
-				var items = token.Value[ 1..( token.Value.Length - 1 ) ]
+				var items = token.TokenValue[ 1..( token.TokenValue.Length - 1 ) ]
 					.Split( ',' );
 
 				for ( var i = 0 ; i < items.Length ; ++i )
@@ -74,7 +77,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 				if ( items.Contains( string.Empty ) )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token bodies cannot contain blank items." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.TokenKey}\" token bodies cannot contain blank items." ), token.LineNumber );
 				}
 
 				return items;
@@ -84,10 +87,10 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 		private static class ShortcutParseHandler
 		{
-			public static ShortcutData ParseTemplateString( StringToken token, ShortcutData result )
+			public static TextShortcut ParseTemplateString( StringToken token, TextShortcut result )
 			{
 				ValidateShortcutStructure( token );
-				var sanitizedHotstring = SanitizeHotstring( token.Value );
+				var sanitizedHotstring = SanitizeHotstring( token.TokenValue );
 
 				var template = new StringBuilder();
 				for ( var i = 0 ; i < sanitizedHotstring.Length ; ++i )
@@ -130,7 +133,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					}
 				}
 
-				var components = template.ToString().Split( ControlSequences.ShortcutFindReplaceDivider );
+				var components = template.ToString().Split( ControlSequences.TemplateFindStringDelimiter );
 				result.TemplateFindString = components[ 0 ].Trim();
 				result.TemplateReplaceString = components[ 1 ].Trim();
 				return result;
@@ -138,14 +141,14 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			public static void ValidateShortcutStructure( StringToken token )
 			{
-				var hotstring = SanitizeHotstring( token.Value );
-				var components = hotstring.Split( ControlSequences.ShortcutFindReplaceDivider );
+				var hotstring = SanitizeHotstring( token.TokenValue );
+				var components = hotstring.Split( ControlSequences.TemplateFindStringDelimiter );
 				var doesFindStringExist = ( components.Length > 0 ) && ( components[ 0 ]?.Length > 0 );
 				var doesReplaceStringExist = ( components.Length > 1 ) && ( components[ 1 ]?.Length > 0 );
 				var isTemplateInValidFormat = doesFindStringExist && doesReplaceStringExist;
 				if ( !isTemplateInValidFormat )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's value is not a valid shortcut string." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.TokenKey}\" token's value is not a valid shortcut string." ), token.LineNumber );
 				}
 			}
 
@@ -189,7 +192,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 
 			private static void ValidateFindTagValue( string findTag, int lineNumber )
 			{
-				if ( !TemplateFindTags.LookUpTable.Contains( findTag ) )
+				if ( !TemplateFindTags.LookupTable.Contains( findTag ) )
 				{
 					ExceptionLogger.LogAndThrow( new TokenValueException( $"A template string contains an unrecognized \"find\" tag value ( \"{findTag}\" )." ), lineNumber );
 				}
@@ -201,52 +204,50 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			public static string ParseTextCase( StringToken token )
 			{
-				if ( token.Value == string.Empty )
+				if ( token.TokenValue == string.Empty )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.Key}\" token values cannot be blank." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"\"{token.TokenKey}\" token values cannot be blank." ), token.LineNumber );
 				}
 
-				if ( !TemplateTextCases.LookUpTable.Contains( token.Value ) )
+				if ( !TemplateTextCases.LookupTable.Contains( token.TokenValue ) )
 				{
-					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.Key}\" token's value was not recognized." ), token.LineNumber );
+					ExceptionLogger.LogAndThrow( new TokenValueException( $"A(n) \"{token.TokenKey}\" token's value was not recognized." ), token.LineNumber );
 				}
 
-				return token.Value;
+				return token.TokenValue;
 			}
 		}
 
 
 		/// <summary>
-		/// Converts <see cref="Tokens.Find"/> token values into find-and-replace dictionary keys.
+		/// Converts <see cref="TokenPrototypes.Find"/> token values into find-and-replace dictionary keys.
 		/// </summary>
-		/// <param name="regionData">Untrimmed input data.</param>
-		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
-		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/> with "find" keys.</returns>
-		///
+		/// <param name="bodyData">Indexed strings representing body data.</param>
+		/// <param name="tokenStartIndex">Start index of token within body data.</param>
+		/// <param name="result">Result to modify.</param>
+		/// <returns>Modified result with "find" keys.</returns>
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's body has no region open character.
 		/// Thrown when a token's body has no region close character.
 		/// Thrown when a token's body contains blank items.
 		/// </exception>
-		public static ProcessedRegionData<ShortcutData> FindTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
+		public static ProcessedTokenData<TextShortcut> FindTokenHandler( IndexedString[] bodyData, int tokenStartIndex, TextShortcut result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseFindKeys( token );
-			return new ProcessedRegionData<ShortcutData>( result );
+			return new ProcessedTokenData<TextShortcut>( result );
 		}
 
 		/// <summary>
-		/// Converts <see cref="Tokens.Replace"/> token values into find-and-replace dictionary values.
+		/// Converts <see cref="TokenPrototypes.Replace"/> token values into find-and-replace dictionary values.
 		/// </summary>
-		/// <param name="regionData">Untrimmed input data.</param>
-		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
-		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
-		///
+		/// <param name="bodyData">Indexed strings representing body data.</param>
+		/// <param name="tokenStartIndex">IStart index of token within body data.</param>
+		/// <param name="result">Result to modify.</param>
+		/// <returns>Modified result with "replace" values.</returns>
 		/// <exception cref="TokenValueException">
-		/// Thrown when a token is not preceeded by a <see cref="Tokens.Find"/> token.
+		/// Thrown when a token is not preceeded by a <see cref="TokenPrototypes.Find"/> token.
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's body has no region open character.
 		/// Thrown when a token's body has no region close character.
@@ -254,46 +255,44 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// Thrown when a token's body contains less items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// Thrown when a token's body contains more items than are in the find-and-replace dictionary of <paramref name="result"/>.
 		/// </exception>
-		public static ProcessedRegionData<ShortcutData> ReplaceTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
+		public static ProcessedTokenData<TextShortcut> ReplaceTokenHandler( IndexedString[] bodyData, int tokenStartIndex, TextShortcut result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
 			result.FindAndReplace = FindAndReplaceParseHandler.ParseReplaceValues( token, result.FindAndReplace );
-			return new ProcessedRegionData<ShortcutData>( result );
+			return new ProcessedTokenData<TextShortcut>( result );
 		}
 
 		/// <summary>
-		/// Stores <see cref="Tokens.Shortcut"/> token values in the provided container.
+		/// Stores <see cref="TokenPrototypes.Shortcut"/> token values in the provided container.
 		/// </summary>
-		/// <param name="regionData">Untrimmed input data.</param>
-		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
-		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/> with converted template string.</returns>
-		///
+		/// <param name="bodyData">Indexed strings representing body data.</param>
+		/// <param name="tokenStartIndex">IStart index of token within body data.</param>
+		/// <param name="result">Result to modify.</param>
+		/// <returns>Modified result with converted template string.</returns>
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value is not a valid template string.
 		/// </exception>
-		public static ProcessedRegionData<InputData> ShortcutTokenHandler( IndexedString[] regionData, int tokenStartIndex, InputData result )
+		public static ProcessedTokenData<ShortcutScriptInput> ShortcutTokenHandler( IndexedString[] bodyData, int tokenStartIndex, ShortcutScriptInput result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
 			ShortcutParseHandler.ValidateShortcutStructure( token );
 			var shortcuts = result.Shortcuts.ToList();
-			var newShortcut = token.Value.EscapedCharsToCodepoints();
+			var newShortcut = token.TokenValue.EscapedCharsToCodepoints();
 			shortcuts.Add( newShortcut );
 			result.Shortcuts = shortcuts.ToArray();
-			return new ProcessedRegionData<InputData>()
+			return new ProcessedTokenData<ShortcutScriptInput>()
 			{
 				Value = result,
 			};
 		}
 
 		/// <summary>
-		/// Converts <see cref="Tokens.ShortcutTemplate"/> token values into Petrichor template strings and stores them in the provided container.
+		/// Converts <see cref="TokenPrototypes.ShortcutTemplate"/> token values into Petrichor template strings and stores them in the provided container.
 		/// </summary>
-		/// <param name="regionData">Untrimmed input data.</param>
-		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
-		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/> with converted template string.</returns>
-		///
+		/// <param name="bodyData">Indexed strings representing body data.</param>
+		/// <param name="tokenStartIndex">IStart index of token within body data.</param>
+		/// <param name="result">Result to modify.</param>
+		/// <returns>Modified result with converted template string.</returns>
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value is not a valid template string.
 		/// Thrown when a token's value contains a dangling escape character.
@@ -302,30 +301,29 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		/// - Mismatched tag close character.
 		/// - Unrecognized tag value.
 		/// </exception>
-		public static ProcessedRegionData<ShortcutData> ShortcutTemplateTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
+		public static ProcessedTokenData<TextShortcut> ShortcutTemplateTokenHandler( IndexedString[] bodyData, int tokenStartIndex, TextShortcut result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
 			result = ShortcutParseHandler.ParseTemplateString( token, result );
-			return new ProcessedRegionData<ShortcutData>( result );
+			return new ProcessedTokenData<TextShortcut>( result );
 		}
 
 		/// <summary>
-		/// Converts <see cref="Tokens.TextCase"/> token values into text case converstion modes.
+		/// Converts <see cref="TokenPrototypes.TextCase"/> token values into text case converstion modes.
 		/// </summary>
-		/// <param name="regionData">Untrimmed input data.</param>
-		/// <param name="tokenStartIndex">Index within input data of token to process.</param>
-		/// <param name="result">Existing result to modify and return.</param>
-		/// <returns>Modified <paramref name="result"/> with "replace" values.</returns>
-		///
+		/// <param name="bodyData">Indexed strings representing body data.</param>
+		/// <param name="tokenStartIndex">IStart index of token within body data.</param>
+		/// <param name="result">Result to modify.</param>
+		/// <returns>Modified result with "replace" values.</returns>
 		/// <exception cref="TokenValueException">
 		/// Thrown when a token's value has no body.
 		/// Thrown when a token's value is not recognized.
 		/// </exception>
-		public static ProcessedRegionData<ShortcutData> TextCaseTokenHandler( IndexedString[] regionData, int tokenStartIndex, ShortcutData result )
+		public static ProcessedTokenData<TextShortcut> TextCaseTokenHandler( IndexedString[] bodyData, int tokenStartIndex, TextShortcut result )
 		{
-			var token = new StringToken( regionData[ tokenStartIndex ] );
+			var token = new StringToken( bodyData[ tokenStartIndex ] );
 			result.TextCase = TextCaseParseHandler.ParseTextCase( token );
-			return new ProcessedRegionData<ShortcutData>( result );
+			return new ProcessedTokenData<TextShortcut>( result );
 		}
 	}
 }

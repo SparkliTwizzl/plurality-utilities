@@ -10,8 +10,15 @@ using System.CommandLine;
 
 namespace Petrichor.ShortcutScriptGeneration.Utilities
 {
+	/// <summary>
+	/// Provides methods to handle text shortcut script generation commands.
+	/// </summary>
 	public static class ModuleHandler
 	{
+		/// <summary>
+		/// Creates a terminal command for generating a text shortcut script.
+		/// </summary>
+		/// <returns>A <see cref="Command"/> configured for text shortcut script generation.</returns>
 		public static Command CreateTerminalCommand()
 		{
 			var moduleCommand = new Command(
@@ -30,17 +37,17 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 						Name = Commands.ModuleCommand,
 						Options = new()
 						{
-							{ Common.Syntax.Commands.Options.AutoExit, autoExit.ToString() },
-							{ Common.Syntax.Commands.Options.InputFile, inputFile },
-							{ Common.Syntax.Commands.Options.LogFile, logFile },
-							{ Common.Syntax.Commands.Options.LogMode, logMode },
-							{ Common.Syntax.Commands.Options.OutputFile, outputFile },
+							{ Common.Syntax.Commands.Parameters.AutoExit, autoExit.ToString() },
+							{ Common.Syntax.Commands.Parameters.InputFile, inputFile },
+							{ Common.Syntax.Commands.Parameters.LogFile, logFile },
+							{ Common.Syntax.Commands.Parameters.LogMode, logMode },
+							{ Common.Syntax.Commands.Parameters.OutputFile, outputFile },
 						},
 					};
 
 					MetadataHandler.InitializeLogging( logMode, logFile );
-					Log.WriteBufferToFile();
-					Log.DisableBuffering();
+					Logger.WriteBufferToFile();
+					Logger.DisableBuffering();
 
 					var inputFileHandler = new InputFileHandler( MetadataHandler.CreateMetadataTokenParser() );
 					MetadataHandler.CommandToRun.Data = inputFileHandler.ProcessFile( inputFile ).ToArray();
@@ -54,28 +61,32 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return moduleCommand;
 		}
 
+		/// <summary>
+		/// Executes the text shortcut script generation command.
+		/// </summary>
+		/// <param name="command">The command containing the parameters for text shortcut script generation.</param>
 		public static void ExecuteCommand( ModuleCommand command )
 		{
-			Log.Important( "Generating text shortcuts script..." );
-			var outputFilePath = command.Options[ Common.Syntax.Commands.Options.OutputFile ];
+			Logger.Important( "Generating text shortcuts script..." );
+			var outputFilePath = command.Options[ Common.Syntax.Commands.Parameters.OutputFile ];
 			GenerateAutoHotkeyScript( command.Data, outputFilePath );
-			Log.Important( "Generated text shortcuts script successfully." );
+			Logger.Important( "Generated text shortcuts script successfully." );
 		}
 
 
 		private static TokenBodyParser<Entry> CreateEntryParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<Entry>()
+			var parserDescriptor = new TokenParseDescriptor<Entry>()
 			{
-				RegionToken = Tokens.Entry,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.Entry,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Color, EntryHandler.ColorTokenHandler },
-					{ Tokens.Decoration, EntryHandler.DecorationTokenHandler },
-					{ Tokens.ID, EntryHandler.IDTokenHandler },
-					{ Tokens.Name, EntryHandler.NameTokenHandler },
-					{ Tokens.LastName, EntryHandler.LastNameTokenHandler },
-					{ Tokens.Pronoun, EntryHandler.PronounTokenHandler },
+					{ TokenPrototypes.Color, EntryHandler.ColorTokenHandler },
+					{ TokenPrototypes.Decoration, EntryHandler.DecorationTokenHandler },
+					{ TokenPrototypes.ID, EntryHandler.IDTokenHandler },
+					{ TokenPrototypes.Name, EntryHandler.NameTokenHandler },
+					{ TokenPrototypes.LastName, EntryHandler.LastNameTokenHandler },
+					{ TokenPrototypes.Pronoun, EntryHandler.PronounTokenHandler },
 				},
 			};
 
@@ -86,25 +97,25 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 		{
 			var entryRegionParser = CreateEntryParser();
 
-			var entryTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, List<Entry> result ) =>
+			var entryTokenHandler = ( IndexedString[] bodyData, int tokenStartIndex, List<Entry> result ) =>
 			{
 				entryRegionParser.Reset();
-				var dataTrimmedToToken = regionData[ tokenStartIndex.. ];
+				var dataTrimmedToToken = bodyData[ tokenStartIndex.. ];
 				var entry = entryRegionParser.Parse( dataTrimmedToToken );
 				result.Add( entry );
-				return new ProcessedRegionData<List<Entry>>( value: result, bodySize: entryRegionParser.LinesParsed - 1 );
+				return new ProcessedTokenData<List<Entry>>( value: result, bodySize: entryRegionParser.TotalLinesParsed - 1 );
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<List<Entry>>()
+			var parserDescriptor = new TokenParseDescriptor<List<Entry>>()
 			{
-				RegionToken = Tokens.EntryList,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.EntryList,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Entry, entryTokenHandler },
+					{ TokenPrototypes.Entry, entryTokenHandler },
 				},
-				PostParseHandler = ( List<Entry> entries ) =>
+				PostParseAction = ( List<Entry> entries ) =>
 				{
-					Log.Info( $"Parsed {entries.Count} \"{Tokens.Entry.Key}\" tokens." );
+					Logger.Info( $"Parsed {entries.Count} \"{TokenPrototypes.Entry.Key}\" tokens." );
 					return entries;
 				},
 			};
@@ -112,99 +123,99 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 			return new TokenBodyParser<List<Entry>>( parserDescriptor );
 		}
 
-		private static TokenBodyParser<ModuleOptionData> CreateModuleOptionsParser()
+		private static TokenBodyParser<ModuleOptions> CreateModuleOptionsParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<ModuleOptionData>()
+			var parserDescriptor = new TokenParseDescriptor<ModuleOptions>()
 			{
-				RegionToken = Tokens.ModuleOptions,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.ModuleOptions,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.DefaultIcon, ModuleOptionsHandler.DefaultIconTokenHandler },
-					{ Tokens.ReloadShortcut, ModuleOptionsHandler.ReloadShortcutTokenHandler },
-					{ Tokens.SuspendIcon, ModuleOptionsHandler.SuspendIconTokenHandler },
-					{ Tokens.SuspendShortcut, ModuleOptionsHandler.SuspendShortcutTokenHandler },
+					{ TokenPrototypes.DefaultIcon, ModuleOptionsHandler.DefaultIconTokenHandler },
+					{ TokenPrototypes.ReloadShortcut, ModuleOptionsHandler.ReloadShortcutTokenHandler },
+					{ TokenPrototypes.SuspendIcon, ModuleOptionsHandler.SuspendIconTokenHandler },
+					{ TokenPrototypes.SuspendShortcut, ModuleOptionsHandler.SuspendShortcutTokenHandler },
 				},
 			};
 
-			return new TokenBodyParser<ModuleOptionData>( parserDescriptor );
+			return new TokenBodyParser<ModuleOptions>( parserDescriptor );
 		}
 
-		private static TokenBodyParser<ShortcutData> CreateShortcutTemplateParser()
+		private static TokenBodyParser<TextShortcut> CreateShortcutTemplateParser()
 		{
-			var parserDescriptor = new DataRegionParserDescriptor<ShortcutData>()
+			var parserDescriptor = new TokenParseDescriptor<TextShortcut>()
 			{
-				RegionToken = Tokens.ShortcutTemplate,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.ShortcutTemplate,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Find, ShortcutHandler.FindTokenHandler },
-					{ Tokens.Replace, ShortcutHandler.ReplaceTokenHandler },
-					{ Tokens.TextCase, ShortcutHandler.TextCaseTokenHandler },
+					{ TokenPrototypes.Find, ShortcutHandler.FindTokenHandler },
+					{ TokenPrototypes.Replace, ShortcutHandler.ReplaceTokenHandler },
+					{ TokenPrototypes.TextCase, ShortcutHandler.TextCaseTokenHandler },
 				},
-				PostParseHandler = ( ShortcutData template ) =>
+				PostParseAction = ( TextShortcut template ) =>
 				{
 					if ( template.TextCase != TemplateTextCases.Default )
 					{
-						Log.Info( $"Text case: {template.TextCase}." );
+						Logger.Info( $"Text case: {template.TextCase}." );
 					}
 					if ( template.FindAndReplace.Count > 0 )
 					{
-						Log.Info( $"Parsed {template.FindAndReplace.Count} find-and-replace pairs." );
+						Logger.Info( $"Parsed {template.FindAndReplace.Count} find-and-replace pairs." );
 					}
 					return template;
 				},
 			};
 
-			var parser = new TokenBodyParser<ShortcutData>( parserDescriptor );
+			var parser = new TokenBodyParser<TextShortcut>( parserDescriptor );
 
-			var templateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, ShortcutData result ) =>
+			var templateTokenHandler = ( IndexedString[] bodyData, int tokenStartIndex, TextShortcut result ) =>
 			{
-				var handlerResult = ShortcutHandler.ShortcutTemplateTokenHandler( regionData, tokenStartIndex, result );
+				var handlerResult = ShortcutHandler.ShortcutTemplateTokenHandler( bodyData, tokenStartIndex, result );
 				result = handlerResult.Value;
-				var nextToken = new StringToken( regionData[ tokenStartIndex + 1 ] );
-				if ( nextToken.Key != Common.Syntax.Tokens.RegionOpen.Key )
+				var nextToken = new StringToken( bodyData[ tokenStartIndex + 1 ] );
+				if ( nextToken.TokenKey != Common.Syntax.TokenPrototypes.TokenBodyOpen.Key )
 				{
 					parser.CancelParsing();
 				}
-				return new ProcessedRegionData<ShortcutData>( result );
+				return new ProcessedTokenData<TextShortcut>( result );
 			};
 
-			parser.AddTokenHandler( Tokens.ShortcutTemplate, templateTokenHandler );
+			parser.AddTokenHandler( TokenPrototypes.ShortcutTemplate, templateTokenHandler );
 			return parser;
 		}
 
-		private static TokenBodyParser<InputData> CreateShortcutListParser()
+		private static TokenBodyParser<ShortcutScriptInput> CreateShortcutListParser()
 		{
 			var shortcutTemplateRegionParser = CreateShortcutTemplateParser();
 
-			var shortcutTemplateTokenHandler = ( IndexedString[] regionData, int tokenStartIndex, InputData result ) =>
+			var shortcutTemplateTokenHandler = ( IndexedString[] bodyData, int tokenStartIndex, ShortcutScriptInput result ) =>
 			{
 				shortcutTemplateRegionParser.Reset();
-				var dataTrimmedToToken = regionData[ tokenStartIndex.. ];
+				var dataTrimmedToToken = bodyData[ tokenStartIndex.. ];
 				var template = shortcutTemplateRegionParser.Parse( dataTrimmedToToken );
 				var templates = result.ShortcutTemplates.ToList();
 				templates.Add( template );
 				result.ShortcutTemplates = templates.ToArray();
-				return new ProcessedRegionData<InputData>( value: result, bodySize: shortcutTemplateRegionParser.LinesParsed - 1 );
+				return new ProcessedTokenData<ShortcutScriptInput>( value: result, bodySize: shortcutTemplateRegionParser.TotalLinesParsed - 1 );
 			};
 
-			var parserDescriptor = new DataRegionParserDescriptor<InputData>()
+			var parserDescriptor = new TokenParseDescriptor<ShortcutScriptInput>()
 			{
-				RegionToken = Tokens.ShortcutList,
-				TokenHandlers = new()
+				TokenPrototype = TokenPrototypes.ShortcutList,
+				SubTokenHandlers = new()
 				{
-					{ Tokens.Shortcut, ShortcutHandler.ShortcutTokenHandler },
-					{ Tokens.ShortcutTemplate, shortcutTemplateTokenHandler },
+					{ TokenPrototypes.Shortcut, ShortcutHandler.ShortcutTokenHandler },
+					{ TokenPrototypes.ShortcutTemplate, shortcutTemplateTokenHandler },
 				},
-				PreParseHandler = ( InputData input ) => input,
-				PostParseHandler = ( InputData result ) =>
+				PreParseAction = ( ShortcutScriptInput input ) => input,
+				PostParseAction = ( ShortcutScriptInput result ) =>
 				{
-					Log.Info( $"Parsed {result.Shortcuts.Length} \"{Tokens.Shortcut.Key}\" tokens." );
-					Log.Info( $"Parsed {result.ShortcutTemplates.Length} \"{Tokens.ShortcutTemplate.Key}\" tokens." );
+					Logger.Info( $"Parsed {result.Shortcuts.Length} \"{TokenPrototypes.Shortcut.Key}\" tokens." );
+					Logger.Info( $"Parsed {result.ShortcutTemplates.Length} \"{TokenPrototypes.ShortcutTemplate.Key}\" tokens." );
 					return result;
 				},
 			};
 
-			return new TokenBodyParser<InputData>( parserDescriptor );
+			return new TokenBodyParser<ShortcutScriptInput>( parserDescriptor );
 		}
 
 		private static void GenerateAutoHotkeyScript( IndexedString[] data, string outputFilePath )
@@ -215,9 +226,9 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities
 					moduleOptionsParser: CreateModuleOptionsParser(),
 					entryListParser: CreateEntryListParser(),
 					shortcutListParser: CreateShortcutListParser(),
-					shortcutGenerator: new ShortcutProcessor() );
-				var input = inputHandler.ParseFileData( data );
-				new ScriptGenerator().Generate( input, outputFilePath );
+					shortcutProcessor: new ShortcutProcessor() );
+				var input = inputHandler.ParseInputData( data );
+				new ShortcutScriptGenerator().GenerateShortcutScriptFile( input, outputFilePath );
 			}
 			catch ( Exception exception )
 			{
