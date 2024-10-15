@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "--autoExit",
             ],
@@ -16,7 +16,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "generateRandomStrings",
                 "--autoExit",
@@ -27,7 +27,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "generateRandomStrings",
                 "--autoExit",
@@ -44,7 +44,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "${workspaceRoot}/test/input/integration/generateRandomStrings_file.petrichor",
             ],
@@ -54,7 +54,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "generateTextShortcutScript",
                 "--autoExit",
@@ -65,7 +65,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "generateTextShortcutScript",
                 "--autoExit",
@@ -80,7 +80,7 @@
             "type": "coreclr",
             "request": "launch",
             "console": "integratedTerminal",
-            "program": "${workspaceRoot}/build/App/bin/Petrichor.exe",
+            "program": "${workspaceRoot}/build/output/Petrichor.exe",
             "args": [
                 "${workspaceRoot}/test/input/integration/generateTextShortcutScript_file.petrichor",
             ],

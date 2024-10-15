@@ -18,7 +18,7 @@ namespace Petrichor.Common.Info
 		/// </summary>
 		public static string BaseDirectory =>
 #if DEBUG
-			$"{AppContext.BaseDirectory}../../..";
+			$"{AppContext.BaseDirectory}../..";
 #else
 			AppContext.BaseDirectory;
 #endif

@@ -4,13 +4,23 @@
         {
             "label": "build Debug",
             "type": "shell",
-            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Debug",
+            "command": "dotnet",
+            "args": [
+                "build", "${workspaceRoot}/source/App/App.csproj",
+                "--output", "${workspaceRoot}/build/output",
+                "--configuration", "Debug",
+            ],
             "problemMatcher": "$msCompile",
         },
         {
             "label": "build Release",
             "type": "shell",
-            "command": "dotnet build ${workspaceRoot}/source/App/App.csproj --configuration Release",
+            "command": "dotnet",
+            "args": [
+                "build", "${workspaceRoot}/source/App/App.csproj",
+                "--output", "${workspaceRoot}/build/output",
+                "--configuration", "Release",
+            ],
         },
         {
             "label": "publish",
