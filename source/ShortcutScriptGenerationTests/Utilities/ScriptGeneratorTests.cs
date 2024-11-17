@@ -126,7 +126,7 @@ namespace Petrichor.ShortcutScriptGeneration.Utilities.Tests
 		[TestMethod]
 		public void Generate_Test_Success()
 		{
-			var outputFile = $@"{ProjectDirectories.TestOutputDirectory}\{nameof( ShortcutScriptGenerator )}_{nameof( Generate_Test_Success )}.ahk";
+			var outputFile = TestUtilities.LocateOutputFile( $@"{nameof( ShortcutScriptGenerator )}_{nameof( Generate_Test_Success )}.ahk" );
 			generator!.GenerateShortcutScriptFile( TestData.Input, outputFile );
 
 			var expected = TestData.GeneratedOutputFileContents;

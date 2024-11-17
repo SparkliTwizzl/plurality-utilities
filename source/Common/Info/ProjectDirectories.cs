@@ -11,6 +11,7 @@ namespace Petrichor.Common.Info
 		private const string LogDirectoryName = "log";
 		private const string OutputDirectoryName = "output";
 		private const string TestDirectoryName = "test";
+		private const string UnitTestDirectoryName = "unit";
 
 
 		/// <summary>
@@ -18,7 +19,7 @@ namespace Petrichor.Common.Info
 		/// </summary>
 		public static string BaseDirectory =>
 #if DEBUG
-			$"{AppContext.BaseDirectory}../..";
+			$@"{AppContext.BaseDirectory}..\..";
 #else
 			AppContext.BaseDirectory;
 #endif
@@ -33,7 +34,7 @@ namespace Petrichor.Common.Info
 		/// </summary>
 		public static string InputDirectory =>
 #if DEBUG
-			Path.Combine(TestDirectory, InputDirectoryName);
+			IntegrationTestInputDirectory;
 #else
 			Path.Combine(BaseDirectory, InputDirectoryName);
 #endif
@@ -43,7 +44,7 @@ namespace Petrichor.Common.Info
 		/// </summary>
 		public static string LogDirectory =>
 #if DEBUG
-			Path.Combine(TestLogDirectory, IntegrationTestDirectoryName);
+			IntegrationTestLogDirectory;
 #else
 			Path.Combine(BaseDirectory, LogDirectoryName);
 #endif
@@ -53,33 +54,57 @@ namespace Petrichor.Common.Info
 		/// </summary>
 		public static string OutputDirectory =>
 #if DEBUG
-			Path.Combine(BaseDirectory, Path.Combine(TestDirectoryName, OutputDirectoryName));
+			IntegrationTestOutputDirectory;
 #else
 			Path.Combine(BaseDirectory, OutputDirectoryName);
 #endif
 
-		/// <summary>
-		/// Gets the test directory path.
-		/// </summary>
 		public static string TestDirectory => Path.Combine(BaseDirectory, TestDirectoryName);
 
 		/// <summary>
-		/// Gets the test input directory path.
+		/// Gets the integration test directory path.
 		/// </summary>
-		public static string TestInputDirectory => Path.Combine(TestDirectory, InputDirectoryName);
+		public static string IntegrationTestDirectory => Path.Combine(BaseDirectory, TestDirectoryName);
 
 		/// <summary>
-		/// Gets the test log directory path.
+		/// Gets the integration test input directory path.
 		/// </summary>
-		public static string TestLogDirectory => Path.Combine(TestDirectory, LogDirectoryName);
+		public static string IntegrationTestInputDirectory => Path.Combine(IntegrationTestDirectory, InputDirectoryName, IntegrationTestDirectoryName);
 
 		/// <summary>
-		/// Gets the test output directory path.
+		/// Gets the integration test log directory path.
 		/// </summary>
-		public static string TestOutputDirectory => OutputDirectory;
+		public static string IntegrationTestLogDirectory => Path.Combine(IntegrationTestDirectory, LogDirectoryName, IntegrationTestDirectoryName);
+
+		/// <summary>
+		/// Gets the integration test output directory path.
+		/// </summary>
+		public static string IntegrationTestOutputDirectory => Path.Combine(IntegrationTestDirectory, OutputDirectoryName, IntegrationTestDirectoryName);
+
+		/// <summary>
+		/// Gets the unit test directory path.
+		/// </summary>
+		public static string UnitTestDirectory => Path.Combine(BaseDirectory, @"..\", TestDirectoryName);
+
+		/// <summary>
+		/// Gets the unit test input directory path.
+		/// </summary>
+		public static string UnitTestInputDirectory => Path.Combine(UnitTestDirectory, InputDirectoryName, UnitTestDirectoryName);
+
+		/// <summary>
+		/// Gets the unit test output directory path.
+		/// </summary>
+		public static string UnitTestOutputDirectory => Path.Combine(UnitTestDirectory, OutputDirectoryName, UnitTestDirectoryName);
+
+		/// <summary>
+		/// Gets the unit test log directory path.
+		/// </summary>
+		public static string UnitTestLogDirectory => Path.Combine(UnitTestDirectory, LogDirectoryName, UnitTestDirectoryName);
 
 
-		// Private constructor to prevent instantiation of this static class.
+		/// <summary>
+		/// Private constructor to prevent instantiation of this static class.
+		/// </summary>
 		private ProjectDirectories() { }
 	}
 }

@@ -7,7 +7,7 @@
             "command": "dotnet",
             "args": [
                 "build", "${workspaceRoot}/source/App/App.csproj",
-                "--output", "${workspaceRoot}/build/output",
+                "--output", "${workspaceRoot}/build/bin/",
                 "--configuration", "Debug",
             ],
             "problemMatcher": "$msCompile",
@@ -18,7 +18,7 @@
             "command": "dotnet",
             "args": [
                 "build", "${workspaceRoot}/source/App/App.csproj",
-                "--output", "${workspaceRoot}/build/output",
+                "--output", "${workspaceRoot}/build/bin/",
                 "--configuration", "Release",
             ],
         },
